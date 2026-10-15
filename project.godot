@@ -2,6 +2,8 @@ config_version=5
 
 [application]
 config/name="Living Earth 3D"
+config/version="0.2.0"
+config/icon="res://assets/icon.svg"
 run/main_scene="res://scenes/earth.tscn"
 config/features=PackedStringArray("4.2", "GL Compatibility")
 
@@ -14,3 +16,7 @@ environment/defaults/default_clear_color=Color(0.004, 0.008, 0.02, 1)
 window/size/viewport_width=1600
 window/size/viewport_height=900
 window/stretch/mode="canvas_items"
+window/stretch/aspect="expand"
+window/size/min_width=800
+window/size/min_height=600
+window/dpi/allow_hidpi=true
