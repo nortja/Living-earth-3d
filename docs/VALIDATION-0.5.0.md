@@ -21,6 +21,18 @@ Godot 4.6.3 on Linux; native X11/OpenGL compatibility renderer using Mesa llvmpi
 
 Final signed-distance-field UI font rendering was additionally captured at 1080p and at 5K using the exported Windows EXE's embedded project loaded by the Linux Godot engine. This verifies packaged resource resolution; **it does not execute the Windows PE or Windows APIs**. The embedded project started successfully and seven native app icon sizes matched the source ICO. PowerShell syntax checks passed for build/update/icon/display scripts and the native icon C# helper compiled locally without invoking Windows APIs.
 
+## Installer delivery
+
+The single NSIS EXE was built with the verified official Windows template and checked with 7-Zip. Extracted application, screensaver, update helper and license payloads match the source/build byte for byte. Seven installer icon sizes match the branding ICO. The public download was downloaded again and its SHA-256 matched:
+
+- File: `LivingEarth3D-Setup-0.5.0.exe`
+- Size: **41,254,207 bytes**
+- SHA-256: `21527f6da041f98635b2bf4d74f126cf1ce330a10eba2aaebcf9dc4b33ba8aab`
+- App source: `008151d`
+- Download commit: `06d14cd177518dc526374d48f54cedc4cf2386bc`
+
+These are payload/integrity checks, not execution of the Windows installer.
+
 ## Still required
 
 - Execute `tests/windows_display_test.ps1` against the packaged EXE on an interactive Windows desktop. It rejects Linux/headless results, missing evidence and clamped viewport sizes.
