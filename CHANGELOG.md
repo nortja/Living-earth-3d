@@ -10,7 +10,7 @@
 - Added on-request USGS M2.5+ past-day earthquake observations, filtered coordinates, event UTC times, retrieval timestamps, versioned disk cache and unavailable/cached states. No fabricated observations or automatic polling.
 - Added four saved screensaver styles and an in-app fullscreen preview that returns on input. Screensaver startup skips update checks; previews cancel active requests.
 - Added a native packaged-app display validation mode and PowerShell runner for 1080p, ultrawide, 4K and 5K Windows checks with screenshots, platform/GPU identity and fresh JSON evidence. Windows execution remains outstanding because no Windows runner is available in the current cloud instance.
-- Preserved the branded intro, globe interactions, source attributions, single-EXE installer and strict signed-update requirements. Automatic GitHub builds remain disabled.
+- Preserved the branded intro, globe interactions, source attributions, single-EXE installer and strict signed-update requirements. Passed 95 behavior/interface/data checks, three intro stages, 12 quality/resolution renders, six layout runs, packaged-resource/icon/payload checks, and published download/checksum/HTTPS-feed verification. These are Linux-native and cross-package checks; Windows execution remains outstanding. Automatic GitHub builds remain disabled.
 
 ## 0.4.0 — Clouds, detail, and deep space
 

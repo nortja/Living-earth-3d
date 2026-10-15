@@ -31,6 +31,8 @@ The single NSIS EXE was built with the verified official Windows template and ch
 - App source: `008151d`
 - Download commit: `06d14cd177518dc526374d48f54cedc4cf2386bc`
 
+The published HTTPS preview feed was then requested by Godot and accepted as version **0.5.0**, `installer_signed=false`. This verifies real update discovery and metadata parsing; unsigned installation stays manual.
+
 These are payload/integrity checks, not execution of the Windows installer.
 
 ## Still required
