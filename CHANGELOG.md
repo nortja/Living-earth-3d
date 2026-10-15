@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.4.0 — Clouds, detail, and deep space
+
+- Replaced the daytime/night-light surface maps with attributed Solar System Scope imagery: genuine 4K detail mode and 2K Balanced maps, with no upscaling.
+- Added an independent moving cloud shell and subtle cloud shade; this is offline artwork, not live weather.
+- Added optional instanced stars and an optional textured Moon backdrop. Both are artistic rather than live astronomical data.
+- Refined the atmospheric rim, ocean response, and night-light transition.
+- Saved cloud/star/Moon toggles, texture quality, and a 30 FPS power-saving preference locally.
+- Added a fixed-project preview update feed with strict installer URL and checksum validation. Future previews can be discovered inside the app and downloaded directly; unsigned previews still cannot self-replace. The Windows helper additionally verifies package SHA-256 and same-publisher Authenticode signatures, and prevents overlapping updater instances.
+- Installer/uninstaller now ask to close the running app gracefully before replacing or removing files; no forced termination.
+- Preserved intro, native icons, favorites, discoveries, and controls. Fifty-six behavior checks, three intro render stages, and eight quality/resolution rendering cases passed locally.
+- User reported successful installation and launch of 0.3.0 on Windows. New 0.4.0 Windows hardware and signed-update tests remain outstanding.
+- Kept automatic GitHub builds disabled; no tag-triggered workflows were reintroduced.
+
 ## 0.3.0 — Earth identity and first impression
 
 - Replaced the generic icon with illuminated Earth artwork, including seven native Windows icon sizes (16–256 px) for the application, installer, and uninstaller.

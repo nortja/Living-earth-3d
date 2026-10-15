@@ -1,0 +1,51 @@
+{
+  "files": {
+    "day_4k.jpg": {
+      "source": "https://raw.githubusercontent.com/neftale99/earth-shader/a1987a1b239fb4f3827e18ef8957698c4b7e09d0/static/Earth/day.jpg",
+      "sha256": "cd7712d3e891425d9948ea5ac18d3bb1e7e834ea038188587897e689a7b35d0f",
+      "pixels": [
+        4096,
+        2048
+      ],
+      "creator": "Solar System Scope / INOVE",
+      "license": "CC BY 4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/"
+    },
+    "night_4k.jpg": {
+      "source": "https://raw.githubusercontent.com/neftale99/earth-shader/a1987a1b239fb4f3827e18ef8957698c4b7e09d0/static/Earth/night.jpg",
+      "sha256": "17a868f79c7be40fa1f557e6114d7889d907f18f7a3fce51f33b0b830ef50242",
+      "pixels": [
+        4096,
+        2048
+      ],
+      "creator": "Solar System Scope / INOVE",
+      "license": "CC BY 4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/"
+    },
+    "clouds.jpg": {
+      "source": "https://raw.githubusercontent.com/neftale99/earth-shader/a1987a1b239fb4f3827e18ef8957698c4b7e09d0/static/Earth/clouds.jpg",
+      "sha256": "fffd7f68d41b37274822150e54a6ef605af1d3ec35624d9f628c3b896bfa42ed",
+      "pixels": [
+        2048,
+        1024
+      ],
+      "creator": "Solar System Scope / INOVE",
+      "license": "CC BY 4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/"
+    },
+    "moon.jpg": {
+      "source": "https://raw.githubusercontent.com/mrdoob/three.js/r160/examples/textures/planets/moon_1024.jpg",
+      "sha256": "fcb0f1f5548e6e18d40063dd55c6aacd3daedf2407b181dab85b61e22bf9fe57",
+      "pixels": [
+        1024,
+        512
+      ],
+      "license": "three.js repository MIT; see THREE-LICENSE.txt"
+    }
+  },
+  "derivatives": {
+    "day.jpg": "2048-pixel downsample of day_4k.jpg",
+    "night.png": "2048-pixel downsample of night_4k.jpg",
+    "specular.jpg": "Red (water) channel from https://raw.githubusercontent.com/neftale99/earth-shader/a1987a1b239fb4f3827e18ef8957698c4b7e09d0/static/Earth/specularClouds.jpg, downsampled to 2048 pixels; CC BY 4.0"
+  }
+}

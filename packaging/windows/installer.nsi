@@ -2,8 +2,9 @@ Unicode true
 !include "MUI2.nsh"
 !include "LogicLib.nsh"
 !include "x64.nsh"
+!include "WinMessages.nsh"
 !ifndef VERSION
-!define VERSION "0.3.0"
+!define VERSION "0.4.0"
 !endif
 !ifndef BUILD_DIR
 !define BUILD_DIR "..\..\build\windows"
@@ -34,7 +35,37 @@ VIAddVersionKey "LegalCopyright" "Living Earth 3D contributors"
 !insertmacro MUI_UNPAGE_CONFIRM
 !insertmacro MUI_UNPAGE_INSTFILES
 !insertmacro MUI_LANGUAGE "English"
+!macro CloseApplication FUNCTION_NAME
+Function ${FUNCTION_NAME}
+  FindWindow $0 "" "Living Earth 3D"
+  ${If} $0 != 0
+    IfSilent running_abort
+    MessageBox MB_YESNO|MB_ICONQUESTION|MB_DEFBUTTON2 "Living Earth 3D is running. Close it to continue?" IDYES request_close
+    Abort
+    request_close:
+    SendMessage $0 ${WM_CLOSE} 0 0 /TIMEOUT=1000
+    StrCpy $1 0
+    wait_for_close:
+    IsWindow $0 still_running finished_close
+    still_running:
+    Sleep 100
+    IntOp $1 $1 + 1
+    IntCmp $1 100 close_timeout wait_for_close close_timeout
+    close_timeout:
+    MessageBox MB_OK "Please close Living Earth 3D, then run this installer again."
+    running_abort:
+    Abort
+    finished_close:
+  ${EndIf}
+FunctionEnd
+!macroend
+!insertmacro CloseApplication CloseLivingEarth
+!insertmacro CloseApplication un.CloseLivingEarth
+Function un.onInit
+  Call un.CloseLivingEarth
+FunctionEnd
 Function .onInit
+  Call CloseLivingEarth
   ${IfNot} ${RunningX64}
     MessageBox MB_OK "Living Earth 3D requires 64-bit Windows."
     Abort
@@ -48,6 +79,7 @@ Section "Living Earth 3D"
   File "update.ps1"
   File "..\..\assets\Godot-LICENSE.txt"
   File "..\..\assets\earth\THREE-LICENSE.txt"
+  File "..\..\assets\earth\CC-BY-4.0.txt"
   File "..\..\assets\earth\ATTRIBUTION.md"
   WriteUninstaller "$INSTDIR\Uninstall.exe"
   CreateShortcut "$DESKTOP\Living Earth 3D.lnk" "$INSTDIR\LivingEarth3D.exe"
@@ -77,6 +109,7 @@ Section "Uninstall"
   Delete "$INSTDIR\LivingEarth3D.scr"
   Delete "$INSTDIR\Godot-LICENSE.txt"
   Delete "$INSTDIR\THREE-LICENSE.txt"
+  Delete "$INSTDIR\CC-BY-4.0.txt"
   Delete "$INSTDIR\ATTRIBUTION.md"
   Delete "$INSTDIR\Uninstall.exe"
   RMDir "$INSTDIR"

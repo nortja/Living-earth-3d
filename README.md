@@ -1,16 +1,16 @@
 # Living Earth 3D
 
-An offline interactive desktop globe for Windows, built with Godot 4. Version **0.3.0**.
+An offline interactive desktop globe for Windows, built with Godot 4. Version **0.4.0**.
 
 ## Windows users
 
-Download **LivingEarth3D-Setup-0.3.0.exe**, double-click, install, then use the desktop shortcut. No terminal, separate runtime, or Godot setup is required. This is an unsigned preview; actual Windows installation and hardware performance still need validation.
+Download **LivingEarth3D-Setup-0.4.0.exe**, double-click, install, then use the desktop shortcut. No terminal, separate runtime, or Godot setup is required. This is an unsigned preview; the user confirmed the previous 0.3.0 installer works on Windows. This 0.4.0 build still needs Windows hardware/upgrade validation.
 
 The new illuminated Earth icon replaces the generic branding. On launch, the real globe emerges from darkness before the controls appear. Drag to spin with gentle inertia, scroll or double-click to zoom, and use **Reset Earth** or Home to return to the full globe. Input skips the intro; F11 toggles fullscreen.
 
-Earth includes bundled 2K imagery, night lights, ocean highlights, and atmosphere. **Explore & settings** opens six offline destinations, smooth journeys, Surprise Me, favorites, and opt-in timed discovery. The window adapts to the monitor and fills ultrawide aspect ratios. Preferences stay local; no account is needed.
+Earth now includes genuine 4K daytime/night-light maps (select **Detailed · 4K**), a lower-memory **Balanced · 2K** mode, independently drifting offline clouds, refined atmosphere, optional stars, and an optional Moon backdrop. A 30 FPS power-saving option is available. Visual choices are saved locally. **Explore & settings** opens six offline destinations, smooth journeys, Surprise Me, favorites, and opt-in timed discovery. The window adapts to the monitor and fills ultrawide aspect ratios. Preferences stay local; no account is needed.
 
-Optional update checking is implemented. Automatic installation requires signed releases and asks before restarting; unsigned previews cannot self-update. Clouds, seasons, Moon/stars, live weather, historical sites, screensaver preview embedding, and multiple-display coverage are prioritized in [ROADMAP.md](ROADMAP.md).
+Optional startup checks use a project-controlled preview feed; **Check updates → Download latest** provides the next preview installer. Future signed updates additionally require a matching trusted publisher and SHA-256 checksum before replacement, then ask before restarting. Unsigned previews require manual installation. Clouds are offline artwork; Moon/stars are artistic backdrops, not live astronomy. Live cloud/weather updates, seasons, historical sites, screensaver preview embedding, and multiple displays remain in [ROADMAP.md](ROADMAP.md).
 
 ## Development
 

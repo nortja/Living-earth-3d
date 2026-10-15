@@ -54,15 +54,28 @@ func run() -> void:
     scene.discovery_enabled = true
     scene._process(121.0)
     verify(scene.selected != previous, "Timed discovery advances")
-    verify(scene.newer_version("v0.4.0"), "Newer minor release")
+    verify(scene.newer_version("v0.5.0"), "Newer minor release")
     verify(scene.newer_version("1.0.0"), "Newer major release")
-    verify(not scene.newer_version("v0.3.0"), "Current release ignored")
+    verify(not scene.newer_version("v0.4.0"), "Current release ignored")
     verify(not scene.newer_version("v0.0.9"), "Older release ignored")
     verify(not scene.newer_version("v1.0.0-beta"), "Prerelease ignored")
     scene._updates_received(0, 404, PackedStringArray(), PackedByteArray())
-    verify(scene.update_status.text.contains("No published release"), "Missing release handled")
-    scene._updates_received(0, 200, PackedStringArray(), '{"tag_name":"v0.4.0"}'.to_utf8_buffer())
-    verify(scene.update_status.text.contains("available"), "New release shown")
+    verify(scene.update_status.text.contains("No published update"), "Missing release handled")
+    var feed := {"version": "0.5.0", "channel": "preview", "installer_url": "https://github.com/nortja/Living-earth-3d/raw/refs/heads/downloads/windows-0.5.0/LivingEarth3D-Setup-0.5.0.exe", "sha256": "a".repeat(64), "installer_signed": false}
+    scene._updates_received(0, 200, PackedStringArray(), JSON.stringify(feed).to_utf8_buffer())
+    verify(scene.update_status.text.contains("available"), "New preview update shown")
+    verify(scene.valid_update_feed(feed), "Official preview feed accepted")
+    var invalid_feed := feed.duplicate()
+    invalid_feed.installer_url = "https://example.com/untrusted.exe"
+    verify(not scene.valid_update_feed(invalid_feed), "External installer host rejected")
+    invalid_feed = feed.duplicate()
+    invalid_feed.sha256 = "bad"
+    verify(not scene.valid_update_feed(invalid_feed), "Invalid checksum rejected")
+    invalid_feed = feed.duplicate()
+    invalid_feed.version = "0.5.0/../../other"
+    verify(not scene.valid_update_feed(invalid_feed), "Malformed version rejected")
+    scene.install_update()
+    verify(scene.update_status.text.contains("Unsigned preview"), "Unsigned previews never trigger automatic replacement")
     scene._updates_received(0, 200, PackedStringArray(), 'invalid'.to_utf8_buffer())
     verify(scene.update_status.text.contains("unavailable"), "Malformed response handled")
     scene._updates_received(HTTPRequest.RESULT_CANT_CONNECT, 0, PackedStringArray(), PackedByteArray())
@@ -100,6 +113,37 @@ func run() -> void:
     scene.start_intro()
     scene.finish_intro()
     verify(not scene.intro_running and scene.distance == 3.6, "Intro can be skipped")
+    verify(scene.visuals.clouds_enabled and scene.visuals.stars_enabled and not scene.visuals.moon_enabled, "Visual defaults: clouds and stars on, Moon off")
+    var cloud_before: float = scene.visuals.clouds.rotation.y
+    scene.visuals.advance(1.0)
+    verify(scene.visuals.clouds.rotation.y > cloud_before, "Cloud layer drifts independently")
+    scene.set_visual_option("clouds", false)
+    verify(not scene.visuals.clouds.visible and scene.earth_material.get_shader_parameter("cloud_strength") == 0.0, "Cloud toggle disables clouds and shade")
+    cloud_before = scene.visuals.clouds.rotation.y
+    scene.visuals.advance(1.0)
+    verify(scene.visuals.clouds.rotation.y == cloud_before, "Disabled clouds stop processing")
+    scene.set_visual_option("stars", false)
+    verify(not scene.visuals.stars.visible, "Star backdrop can be disabled")
+    scene.set_visual_option("moon", true)
+    verify(scene.visuals.moon.visible, "Moon backdrop is optional")
+    scene.set_quality("detailed")
+    verify(scene.earth_material.get_shader_parameter("day_map").get_width() == 4096, "Detailed mode loads genuine 4K map")
+    verify(scene.earth_material.get_shader_parameter("night_map").get_width() == 4096, "Detailed night lights are 4K")
+    var restored = load("res://scenes/earth.tscn").instantiate()
+    restored.play_intro = false
+    restored.preferences_path = scene.preferences_path
+    root.add_child(restored)
+    verify(restored.visual_quality == "detailed" and not restored.visuals.clouds_enabled and not restored.visuals.stars_enabled and restored.visuals.moon_enabled, "Visual preferences survive restart")
+    restored.queue_free()
+    scene.set_quality("invalid")
+    verify(scene.visual_quality == "balanced" and scene.earth_material.get_shader_parameter("day_map").get_width() == 2048, "Invalid quality falls back to Balanced")
+    verify(scene.visuals.stars.multimesh.instance_count == 1100, "Stars use one instanced mesh")
+    for button in scene.find_children("*", "CheckButton", true, false):
+        if button.text.begins_with("Power saving"):
+            button.button_pressed = true
+            verify(Engine.max_fps == 30, "Power saving caps frame rate")
+            button.button_pressed = false
+            verify(Engine.max_fps == 60, "Normal mode restores frame cap")
     DirAccess.remove_absolute(ProjectSettings.globalize_path(scene.preferences_path))
     print("Explorer: %d checks, %d failures" % [checks, failures])
     quit(1 if failures else 0)

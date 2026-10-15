@@ -1,0 +1,7 @@
+Solar System Scope textures — CC BY 4.0
+Creator: Solar System Scope / INOVE
+Original collection: https://www.solarsystemscope.com/textures/
+License: Creative Commons Attribution 4.0 International
+License and full terms: https://creativecommons.org/licenses/by/4.0/
+
+These maps are redistributed with attribution. The daytime and night-light Balanced maps are downsampled from the 4096-pixel originals. The water mask is extracted from the red channel of the source's combined water/cloud map and downsampled. Cloud imagery is displayed as an independently animated offline layer. No endorsement by the creator is implied. See ATTRIBUTION.md and SOURCES.json for provenance and changes.

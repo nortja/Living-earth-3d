@@ -1,5 +1,10 @@
 extends Node3D
 
+const PlanetVisuals = preload("res://scripts/planet_visuals.gd")
+
+var visuals: Node3D
+var visual_quality := "balanced"
+var power_saving := false
 var earth: MeshInstance3D
 var camera: Camera3D
 var info: Label
@@ -32,9 +37,11 @@ var place_picker: OptionButton
 var favorite_button: Button
 var description: Label
 var update_status: Label
+var update_feed: Dictionary = {}
 var update_request: HTTPRequest
 var preferences := ConfigFile.new()
-const VERSION := "0.3.0"
+const VERSION := "0.4.0"
+const UPDATE_FEED_URL := "https://raw.githubusercontent.com/nortja/Living-earth-3d/main/updates/preview.json"
 const RELEASES_URL := "https://github.com/nortja/Living-earth-3d/releases"
 
 
@@ -58,7 +65,7 @@ func _ready() -> void:
     env.background_color = Color(0.005, 0.008, 0.025)
     env.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
     env.ambient_light_color = Color(0.17, 0.25, 0.43)
-    env.ambient_light_energy = 0.25
+    env.ambient_light_energy = 0.12
     world.environment = env
     add_child(world)
 
@@ -74,6 +81,7 @@ func _ready() -> void:
     mat.set_shader_parameter("day_map", load("res://assets/earth/day.jpg"))
     mat.set_shader_parameter("night_map", load("res://assets/earth/night.png"))
     mat.set_shader_parameter("ocean_mask", load("res://assets/earth/specular.jpg"))
+    mat.set_shader_parameter("cloud_map", load("res://assets/earth/clouds.jpg"))
     earth_material = mat
     earth.material_override = mat
     add_child(earth)
@@ -91,9 +99,13 @@ func _ready() -> void:
 
     sun = DirectionalLight3D.new()
     sun.rotation_degrees = Vector3(-25, 150, 0)
-    sun.light_energy = 2.0
+    sun.light_energy = 1.6
     add_child(sun)
     mat.set_shader_parameter("sun_direction", sun.basis.z)
+    glow.set_shader_parameter("sun_direction", sun.basis.z)
+    visuals = PlanetVisuals.new()
+    add_child(visuals)
+    visuals.setup(earth)
 
     camera = Camera3D.new()
     camera.current = true
@@ -123,6 +135,8 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
     screensaver_age += delta
+    visuals.advance(delta)
+    earth_material.set_shader_parameter("cloud_offset", visuals.clouds.rotation.y / TAU)
     if not dragging and angular_velocity.length() > 0.001:
         yaw += angular_velocity.x * delta
         pitch = clampf(pitch + angular_velocity.y * delta, -1.35, 1.35)
@@ -267,8 +281,9 @@ func _build_explorer(layer: CanvasLayer) -> void:
     controls.add_child(frequency)
     description = Label.new()
     description.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-    description.text = "Offline discovery • Choose a place or Surprise Me. Earth imagery: three.js texture collection. Globe-level exploration; no terrain streaming."
+    description.text = "Offline discovery • Choose a place or Surprise Me. Earth maps: Solar System Scope · CC BY 4.0. Clouds are offline artwork; Moon is an artistic backdrop."
     box.add_child(description)
+    _build_visual_options(box)
     var updates := HFlowContainer.new()
     box.add_child(updates)
     var automatic := CheckButton.new()
@@ -282,6 +297,7 @@ func _build_explorer(layer: CanvasLayer) -> void:
     updates.add_child(automatic)
     _button(updates, "Check updates", check_updates)
     _button(updates, "Install update", install_update)
+    _button(updates, "Download latest", download_latest)
     if OS.get_name() == "Windows":
         _button(updates, "Screen saver settings", func():
             var saver := OS.get_executable_path().get_base_dir().path_join("LivingEarth3D.scr")
@@ -364,8 +380,8 @@ func _save_preferences() -> void:
 func check_updates() -> void:
     if update_request.get_http_client_status() != HTTPClient.STATUS_DISCONNECTED:
         return
-    update_status.text = "Checking official GitHub Releases…"
-    var error := update_request.request("https://api.github.com/repos/nortja/Living-earth-3d/releases/latest", ["Accept: application/vnd.github+json", "User-Agent: Living-earth-3d/" + VERSION])
+    update_status.text = "Checking Living Earth 3D updates…"
+    var error := update_request.request(UPDATE_FEED_URL, ["Accept: application/json", "User-Agent: Living-earth-3d/" + VERSION])
     if error != OK:
         update_status.text = "Update check unavailable. Offline exploration still works."
 
@@ -387,22 +403,56 @@ func _updates_received(result: int, code: int, _headers: PackedStringArray, body
         update_status.text = "Update check unavailable. Offline exploration still works."
         return
     if code == 404:
-        update_status.text = "No published release yet. Running " + VERSION + "."
+        update_status.text = "No published update yet. Running " + VERSION + "."
         return
     var parser := JSON.new()
     var parse_result := parser.parse(body.get_string_from_utf8())
-    var release = parser.data
-    if code != 200 or parse_result != OK or not release is Dictionary or not release.get("tag_name", null) is String:
+    var feed = parser.data
+    if code != 200 or parse_result != OK or not valid_update_feed(feed):
         update_status.text = "Update check unavailable. Try again later."
         return
-    if newer_version(release.tag_name):
-        update_status.text = "Update %s available • Choose Install update (Windows)." % release.tag_name
-        if preferences.get_value("updates", "automatic", false) and OS.get_name() == "Windows":
+    update_feed = feed
+    if newer_version(feed.version):
+        update_status.text = "Version %s available • %s" % [feed.version, "Install update to restart securely." if feed.get("installer_signed", false) else "Preview: choose Download latest to install."]
+        if preferences.get_value("updates", "automatic", false) and OS.get_name() == "Windows" and feed.get("installer_signed", false):
             install_update()
     else:
-        update_status.text = "No newer stable version available • " + VERSION
+        update_status.text = "You're up to date • " + VERSION
+
+func valid_update_feed(feed: Variant) -> bool:
+    if not feed is Dictionary:
+        return false
+    var version = feed.get("version")
+    var digest = feed.get("sha256")
+    if not version is String or not digest is String:
+        return false
+    var parts: PackedStringArray = version.split(".")
+    if parts.size() != 3:
+        return false
+    for part in parts:
+        if not part.is_valid_int() or int(part) < 0 or str(int(part)) != part:
+            return false
+    if digest.length() != 64 or digest.to_lower() != digest:
+        return false
+    for character in digest:
+        if character not in "0123456789abcdef":
+            return false
+    var expected := "https://github.com/nortja/Living-earth-3d/raw/refs/heads/downloads/windows-%s/LivingEarth3D-Setup-%s.exe" % [version, version]
+    return feed.get("installer_url") == expected and feed.get("channel") == "preview" and feed.get("installer_signed") is bool
+
+func download_latest() -> void:
+    if valid_update_feed(update_feed):
+        OS.shell_open(update_feed.installer_url)
+    else:
+        update_status.text = "Check updates first to find the latest installer."
 
 func install_update() -> void:
+    if update_feed.is_empty():
+        update_status.text = "Check updates first."
+        return
+    if not update_feed.get("installer_signed", false):
+        update_status.text = "Unsigned preview: use Download latest. Automatic replacement requires signed releases."
+        return
     var helper := OS.get_executable_path().get_base_dir().path_join("update.ps1")
     if OS.get_name() != "Windows" or not FileAccess.file_exists(helper):
         update_status.text = "Install updates through the Windows installer. Use Official releases for other builds."
@@ -430,7 +480,7 @@ func start_intro() -> void:
     _update_camera()
     intro_tween = create_tween().set_parallel(true).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
     intro_tween.tween_method(_set_intro_reveal, 0.0, 1.0, 2.8)
-    intro_tween.tween_property(sun, "light_energy", 2.0, 2.8)
+    intro_tween.tween_property(sun, "light_energy", 1.6, 2.8)
     intro_tween.tween_property(self, "distance", 3.6, 2.8)
     intro_tween.finished.connect(finish_intro)
 
@@ -438,6 +488,7 @@ func _set_intro_reveal(value: float) -> void:
     intro_reveal = value
     earth_material.set_shader_parameter("visibility", value)
     atmosphere_material.set_shader_parameter("visibility", value)
+    visuals.set_reveal(value)
 
 func finish_intro() -> void:
     if not intro_running:
@@ -446,7 +497,7 @@ func finish_intro() -> void:
     if intro_tween:
         intro_tween.kill()
     _set_intro_reveal(1.0)
-    sun.light_energy = 2.0
+    sun.light_energy = 1.6
     distance = 3.6
     zoom_target = distance
     _update_camera()
@@ -482,3 +533,52 @@ func _notification(what: int) -> void:
     if what == NOTIFICATION_WM_WINDOW_FOCUS_OUT:
         dragging = false
         angular_velocity = Vector2.ZERO
+
+func _build_visual_options(box: VBoxContainer) -> void:
+    var row := HFlowContainer.new()
+    box.add_child(row)
+    visuals.apply_options(preferences.get_value("visuals", "clouds", true), preferences.get_value("visuals", "stars", true), preferences.get_value("visuals", "moon", false))
+    for option in ["clouds", "stars", "moon"]:
+        var toggle := CheckButton.new()
+        toggle.text = {"clouds": "Clouds · offline", "stars": "Stars", "moon": "Moon · artistic"}[option]
+        toggle.button_pressed = preferences.get_value("visuals", option, option != "moon")
+        toggle.tooltip_text = "Offline cloud artwork drifts independently; this is not live weather." if option == "clouds" else "Artistic backdrop, not live astronomical positions."
+        toggle.toggled.connect(func(enabled: bool): set_visual_option(option, enabled))
+        row.add_child(toggle)
+    var quality := OptionButton.new()
+    quality.add_item("Balanced · 2K")
+    quality.add_item("Detailed · 4K")
+    var saved_quality: String = preferences.get_value("visuals", "quality", "balanced")
+    set_quality(saved_quality, false)
+    quality.select(1 if visual_quality == "detailed" else 0)
+    quality.item_selected.connect(func(index: int): set_quality("detailed" if index == 1 else "balanced"))
+    row.add_child(quality)
+    var power := CheckButton.new()
+    power.text = "Power saving · 30 FPS"
+    power_saving = preferences.get_value("visuals", "power_saving", false)
+    power.button_pressed = power_saving
+    Engine.max_fps = 30 if power_saving else 60
+    power.toggled.connect(func(enabled: bool):
+        power_saving = enabled
+        Engine.max_fps = 30 if enabled else 60
+        preferences.set_value("visuals", "power_saving", enabled)
+        _save_preferences())
+    row.add_child(power)
+    earth_material.set_shader_parameter("cloud_strength", 0.12 if visuals.clouds_enabled else 0.0)
+
+func set_visual_option(option: String, enabled: bool) -> void:
+    if option not in ["clouds", "stars", "moon"]:
+        return
+    preferences.set_value("visuals", option, enabled)
+    visuals.apply_options(preferences.get_value("visuals", "clouds", true), preferences.get_value("visuals", "stars", true), preferences.get_value("visuals", "moon", false))
+    earth_material.set_shader_parameter("cloud_strength", 0.12 if visuals.clouds_enabled else 0.0)
+    _save_preferences()
+
+func set_quality(quality: String, persist := true) -> void:
+    visual_quality = quality if quality in ["balanced", "detailed"] else "balanced"
+    var high := visual_quality == "detailed"
+    earth_material.set_shader_parameter("day_map", load("res://assets/earth/day_4k.jpg" if high else "res://assets/earth/day.jpg"))
+    earth_material.set_shader_parameter("night_map", load("res://assets/earth/night_4k.jpg" if high else "res://assets/earth/night.png"))
+    if persist:
+        preferences.set_value("visuals", "quality", visual_quality)
+        _save_preferences()
