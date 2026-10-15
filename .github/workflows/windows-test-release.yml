@@ -1,0 +1,55 @@
+name: Windows testing release
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [release/windows-explorer-prototype]
+    paths: [.github/workflows/windows-test-release.yml]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: windows-testing-release
+  cancel-in-progress: false
+
+jobs:
+  windows-package:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - name: Check out source
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - name: Install verified Godot 4.6.3
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd "$RUNNER_TEMP"
+          archive=Godot_v4.6.3-stable_linux.x86_64.zip
+          curl --fail --location --retry 2 "https://github.com/godotengine/godot-builds/releases/download/4.6.3-stable/$archive" -o "$archive"
+          printf '%s  %s\n' a035258da32b77f966a5376f9fa29c30a6adde826a85ba918e1605bd1fc9823eba7d85f1dd5e748956bd2ba72827c0025ffa11bb82aec91128c407a2e723c99c "$archive" | sha512sum --check -
+          unzip -q "$archive" -d godot-bin
+          chmod +x godot-bin/Godot_v4.6.3-stable_linux.x86_64
+          ln -s Godot_v4.6.3-stable_linux.x86_64 godot-bin/godot
+          echo "$RUNNER_TEMP/godot-bin" >> "$GITHUB_PATH"
+      - name: Test and build standalone Windows package
+        run: bash tools/build_windows.sh
+      - name: Verify packed game startup
+        shell: bash
+        run: |
+          godot --headless --path "$RUNNER_TEMP" --main-pack "$GITHUB_WORKSPACE/build/windows/LivingEarth3D.exe" --quit-after 120
+          cd build
+          sha256sum --check SHA256SUMS.txt
+      - name: Publish Windows testing prerelease
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          tag=v0.1.0-test.1
+          if ! gh release view "$tag" >/dev/null 2>&1; then
+            gh release create "$tag" --target "$GITHUB_SHA" --title 'Living Earth 3D — Windows testing prototype' --notes-file docs/WINDOWS_RELEASE_NOTES.md --draft --prerelease
+          fi
+          gh release upload "$tag" build/LivingEarth3D-windows-x86_64.zip build/SHA256SUMS.txt --clobber
+          gh release edit "$tag" --draft=false --prerelease --latest=false
