@@ -1,5 +1,5 @@
 # Runs without a terminal from the installed application. Never accepts an arbitrary feed URL.
-param([string]$CurrentVersion = '0.2.0', [int]$AppProcessId = 0)
+param([string]$CurrentVersion = '0.3.0', [int]$AppProcessId = 0)
 $ErrorActionPreference = 'Stop'
 Add-Type -AssemblyName System.Windows.Forms
 $work = $null

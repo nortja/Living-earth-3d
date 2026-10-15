@@ -4,6 +4,7 @@ func _initialize() -> void:
     call_deferred("run")
 func run() -> void:
     var scene = load("res://scenes/earth.tscn").instantiate()
+    scene.play_intro = false
     root.add_child(scene)
     for size in [Vector2i(800, 600), Vector2i(1920, 1080), Vector2i(3440, 1440), Vector2i(3840, 2160)]:
         root.size = size

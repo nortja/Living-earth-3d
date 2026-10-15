@@ -3,7 +3,7 @@ Unicode true
 !include "LogicLib.nsh"
 !include "x64.nsh"
 !ifndef VERSION
-!define VERSION "0.2.0"
+!define VERSION "0.3.0"
 !endif
 !ifndef BUILD_DIR
 !define BUILD_DIR "..\..\build\windows"
@@ -23,6 +23,8 @@ VIAddVersionKey "ProductName" "Living Earth 3D"
 VIAddVersionKey "FileDescription" "Living Earth 3D Installer"
 VIAddVersionKey "FileVersion" "${VERSION}"
 VIAddVersionKey "LegalCopyright" "Living Earth 3D contributors"
+!define MUI_ICON "..\..\assets\icon.ico"
+!define MUI_UNICON "..\..\assets\icon.ico"
 !define MUI_ABORTWARNING
 !define MUI_FINISHPAGE_RUN "$INSTDIR\LivingEarth3D.exe"
 !define MUI_FINISHPAGE_RUN_TEXT "Launch Living Earth 3D"

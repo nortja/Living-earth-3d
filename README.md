@@ -1,28 +1,30 @@
 # Living Earth 3D
 
-An offline interactive desktop globe built with Godot 4. Version **0.2.0**.
+An offline interactive desktop globe for Windows, built with Godot 4. Version **0.3.0**.
 
 ## Windows users
 
-Use **LivingEarth3D-Setup-0.2.0.exe**: double-click, install, then launch from the desktop shortcut. No terminal, Godot installation, or separate dependencies are required. The current build is an unsigned test installer; Windows installation still needs validation on a real Windows machine.
+Download **LivingEarth3D-Setup-0.3.0.exe**, double-click, install, then use the desktop shortcut. No terminal, separate runtime, or Godot setup is required. This is an unsigned preview; actual Windows installation and hardware performance still need validation.
 
-Drag to orbit, scroll for smooth zoom, and press F11 for fullscreen. **Explore & settings** opens optional discovery and update controls. The interface starts uncluttered; the window adapts to the monitor and expands to ultrawide aspect ratios.
+The new illuminated Earth icon replaces the generic branding. On launch, the real globe emerges from darkness before the controls appear. Drag to spin with gentle inertia, scroll or double-click to zoom, and use **Reset Earth** or Home to return to the full globe. Input skips the intro; F11 toggles fullscreen.
 
-The globe now includes bundled 2K Earth imagery, night lights, ocean highlights, and an atmosphere shader. Six offline destinations support smooth journeys, Surprise Me, and saved favorites. Timed discovery and update checking are opt-in. Automatic installation is implemented for signed Windows releases and asks before restarting; this unsigned build cannot replace itself automatically.
+Earth includes bundled 2K imagery, night lights, ocean highlights, and atmosphere. **Explore & settings** opens six offline destinations, smooth journeys, Surprise Me, favorites, and opt-in timed discovery. The window adapts to the monitor and fills ultrawide aspect ratios. Preferences stay local; no account is needed.
+
+Optional update checking is implemented. Automatic installation requires signed releases and asks before restarting; unsigned previews cannot self-update. Clouds, seasons, Moon/stars, live weather, historical sites, screensaver preview embedding, and multiple-display coverage are prioritized in [ROADMAP.md](ROADMAP.md).
 
 ## Development
 
-Open `project.godot` in Godot 4.6.3 or run `godot --path .`. There are no package dependencies or required accounts. Local preferences are saved to Godot's `user://preferences.cfg`.
+Use Godot 4.6.3. `godot --path .` starts the app; `project.godot` opens it in the editor.
 
 ```sh
 godot --headless --path . --editor --import --quit
-godot --headless --path . --quit-after 120
-# Use a fresh XDG_DATA_HOME on Linux to isolate test preferences.
 godot --headless --path . --script res://tests/explorer_test.gd
-# Requires a graphical display (or Xvfb); tests normal, ultrawide and 4K rendering.
+godot --headless --path . --quit-after 240
+# Requires a graphical display or Xvfb:
+godot --path . --audio-driver Dummy --script res://tests/intro_render_test.gd
 godot --path . --audio-driver Dummy --script res://tests/render_test.gd
 ```
 
-See [Windows build and delivery](docs/WINDOWS_RELEASE.md) for installer rebuilds, signing, update behavior, validation evidence, and the remaining release checklist. Texture sources and notices are in `assets/earth/`.
+Behavior tests use their own preferences file and remove it after completion. Windows resource checks and packaging instructions are in [docs/WINDOWS_RELEASE.md](docs/WINDOWS_RELEASE.md). The failing GitHub installer workflow is disabled, and automatic tag triggers have been removed to stop unwanted failure emails.
 
-Higher-resolution maps, terrain streaming, Windows screensaver preview embedding, multiple-display coverage, audio, and live data feeds remain future work. The `.scr` build includes fullscreen rotation and exit-on-input. See `PROJECT_PLAN.md` and `docs/` for the feature roadmap.
+See [CHANGELOG.md](CHANGELOG.md), [ROADMAP.md](ROADMAP.md), and `docs/` for progress and upcoming milestones. Texture and branding credits are under `assets/`.

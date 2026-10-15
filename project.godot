@@ -2,8 +2,12 @@ config_version=5
 
 [application]
 config/name="Living Earth 3D"
-config/version="0.2.0"
-config/icon="res://assets/icon.svg"
+config/version="0.3.0"
+config/icon="res://assets/icon.png"
+config/windows_native_icon="res://assets/icon.ico"
+boot_splash/show_image=false
+boot_splash/bg_color=Color(0, 0, 0, 1)
+run/max_fps=60
 run/main_scene="res://scenes/earth.tscn"
 config/features=PackedStringArray("4.2", "GL Compatibility")
 

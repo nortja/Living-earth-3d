@@ -1,39 +1,47 @@
 # Windows installer delivery
 
-End-user artifact: `LivingEarth3D-Setup-0.2.0.exe`. This is one self-contained NSIS installer, not a ZIP and not a web installer. It installs the embedded-data Godot executable, the screensaver copy, updater helper, and license notices. End users do not install Godot, use a terminal, or download dependencies.
+## End-user installation
 
-Installation is per-user under `%LOCALAPPDATA%\Programs\Living Earth 3D`, with desktop and Start menu shortcuts, an installed-apps uninstall entry, and an option to launch on the final installer page. No administrator rights are requested. An ordinary upgrade uses the same directory; local preferences under Godot's user data directory are retained. Uninstall intentionally retains those preferences and deletes only known installed files.
+The 0.3.0 artifact is `LivingEarth3D-Setup-0.3.0.exe`: one self-contained NSIS installer, with no ZIP extraction, terminal, web bootstrapper, Godot installation, or separate runtime. It installs under `%LOCALAPPDATA%\Programs\Living Earth 3D` with desktop/Start menu shortcuts, an installed-apps uninstall entry, and a launch option. No administrator rights are requested. Upgrades retain local favorites/preferences; uninstall removes only known app files and retains user data.
 
-## Rebuild
+## Current evidence
 
-On Windows, use Godot 4.6.3 with matching official export templates, NSIS 3.11 or newer, and PowerShell:
+The installer is cross-built on Linux and remains an unsigned preview. Thirty-eight behavior checks passed. Graphical tests passed for the three intro stages and at 800×600, 1920×1080, 3440×1440, and 3840×2160 using software OpenGL. Native PE resource checks compare every icon image to the ICO source, and the exported executable's embedded project starts successfully after branding. Installer payloads and checksums are checked separately.
+
+PowerShell parsing and compilation of the native icon resource helper also passed locally using the verified official PowerShell distribution (`pwsh -File tests/windows_build_scripts_test.ps1`). Actual Windows installation, Windows shell icon appearance, integrated-GPU performance, DPI scaling and signed update behavior are not established by those checks. Earlier GitHub Windows runs failed because the script relied on `$LASTEXITCODE` from a GUI process. The revised script uses an explicitly waited process, its exit code, and runtime logs, but has not been rerun remotely.
+
+The GitHub **Windows installer** workflow is disabled after unwanted failure emails. Its source now has only `workflow_dispatch` and no automatic tag/push triggers. Leave it disabled during local iteration. Do not re-enable it or change account-wide notification preferences as a workaround. A controlled Windows validation run remains in ROADMAP.md.
+
+## Rebuild on Windows (maintainers only)
+
+Use Godot 4.6.3 with matching official export templates, NSIS 3.11 or newer, and PowerShell:
 
 ```powershell
 ./packaging/windows/build.ps1 -Godot 'C:/tools/godot.exe' -Makensis 'C:/Program Files (x86)/NSIS/makensis.exe'
 ```
 
-The repository's **Windows installer** GitHub Actions workflow prepares those tools, verifies Godot downloads with the official SHA-512 manifest, builds the executable installer, and defines Windows install/launch/shortcut/uninstall smoke tests. It runs manually or on a version tag. It uploads build artifacts without publishing a release. The CI artifact container is for maintainers; distribute the EXE inside it directly to users.
+`build.ps1` copies the clean Windows export template into `build/windows/earth_template.exe`, updates its native `GODOT_ICON` resource using Windows resource APIs, and only then exports the embedded-data application. Modifying an already packed PE can lose or invalidate the embedded pack; do not do that. The installer and uninstaller use the same ICO. Godot's runtime/window icon uses `assets/icon.png` and `assets/icon.ico`.
 
-The workflow has not been run in this development session. The local build was cross-compiled on Linux, not installed on Windows. The 28,187,316-byte installer passed archive integrity verification, and its extracted application, screensaver, and updater matched the build inputs exactly. The exported executable's embedded project also passed headless startup and software-rendered graphical startup. Thirty behavior checks passed. A SHA-256 sidecar is emitted for the installer.
+For Linux cross-builds, install the pinned tools in `packaging/windows/requirements-build.txt`, copy the official clean Windows release template to `build/windows/earth_template.exe`, then run:
 
-Version numbers in `project.godot`, `scripts/earth.gd`, and `export_presets.cfg` must be bumped together before a release. The installer filename and metadata are derived from the project version by `build.ps1`.
+```sh
+python packaging/windows/set_icon.py build/windows/earth_template.exe assets/icon.ico
+godot --headless --path . --export-release 'Windows Desktop' build/windows/LivingEarth3D.exe
+python tests/windows_icon_test.py build/windows/LivingEarth3D.exe
+makensis -DVERSION=0.3.0 -DBUILD_DIR=/absolute/repo/build/windows -DOUTPUT=/absolute/repo/dist/LivingEarth3D-Setup-0.3.0.exe packaging/windows/installer.nsi
+python tests/windows_icon_test.py dist/LivingEarth3D-Setup-0.3.0.exe --installer
+```
 
-## Signed automatic updates
+Version numbers in project.godot, scripts/earth.gd, export_presets.cfg, installer.nsi's fallback, and update.ps1's fallback should agree. Windows build output names use the project version. Keep private signing material out of the checkout.
 
-The existing update preference is opt-in. Startup checks and the manual check use only the repository's official GitHub latest stable release. For a newer stable version, the Windows helper downloads `LivingEarth3D-Setup-X.Y.Z.exe`, verifies Windows Authenticode trust and that the signer certificate thumbprint matches the installed application, asks before closing the app, then runs the installer silently and relaunches the app. No terminal appears. It never runs an unsigned installer. Preferences and favorites survive updates.
+## Secure updates
 
-For a signed build, supply an authentic Windows code-signing PFX and password to `build.ps1` using `-SigningPfx` and `-SigningPassword`, or configure the CI repository secrets `WINDOWS_SIGNING_PFX_BASE64` and `WINDOWS_SIGNING_PASSWORD`. Both the application and installer are signed with the same certificate. The timestamp uses DigiCert's Authenticode timestamp service. Never commit signing material. Certificate rotation currently requires a manually installed signed release; it is intentionally not trusted automatically.
+The optional startup check and manual check query only this repository's official latest stable GitHub Release. On a newer stable release, the Windows updater downloads the expected installer filename from the fixed repository, verifies Authenticode trust and that its signer matches the installed app, asks before closing the app, installs silently, and relaunches. It never runs an unsigned installer. Favorites remain in user data.
 
-This development build is **unsigned**. Automatic replacement is therefore unavailable and Windows may show an unknown-publisher/SmartScreen warning. Update checking still works on an unrestricted Windows network. Actual signed download/install/restart behavior requires a signed published release and Windows testing; mocked API tests do not establish that it works end to end. Release assets are not published by the workflow or by the app.
+A real signing certificate is still needed. Configure `WINDOWS_SIGNING_PFX_BASE64` and `WINDOWS_SIGNING_PASSWORD` securely for CI, or use `-SigningPfx`/`-SigningPassword` with the maintainer build script. Both app and installer must be signed by the same certificate. Unsigned previews cannot self-replace. Certificate rotation currently requires a manually installed trusted release; rollback/recovery still needs work.
 
 ## Screensaver
 
-The installer includes `LivingEarth3D.scr`. From the app's Explore & settings panel, **Screen saver settings** asks Windows to select it. The app does not change the user's screensaver automatically. `/s` starts fullscreen ambient rotation without controls; movement or input exits after a one-second startup grace period. `/c` opens the normal Explorer. `/p` currently exits without showing a preview; Windows settings preview embedding and multi-monitor screensaver coverage remain unfinished. Validate actual activation and wake-up behavior on Windows before shipping.
+The installer includes `LivingEarth3D.scr`. The app's **Screen saver settings** action asks Windows to select it; installation does not change the user's screensaver automatically. `/s` uses fullscreen ambient rotation without UI and exits on input after a startup grace period. `/c` opens Explorer. `/p` exits without a preview: Windows preview embedding and multiple-monitor coverage remain unfinished.
 
-## Release checklist
-
-- Install from the EXE using a standard Windows 10/11 x64 user account. Confirm desktop shortcut, launch, offline use, and clean uninstall.
-- Test upgrading while the app is running, preserve favorites, and test the signed update consent/download/install/relaunch flow, including cancellation and bad signature rejection.
-- Test 1080p, 4K, Windows DPI scaling, ultrawide, multiple monitors, and GPU compatibility. Linux software rendering passed at 800×600, 1920×1080, 3440×1440, and 3840×2160; it is not a substitute for Windows hardware testing.
-- Replace the current 2K maps with higher-resolution source-verified imagery for close-up presentation, retaining attribution and distribution terms.
-- Finish screensaver preview embedding and multi-monitor behavior.
+See ROADMAP.md for prioritized release work and CHANGELOG.md for milestone changes.

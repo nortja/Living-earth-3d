@@ -1,8 +1,6 @@
 name: Windows installer
 on:
   workflow_dispatch:
-  push:
-    tags: ['v*']
 permissions:
   contents: write
   statuses: write
@@ -15,12 +13,7 @@ jobs:
       - name: Validate Windows scripts and release version
         shell: pwsh
         run: |
-          foreach ($file in @('packaging/windows/build.ps1', 'packaging/windows/update.ps1')) {
-            $tokens = $null
-            $errors = $null
-            [System.Management.Automation.Language.Parser]::ParseFile((Join-Path $pwd $file), [ref]$tokens, [ref]$errors) | Out-Null
-            if ($errors.Count) { throw ($errors | Out-String) }
-          }
+          ./tests/windows_build_scripts_test.ps1
           $version = (Select-String -Path project.godot -Pattern 'config/version="([^"]+)"').Matches[0].Groups[1].Value
           if ($env:GITHUB_REF_TYPE -eq 'tag' -and $env:GITHUB_REF_NAME -notmatch ('^v' + [regex]::Escape($version) + '(-preview\.\d+)?$')) { throw 'Tag and project version disagree' }
       - name: Install verified Godot export tools
@@ -109,8 +102,9 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           $tag = $env:GITHUB_REF_NAME
+          $version = (Select-String -Path project.godot -Pattern 'config/version="([^"]+)"').Matches[0].Groups[1].Value
           $notes = 'Download the Setup EXE for Windows. This unsigned preview installs the app and desktop shortcut with no separate dependencies. Includes offline Earth imagery, night lights, discovery journeys, and favorites. Windows install/startup/uninstall smoke tests passed in CI. Signed automatic updates and hardware testing remain before public release.'
-          gh release create $tag --verify-tag --prerelease --title 'Living Earth 3D 0.2.0 — Windows installer preview' --notes $notes
+          gh release create $tag --verify-tag --prerelease --title "Living Earth 3D $version — Windows installer preview" --notes $notes
           if ($LASTEXITCODE -ne 0) { throw 'Release creation failed' }
           $assets = Get-ChildItem dist/*Setup*.exe, dist/*.sha256 | ForEach-Object FullName
           gh release upload $tag @assets

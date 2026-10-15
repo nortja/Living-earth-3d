@@ -7,6 +7,16 @@ var yaw := PI + 0.25
 var pitch := 0.18
 var distance := 3.6
 var dragging := false
+var angular_velocity := Vector2.ZERO
+var play_intro := true
+var intro_running := false
+var intro_reveal := 1.0
+var intro_tween: Tween
+var earth_material: ShaderMaterial
+var atmosphere_material: ShaderMaterial
+var sun: DirectionalLight3D
+var interface_layer: CanvasLayer
+var preferences_path := "user://preferences.cfg"
 var zoom_tween: Tween
 var zoom_target := 3.6
 var screensaver_mode := false
@@ -24,7 +34,7 @@ var description: Label
 var update_status: Label
 var update_request: HTTPRequest
 var preferences := ConfigFile.new()
-const VERSION := "0.2.0"
+const VERSION := "0.3.0"
 const RELEASES_URL := "https://github.com/nortja/Living-earth-3d/releases"
 
 
@@ -64,6 +74,7 @@ func _ready() -> void:
     mat.set_shader_parameter("day_map", load("res://assets/earth/day.jpg"))
     mat.set_shader_parameter("night_map", load("res://assets/earth/night.png"))
     mat.set_shader_parameter("ocean_mask", load("res://assets/earth/specular.jpg"))
+    earth_material = mat
     earth.material_override = mat
     add_child(earth)
 
@@ -74,10 +85,11 @@ func _ready() -> void:
     atmosphere.mesh = outer
     var glow := ShaderMaterial.new()
     glow.shader = load("res://shaders/atmosphere.gdshader")
+    atmosphere_material = glow
     atmosphere.material_override = glow
     add_child(atmosphere)
 
-    var sun := DirectionalLight3D.new()
+    sun = DirectionalLight3D.new()
     sun.rotation_degrees = Vector3(-25, 150, 0)
     sun.light_energy = 2.0
     add_child(sun)
@@ -91,8 +103,9 @@ func _ready() -> void:
 
     var layer := CanvasLayer.new()
     add_child(layer)
+    interface_layer = layer
     info = Label.new()
-    info.text = "LIVING EARTH 3D  |  Offline Explorer  •  Drag to orbit  •  Scroll to zoom  •  F11 full screen"
+    info.text = "LIVING EARTH 3D  •  Drag to orbit  •  Scroll to zoom"
     info.set_anchors_and_offsets_preset(Control.PRESET_TOP_WIDE)
     info.offset_left = 22
     info.offset_right = -22
@@ -105,10 +118,17 @@ func _ready() -> void:
         get_window().mode = Window.MODE_FULLSCREEN
         Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
         discovery_enabled = false
+    if play_intro:
+        start_intro()
 
 func _process(delta: float) -> void:
     screensaver_age += delta
-    if (journey and journey.is_running()) or (zoom_tween and zoom_tween.is_running()):
+    if not dragging and angular_velocity.length() > 0.001:
+        yaw += angular_velocity.x * delta
+        pitch = clampf(pitch + angular_velocity.y * delta, -1.35, 1.35)
+        angular_velocity *= exp(-4.5 * delta)
+        _update_camera()
+    if intro_running or (journey and journey.is_running()) or (zoom_tween and zoom_tween.is_running()):
         _update_camera()
     if selected < 0:
         earth.rotate_y(delta * 0.08)
@@ -123,9 +143,18 @@ func _unhandled_input(event: InputEvent) -> void:
         if screensaver_age > 1.0 and (event is InputEventKey or event is InputEventMouseButton or (event is InputEventMouseMotion and event.relative.length() > 3.0)):
             get_tree().quit()
         return
+    if intro_running and (event is InputEventMouseButton or event is InputEventKey):
+        finish_intro()
     if event is InputEventMouseButton:
         if event.button_index == MOUSE_BUTTON_LEFT:
+            if event.pressed and event.double_click:
+                dragging = false
+                angular_velocity = Vector2.ZERO
+                _zoom(-0.9)
+                return
             dragging = event.pressed
+            if dragging:
+                angular_velocity = Vector2.ZERO
             if dragging and journey:
                 journey.kill()
         elif event.pressed and event.button_index == MOUSE_BUTTON_WHEEL_UP:
@@ -133,11 +162,15 @@ func _unhandled_input(event: InputEvent) -> void:
         elif event.pressed and event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
             _zoom(0.2)
     elif event is InputEventMouseMotion and dragging:
+        var velocity: Vector2 = event.velocity if event.velocity.length() > 0.0 else event.relative * 60.0
+        angular_velocity = (Vector2(-velocity.x, velocity.y) * 0.005).limit_length(2.0)
         yaw -= event.relative.x * 0.005
         pitch = clamp(pitch + event.relative.y * 0.005, -1.35, 1.35)
         _update_camera()
     elif event is InputEventKey and event.pressed:
-        if event.keycode == KEY_F11:
+        if event.keycode == KEY_HOME:
+            reset_view()
+        elif event.keycode == KEY_F11:
             get_window().mode = Window.MODE_WINDOWED if get_window().mode == Window.MODE_FULLSCREEN else Window.MODE_FULLSCREEN
         elif event.keycode == KEY_ESCAPE:
             if get_window().mode == Window.MODE_FULLSCREEN:
@@ -151,7 +184,7 @@ func _update_camera() -> void:
 
 func _build_explorer(layer: CanvasLayer) -> void:
     destinations = JSON.parse_string(FileAccess.get_file_as_string("res://data/destinations.json"))
-    preferences.load("user://preferences.cfg")
+    preferences.load(preferences_path)
     favorites = preferences.get_value("explorer", "favorites", [])
     var panel := PanelContainer.new()
     panel.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_WIDE)
@@ -178,6 +211,15 @@ func _build_explorer(layer: CanvasLayer) -> void:
     explore.offset_bottom = 104
     explore.pressed.connect(func(): panel.visible = not panel.visible)
     layer.add_child(explore)
+    var reset := Button.new()
+    reset.text = "Reset Earth"
+    reset.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT)
+    reset.offset_left = -356
+    reset.offset_right = -222
+    reset.offset_top = 60
+    reset.offset_bottom = 104
+    reset.pressed.connect(reset_view)
+    layer.add_child(reset)
     var scroll_panel := ScrollContainer.new()
     scroll_panel.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
     panel.add_child(scroll_panel)
@@ -267,6 +309,8 @@ func _button(parent: Node, title: String, action: Callable) -> Button:
 func visit(index: int) -> void:
     if index < 0 or index >= destinations.size():
         return
+    finish_intro()
+    angular_velocity = Vector2.ZERO
     selected = index
     var place: Dictionary = destinations[index]
     place_picker.select(index + 1)
@@ -314,7 +358,7 @@ func visit_favorite() -> void:
     description.text = "Choose a destination and save it to start a favorites journey."
 
 func _save_preferences() -> void:
-    if preferences.save("user://preferences.cfg") != OK:
+    if preferences.save(preferences_path) != OK:
         push_warning("Could not save local preferences.")
 
 func check_updates() -> void:
@@ -367,6 +411,7 @@ func install_update() -> void:
     update_status.text = "Updater started • A verified update will ask before restarting." if pid > 0 else "Could not start updater. Use Official releases."
 
 func _zoom(amount: float) -> void:
+    angular_velocity = Vector2.ZERO
     if journey and journey.is_running():
         journey.kill()
         zoom_target = distance
@@ -375,3 +420,65 @@ func _zoom(amount: float) -> void:
     zoom_target = clampf(zoom_target + amount, 1.8, 10.0)
     zoom_tween = create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
     zoom_tween.tween_property(self, "distance", zoom_target, 0.18)
+
+func start_intro() -> void:
+    intro_running = true
+    interface_layer.hide()
+    distance = 4.6
+    sun.light_energy = 0.0
+    _set_intro_reveal(0.0)
+    _update_camera()
+    intro_tween = create_tween().set_parallel(true).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+    intro_tween.tween_method(_set_intro_reveal, 0.0, 1.0, 2.8)
+    intro_tween.tween_property(sun, "light_energy", 2.0, 2.8)
+    intro_tween.tween_property(self, "distance", 3.6, 2.8)
+    intro_tween.finished.connect(finish_intro)
+
+func _set_intro_reveal(value: float) -> void:
+    intro_reveal = value
+    earth_material.set_shader_parameter("visibility", value)
+    atmosphere_material.set_shader_parameter("visibility", value)
+
+func finish_intro() -> void:
+    if not intro_running:
+        return
+    intro_running = false
+    if intro_tween:
+        intro_tween.kill()
+    _set_intro_reveal(1.0)
+    sun.light_energy = 2.0
+    distance = 3.6
+    zoom_target = distance
+    _update_camera()
+    if not screensaver_mode:
+        interface_layer.show()
+
+func reset_view() -> void:
+    finish_intro()
+    angular_velocity = Vector2.ZERO
+    dragging = false
+    if journey:
+        journey.kill()
+    if zoom_tween:
+        zoom_tween.kill()
+    selected = -1
+    place_picker.select(0)
+    favorite_button.text = "Save favorite"
+    description.text = "Full Earth • Drag to spin, scroll or double-click to zoom. Home resets the view."
+    zoom_target = 3.6
+    var target_yaw := yaw + wrapf(PI + 0.25 + earth.rotation.y - yaw, -PI, PI)
+    journey = create_tween().set_parallel(true).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+    journey.tween_property(self, "distance", 3.6, 0.8)
+    journey.tween_property(self, "pitch", 0.18, 0.8)
+    journey.tween_property(self, "yaw", target_yaw, 0.8)
+    journey.finished.connect(_update_camera)
+
+func _input(event: InputEvent) -> void:
+    # Release must be observed even when a control consumes the mouse event.
+    if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and not event.pressed:
+        dragging = false
+
+func _notification(what: int) -> void:
+    if what == NOTIFICATION_WM_WINDOW_FOCUS_OUT:
+        dragging = false
+        angular_velocity = Vector2.ZERO
