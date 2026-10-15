@@ -6,9 +6,11 @@ Build a beautiful offline-first Windows globe and calm screensaver. Keep install
 
 Completed: genuine 4K daytime/night maps with a lower-memory 2K mode; independent offline clouds; optional stars and Moon; persistent visual and power-saving settings; fixed-project preview update discovery; illuminated Earth branding; real-time Earth-from-darkness intro; drag, inertia, wheel and double-click zoom; full-Earth reset; offline destinations and favorites; simple collapsible controls; 4K and ultrawide rendering; one-file installer packaging; signature-checked updater implementation.
 
-Validated in this milestone: 56 behavior checks; three rendered intro stages; eight quality/resolution render cases; native PE icon payloads; exported embedded project startup; installer contents and checksums. The user confirmed successful 0.3.0 installation and launch on Windows. Version 0.4.0 hardware/installation testing and production signing remain separate requirements.
+Validated in this milestone: 56 behavior checks; live HTTPS preview-feed acceptance; three rendered intro stages; eight quality/resolution render cases; native PE icon payloads; exported embedded project startup; installer contents and checksums. The user confirmed successful 0.3.0 installation and launch on Windows. Version 0.4.0 hardware/installation testing and production signing remain separate requirements.
 
 ## Next — make Windows delivery dependable (P0)
+
+- [ ] Move recurring installer storage from dedicated Git branches to release assets or an artifact host while retaining fixed-origin and signature validation.
 
 - [x] Basic 0.3.0 installation and launch confirmed by the user on Windows.
 - [ ] Test 0.4.0 desktop/taskbar icon, intro, upgrades, favorite preservation, uninstall, and reinstall on Windows 10/11 x64.

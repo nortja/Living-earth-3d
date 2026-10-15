@@ -20,6 +20,8 @@ Use Godot 4.6.3. `godot --path .` starts the app; `project.godot` opens it in th
 godot --headless --path . --editor --import --quit
 godot --headless --path . --script res://tests/explorer_test.gd
 godot --headless --path . --quit-after 240
+# Optional network check against the published preview feed:
+godot --headless --path . --script res://tests/live_update_feed_test.gd
 # Requires a graphical display or Xvfb:
 godot --path . --audio-driver Dummy --script res://tests/intro_render_test.gd
 godot --path . --audio-driver Dummy --script res://tests/render_test.gd
