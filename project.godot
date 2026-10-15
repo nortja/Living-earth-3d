@@ -1,0 +1,16 @@
+config_version=5
+
+[application]
+config/name="Living Earth 3D"
+run/main_scene="res://scenes/earth.tscn"
+config/features=PackedStringArray("4.2", "GL Compatibility")
+
+[rendering]
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"
+environment/defaults/default_clear_color=Color(0.004, 0.008, 0.02, 1)
+
+[display]
+window/size/viewport_width=1600
+window/size/viewport_height=900
+window/stretch/mode="canvas_items"
