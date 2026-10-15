@@ -20,7 +20,7 @@ jobs:
             if ($errors.Count) { throw ($errors | Out-String) }
           }
           $version = (Select-String -Path project.godot -Pattern 'config/version="([^"]+)"').Matches[0].Groups[1].Value
-          if ($env:GITHUB_REF_TYPE -eq 'tag' -and $env:GITHUB_REF_NAME -ne "v$version") { throw 'Tag and project version disagree' }
+          if ($env:GITHUB_REF_TYPE -eq 'tag' -and $env:GITHUB_REF_NAME -notmatch ('^v' + [regex]::Escape($version) + '(-preview\.\d+)?$')) { throw 'Tag and project version disagree' }
       - name: Install verified Godot export tools
         shell: pwsh
         run: |
@@ -54,6 +54,7 @@ jobs:
       - name: Build single executable installer
         shell: pwsh
         env:
+          GH_TOKEN: ${{ github.token }}
           SIGNING_PFX_BASE64: ${{ secrets.WINDOWS_SIGNING_PFX_BASE64 }}
           SIGNING_PASSWORD: ${{ secrets.WINDOWS_SIGNING_PASSWORD }}
         run: |
@@ -64,6 +65,10 @@ jobs:
               [IO.File]::WriteAllBytes($pfx, [Convert]::FromBase64String($env:SIGNING_PFX_BASE64))
             }
             ./packaging/windows/build.ps1 -Godot 'Godot_v4.6.3-stable_win64.exe' -Makensis 'C:/Program Files (x86)/NSIS/makensis.exe' -SigningPfx $pfx -SigningPassword $env:SIGNING_PASSWORD
+          } catch {
+            $message = $_.Exception.Message
+            gh api --method POST "repos/$env:GITHUB_REPOSITORY/statuses/$env:GITHUB_SHA" -f state=failure -f context=installer-build -f description=$message.Substring(0, [Math]::Min(140, $message.Length))
+            throw
           } finally {
             if ($pfx) { Remove-Item -LiteralPath $pfx -Force }
           }
