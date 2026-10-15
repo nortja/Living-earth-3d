@@ -5,6 +5,7 @@ on:
     tags: ['v*']
 permissions:
   contents: write
+  statuses: write
 jobs:
   build:
     runs-on: windows-latest
