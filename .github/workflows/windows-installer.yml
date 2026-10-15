@@ -6,6 +6,7 @@ on:
 permissions:
   contents: write
   statuses: write
+  checks: write
 jobs:
   build:
     runs-on: windows-latest
@@ -53,26 +54,28 @@ jobs:
           choco install nsis -y --no-progress
           if ($LASTEXITCODE -ne 0) { throw 'NSIS installation failed' }
       - name: Build single executable installer
-        shell: pwsh
+        shell: python
         env:
           GH_TOKEN: ${{ github.token }}
           SIGNING_PFX_BASE64: ${{ secrets.WINDOWS_SIGNING_PFX_BASE64 }}
           SIGNING_PASSWORD: ${{ secrets.WINDOWS_SIGNING_PASSWORD }}
         run: |
-          $pfx = ''
-          try {
-            if ($env:SIGNING_PFX_BASE64) {
-              $pfx = Join-Path $env:RUNNER_TEMP 'signing.pfx'
-              [IO.File]::WriteAllBytes($pfx, [Convert]::FromBase64String($env:SIGNING_PFX_BASE64))
-            }
-            ./packaging/windows/build.ps1 -Godot 'Godot_v4.6.3-stable_win64.exe' -Makensis 'C:/Program Files (x86)/NSIS/makensis.exe' -SigningPfx $pfx -SigningPassword $env:SIGNING_PASSWORD
-          } catch {
-            $message = $_.Exception.Message
-            gh api --method POST "repos/$env:GITHUB_REPOSITORY/statuses/$env:GITHUB_SHA" -f state=failure -f context=installer-build -f description=$message.Substring(0, [Math]::Min(140, $message.Length))
-            throw
-          } finally {
-            if ($pfx) { Remove-Item -LiteralPath $pfx -Force }
-          }
+          import os, subprocess, pathlib, base64, json, re
+          args = ['pwsh', '-NoProfile', '-File', 'packaging/windows/build.ps1', '-Godot', 'Godot_v4.6.3-stable_win64.exe', '-Makensis', 'C:/Program Files (x86)/NSIS/makensis.exe']
+          pfx = pathlib.Path(os.environ['RUNNER_TEMP']) / 'signing.pfx'
+          try:
+              if os.environ.get('SIGNING_PFX_BASE64'):
+                  pfx.write_bytes(base64.b64decode(os.environ['SIGNING_PFX_BASE64']))
+                  args += ['-SigningPfx', str(pfx), '-SigningPassword', os.environ.get('SIGNING_PASSWORD', '')]
+              result = subprocess.run(args, capture_output=True, encoding='utf-8', errors='replace')
+              log = re.sub(r'\x1b\[[0-9;]*m', '', result.stdout + result.stderr)
+              print(log)
+              if result.returncode:
+                  payload = {'name': 'Installer build diagnostics', 'head_sha': os.environ['GITHUB_SHA'], 'status': 'completed', 'conclusion': 'failure', 'output': {'title': 'Windows installer build failed', 'summary': '```text\n' + log[-18000:] + '\n```'}}
+                  subprocess.run(['gh', 'api', '--method', 'POST', 'repos/' + os.environ['GITHUB_REPOSITORY'] + '/check-runs', '--input', '-'], input=json.dumps(payload), text=True, stdout=subprocess.DEVNULL, check=True)
+              raise SystemExit(result.returncode)
+          finally:
+              pfx.unlink(missing_ok=True)
       - name: Windows install, launch, shortcut and uninstall smoke test
         shell: pwsh
         run: |
