@@ -20,7 +20,15 @@ The new shared PowerShell process runner executed actual Godot with paths/logs c
 
 Workflow YAML parses and permits only manual dispatch with read-only repository content access. CI can install/start/uninstall the native Windows EXE and optionally execute graphics checks on a supported desktop. It reports skipped graphics checks as unrun, retains diagnostics, and cannot publish releases or update feeds. The existing disabled state remains unchanged. No new remote Windows workflow run was started.
 
-The Windows application is cross-exported with the verified official template and branded native resources. Its embedded project is checked using Linux Godot; that does not execute the Windows PE or Windows APIs. Installer payload/archive, native icons, checksum and public-download checks are recorded when delivery completes.
+The Windows application is cross-exported with the verified official template and branded native resources. Its embedded project is checked using Linux Godot; that does not execute the Windows PE or Windows APIs. The final NSIS archive passed integrity testing; application, screensaver, updater and license payloads match build/source byte for byte. App and installer each passed seven-size native icon checks. The public EXE was downloaded again and matched size/checksum:
+
+- File: `LivingEarth3D-Setup-0.6.0.exe`
+- Size: **41,276,899 bytes**
+- SHA-256: `b44a18e68dc13c9accbd228478ab3b97094ab4c392e02331629439106559423a`
+- App source: `9829963`
+- Download commit: `e9563e0ed174415bc3243d65918935833062c865`
+
+The embedded project also rendered a native Linux 5120×2880 frame and Command Center layout successfully. This still does not execute the Windows PE. The existing main app/preview metadata was independently checked to remain at 0.5.0.
 
 Development uses separate install/shortcut/registry/settings paths and a separate update feed. Initial preference migration reads the earlier preview but writes only to the development directory. Actual side-by-side install and migration execution on Windows remain unrun.
 
