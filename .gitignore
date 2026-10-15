@@ -1,0 +1,4 @@
+# Godot-generated caches and local editor state
+.godot/
+# Export artifacts
+build/

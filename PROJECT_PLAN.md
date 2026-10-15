@@ -20,7 +20,7 @@ A cinematic 3D Earth that feels alive: day/night lighting, atmospheric effects, 
 Godot 4 is the proposed 3D engine. First milestone: working Windows Explorer with a smooth rotating globe, camera controls, atmospheric rendering, and resolution-aware layout. Then add data feeds, saved journeys, screensaver integration, packaging, and release testing.
 
 ## Current status
-Planning and initial project setup. No downloadable Windows build is available yet. Data feeds, imagery, attribution, and distribution licenses must be reviewed before release.
+The offline Explorer prototype now includes a rotating globe with public-domain Natural Earth coastlines, orbit and zoom controls, pause/reset, and six curated discovery destinations with smooth camera journeys and markers. A reproducible unsigned Windows x86-64 executable/ZIP export is configured; native Windows testing and installer/screensaver packaging remain outstanding. Live data feeds, favorites, scheduled discovery journeys, terrain flyovers, and distribution review remain future work.
 
 ## Principles
 Keep the screensaver calm and nonintrusive. Preserve user privacy. Never require crypto wallets or donations. Do not store private keys. Support performance scaling and power-saving behavior.
