@@ -94,9 +94,6 @@ Section "Living Earth 3D"
   WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\LivingEarth3D" "DisplayIcon" "$INSTDIR\LivingEarth3D.exe"
   WriteRegDWORD HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\LivingEarth3D" "NoModify" 1
   WriteRegDWORD HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\LivingEarth3D" "NoRepair" 1
-  IfSilent 0 done
-  Exec '"$INSTDIR\LivingEarth3D.exe"'
-  done:
 SectionEnd
 Section "Uninstall"
   SetShellVarContext current

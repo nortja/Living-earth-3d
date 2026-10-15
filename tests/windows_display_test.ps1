@@ -1,6 +1,7 @@
 param(
     [Parameter(Mandatory=$true)][string]$Application,
-    [string]$OutputDirectory = "$PSScriptRoot/../build/windows-display-results"
+    [string]$OutputDirectory = "$PSScriptRoot/../build/windows-display-results",
+    [string[]]$Resolutions = @('1920x1080', '3440x1440', '3840x2160', '5120x1440', '5120x2880')
 )
 # Run on Windows with an interactive desktop. Tests the actual packaged EXE,
 # not an editor, browser, or headless renderer. Captures GPU identity and images.
@@ -9,7 +10,7 @@ if (!$IsWindows) { throw 'Windows with an interactive desktop is required' }
 $Application = (Resolve-Path $Application).Path
 New-Item -ItemType Directory -Force $OutputDirectory | Out-Null
 $OutputDirectory = (Resolve-Path $OutputDirectory).Path
-foreach ($resolution in @('1920x1080', '3440x1440', '3840x2160', '5120x1440', '5120x2880')) {
+foreach ($resolution in $Resolutions) {
     $output = Join-Path $OutputDirectory $resolution
     if (Test-Path "$output/result.json") { Remove-Item "$output/result.json" }
     $arguments = @('--resolution', $resolution, '--', '--validate-display', ('--validation-output="' + $output + '"'))

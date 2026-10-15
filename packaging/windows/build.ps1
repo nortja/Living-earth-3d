@@ -5,21 +5,13 @@ Push-Location $root
 try {
     $version = (Select-String -Path project.godot -Pattern 'config/version="([^"]+)"').Matches[0].Groups[1].Value
     New-Item -ItemType Directory -Force build/windows, dist | Out-Null
-    function Invoke-Godot([string[]]$Arguments, [string]$LogName) {
-        $log = Join-Path $root "build/$LogName.log"
-        $command = (Get-Command $Godot -ErrorAction Stop).Source
-        $allArgs = @('--headless', '--path', ('"' + $root + '"'), '--log-file', ('"' + $log + '"')) + $Arguments
-        $process = Start-Process -FilePath $command -ArgumentList $allArgs -NoNewWindow -Wait -PassThru
-        if (Test-Path $log) { Get-Content $log | Write-Host }
-        if ($process.ExitCode -ne 0) { throw "Godot $LogName failed with exit code $($process.ExitCode)" }
-        if (!(Test-Path $log) -or (Select-String -Path $log -Pattern 'SCRIPT ERROR:|ERROR:')) { throw "Godot $LogName reported errors or no runtime log" }
-    }
+    . "$PSScriptRoot/invoke-godot.ps1"
     $template = Join-Path $env:APPDATA 'Godot/export_templates/4.6.3.stable/windows_release_x86_64.exe'
     $brandedTemplate = Join-Path $root 'build/windows/earth_template.exe'
     Copy-Item -LiteralPath $template -Destination $brandedTemplate -Force
     & "$PSScriptRoot/set-icon.ps1" -Executable $brandedTemplate -Icon "$root/assets/icon.ico"
-    Invoke-Godot -Arguments @('--editor', '--import', '--quit') -LogName 'import'
-    Invoke-Godot -Arguments @('--export-release', '"Windows Desktop"', 'build/windows/LivingEarth3D.exe') -LogName 'export'
+    Invoke-EarthGodot -Executable $Godot -ProjectPath $root -Arguments @('--editor', '--import', '--quit') -LogPath "$root/build/import.log"
+    Invoke-EarthGodot -Executable $Godot -ProjectPath $root -Arguments @('--export-release', 'Windows Desktop', 'build/windows/LivingEarth3D.exe') -LogPath "$root/build/export.log"
     $app = Join-Path $root 'build/windows/LivingEarth3D.exe'
     $installer = Join-Path $root "dist/LivingEarth3D-Setup-$version.exe"
     $signtool = $null

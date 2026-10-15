@@ -1,5 +1,5 @@
 # Runs without a terminal. Feed and installer locations are restricted to this project.
-param([string]$CurrentVersion = '0.5.0', [int]$AppProcessId = 0)
+param([string]$CurrentVersion = '0.5.0', [int]$AppProcessId = 0, [ValidateSet('preview','development')][string]$Channel = 'preview')
 $ErrorActionPreference = 'Stop'
 Add-Type -AssemblyName System.Windows.Forms
 $work = $null
@@ -10,8 +10,9 @@ try {
     $ownsMutex = $mutex.WaitOne(0)
     if (!$ownsMutex) { return }
     [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-    $feed = Invoke-RestMethod -Uri 'https://raw.githubusercontent.com/nortja/Living-earth-3d/main/updates/preview.json' -Headers @{'User-Agent'='LivingEarth3D-Updater'}
-    if ($feed.channel -cne 'preview' -or $feed.version -notmatch '^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$') { throw 'Invalid update metadata.' }
+    $feedUri = if ($Channel -eq 'development') { 'https://raw.githubusercontent.com/nortja/Living-earth-3d/development/updates/preview.json' } else { 'https://raw.githubusercontent.com/nortja/Living-earth-3d/main/updates/preview.json' }
+    $feed = Invoke-RestMethod -Uri $feedUri -Headers @{'User-Agent'='LivingEarth3D-Updater'}
+    if ($feed.channel -cne $Channel -or $feed.version -notmatch '^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$') { throw 'Invalid update metadata.' }
     $version = $feed.version
     if ([version]$version -le [version]$CurrentVersion) { return }
     if ($feed.installer_signed -isnot [bool] -or !$feed.installer_signed) { throw 'This preview is unsigned. Use Download latest in the app to install manually.' }
@@ -41,6 +42,9 @@ try {
     }
     $setup = Start-Process -FilePath $download -ArgumentList @('/S', "/D=$PSScriptRoot") -Wait -PassThru
     if ($setup.ExitCode -ne 0) { throw "Installer failed with code $($setup.ExitCode)." }
+    $updated = Get-AuthenticodeSignature -LiteralPath $installed
+    if ($updated.Status -ne 'Valid' -or $updated.SignerCertificate.Thumbprint -ne $trusted.SignerCertificate.Thumbprint) { throw 'Updated app signature verification failed. The app was not restarted.' }
+    Start-Process -FilePath $installed
 } catch {
     [Windows.Forms.MessageBox]::Show($_.Exception.Message, 'Living Earth 3D update', 'OK', 'Information') | Out-Null
 } finally {
