@@ -28,7 +28,7 @@ The Windows application is cross-exported with the verified official template an
 - App source: `9829963`
 - Download commit: `e9563e0ed174415bc3243d65918935833062c865`
 
-The embedded project also rendered a native Linux 5120×2880 frame and Command Center layout successfully. This still does not execute the Windows PE. The existing main app/preview metadata was independently checked to remain at 0.5.0.
+The embedded project also rendered a native Linux 5120×2880 frame and Command Center layout successfully. This still does not execute the Windows PE. The existing main app/preview metadata was independently checked to remain at 0.5.0. After publishing development metadata, a real HTTPS request through Godot accepted the development feed as version **0.6.0**, unsigned. This verifies update discovery/parsing, not signed installation or restart.
 
 Development uses separate install/shortcut/registry/settings paths and a separate update feed. Initial preference migration reads the earlier preview but writes only to the development directory. Actual side-by-side install and migration execution on Windows remain unrun.
 

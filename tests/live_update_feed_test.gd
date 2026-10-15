@@ -20,5 +20,5 @@ func run() -> void:
         push_error("Live update metadata not accepted: " + scene.update_status.text)
         quit(1)
         return
-    print("PASS: real HTTPS preview feed accepted; version %s; signed=%s" % [scene.update_feed.version, scene.update_feed.installer_signed])
+    print("PASS: real HTTPS %s update feed accepted; version %s; signed=%s" % [scene.BUILD_CHANNEL, scene.update_feed.version, scene.update_feed.installer_signed])
     quit(0)
