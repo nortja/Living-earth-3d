@@ -1,8 +1,8 @@
 config_version=5
 
 [application]
-config/name="Living Earth 3D"
-config/version="0.5.0"
+config/name="Living Earth 3D Development"
+config/version="0.6.0"
 config/icon="res://assets/icon.png"
 config/windows_native_icon="res://assets/icon.ico"
 boot_splash/show_image=false

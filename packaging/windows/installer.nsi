@@ -4,7 +4,7 @@ Unicode true
 !include "x64.nsh"
 !include "WinMessages.nsh"
 !ifndef VERSION
-!define VERSION "0.5.0"
+!define VERSION "0.6.0"
 !endif
 !ifndef BUILD_DIR
 !define BUILD_DIR "..\..\build\windows"
@@ -12,20 +12,24 @@ Unicode true
 !ifndef OUTPUT
 !define OUTPUT "..\..\dist\LivingEarth3D-Setup-${VERSION}.exe"
 !endif
-Name "Living Earth 3D"
+!define APP_NAME "Living Earth 3D Development"
+!define APP_KEY "LivingEarth3DDevelopment"
+Name "${APP_NAME}"
 OutFile "${OUTPUT}"
-InstallDir "$LOCALAPPDATA\Programs\Living Earth 3D"
-InstallDirRegKey HKCU "Software\LivingEarth3D" "InstallDir"
+InstallDir "$LOCALAPPDATA\Programs\${APP_NAME}"
+InstallDirRegKey HKCU "Software\${APP_KEY}" "InstallDir"
 RequestExecutionLevel user
 SetCompressor /SOLID lzma
 ShowInstDetails nevershow
 VIProductVersion "${VERSION}.0"
-VIAddVersionKey "ProductName" "Living Earth 3D"
+VIAddVersionKey "ProductName" "${APP_NAME}"
 VIAddVersionKey "FileDescription" "Living Earth 3D Installer"
 VIAddVersionKey "FileVersion" "${VERSION}"
 VIAddVersionKey "LegalCopyright" "Living Earth 3D contributors"
 !define MUI_ICON "..\..\assets\icon.ico"
 !define MUI_UNICON "..\..\assets\icon.ico"
+!define MUI_WELCOMEPAGE_TITLE "Living Earth 3D · Development Preview"
+!define MUI_WELCOMEPAGE_TEXT "Explore Earth with the next development build. This preview installs the globe, optional screensaver, and desktop shortcut. Your local preferences are preserved."
 !define MUI_ABORTWARNING
 !define MUI_FINISHPAGE_RUN "$INSTDIR\LivingEarth3D.exe"
 !define MUI_FINISHPAGE_RUN_TEXT "Launch Living Earth 3D"
@@ -37,7 +41,7 @@ VIAddVersionKey "LegalCopyright" "Living Earth 3D contributors"
 !insertmacro MUI_LANGUAGE "English"
 !macro CloseApplication FUNCTION_NAME
 Function ${FUNCTION_NAME}
-  FindWindow $0 "" "Living Earth 3D"
+  FindWindow $0 "" "${APP_NAME}"
   ${If} $0 != 0
     IfSilent running_abort
     MessageBox MB_YESNO|MB_ICONQUESTION|MB_DEFBUTTON2 "Living Earth 3D is running. Close it to continue?" IDYES request_close
@@ -82,25 +86,25 @@ Section "Living Earth 3D"
   File "..\..\assets\earth\CC-BY-4.0.txt"
   File "..\..\assets\earth\ATTRIBUTION.md"
   WriteUninstaller "$INSTDIR\Uninstall.exe"
-  CreateShortcut "$DESKTOP\Living Earth 3D.lnk" "$INSTDIR\LivingEarth3D.exe"
-  CreateDirectory "$SMPROGRAMS\Living Earth 3D"
-  CreateShortcut "$SMPROGRAMS\Living Earth 3D\Living Earth 3D.lnk" "$INSTDIR\LivingEarth3D.exe"
-  CreateShortcut "$SMPROGRAMS\Living Earth 3D\Uninstall.lnk" "$INSTDIR\Uninstall.exe"
-  WriteRegStr HKCU "Software\LivingEarth3D" "InstallDir" "$INSTDIR"
-  WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\LivingEarth3D" "DisplayName" "Living Earth 3D"
-  WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\LivingEarth3D" "DisplayVersion" "${VERSION}"
-  WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\LivingEarth3D" "Publisher" "Jaison Norton"
-  WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\LivingEarth3D" "UninstallString" '$\"$INSTDIR\Uninstall.exe$\"'
-  WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\LivingEarth3D" "DisplayIcon" "$INSTDIR\LivingEarth3D.exe"
-  WriteRegDWORD HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\LivingEarth3D" "NoModify" 1
-  WriteRegDWORD HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\LivingEarth3D" "NoRepair" 1
+  CreateShortcut "$DESKTOP\${APP_NAME}.lnk" "$INSTDIR\LivingEarth3D.exe"
+  CreateDirectory "$SMPROGRAMS\${APP_NAME}"
+  CreateShortcut "$SMPROGRAMS\${APP_NAME}\${APP_NAME}.lnk" "$INSTDIR\LivingEarth3D.exe"
+  CreateShortcut "$SMPROGRAMS\${APP_NAME}\Uninstall.lnk" "$INSTDIR\Uninstall.exe"
+  WriteRegStr HKCU "Software\${APP_KEY}" "InstallDir" "$INSTDIR"
+  WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APP_KEY}" "DisplayName" "${APP_NAME}"
+  WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APP_KEY}" "DisplayVersion" "${VERSION}"
+  WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APP_KEY}" "Publisher" "Jaison Norton"
+  WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APP_KEY}" "UninstallString" '$\"$INSTDIR\Uninstall.exe$\"'
+  WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APP_KEY}" "DisplayIcon" "$INSTDIR\LivingEarth3D.exe"
+  WriteRegDWORD HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APP_KEY}" "NoModify" 1
+  WriteRegDWORD HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APP_KEY}" "NoRepair" 1
 SectionEnd
 Section "Uninstall"
   SetShellVarContext current
-  Delete "$DESKTOP\Living Earth 3D.lnk"
-  Delete "$SMPROGRAMS\Living Earth 3D\Living Earth 3D.lnk"
-  Delete "$SMPROGRAMS\Living Earth 3D\Uninstall.lnk"
-  RMDir "$SMPROGRAMS\Living Earth 3D"
+  Delete "$DESKTOP\${APP_NAME}.lnk"
+  Delete "$SMPROGRAMS\${APP_NAME}\${APP_NAME}.lnk"
+  Delete "$SMPROGRAMS\${APP_NAME}\Uninstall.lnk"
+  RMDir "$SMPROGRAMS\${APP_NAME}"
   Delete "$INSTDIR\LivingEarth3D.exe"
   Delete "$INSTDIR\update.ps1"
   Delete "$INSTDIR\LivingEarth3D.scr"
@@ -110,6 +114,6 @@ Section "Uninstall"
   Delete "$INSTDIR\ATTRIBUTION.md"
   Delete "$INSTDIR\Uninstall.exe"
   RMDir "$INSTDIR"
-  DeleteRegKey HKCU "Software\LivingEarth3D"
-  DeleteRegKey HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\LivingEarth3D"
+  DeleteRegKey HKCU "Software\${APP_KEY}"
+  DeleteRegKey HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APP_KEY}"
 SectionEnd

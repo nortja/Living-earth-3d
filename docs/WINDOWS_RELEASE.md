@@ -1,6 +1,14 @@
 # Windows installer delivery
 
-## End-user installation
+## 0.6.0 development channel
+
+The next application build is isolated on `development`, uses `channel: development`, and checks only that branch's update feed. The existing `main/updates/preview.json` remains at 0.5.0. No stable release is declared. The development installer and UI are labeled explicitly; unsigned development replacement is manual.
+
+The shared `invoke-godot.ps1` uses .NET argument arrays, real exit codes, fresh logs, asynchronous output reads and a timeout. Its real-engine positive/negative cases passed locally. CI now has read-only repository permissions, manual dispatch only, optional full resolution matrix, explicit opt-in native Windows graphics checks (1080p or full matrix), and failure diagnostics. It has no automatic release-publication step. The existing disabled state has not been changed because API access remains blocked.
+
+Silent installation no longer starts the app itself. After a signed update, the helper verifies the installed app's publisher and performs one restart. Interactive installation still offers the normal finish-page launch. These paths need actual Windows validation. See [0.6 validation](VALIDATION-0.6.0.md) and [release policy](RELEASE_POLICY.md).
+
+## Earlier 0.5 preview installation
 
 The 0.5.0 artifact is `LivingEarth3D-Setup-0.5.0.exe`: one self-contained NSIS installer, with no ZIP extraction, terminal, web bootstrapper, Godot installation, or separate runtime. It installs under `%LOCALAPPDATA%\Programs\Living Earth 3D` with desktop/Start menu shortcuts, an installed-apps uninstall entry, and a launch option. No administrator rights are requested. If the app is running, the interactive installer/uninstaller asks before closing it gracefully; cancellation or an unresponsive app aborts instead of forcing termination. This close-window path still needs Windows testing. Upgrades retain local favorites/preferences; uninstall removes only known app files and retains user data.
 

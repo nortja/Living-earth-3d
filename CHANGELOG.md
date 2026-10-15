@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.6.0 — Development: light, discovery and historical context
+
+- Isolated next-cycle application work, installation folder, shortcut, uninstall entry, settings and update metadata on `development`; kept the existing `main` preview feed unchanged. Added a release policy that reserves stable promotion for signed, Windows-validated builds.
+- Hardened the manual Windows build runner: argument-safe paths/preset names, real process exit codes, fresh runtime logs, output draining and bounded timeouts. Actual engine tests cover positive execution and deliberate runtime-error, exit-code and timeout failures. Remote Windows execution is still blocked by cloud GitHub API access; the workflow remains disabled and manual-only.
+- Removed automatic release writes from CI; retained installer/diagnostic artifacts and added opt-in native EXE display checks for graphics-capable desktops. Skipped graphics checks are reported as unrun and cannot satisfy stable promotion. Silent installation now leaves launch to the verified updater, preventing duplicate instances; it verifies the installed app signature before one restart. Windows execution of these paths remains pending.
+- Refined the five navigation labels, translucent panels, illuminated outlines and Explore subnavigation. Initial window sizing uses the available monitor; automatic UI scale also respects narrow/portrait widths. Restored readable favorite buttons in flow layouts.
+- Added approximate current-UTC solar geometry, optional day/night illumination, geographic daylight boundary, two new screensaver styles, and solar telemetry. Solstice/equinox/longitude/orientation checks use deterministic clock inputs.
+- Expanded official camera venues to six, with clickable globe markers, a UTC viewer clock, surprise selection, and external provider player windows. HTTP page reachability is explicitly distinct from unverified stream playback.
+- Added Open-Meteo point weather with units, model timestamps, input validation, versioned disk cache and location-correct failure states. Actual public requests remain blocked by the cloud proxy; tests use isolated fixtures and never populate product observations.
+- Added twelve sourced daily/surprise discoveries, UTC rollover, source links and existing-camera connections. The initial daily rotation repeats after twelve days.
+- Added the Time Machine historical-atlas foundation: dated markers and a timeline for Giza, Imperial Rome and Classic-period Tikal. Modern imagery is labeled continuously; no reconstruction, changing borders or historical satellite imagery is claimed.
+- Fixed exact-pole navigation by choosing a valid camera up vector; both poles have orientation checks. Preserved maps, clouds, intro, branding, controls, favorites, optional networking, strict update trust and single-EXE delivery. Detailed evidence and platform limitations are recorded with this development cycle.
+
 ## 0.5.0 — A spacious Earth workspace
 
 - Replaced the bottom settings tray with compact navigation, a clear full-Earth launch view, animated page transitions, a single close action, and dedicated Explore, Live Earth, Cameras, Command Center, Screensavers and Settings pages.

@@ -44,7 +44,7 @@ static func parse_quakes(feed: Variant) -> Array:
         if not coordinates is Array or coordinates.size() < 2 or not valid_coordinates(coordinates[1], coordinates[0]) or not (magnitude is float or magnitude is int) or not is_finite(float(magnitude)):
             continue
         var timestamp = properties.get("time")
-        if not (timestamp is float or timestamp is int) or timestamp < 0:
+        if not (timestamp is float or timestamp is int) or not is_finite(float(timestamp)) or timestamp < 0 or timestamp > 253402300799000:
             continue
         parsed.append({"name": str(properties.get("place", "Earthquake")), "latitude": float(coordinates[1]), "longitude": float(coordinates[0]), "magnitude": float(magnitude), "utc": Time.get_datetime_string_from_unix_time(int(timestamp / 1000.0)).replace("T", " ")})
         if parsed.size() >= 100:
@@ -90,7 +90,7 @@ func search_worldwide(query: String) -> void:
     last_search = Time.get_ticks_msec()
     search_status = "Searching OpenStreetMap…"
     search_changed.emit()
-    var error := search_request.request("https://nominatim.openstreetmap.org/search?format=jsonv2&limit=6&q=" + query.uri_encode(), ["User-Agent: LivingEarth3D/0.5.0 (+https://github.com/nortja/Living-earth-3d)", "Accept: application/json"])
+    var error := search_request.request("https://nominatim.openstreetmap.org/search?format=jsonv2&limit=6&q=" + query.uri_encode(), ["User-Agent: LivingEarth3D/0.6.0 (+https://github.com/nortja/Living-earth-3d)", "Accept: application/json"])
     if error != OK:
         _search_received(HTTPRequest.RESULT_CANT_CONNECT, 0, PackedStringArray(), PackedByteArray())
 

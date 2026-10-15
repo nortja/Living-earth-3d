@@ -1,36 +1,44 @@
-# Living Earth 3D
+# Living Earth 3D — development
 
-An offline-first interactive Windows globe and screensaver, built with Godot 4. Version **0.5.0 preview**.
+**0.6.0 development preview**, an interactive Windows Earth and cinematic screensaver built with Godot 4.6.3. Next-cycle app changes stay on `development`; `main` retains the existing 0.5 preview plus delivery repairs. No production stable release has been declared.
 
-## Windows users
+[Download the development Windows installer](https://github.com/nortja/Living-earth-3d/raw/refs/heads/downloads/windows-0.6.0/LivingEarth3D-Setup-0.6.0.exe). One EXE: double-click, install, open the desktop shortcut. No ZIP, terminal, separate Godot/runtime installation or account. Development installs have their own folder, shortcut, uninstall entry and settings directory. Existing preview choices are read once when development preferences do not exist; future saves stay separate. Development builds are labeled in the interface and installer; this preview is unsigned and requires manual installation.
 
-[Download LivingEarth3D-Setup-0.5.0.exe](https://github.com/nortja/Living-earth-3d/raw/refs/heads/downloads/windows-0.5.0/LivingEarth3D-Setup-0.5.0.exe), double-click, install, then open the desktop shortcut. No ZIP extraction, terminal, separate runtime, or Godot setup is needed. This is an unsigned preview. The user confirmed installation and launch of 0.3.0 on Windows; 0.5.0 Windows hardware/upgrade testing is still outstanding.
+## This cycle
 
-The real globe emerges from darkness with illuminated Earth branding. Drag to spin with gentle inertia, scroll or double-click to zoom, and use **Full Earth** or Home to reset. F11 toggles fullscreen. Earth stays centered and proportional at native viewport resolution, including ultrawide and 4K/5K sizes. Compact controls scale automatically with window resolution. Side panels move below the center in smaller windows; an optional wide Command Center overview uses spare space.
+Five clear areas: **Explore Earth**, **Live Earth**, **Global Cameras**, **Command Center**, **Screensaver Settings**. The default view keeps the full planet centered with compact controls. Dark translucent panels, restrained blue borders, smooth transitions, native viewport rendering, signed-distance-field fonts and proportional layout adapt through ultrawide, 4K and 5K sizes. Initial window sizing uses the available monitor; narrow/portrait windows limit UI scale to keep controls reachable. Display/GPU information, 2K/4K maps and a 30 FPS power option remain under Settings. Normal animation caps at 60 FPS and respects lower monitor refresh rates.
 
-The navigation bar opens **Explore**, **Live Earth**, **Cameras**, **Command Center**, and **Screensavers**. Settings contains display/GPU information, genuine 4K and lower-memory 2K texture presets, offline cloud/star/Moon toggles, and 30 FPS power saving. The normal 60 FPS limit also respects lower monitor refresh rates. This is a cap, not a promise of performance on every GPU. Preferences and favorites stay local.
+Drag to spin with gentle inertia, wheel or double-click to zoom, **Full Earth** or Home to reset, F11 for fullscreen. Existing favorites and timed journeys remain local.
 
-Explore six curated destinations, an offline atlas, or coordinates. Worldwide search uses OpenStreetMap Nominatim only when requested. Camera venues fly the globe to approximate locations and open official provider pages in a browser; feeds are not embedded, and availability is not verified. The Command Center requests USGS M2.5+ past-day earthquakes, with event UTC times, retrieval timestamps, disk cache, and explicit unavailable/cached states. No observations are fabricated. **Live Earth** explains the difference between offline imagery, periodic data and external services.
+- **Discover:** a sourced, offline editorial catalog of twelve wonders, a deterministic daily UTC selection, surprise destinations and camera connections where curated. The initial rotation repeats after twelve days. Discover, Search and Time Machine have separate compact sections.
+- **Live Earth:** optional approximate UTC solar illumination and daylight boundary, calculated locally from the system clock using NOAA-style solar geometry. Cinematic lighting stays available. The 4K imagery is offline, clouds drift as artwork, and Moon/stars use artistic positions. No live cloud or terrain-height data is claimed.
+- **Global Cameras:** six official provider venues, clickable globe markers, selection journeys, UTC viewer clock and surprise selection. Provider players open externally, using installed Edge app mode on Windows when available, otherwise the browser. Manual provider-page checks distinguish page reachability from unverified video status. Capture time comes from the provider; embedded playback and verified stream availability are unfinished.
+- **Command Center:** requested Open-Meteo point weather estimates with model UTC time and explicit Celsius/km/h units, and USGS M2.5+ past-day observations. Retrieval/cache/failure states preserve location context. Requests never populate invented observations. Satellite orbits, weather-system overlays, auroras, ISS passes, volcano alerts and astronomy events remain planned; official NASA/USGS explorers are linked.
+- **Earth Time Machine foundation:** a draggable dated historical atlas for Giza, Imperial Rome and Classic-period Tikal, with source links, approximate teaching intervals and a persistent modern-imagery disclosure. It does not reconstruct cities, redraw borders or display historical satellite imagery.
+- **Screensavers:** peaceful rotation, global discovery, night lights, deep space, current-UTC day/night and cinematic orbit. Preview returns on input. Windows preview embedding, multiple-monitor coverage and hours-long hardware soak testing remain open.
 
-Four offline screensaver styles offer Ambient Earth, Discovery journeys, Night lights, and Deep space. Preview returns to the app on input after a short grace period. Windows screensaver selection is optional; preview embedding and multi-monitor coverage are unfinished. Clouds drift as offline artwork. Lighting, Moon and stars are cinematic rather than current astronomical positions. Source detail remains 4K even on larger displays.
+## Delivery and validation
 
-Optional update checks use the project's preview feed. **Settings → Check updates → Download latest installer** provides the next unsigned preview. Automatic replacement requires trusted matching-publisher signatures and SHA-256 verification; production signing and Windows end-to-end update testing remain outstanding. See [ROADMAP.md](ROADMAP.md) for weather, current solar illumination, embedded cameras, higher-resolution imagery and other next steps.
+Development update metadata uses a separate feed on the `development` branch. It does not advance the `main` preview feed. Automatic replacement still requires a matching trusted Authenticode publisher, valid package signature and SHA-256 verification. Production signing and actual signed-update Windows execution remain outstanding. Silent installers no longer launch the app twice; the signed helper performs one verified restart.
 
-## Development
+The manual Windows workflow now uses a tested process runner with argument-safe paths, real exit codes, fresh logs and timeouts. It retains diagnostics and has no release-publication permission or push/tag triggers. It remains disabled pending a controlled Windows run, since current cloud access to GitHub API is denied. Linux rendering, cross-built packages and parser fixtures do not establish Windows GPU/DPI behavior or live provider availability. See [release policy](docs/RELEASE_POLICY.md), [validation](docs/VALIDATION-0.6.0.md) and [roadmap](ROADMAP.md).
 
-Use Godot 4.6.3. `godot --path .` starts the app; `project.godot` opens it in the editor.
+## Development checks
+
+Set writable XDG data/config/cache directories in restricted cloud environments. From this checkout:
 
 ```sh
 godot --headless --path . --editor --import --quit
-godot --headless --path . --script res://tests/explorer_test.gd
-godot --headless --path . --script res://tests/interface_test.gd
-# Optional real-network check:
-godot --headless --path . --script res://tests/live_update_feed_test.gd
-# Native graphics required (not a browser):
-godot --path . --audio-driver Dummy --script res://tests/intro_render_test.gd
-godot --path . --audio-driver Dummy --script res://tests/render_test.gd
+godot --headless --path . --script tests/explorer_test.gd
+godot --headless --path . --script tests/interface_test.gd
+godot --headless --path . --script tests/cycle06_test.gd
+# Native graphics required:
+godot --path . --audio-driver Dummy --script tests/render_test.gd
+godot --path . --audio-driver Dummy --script tests/intro_render_test.gd
+godot --path . --audio-driver Dummy --script tests/experience_render_test.gd
+godot --path . --audio-driver Dummy --script tests/screensaver_soak.gd
 ```
 
-[Windows delivery and actual EXE display tests](docs/WINDOWS_RELEASE.md) document platform-specific verification. Behavior tests isolate their preferences. Source/render checks on Linux do not establish Windows GPU, DPI, installation or refresh behavior. The failing GitHub workflow remains disabled with no push/tag triggers, to prevent unwanted failure emails.
+On Windows, run `tests/windows_display_test.ps1` against the actual installed EXE; see [Windows delivery](docs/WINDOWS_RELEASE.md). Check nonzero test counts, exit codes and runtime logs. Godot script errors alone may not produce a failing exit code. Do not label headless or Linux checks as Windows execution.
 
-See [CHANGELOG.md](CHANGELOG.md), [ROADMAP.md](ROADMAP.md), and `assets/` for credits and progress.
+Attribution and original texture/source records remain under `assets/`; discoveries and historical entries cite sources in `data/`. No public provider API keys are needed. Environment-network draft publication is a user-facing product operation, separate from saving the allowlist.

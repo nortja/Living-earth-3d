@@ -1,10 +1,24 @@
 extends Node3D
 
+const SolarModel = preload("res://scripts/solar_model.gd")
+const DiscoveryCatalog = preload("res://scripts/discovery_catalog.gd")
+const Observations = preload("res://scripts/earth_observations.gd")
 const EarthInterface = preload("res://scripts/earth_interface.gd")
 const EarthServices = preload("res://scripts/earth_services.gd")
 
 const PlanetVisuals = preload("res://scripts/planet_visuals.gd")
 
+var observations: Node
+var catalog = DiscoveryCatalog.new()
+var solar_enabled := false
+var daylight_line := false
+var solar_elapsed := 1.0
+var solar_info: Dictionary = {}
+var terminator: MeshInstance3D
+var camera_markers: Node3D
+var history_root: Node3D
+var history_enabled := false
+var historical_year := 100
 var interface: Control
 var services: Node
 var monitor_poll := 0.0
@@ -55,8 +69,9 @@ var update_status: Label
 var update_feed: Dictionary = {}
 var update_request: HTTPRequest
 var preferences := ConfigFile.new()
-const VERSION := "0.5.0"
-const UPDATE_FEED_URL := "https://raw.githubusercontent.com/nortja/Living-earth-3d/main/updates/preview.json"
+const VERSION := "0.6.0"
+const BUILD_CHANNEL := "development"
+const UPDATE_FEED_URL := "https://raw.githubusercontent.com/nortja/Living-earth-3d/development/updates/preview.json"
 const RELEASES_URL := "https://github.com/nortja/Living-earth-3d/releases"
 
 
@@ -72,7 +87,7 @@ func _ready() -> void:
             screensaver_mode = true
     if DisplayServer.get_name() != "headless" and not screensaver_mode and "--validate-display" not in arguments:
         var available := DisplayServer.screen_get_usable_rect()
-        get_window().size = Vector2i(mini(1600, int(available.size.x * 0.85)), mini(900, int(available.size.y * 0.85)))
+        get_window().size = Vector2i(maxi(800, int(available.size.x * 0.88)), maxi(600, int(available.size.y * 0.88)))
         get_window().move_to_center()
     var world := WorldEnvironment.new()
     var env := Environment.new()
@@ -132,6 +147,9 @@ func _ready() -> void:
     add_child(layer)
     interface_layer = layer
     _build_explorer(layer)
+    _build_camera_markers()
+    _build_terminator()
+    refresh_solar()
     if screensaver_mode:
         layer.hide()
         get_window().mode = Window.MODE_FULLSCREEN
@@ -164,15 +182,24 @@ func _process(delta: float) -> void:
         _update_camera()
     if selected < 0 and not external_focus:
         earth.rotate_y(delta * (0.025 if screensaver_mode else 0.08))
-    if screensaver_mode and saver_style == 2:
-        sun.look_at(camera.position.normalized(), Vector3.UP)
-        earth_material.set_shader_parameter("sun_direction", sun.basis.z)
-        atmosphere_material.set_shader_parameter("sun_direction", sun.basis.z)
+    if screensaver_mode and saver_style == 5:
+        yaw += delta * 0.018
+        pitch = 0.22 + sin(screensaver_age * 0.018) * 0.2
+        _update_camera()
+    solar_elapsed += delta
+    if solar_elapsed >= 1.0:
+        solar_elapsed = 0.0
+        refresh_solar()
+        interface.update_clock()
+    apply_lighting()
     if discovery_enabled:
         elapsed += delta
         if elapsed >= discovery_interval:
             elapsed = 0.0
-            surprise_me()
+            if screensaver_mode and saver_style == 1:
+                interface.show_discovery(catalog.places.pick_random())
+            else:
+                surprise_me()
 
 func _unhandled_input(event: InputEvent) -> void:
     if screensaver_mode:
@@ -191,6 +218,12 @@ func _unhandled_input(event: InputEvent) -> void:
                 angular_velocity = Vector2.ZERO
                 _zoom(-0.9)
                 return
+            if event.pressed:
+                var hit := camera_at_screen(event.position)
+                if hit >= 0:
+                    dragging = false
+                    interface.select_camera(hit)
+                    return
             dragging = event.pressed
             if dragging:
                 angular_velocity = Vector2.ZERO
@@ -221,19 +254,29 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func _update_camera() -> void:
     camera.position = Vector3(sin(yaw) * cos(pitch), sin(pitch), cos(yaw) * cos(pitch)) * distance
-    camera.look_at(Vector3.ZERO, Vector3.UP)
+    var up := Vector3.FORWARD if absf(camera.position.normalized().dot(Vector3.UP)) > 0.999 else Vector3.UP
+    camera.look_at(Vector3.ZERO, up)
 
 func _build_explorer(layer: CanvasLayer) -> void:
     destinations = JSON.parse_string(FileAccess.get_file_as_string("res://data/destinations.json"))
-    preferences.load(preferences_path)
+    if preferences.load(preferences_path) != OK and preferences_path == "user://preferences.cfg":
+        # Read the previous preview's choices once; all subsequent saves are in
+        # this development app's separate user directory.
+        var previous := OS.get_user_data_dir().get_base_dir().path_join("Living Earth 3D/preferences.cfg")
+        if FileAccess.file_exists(previous): preferences.load(previous)
     favorites = preferences.get_value("explorer", "favorites", [])
     discovery_enabled = preferences.get_value("explorer", "discovery", false)
     discovery_interval = preferences.get_value("explorer", "interval", 120.0)
-    saver_style = clampi(int(preferences.get_value("screensaver", "style", 0)), 0, 3)
+    saver_style = clampi(int(preferences.get_value("screensaver", "style", 0)), 0, 5)
+    solar_enabled = preferences.get_value("visuals", "solar_utc", false)
+    daylight_line = preferences.get_value("visuals", "daylight_line", false)
+    observations = Observations.new()
+    add_child(observations)
     services = EarthServices.new()
     add_child(services)
     update_request = HTTPRequest.new()
     update_request.timeout = 15.0
+    update_request.body_size_limit = 65536
     add_child(update_request)
     update_request.request_completed.connect(_updates_received)
     interface = EarthInterface.new()
@@ -368,7 +411,7 @@ func valid_update_feed(feed: Variant) -> bool:
         if character not in "0123456789abcdef":
             return false
     var expected := "https://github.com/nortja/Living-earth-3d/raw/refs/heads/downloads/windows-%s/LivingEarth3D-Setup-%s.exe" % [version, version]
-    return feed.get("installer_url") == expected and feed.get("channel") == "preview" and feed.get("installer_signed") is bool
+    return feed.get("installer_url") == expected and feed.get("channel") == BUILD_CHANNEL and feed.get("installer_signed") is bool
 
 func download_latest() -> void:
     if valid_update_feed(update_feed):
@@ -387,7 +430,7 @@ func install_update() -> void:
     if OS.get_name() != "Windows" or not FileAccess.file_exists(helper):
         update_status.text = "Install updates through the Windows installer. Use Official releases for other builds."
         return
-    var pid := OS.create_process("powershell.exe", ["-NoProfile", "-WindowStyle", "Hidden", "-File", helper, "-CurrentVersion", VERSION, "-AppProcessId", str(OS.get_process_id())], false)
+    var pid := OS.create_process("powershell.exe", ["-NoProfile", "-WindowStyle", "Hidden", "-File", helper, "-CurrentVersion", VERSION, "-Channel", BUILD_CHANNEL, "-AppProcessId", str(OS.get_process_id())], false)
     update_status.text = "Updater started • A verified update will ask before restarting." if pid > 0 else "Could not start updater. Use Official releases."
 
 func _zoom(amount: float) -> void:
@@ -587,6 +630,7 @@ func preview_screensaver() -> void:
     update_request.cancel_request()
     services.quake_request.cancel_request()
     services.search_request.cancel_request()
+    observations.cancel_requests()
     saver_preview = true
     screensaver_mode = true
     screensaver_age = 0.0
@@ -608,3 +652,108 @@ func stop_screensaver_preview() -> void:
     Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
     interface_layer.show()
     reset_view()
+
+
+func view_location() -> Dictionary:
+    return {"name": "View center", "latitude": rad_to_deg(pitch), "longitude": wrapf(rad_to_deg(yaw - PI - earth.rotation.y), -180, 180)}
+
+func solar_active() -> bool:
+    if screensaver_mode and saver_style == 2: return false
+    return solar_enabled or (screensaver_mode and saver_style == 4)
+
+func refresh_solar() -> void:
+    solar_info = SolarModel.at_unix(Time.get_unix_time_from_system())
+    if terminator:
+        var mesh := ImmediateMesh.new()
+        var direction: Vector3 = solar_info.direction
+        var tangent := direction.cross(Vector3.UP).normalized()
+        var bitangent := direction.cross(tangent).normalized()
+        mesh.surface_begin(Mesh.PRIMITIVE_LINE_STRIP)
+        for index in range(129):
+            var angle := TAU * index / 128.0
+            mesh.surface_add_vertex((tangent * cos(angle) + bitangent * sin(angle)) * 1.042)
+        mesh.surface_end()
+        terminator.mesh = mesh
+    apply_lighting()
+
+func _build_terminator() -> void:
+    terminator = MeshInstance3D.new()
+    var material := StandardMaterial3D.new()
+    material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+    material.albedo_color = Color("72cadd")
+    terminator.material_override = material
+    earth.add_child(terminator)
+
+func apply_lighting() -> void:
+    if solar_info.is_empty(): return
+    if screensaver_mode and saver_style == 2:
+        sun.look_at(camera.position.normalized(), Vector3.UP)
+    elif solar_active():
+        var direction: Vector3 = earth.basis * Vector3(solar_info.direction)
+        sun.look_at(-direction, Vector3.UP)
+    else:
+        sun.rotation_degrees = Vector3(-25, 150, 0)
+    earth_material.set_shader_parameter("sun_direction", sun.basis.z)
+    atmosphere_material.set_shader_parameter("sun_direction", sun.basis.z)
+    if terminator: terminator.visible = daylight_line and solar_active() and not screensaver_mode
+
+func set_solar(enabled: bool) -> void:
+    solar_enabled = enabled
+    preferences.set_value("visuals", "solar_utc", enabled)
+    _save_preferences()
+    apply_lighting()
+
+func set_history(enabled: bool, year: int) -> void:
+    history_enabled = enabled
+    historical_year = year if year != 0 else 1
+    if history_root: history_root.queue_free()
+    history_root = Node3D.new()
+    earth.add_child(history_root)
+    if enabled:
+        for site in catalog.historical_sites(historical_year):
+            var marker := MeshInstance3D.new()
+            var sphere := SphereMesh.new()
+            sphere.radius = 0.013
+            sphere.height = 0.026
+            marker.mesh = sphere
+            var material := StandardMaterial3D.new()
+            material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+            material.albedo_color = Color("ffcc80")
+            marker.material_override = material
+            marker.position = SolarModel.local_direction(site.latitude, site.longitude) * 1.047
+            history_root.add_child(marker)
+    interface.history_banner.visible = enabled
+    interface.history_banner.text = "HISTORICAL ATLAS · %s · Modern Earth imagery" % DiscoveryCatalog.year_label(historical_year)
+
+
+func _build_camera_markers() -> void:
+    camera_markers = Node3D.new()
+    earth.add_child(camera_markers)
+    var material := StandardMaterial3D.new()
+    material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+    material.albedo_color = Color("88e9ef")
+    for venue in interface.cameras:
+        var marker := MeshInstance3D.new()
+        var sphere := SphereMesh.new()
+        sphere.radius = 0.011
+        sphere.height = 0.022
+        marker.mesh = sphere
+        marker.material_override = material
+        marker.position = SolarModel.local_direction(venue.latitude, venue.longitude) * 1.045
+        camera_markers.add_child(marker)
+    camera_markers.hide()
+
+func camera_at_screen(point: Vector2) -> int:
+    if not camera_markers or not camera_markers.visible: return -1
+    var nearest: float = 16.0 * float(interface.display_scale)
+    var index := -1
+    for candidate in range(camera_markers.get_child_count()):
+        var marker: Node3D = camera_markers.get_child(candidate)
+        var location := marker.global_position
+        # Reject the far hemisphere as well as points behind the camera.
+        if camera.is_position_behind(location) or (camera.global_position - location).dot(location.normalized()) <= 0: continue
+        var separation := camera.unproject_position(location).distance_to(point)
+        if separation < nearest:
+            nearest = separation
+            index = candidate
+    return index
