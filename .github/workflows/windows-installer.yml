@@ -2,6 +2,10 @@ name: Windows installer
 on:
   workflow_dispatch:
     inputs:
+      native_display_checks:
+        description: Run native graphics checks on a desktop with supported OpenGL
+        type: boolean
+        default: false
       full_display_matrix:
         description: Run ultrawide, 4K and 5K native EXE checks (requires a suitable desktop)
         type: boolean
@@ -63,15 +67,18 @@ jobs:
           $installer = (Get-ChildItem dist/*Setup*.exe | Select-Object -First 1).FullName
           $setup = Start-Process $installer -ArgumentList '/S' -Wait -PassThru
           if ($setup.ExitCode -ne 0) { throw 'Install failed' }
-          $dir = Join-Path $env:LOCALAPPDATA 'Programs/Living Earth 3D'
+          $productName = (Select-String -Path project.godot -Pattern 'config/name="([^"]+)"').Matches[0].Groups[1].Value
+          $dir = Join-Path $env:LOCALAPPDATA "Programs/$productName"
           if (!(Test-Path "$dir/LivingEarth3D.exe")) { throw 'Application missing' }
-          if (!(Test-Path ([Environment]::GetFolderPath('Desktop') + '/Living Earth 3D.lnk'))) { throw 'Desktop shortcut missing' }
+          if (!(Test-Path ([Environment]::GetFolderPath('Desktop') + "/$productName.lnk"))) { throw 'Desktop shortcut missing' }
           . ./packaging/windows/invoke-godot.ps1
           Invoke-EarthGodot -Executable "$dir/LivingEarth3D.exe" -ProjectPath $dir -Arguments @('--quit-after','120') -LogPath "$env:RUNNER_TEMP/installed-app.log"
           if ('${{ inputs.full_display_matrix }}' -eq 'true') {
             ./tests/windows_display_test.ps1 -Application "$dir/LivingEarth3D.exe"
-          } else {
+          } elseif ('${{ inputs.native_display_checks }}' -eq 'true') {
             ./tests/windows_display_test.ps1 -Application "$dir/LivingEarth3D.exe" -Resolutions @('1920x1080')
+          } else {
+            Write-Host 'Native display checks NOT RUN: interactive graphics evidence remains required before stable promotion.'
           }
           # _?= keeps the NSIS uninstaller synchronous. No running process is force-killed.
           $uninstall = Start-Process "$dir/Uninstall.exe" -ArgumentList "/S _?=$dir" -Wait -PassThru
