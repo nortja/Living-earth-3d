@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.5.0 — A spacious Earth workspace
+
+- Replaced the bottom settings tray with compact navigation, a clear full-Earth launch view, animated page transitions, a single close action, and dedicated Explore, Live Earth, Cameras, Command Center, Screensavers and Settings pages.
+- Kept the globe proportional at native framebuffer resolution. UI adapts to 800×600 through 4K, 5K and ultrawide windows; smaller windows use a bottom panel, and wide layouts optionally add a compact mission overview opposite the Command Center.
+- Added monitor resolution/DPI/refresh and GPU reporting, a frame cap that respects lower refresh rates, and monitor-change detection. Retained 2K/4K presets and 30 FPS power saving; no hardware performance benchmark is implied.
+- Added an offline city/nature/heritage atlas, latitude/longitude search and explicit worldwide Nominatim search with OpenStreetMap attribution and request throttling. New locations animate into view with a surface marker. Curated favorites and timed journeys remain intact.
+- Added four official camera-provider entries with globe journeys. Watching opens the provider page in a browser; availability, seasonal streams and periodic imagery are labeled. No embedded playback or verified-live status is claimed.
+- Added on-request USGS M2.5+ past-day earthquake observations, filtered coordinates, event UTC times, retrieval timestamps, versioned disk cache and unavailable/cached states. No fabricated observations or automatic polling.
+- Added four saved screensaver styles and an in-app fullscreen preview that returns on input. Screensaver startup skips update checks; previews cancel active requests.
+- Added a native packaged-app display validation mode and PowerShell runner for 1080p, ultrawide, 4K and 5K Windows checks with screenshots, platform/GPU identity and fresh JSON evidence. Windows execution remains outstanding because no Windows runner is available in the current cloud instance.
+- Preserved the branded intro, globe interactions, source attributions, single-EXE installer and strict signed-update requirements. Automatic GitHub builds remain disabled.
+
 ## 0.4.0 — Clouds, detail, and deep space
 
 - Replaced the daytime/night-light surface maps with attributed Solar System Scope imagery: genuine 4K detail mode and 2K Balanced maps, with no upscaling.

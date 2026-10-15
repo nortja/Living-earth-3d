@@ -8,7 +8,7 @@ func run() -> void:
     root.add_child(scene)
     for quality in ["balanced", "detailed"]:
         scene.set_quality(quality, false)
-        for size in [Vector2i(800, 600), Vector2i(1920, 1080), Vector2i(3440, 1440), Vector2i(3840, 2160)]:
+        for size in [Vector2i(800, 600), Vector2i(1920, 1080), Vector2i(3440, 1440), Vector2i(3840, 2160), Vector2i(5120, 1440), Vector2i(5120, 2880)]:
             root.size = size
             for frame in range(5):
                 await process_frame
@@ -18,5 +18,5 @@ func run() -> void:
                 failures += 1
                 push_error("Globe did not render at %s" % size)
             print("Rendered %s %s → viewport %s" % [quality, size, image.get_size()])
-    print("Render tests: 2 quality modes × 4 sizes, %d failures" % failures)
+    print("Render tests: 2 quality modes × 6 sizes, %d failures" % failures)
     quit(1 if failures else 0)

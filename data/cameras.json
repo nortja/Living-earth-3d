@@ -1,0 +1,6 @@
+[
+  {"name":"Monterey Bay · Jelly Cam","provider":"Monterey Bay Aquarium","latitude":36.62,"longitude":-121.90,"kind":"Provider live stream page · availability not checked","url":"https://www.montereybayaquarium.org/animals/live-cams/jelly-cam"},
+  {"name":"Yellowstone · Old Faithful","provider":"US National Park Service","latitude":44.46,"longitude":-110.83,"kind":"Provider webcams · live and periodic views","url":"https://www.nps.gov/yell/learn/photosmultimedia/webcams.htm"},
+  {"name":"Katmai · Wildlife","provider":"Explore.org","latitude":58.56,"longitude":-155.77,"kind":"Provider directory · seasonal streams","url":"https://explore.org/livecams"},
+  {"name":"Hawai‘i · Kīlauea","provider":"USGS Hawaiian Volcano Observatory","latitude":19.42,"longitude":-155.29,"kind":"Provider webcams · periodically updated imagery","url":"https://www.usgs.gov/observatories/hvo/webcams"}
+]

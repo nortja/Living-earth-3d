@@ -1,0 +1,22 @@
+[
+{"name":"New York, USA","latitude":40.7128,"longitude":-74.0060},
+{"name":"London, United Kingdom","latitude":51.5074,"longitude":-0.1278},
+{"name":"Paris, France","latitude":48.8566,"longitude":2.3522},
+{"name":"Tokyo, Japan","latitude":35.6762,"longitude":139.6503},
+{"name":"Sydney, Australia","latitude":-33.8688,"longitude":151.2093},
+{"name":"Cape Town, South Africa","latitude":-33.9249,"longitude":18.4241},
+{"name":"Rio de Janeiro, Brazil","latitude":-22.9068,"longitude":-43.1729},
+{"name":"Delhi, India","latitude":28.6139,"longitude":77.2090},
+{"name":"Singapore","latitude":1.3521,"longitude":103.8198},
+{"name":"Dubai, UAE","latitude":25.2048,"longitude":55.2708},
+{"name":"San Francisco, USA","latitude":37.7749,"longitude":-122.4194},
+{"name":"Los Angeles, USA","latitude":34.0522,"longitude":-118.2437},
+{"name":"Mount Everest, Himalayas","latitude":27.9881,"longitude":86.9250},
+{"name":"Giza pyramids, Egypt","latitude":29.9792,"longitude":31.1342},
+{"name":"Machu Picchu, Peru","latitude":-13.1631,"longitude":-72.5450},
+{"name":"Great Barrier Reef, Australia","latitude":-18.2871,"longitude":147.6992},
+{"name":"Mariana Trench, Pacific Ocean","latitude":11.35,"longitude":142.2},
+{"name":"Amazon River, Brazil","latitude":-3.1,"longitude":-60.0},
+{"name":"Iceland","latitude":64.9631,"longitude":-19.0208},
+{"name":"Antarctica","latitude":-82.0,"longitude":0.0}
+]

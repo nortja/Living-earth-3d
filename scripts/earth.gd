@@ -1,6 +1,21 @@
 extends Node3D
 
+const EarthInterface = preload("res://scripts/earth_interface.gd")
+const EarthServices = preload("res://scripts/earth_services.gd")
+
 const PlanetVisuals = preload("res://scripts/planet_visuals.gd")
+
+var interface: Control
+var services: Node
+var monitor_poll := 0.0
+var last_monitor := -1
+var external_focus := false
+var saver_style := 0
+var saver_preview := false
+var previous_window_mode := Window.MODE_WINDOWED
+var saved_discovery := false
+var saved_interval := 120.0
+var focus_marker: MeshInstance3D
 
 var visuals: Node3D
 var visual_quality := "balanced"
@@ -40,7 +55,7 @@ var update_status: Label
 var update_feed: Dictionary = {}
 var update_request: HTTPRequest
 var preferences := ConfigFile.new()
-const VERSION := "0.4.0"
+const VERSION := "0.5.0"
 const UPDATE_FEED_URL := "https://raw.githubusercontent.com/nortja/Living-earth-3d/main/updates/preview.json"
 const RELEASES_URL := "https://github.com/nortja/Living-earth-3d/releases"
 
@@ -55,7 +70,7 @@ func _ready() -> void:
             return
         if argument.to_lower() == "/s":
             screensaver_mode = true
-    if DisplayServer.get_name() != "headless" and not screensaver_mode:
+    if DisplayServer.get_name() != "headless" and not screensaver_mode and "--validate-display" not in arguments:
         var available := DisplayServer.screen_get_usable_rect()
         get_window().size = Vector2i(mini(1600, int(available.size.x * 0.85)), mini(900, int(available.size.y * 0.85)))
         get_window().move_to_center()
@@ -116,25 +131,28 @@ func _ready() -> void:
     var layer := CanvasLayer.new()
     add_child(layer)
     interface_layer = layer
-    info = Label.new()
-    info.text = "LIVING EARTH 3D  •  Drag to orbit  •  Scroll to zoom"
-    info.set_anchors_and_offsets_preset(Control.PRESET_TOP_WIDE)
-    info.offset_left = 22
-    info.offset_right = -22
-    info.offset_top = 20
-    info.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-    layer.add_child(info)
     _build_explorer(layer)
     if screensaver_mode:
         layer.hide()
         get_window().mode = Window.MODE_FULLSCREEN
         Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
-        discovery_enabled = false
-    if play_intro:
+        apply_saver_style()
+    if "--validate-display" in arguments:
+        var validation = load("res://scripts/display_validation.gd").new()
+        add_child(validation)
+        validation.call_deferred("run", self, arguments)
+    elif play_intro:
         start_intro()
 
 func _process(delta: float) -> void:
     screensaver_age += delta
+    monitor_poll += delta
+    if monitor_poll >= 2.0 and DisplayServer.get_name() != "headless":
+        monitor_poll = 0.0
+        if last_monitor != get_window().current_screen:
+            last_monitor = get_window().current_screen
+            apply_frame_limit()
+            interface.monitor_status.text = display_summary()
     visuals.advance(delta)
     earth_material.set_shader_parameter("cloud_offset", visuals.clouds.rotation.y / TAU)
     if not dragging and angular_velocity.length() > 0.001:
@@ -144,8 +162,12 @@ func _process(delta: float) -> void:
         _update_camera()
     if intro_running or (journey and journey.is_running()) or (zoom_tween and zoom_tween.is_running()):
         _update_camera()
-    if selected < 0:
-        earth.rotate_y(delta * 0.08)
+    if selected < 0 and not external_focus:
+        earth.rotate_y(delta * (0.025 if screensaver_mode else 0.08))
+    if screensaver_mode and saver_style == 2:
+        sun.look_at(camera.position.normalized(), Vector3.UP)
+        earth_material.set_shader_parameter("sun_direction", sun.basis.z)
+        atmosphere_material.set_shader_parameter("sun_direction", sun.basis.z)
     if discovery_enabled:
         elapsed += delta
         if elapsed >= discovery_interval:
@@ -155,7 +177,10 @@ func _process(delta: float) -> void:
 func _unhandled_input(event: InputEvent) -> void:
     if screensaver_mode:
         if screensaver_age > 1.0 and (event is InputEventKey or event is InputEventMouseButton or (event is InputEventMouseMotion and event.relative.length() > 3.0)):
-            get_tree().quit()
+            if saver_preview:
+                stop_screensaver_preview()
+            else:
+                get_tree().quit()
         return
     if intro_running and (event is InputEventMouseButton or event is InputEventKey):
         finish_intro()
@@ -185,9 +210,11 @@ func _unhandled_input(event: InputEvent) -> void:
         if event.keycode == KEY_HOME:
             reset_view()
         elif event.keycode == KEY_F11:
-            get_window().mode = Window.MODE_WINDOWED if get_window().mode == Window.MODE_FULLSCREEN else Window.MODE_FULLSCREEN
+            toggle_fullscreen()
         elif event.keycode == KEY_ESCAPE:
-            if get_window().mode == Window.MODE_FULLSCREEN:
+            if interface.panel.visible:
+                interface.close_panel()
+            elif get_window().mode == Window.MODE_FULLSCREEN:
                 get_window().mode = Window.MODE_WINDOWED
             else:
                 get_tree().quit()
@@ -200,119 +227,19 @@ func _build_explorer(layer: CanvasLayer) -> void:
     destinations = JSON.parse_string(FileAccess.get_file_as_string("res://data/destinations.json"))
     preferences.load(preferences_path)
     favorites = preferences.get_value("explorer", "favorites", [])
-    var panel := PanelContainer.new()
-    panel.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_WIDE)
-    panel.offset_left = 20
-    panel.offset_right = -20
-    panel.offset_top = -230
-    panel.offset_bottom = -20
-    layer.add_child(panel)
-    panel.visible = false
-    var style := StyleBoxFlat.new()
-    style.bg_color = Color(0.025, 0.04, 0.07, 0.94)
-    style.set_corner_radius_all(16)
-    style.content_margin_left = 18
-    style.content_margin_right = 18
-    style.content_margin_top = 14
-    style.content_margin_bottom = 14
-    panel.add_theme_stylebox_override("panel", style)
-    var explore := Button.new()
-    explore.text = "Explore & settings"
-    explore.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT)
-    explore.offset_left = -210
-    explore.offset_right = -22
-    explore.offset_top = 60
-    explore.offset_bottom = 104
-    explore.pressed.connect(func(): panel.visible = not panel.visible)
-    layer.add_child(explore)
-    var reset := Button.new()
-    reset.text = "Reset Earth"
-    reset.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT)
-    reset.offset_left = -356
-    reset.offset_right = -222
-    reset.offset_top = 60
-    reset.offset_bottom = 104
-    reset.pressed.connect(reset_view)
-    layer.add_child(reset)
-    var scroll_panel := ScrollContainer.new()
-    scroll_panel.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
-    panel.add_child(scroll_panel)
-    var box := VBoxContainer.new()
-    box.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-    scroll_panel.add_child(box)
-    var controls := HFlowContainer.new()
-    box.add_child(controls)
-    place_picker = OptionButton.new()
-    place_picker.add_item("Explore a destination…")
-    for place in destinations:
-        place_picker.add_item(place.name)
-    place_picker.item_selected.connect(func(index: int):
-        if index > 0:
-            visit(index - 1))
-    controls.add_child(place_picker)
-    _button(controls, "Surprise Me", surprise_me)
-    favorite_button = _button(controls, "Save favorite", toggle_favorite)
-    _button(controls, "Visit favorite", visit_favorite)
-    _button(controls, "Free orbit", func():
-        selected = -1
-        if journey:
-            journey.kill()
-        description.text = "Free orbit • Drag to explore; scroll to zoom.")
-    var discovery := CheckButton.new()
-    discovery.text = "Timed discovery (opt-in)"
-    discovery.button_pressed = preferences.get_value("explorer", "discovery", false)
-    discovery_enabled = discovery.button_pressed
-    discovery.toggled.connect(func(enabled: bool):
-        discovery_enabled = enabled
-        elapsed = 0.0
-        preferences.set_value("explorer", "discovery", enabled)
-        _save_preferences())
-    controls.add_child(discovery)
-    var frequency := OptionButton.new()
-    for seconds in [60, 120, 300]:
-        frequency.add_item("Every %d min" % (seconds / 60), seconds)
+    discovery_enabled = preferences.get_value("explorer", "discovery", false)
     discovery_interval = preferences.get_value("explorer", "interval", 120.0)
-    frequency.select({60: 0, 120: 1, 300: 2}.get(int(discovery_interval), 1))
-    frequency.item_selected.connect(func(index: int):
-        discovery_interval = frequency.get_item_id(index)
-        elapsed = 0.0
-        preferences.set_value("explorer", "interval", discovery_interval)
-        _save_preferences())
-    controls.add_child(frequency)
-    description = Label.new()
-    description.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-    description.text = "Offline discovery • Choose a place or Surprise Me. Earth maps: Solar System Scope · CC BY 4.0. Clouds are offline artwork; Moon is an artistic backdrop."
-    box.add_child(description)
-    _build_visual_options(box)
-    var updates := HFlowContainer.new()
-    box.add_child(updates)
-    var automatic := CheckButton.new()
-    automatic.text = "Check for updates on startup"
-    automatic.button_pressed = preferences.get_value("updates", "automatic", false)
-    automatic.toggled.connect(func(enabled: bool):
-        preferences.set_value("updates", "automatic", enabled)
-        _save_preferences()
-        if enabled:
-            check_updates())
-    updates.add_child(automatic)
-    _button(updates, "Check updates", check_updates)
-    _button(updates, "Install update", install_update)
-    _button(updates, "Download latest", download_latest)
-    if OS.get_name() == "Windows":
-        _button(updates, "Screen saver settings", func():
-            var saver := OS.get_executable_path().get_base_dir().path_join("LivingEarth3D.scr")
-            if FileAccess.file_exists(saver):
-                OS.create_process("rundll32.exe", ["desk.cpl,InstallScreenSaver", saver], false))
-    _button(updates, "Official releases", func(): OS.shell_open(RELEASES_URL))
-    update_status = Label.new()
-    update_status.text = "Version " + VERSION + " • Updates are optional."
-    update_status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-    box.add_child(update_status)
+    saver_style = clampi(int(preferences.get_value("screensaver", "style", 0)), 0, 3)
+    services = EarthServices.new()
+    add_child(services)
     update_request = HTTPRequest.new()
     update_request.timeout = 15.0
     add_child(update_request)
     update_request.request_completed.connect(_updates_received)
-    if automatic.button_pressed:
+    interface = EarthInterface.new()
+    layer.add_child(interface)
+    interface.setup(self)
+    if not screensaver_mode and "--validate-display" not in OS.get_cmdline_user_args() and preferences.get_value("updates", "automatic", false):
         check_updates()
 
 func _button(parent: Node, title: String, action: Callable) -> Button:
@@ -328,6 +255,9 @@ func visit(index: int) -> void:
     finish_intro()
     angular_velocity = Vector2.ZERO
     selected = index
+    external_focus = false
+    favorite_button.disabled = false
+    if focus_marker: focus_marker.hide()
     var place: Dictionary = destinations[index]
     place_picker.select(index + 1)
     description.text = "%s • %s\n%s\n%.2f°, %.2f° • Globe-level journey" % [place.name, place.region, place.fact, place.latitude, place.longitude]
@@ -513,6 +443,9 @@ func reset_view() -> void:
     if zoom_tween:
         zoom_tween.kill()
     selected = -1
+    external_focus = false
+    favorite_button.disabled = false
+    if focus_marker: focus_marker.hide()
     place_picker.select(0)
     favorite_button.text = "Save favorite"
     description.text = "Full Earth • Drag to spin, scroll or double-click to zoom. Home resets the view."
@@ -557,10 +490,10 @@ func _build_visual_options(box: VBoxContainer) -> void:
     power.text = "Power saving · 30 FPS"
     power_saving = preferences.get_value("visuals", "power_saving", false)
     power.button_pressed = power_saving
-    Engine.max_fps = 30 if power_saving else 60
+    apply_frame_limit()
     power.toggled.connect(func(enabled: bool):
         power_saving = enabled
-        Engine.max_fps = 30 if enabled else 60
+        apply_frame_limit()
         preferences.set_value("visuals", "power_saving", enabled)
         _save_preferences())
     row.add_child(power)
@@ -582,3 +515,96 @@ func set_quality(quality: String, persist := true) -> void:
     if persist:
         preferences.set_value("visuals", "quality", visual_quality)
         _save_preferences()
+
+
+func apply_frame_limit() -> void:
+    var refresh := DisplayServer.screen_get_refresh_rate(get_window().current_screen) if DisplayServer.get_name() != "headless" else 60.0
+    Engine.max_fps = mini(30 if power_saving else 60, int(refresh)) if refresh >= 24 else (30 if power_saving else 60)
+
+func display_summary() -> String:
+    if DisplayServer.get_name() == "headless":
+        return "Headless validation · display and GPU unavailable"
+    var monitor := DisplayServer.screen_get_size(get_window().current_screen)
+    var refresh := DisplayServer.screen_get_refresh_rate(get_window().current_screen)
+    return "%d × %d · %.0f Hz · %d DPI\n%s\nNative resolution · proportional globe · automatic UI scale" % [monitor.x, monitor.y, refresh, DisplayServer.screen_get_dpi(get_window().current_screen), RenderingServer.get_video_adapter_name()]
+
+func toggle_fullscreen() -> void:
+    get_window().mode = Window.MODE_WINDOWED if get_window().mode == Window.MODE_FULLSCREEN else Window.MODE_FULLSCREEN
+    apply_frame_limit()
+
+func fly_to_location(place: Dictionary) -> bool:
+    if not EarthServices.valid_coordinates(place.get("latitude"), place.get("longitude")):
+        return false
+    finish_intro()
+    selected = -1
+    external_focus = true
+    dragging = false
+    angular_velocity = Vector2.ZERO
+    favorite_button.disabled = true
+    place_picker.select(0)
+    description.text = "%s\n%.4f°, %.4f° · approximate globe location" % [str(place.get("name", "Location")), place.latitude, place.longitude]
+    if journey: journey.kill()
+    if zoom_tween: zoom_tween.kill()
+    zoom_target = 3.0
+    var longitude := deg_to_rad(float(place.longitude)) + PI
+    var latitude := deg_to_rad(float(place.latitude))
+    if not focus_marker:
+        focus_marker = MeshInstance3D.new()
+        var dot := SphereMesh.new()
+        dot.radius = 0.009
+        dot.height = 0.018
+        focus_marker.mesh = dot
+        var material := StandardMaterial3D.new()
+        material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+        material.albedo_color = Color("7ce8ee")
+        focus_marker.material_override = material
+        earth.add_child(focus_marker)
+    focus_marker.position = Vector3(sin(longitude) * cos(latitude), sin(latitude), cos(longitude) * cos(latitude)) * 1.045
+    focus_marker.show()
+    var target := yaw + wrapf(longitude + earth.rotation.y - yaw, -PI, PI)
+    journey = create_tween().set_parallel(true).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+    journey.tween_property(self, "yaw", target, 2.2)
+    journey.tween_property(self, "pitch", latitude, 2.2)
+    journey.tween_property(self, "distance", 3.0, 2.2)
+    return true
+
+func apply_saver_style() -> void:
+    discovery_enabled = saver_style == 1
+    discovery_interval = 120.0
+    elapsed = 0.0
+    if saver_style == 1:
+        surprise_me()
+    else:
+        reset_view()
+    if saver_style == 3:
+        visuals.apply_options(visuals.clouds_enabled, true, true)
+
+func preview_screensaver() -> void:
+    finish_intro()
+    previous_window_mode = get_window().mode
+    saved_discovery = discovery_enabled
+    saved_interval = discovery_interval
+    update_request.cancel_request()
+    services.quake_request.cancel_request()
+    services.search_request.cancel_request()
+    saver_preview = true
+    screensaver_mode = true
+    screensaver_age = 0.0
+    interface_layer.hide()
+    get_window().mode = Window.MODE_FULLSCREEN
+    Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
+    apply_saver_style()
+
+func stop_screensaver_preview() -> void:
+    screensaver_mode = false
+    saver_preview = false
+    discovery_enabled = saved_discovery
+    discovery_interval = saved_interval
+    sun.rotation_degrees = Vector3(-25, 150, 0)
+    earth_material.set_shader_parameter("sun_direction", sun.basis.z)
+    atmosphere_material.set_shader_parameter("sun_direction", sun.basis.z)
+    visuals.apply_options(preferences.get_value("visuals", "clouds", true), preferences.get_value("visuals", "stars", true), preferences.get_value("visuals", "moon", false))
+    get_window().mode = previous_window_mode
+    Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+    interface_layer.show()
+    reset_view()
