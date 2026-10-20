@@ -27,5 +27,10 @@ inline Options parse(const std::vector<std::wstring>& args) {
     }
     return value ? Options{Mode::Preview,value} : Options{};
 }
+inline std::vector<std::wstring> renderer_arguments(uintptr_t parent, int width, int height, bool preview) {
+    std::vector<std::wstring> result = {L"--wid",std::to_wstring(parent),L"--resolution",std::to_wstring(width)+L"x"+std::to_wstring(height),L"--position",L"0,0",L"--audio-driver",L"Dummy",L"--max-fps",L"30",L"--",L"--saver-hosted"};
+    if (preview) result.push_back(L"--saver-preview");
+    return result;
+}
 inline bool animate_monitor(size_t index) { return index < 4; }
 }

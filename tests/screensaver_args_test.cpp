@@ -2,7 +2,11 @@
 #include <iostream>
 #include <stdexcept>
 using namespace earth_saver;
-int main() {
+int main(int argc, char** argv) {
+    if (argc == 5 && std::string(argv[1]) == "--engine-args") {
+        for (const auto& arg : renderer_arguments(1,std::stoi(argv[2]),std::stoi(argv[3]),std::string(argv[4])=="preview")) std::wcout<<arg<<L"\n";
+        return 0;
+    }
     int checks=0;
     auto check=[&](bool valid){++checks;if(!valid)throw std::runtime_error("Screensaver argument contract failed");};
     check(parse({}).mode==Mode::Configure);
