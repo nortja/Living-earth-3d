@@ -29,5 +29,7 @@ try {
         if ((Get-AuthenticodeSignature $installer).Status -ne 'Valid') { throw 'Installer signature verification failed' }
     }
     (Get-FileHash $installer -Algorithm SHA256).Hash.ToLower() + '  ' + (Split-Path $installer -Leaf) | Set-Content "$installer.sha256" -Encoding ascii
+    $payloadHashes = @{'LivingEarth3D.exe'=(Get-FileHash $app -Algorithm SHA256).Hash.ToLower(); 'LivingEarth3D.scr'=(Get-FileHash $app -Algorithm SHA256).Hash.ToLower(); 'update.ps1'=(Get-FileHash "$PSScriptRoot/update.ps1" -Algorithm SHA256).Hash.ToLower(); 'update-core.ps1'=(Get-FileHash "$PSScriptRoot/update-core.ps1" -Algorithm SHA256).Hash.ToLower()}
+    [IO.File]::WriteAllText((Join-Path $root 'dist/payload-hashes.json'), ($payloadHashes | ConvertTo-Json))
     Write-Host "Installer ready: $installer"
 } finally { Pop-Location }

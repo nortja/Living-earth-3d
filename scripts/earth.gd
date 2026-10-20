@@ -11,6 +11,8 @@ var ambient: AudioStreamPlayer
 var interface: Control
 var services: Node
 var monitor_poll := 0.0
+var update_poll := 0.0
+var update_check_age := 0.0
 var last_monitor := -1
 var external_focus := false
 var saver_style := 0
@@ -58,7 +60,7 @@ var update_status: Label
 var update_feed: Dictionary = {}
 var update_request: HTTPRequest
 var preferences := ConfigFile.new()
-const VERSION := "0.5.2"
+const VERSION := "0.5.3"
 const UPDATE_FEED_URL := "https://raw.githubusercontent.com/nortja/Living-earth-3d/main/updates/preview.json"
 const RELEASES_URL := "https://github.com/nortja/Living-earth-3d/releases"
 
@@ -149,6 +151,15 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
     screensaver_age += delta
+    if not screensaver_mode and OS.get_name() == "Windows":
+        update_poll += delta
+        update_check_age += delta
+        if update_poll >= 2.0:
+            update_poll = 0.0
+            refresh_update_status()
+        if update_check_age >= 1800.0:
+            update_check_age = 0.0
+            start_auto_update()
     monitor_poll += delta
     if monitor_poll >= 2.0 and DisplayServer.get_name() != "headless":
         monitor_poll = 0.0
@@ -245,8 +256,8 @@ func _build_explorer(layer: CanvasLayer) -> void:
     interface = EarthInterface.new()
     layer.add_child(interface)
     interface.setup(self)
-    if not screensaver_mode and "--validate-display" not in OS.get_cmdline_user_args() and preferences.get_value("updates", "automatic", false):
-        check_updates()
+    if not screensaver_mode and "--validate-display" not in OS.get_cmdline_user_args() and DisplayServer.get_name() != "headless":
+        call_deferred("start_auto_update")
 
 func _button(parent: Node, title: String, action: Callable) -> Button:
     var button := Button.new()
@@ -349,9 +360,8 @@ func _updates_received(result: int, code: int, _headers: PackedStringArray, body
         return
     update_feed = feed
     if newer_version(feed.version):
-        update_status.text = "Version %s available • %s" % [feed.version, "Install update to restart securely." if feed.get("installer_signed", false) else "Preview: choose Download latest to install."]
-        if preferences.get_value("updates", "automatic", false) and OS.get_name() == "Windows" and feed.get("installer_signed", false):
-            install_update()
+        update_status.text = "Version %s available · checking release signature…" % feed.version
+        start_auto_update()
     else:
         update_status.text = "You're up to date • " + VERSION
 
@@ -382,19 +392,50 @@ func download_latest() -> void:
     else:
         update_status.text = "Check updates first to find the latest installer."
 
+func background_updates_enabled() -> bool:
+    return preferences.get_value("updates", "background", true)
+
+func set_background_updates(enabled: bool) -> void:
+    preferences.set_value("updates", "background", enabled)
+    _save_preferences()
+    if enabled:
+        start_auto_update()
+    else:
+        _launch_update_helper(false, true)
+        update_status.text = "Automatic updates are paused."
+
+func start_auto_update() -> void:
+    if background_updates_enabled():
+        _launch_update_helper(false, false)
+
 func install_update() -> void:
-    if update_feed.is_empty():
-        update_status.text = "Check updates first."
+    _launch_update_helper(true, false)
+
+func _launch_update_helper(restart_now: bool, cancel: bool) -> void:
+    if screensaver_mode:
         return
-    if not update_feed.get("installer_signed", false):
-        update_status.text = "Unsigned preview: use Download latest. Automatic replacement requires signed releases."
-        return
-    var helper := OS.get_executable_path().get_base_dir().path_join("update.ps1")
+    var directory := OS.get_executable_path().get_base_dir()
+    var helper := directory.path_join("update.ps1")
     if OS.get_name() != "Windows" or not FileAccess.file_exists(helper):
-        update_status.text = "Install updates through the Windows installer. Use Official releases for other builds."
+        if restart_now:
+            update_status.text = "Automatic updates are available in the installed Windows app."
         return
-    var pid := OS.create_process("powershell.exe", ["-NoProfile", "-WindowStyle", "Hidden", "-File", helper, "-CurrentVersion", VERSION, "-AppProcessId", str(OS.get_process_id())], false)
-    update_status.text = "Updater started • A verified update will ask before restarting." if pid > 0 else "Could not start updater. Use Official releases."
+    if not cancel:
+        DirAccess.remove_absolute(directory.path_join(".updates/cancel"))
+    var arguments := PackedStringArray(["-NoProfile", "-NonInteractive", "-ExecutionPolicy", "Bypass", "-WindowStyle", "Hidden", "-File", helper, "-CurrentVersion", VERSION, "-AppProcessId", str(OS.get_process_id())])
+    if restart_now: arguments.append("-RestartNow")
+    if cancel: arguments.append("-Cancel")
+    var pid := OS.create_process("powershell.exe", arguments, false)
+    if not cancel:
+        update_status.text = "Checking verified updates in the background…" if pid > 0 else "Updater could not start. Your current app still works."
+
+func refresh_update_status() -> void:
+    var path := OS.get_executable_path().get_base_dir().path_join(".updates/status.json")
+    if not FileAccess.file_exists(path): return
+    var status = JSON.parse_string(FileAccess.get_file_as_string(path))
+    if status is Dictionary and status.get("message") is String:
+        update_status.text = str(status.message).left(500)
+
 
 func _zoom(amount: float) -> void:
     angular_velocity = Vector2.ZERO
@@ -594,6 +635,7 @@ func preview_screensaver() -> void:
     services.quake_request.cancel_request()
     services.search_request.cancel_request()
     ambient.set_suspended(true)
+    _launch_update_helper(false, true)
     saver_preview = true
     screensaver_mode = true
     screensaver_age = 0.0

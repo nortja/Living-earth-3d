@@ -419,16 +419,14 @@ func _settings(box: VBoxContainer) -> void:
     label(box, "Original offline synthesized sound · off by default. Screensaver mode stays silent.", 12)
     label(box, "Updates", 18)
     var automatic := CheckButton.new()
-    automatic.text = "Check for updates on startup"
-    automatic.button_pressed = app.preferences.get_value("updates", "automatic", false)
-    automatic.toggled.connect(func(enabled: bool):
-        app.preferences.set_value("updates", "automatic", enabled)
-        app._save_preferences()
-        if enabled: app.check_updates())
+    automatic.text = "Automatic updates"
+    automatic.button_pressed = app.background_updates_enabled()
+    automatic.toggled.connect(app.set_background_updates)
     box.add_child(automatic)
     button(box, "Check updates", app.check_updates)
-    button(box, "Download latest installer", app.download_latest)
-    button(box, "Install signed update", app.install_update)
-    app.update_status = label(box, "Version " + app.VERSION + " · Preview installers require manual installation.", 12)
+    button(box, "Update and restart now", app.install_update)
+    button(box, "Download installer manually", app.download_latest)
+    app.update_status = label(box, "Version " + app.VERSION + " · Verified updates install when you close the app.", 12)
+    label(box, "Automatic checks run at startup and every 30 minutes while open. Small and large releases use the same verified update process. Turn this off to defer pending updates. Offline exploration always works.", 12)
     button(box, "Version history ↗", func(): OS.shell_open("https://github.com/nortja/Living-earth-3d/blob/main/CHANGELOG.md"))
     label(box, "Earth maps: Solar System Scope / INOVE · CC BY 4.0. Moon: three.js · MIT. Cloud and space layers are offline artwork.", 12)

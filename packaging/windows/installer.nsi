@@ -4,7 +4,7 @@ Unicode true
 !include "x64.nsh"
 !include "WinMessages.nsh"
 !ifndef VERSION
-!define VERSION "0.5.2"
+!define VERSION "0.5.3"
 !endif
 !ifndef BUILD_DIR
 !define BUILD_DIR "..\..\build\windows"
@@ -62,9 +62,21 @@ FunctionEnd
 !insertmacro CloseApplication CloseLivingEarth
 !insertmacro CloseApplication un.CloseLivingEarth
 Function un.onInit
+  CreateDirectory "$INSTDIR\.updates"
+  FileOpen $2 "$INSTDIR\.updates\cancel" w
+  FileWrite $2 "cancel"
+  FileClose $2
+  Sleep 1200
   Call un.CloseLivingEarth
 FunctionEnd
 Function .onInit
+  IfFileExists "$INSTDIR\update.ps1" 0 skip_update_cancel
+  CreateDirectory "$INSTDIR\.updates"
+  FileOpen $2 "$INSTDIR\.updates\cancel" w
+  FileWrite $2 "cancel"
+  FileClose $2
+  Sleep 1200
+  skip_update_cancel:
   Call CloseLivingEarth
   ${IfNot} ${RunningX64}
     MessageBox MB_OK "Living Earth 3D requires 64-bit Windows."
@@ -77,6 +89,7 @@ Section "Living Earth 3D"
   File "${BUILD_DIR}\LivingEarth3D.exe"
   File /oname=LivingEarth3D.scr "${BUILD_DIR}\LivingEarth3D.exe"
   File "update.ps1"
+  File "update-core.ps1"
   File "..\..\assets\Godot-LICENSE.txt"
   File "..\..\assets\earth\THREE-LICENSE.txt"
   File "..\..\assets\earth\CC-BY-4.0.txt"
@@ -103,6 +116,8 @@ Section "Uninstall"
   RMDir "$SMPROGRAMS\Living Earth 3D"
   Delete "$INSTDIR\LivingEarth3D.exe"
   Delete "$INSTDIR\update.ps1"
+  Delete "$INSTDIR\update-core.ps1"
+  RMDir /r "$INSTDIR\.updates"
   Delete "$INSTDIR\LivingEarth3D.scr"
   Delete "$INSTDIR\Godot-LICENSE.txt"
   Delete "$INSTDIR\THREE-LICENSE.txt"

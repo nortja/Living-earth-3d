@@ -1,0 +1,48 @@
+param([Parameter(Mandatory=$true)][string]$Installer, [Parameter(Mandatory=$true)][string]$PayloadMetadata)
+$ErrorActionPreference = 'Stop'
+. "$PSScriptRoot/../packaging/windows/update-core.ps1"
+if ($env:OS -ne 'Windows_NT') { throw 'This test requires Windows' }
+$Installer = (Resolve-Path $Installer).Path
+$files = Get-Content $PayloadMetadata -Raw | ConvertFrom-Json
+$fixture = Join-Path $env:RUNNER_TEMP ('earth update test ' + [guid]::NewGuid().ToString())
+$installRoot = Join-Path $fixture 'Living Earth 3D'
+New-Item -ItemType Directory -Path $fixture -Force | Out-Null
+$oldInstaller = Join-Path $fixture 'old.exe'
+Invoke-WebRequest -UseBasicParsing -Uri 'https://raw.githubusercontent.com/nortja/Living-earth-3d/downloads/windows-0.5.2/LivingEarth3D-Setup-0.5.2.exe' -OutFile $oldInstaller
+if ((Get-FileHash $oldInstaller -Algorithm SHA256).Hash.ToLowerInvariant() -ne '78a011d3d7aee0f195a2ecc2605858e3133206b67161a96103bc0870acdd530b') { throw 'Old installer checksum mismatch' }
+$setup=Start-Process $oldInstaller -ArgumentList "/S /D=$installRoot" -PassThru -Wait
+if ($setup.ExitCode -ne 0) { throw 'Baseline installation failed' }
+$before = (Get-FileHash (Join-Path $installRoot 'LivingEarth3D.exe') -Algorithm SHA256).Hash
+$sentinel = Join-Path ([Environment]::GetFolderPath('ApplicationData')) 'Godot/app_userdata/Living Earth 3D/update-test-sentinel.txt'
+New-Item -ItemType Directory -Path (Split-Path $sentinel) -Force | Out-Null
+[IO.File]::WriteAllText($sentinel,'user preferences must survive')
+$manifest = [pscustomobject]@{size=(Get-Item $Installer).Length;sha256=(Get-FileHash $Installer -Algorithm SHA256).Hash.ToLowerInvariant();files=$files}
+# A bad post-install hash forces the real rollback path after the real NSIS installer runs.
+$badFiles = $files | ConvertTo-Json | ConvertFrom-Json
+$badFiles.'update.ps1' = '0'*64
+$bad = [pscustomobject]@{size=$manifest.size;sha256=$manifest.sha256;files=$badFiles}
+$rejected = $false
+try { Install-EarthRelease $installRoot $Installer $bad (Join-Path $fixture 'rollback') } catch { $rejected=$true }
+if (!$rejected) { throw 'Expected update rollback did not occur' }
+if ((Get-FileHash (Join-Path $installRoot 'LivingEarth3D.exe') -Algorithm SHA256).Hash -ne $before) { throw 'Rollback did not restore prior app' }
+if (Test-Path (Join-Path $installRoot 'update-core.ps1')) { throw 'Rollback did not remove a newly introduced file' }
+if ((Get-ItemProperty 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Uninstall\LivingEarth3D').DisplayVersion -ne '0.5.2') { throw 'Rollback did not restore version metadata' }
+Write-Output 'PASS: actual installer failure restores 0.5.2 files and registry version'
+Install-EarthRelease $installRoot $Installer $manifest (Join-Path $fixture 'successful-backup')
+Confirm-EarthFiles $installRoot $manifest
+if ((Get-ItemProperty 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Uninstall\LivingEarth3D').DisplayVersion -ne '0.5.3') { throw 'Updated version metadata missing' }
+if ((Get-Content $sentinel -Raw) -ne 'user preferences must survive') { throw 'User data changed' }
+Write-Output 'PASS: real silent 0.5.2 to 0.5.3 update at a path containing spaces preserves user data'
+# Exercise running-process protection using our own headless app process, without GPU requirements.
+$app=Start-Process (Join-Path $installRoot 'LivingEarth3D.exe') -ArgumentList '--headless --quit-after 180' -PassThru
+Start-Sleep -Milliseconds 500
+$rejected=$false
+try { Install-EarthRelease $installRoot $Installer $manifest (Join-Path $fixture 'blocked-backup') } catch { $rejected=$true }
+if (!$rejected) { throw 'An update was allowed while the app was running' }
+if (!$app.WaitForExit(30000)) { throw 'Headless fixture did not exit naturally' }
+Write-Output 'PASS: a running application defers replacement'
+$uninstall=Start-Process (Join-Path $installRoot 'Uninstall.exe') -ArgumentList "/S _?=$installRoot" -Wait -PassThru
+if ($uninstall.ExitCode -ne 0 -or (Test-Path (Join-Path $installRoot 'LivingEarth3D.exe'))) { throw 'Uninstall failed' }
+Remove-Item $sentinel -Force
+Remove-Item $fixture -Recurse -Force
+Write-Output 'Windows update installation: all checks passed (no native GPU behavior claimed)'

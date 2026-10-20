@@ -1,54 +1,76 @@
-# Runs without a terminal. Feed and installer locations are restricted to this project.
-param([string]$CurrentVersion = '0.5.2', [int]$AppProcessId = 0, [ValidateSet('preview','development')][string]$Channel = 'preview')
+# Installed per-user helper. Authenticated releases apply on normal app exit.
+param([string]$CurrentVersion = '0.5.3', [int]$AppProcessId = 0, [switch]$RestartNow, [switch]$Cancel)
 $ErrorActionPreference = 'Stop'
-Add-Type -AssemblyName System.Windows.Forms
-$work = $null
-$mutex = $null
-$ownsMutex = $false
+. (Join-Path $PSScriptRoot 'update-core.ps1')
+$installRoot = [IO.Path]::GetFullPath($PSScriptRoot)
+$stateRoot = Join-Path $installRoot '.updates'
+New-Item -ItemType Directory -Path $stateRoot -Force | Out-Null
+$cancelPath = Join-Path $stateRoot 'cancel'
+$restartPath = Join-Path $stateRoot 'restart'
+if ($Cancel) { [IO.File]::WriteAllText($cancelPath, 'cancel'); return }
+if ($RestartNow) { [IO.File]::WriteAllText($restartPath, [string]$AppProcessId) }
+$mutex = $null; $ownsMutex = $false; $work = $null
+function Set-EarthUpdateStatus([string]$State, [string]$Message) {
+    $json = @{state=$State; message=$Message; utc=[DateTime]::UtcNow.ToString('o')} | ConvertTo-Json -Compress
+    $temporary = Join-Path $stateRoot 'status.tmp'
+    [IO.File]::WriteAllText($temporary, $json)
+    Move-Item -LiteralPath $temporary -Destination (Join-Path $stateRoot 'status.json') -Force
+}
 try {
-    $mutex = [Threading.Mutex]::new($false, 'Local\LivingEarth3D.Updater')
-    $ownsMutex = $mutex.WaitOne(0)
+    $hash = [Security.Cryptography.SHA256]::Create()
+    try { $instance = [BitConverter]::ToString($hash.ComputeHash([Text.Encoding]::UTF8.GetBytes($installRoot.ToLowerInvariant()))).Replace('-','') } finally { $hash.Dispose() }
+    $mutex = [Threading.Mutex]::new($false, "Local\LivingEarth3D.Updater.$instance")
+    try { $ownsMutex = $mutex.WaitOne(0) } catch [Threading.AbandonedMutexException] { $ownsMutex = $true }
     if (!$ownsMutex) { return }
+    if ($CurrentVersion -cnotmatch '^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$') { throw 'Invalid installed version.' }
+    if (Test-Path -LiteralPath $cancelPath) { Set-EarthUpdateStatus 'paused' 'Automatic updates are paused.'; return }
     [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-    $feedUri = if ($Channel -eq 'development') { 'https://raw.githubusercontent.com/nortja/Living-earth-3d/development/updates/preview.json' } else { 'https://raw.githubusercontent.com/nortja/Living-earth-3d/main/updates/preview.json' }
-    $feed = Invoke-RestMethod -Uri $feedUri -Headers @{'User-Agent'='LivingEarth3D-Updater'}
-    if ($feed.channel -cne $Channel -or $feed.version -notmatch '^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$') { throw 'Invalid update metadata.' }
-    $version = $feed.version
-    if ([version]$version -le [version]$CurrentVersion) { return }
-    if ($feed.installer_signed -isnot [bool] -or !$feed.installer_signed) { throw 'This preview is unsigned. Use Download latest in the app to install manually.' }
-    if ($feed.sha256 -cnotmatch '^[0-9a-f]{64}$') { throw 'Missing installer checksum.' }
-    $name = "LivingEarth3D-Setup-$version.exe"
-    $expected = "https://github.com/nortja/Living-earth-3d/raw/refs/heads/downloads/windows-$version/$name"
-    if ($feed.installer_url -cne $expected) { throw 'Unexpected installer location.' }
-    $installed = Join-Path $PSScriptRoot 'LivingEarth3D.exe'
-    $trusted = Get-AuthenticodeSignature -LiteralPath $installed
-    if ($trusted.Status -ne 'Valid') { throw 'Automatic installation requires a signed release. Use Download latest for this development build.' }
-    $work = Join-Path ([IO.Path]::GetTempPath()) ([guid]::NewGuid().ToString())
+    $work = Join-Path $stateRoot ([guid]::NewGuid().ToString())
     New-Item -ItemType Directory -Path $work | Out-Null
-    $download = Join-Path $work $name
-    Invoke-WebRequest -UseBasicParsing -Uri $expected -OutFile $download
-    if ((Get-FileHash -LiteralPath $download -Algorithm SHA256).Hash.ToLower() -cne $feed.sha256) { throw 'Installer checksum mismatch. The update was not run.' }
-    $signature = Get-AuthenticodeSignature -LiteralPath $download
-    if ($signature.Status -ne 'Valid' -or $signature.SignerCertificate.Thumbprint -ne $trusted.SignerCertificate.Thumbprint) { throw 'Installer signature does not match the installed application. The update was not run.' }
-    $answer = [Windows.Forms.MessageBox]::Show("Version $version is ready. Close Living Earth 3D and install the update now?", 'Living Earth 3D update', 'YesNo', 'Information')
-    if ($answer -ne 'Yes') { return }
-    if ($AppProcessId -gt 0) {
-        $app = Get-Process -Id $AppProcessId -ErrorAction SilentlyContinue
-        if ($app) {
-            if ($app.Path -ne $installed) { throw 'The running application path does not match this installation.' }
-            if (-not $app.CloseMainWindow()) { throw 'Please close Living Earth 3D before updating.' }
-            if (-not $app.WaitForExit(30000)) { throw 'The app is still running. The update was cancelled.' }
+    Set-EarthUpdateStatus 'checking' 'Checking authenticated updates...'
+    $manifestPath = Join-Path $work 'application.json'
+    $signaturePath = Join-Path $work 'application.sig'
+    Receive-EarthFile 'https://raw.githubusercontent.com/nortja/Living-earth-3d/main/updates/application.json' $manifestPath 65536 $cancelPath
+    Receive-EarthFile 'https://raw.githubusercontent.com/nortja/Living-earth-3d/main/updates/application.sig' $signaturePath 2048 $cancelPath
+    $manifest = Read-EarthManifest ([IO.File]::ReadAllBytes($manifestPath)) ([Convert]::FromBase64String([IO.File]::ReadAllText($signaturePath).Trim()))
+    if ([version]$manifest.version -le [version]$CurrentVersion) { Set-EarthUpdateStatus 'current' "You're up to date - $CurrentVersion"; return }
+    Set-EarthUpdateStatus 'downloading' "Downloading verified version $($manifest.version)..."
+    $installer = Join-Path $work 'LivingEarth3D-Update.exe'
+    Receive-EarthFile $manifest.installer_url $installer $manifest.size $cancelPath
+    Confirm-EarthInstaller $installer $manifest
+    Set-EarthUpdateStatus 'ready' "Version $($manifest.version) is ready. It will install when you close Living Earth."
+    $restart = $false
+    $deadline = [DateTime]::UtcNow.AddDays(7)
+    while (@(Get-EarthProcesses $installRoot).Count) {
+        if ((Test-Path -LiteralPath $cancelPath) -or [DateTime]::UtcNow -gt $deadline) { Set-EarthUpdateStatus 'paused' 'Update deferred. Your current app is unchanged.'; return }
+        if (Test-Path -LiteralPath $restartPath) {
+            $requestedId = 0
+            [int]::TryParse([IO.File]::ReadAllText($restartPath).Trim(), [ref]$requestedId) | Out-Null
+            foreach ($app in @(Get-EarthProcesses $installRoot)) {
+                if ($app.Id -eq $requestedId) {
+                    if (!$app.CloseMainWindow()) { throw 'Please close Living Earth to finish updating.' }
+                    if (!$app.WaitForExit(30000)) { throw 'The app is still running. No files were replaced.' }
+                    $restart = $true
+                }
+            }
+            Remove-Item -LiteralPath $restartPath -Force -ErrorAction SilentlyContinue
         }
+        Start-Sleep -Milliseconds 1000
     }
-    $setup = Start-Process -FilePath $download -ArgumentList @('/S', "/D=$PSScriptRoot") -Wait -PassThru
-    if ($setup.ExitCode -ne 0) { throw "Installer failed with code $($setup.ExitCode)." }
-    $updated = Get-AuthenticodeSignature -LiteralPath $installed
-    if ($updated.Status -ne 'Valid' -or $updated.SignerCertificate.Thumbprint -ne $trusted.SignerCertificate.Thumbprint) { throw 'Updated app signature verification failed. The app was not restarted.' }
-    Start-Process -FilePath $installed
+    if (Test-Path -LiteralPath $cancelPath) { Set-EarthUpdateStatus 'paused' 'Update cancelled. Your current app is unchanged.'; return }
+    Set-EarthUpdateStatus 'installing' 'Installing verified update...'
+    Install-EarthRelease $installRoot $installer $manifest (Join-Path $stateRoot 'previous')
+    Set-EarthUpdateStatus 'installed' "Updated to $($manifest.version)."
+    if ($restart) { Start-Process -FilePath (Join-Path $installRoot 'LivingEarth3D.exe') }
 } catch {
-    [Windows.Forms.MessageBox]::Show($_.Exception.Message, 'Living Earth 3D update', 'OK', 'Information') | Out-Null
+    # Background failures are non-modal and never block offline exploration.
+    if (Test-Path -LiteralPath $cancelPath) { Set-EarthUpdateStatus 'paused' 'Automatic updates are paused.' }
+    else { Set-EarthUpdateStatus 'error' ('Update deferred: ' + $_.Exception.Message) }
 } finally {
-    if ($work -and (Test-Path -LiteralPath $work)) { Remove-Item -LiteralPath $work -Recurse -Force }
-    if ($ownsMutex) { $mutex.ReleaseMutex() }
+    if ($work -and (Test-Path -LiteralPath $work)) { Remove-Item -LiteralPath $work -Recurse -Force -ErrorAction SilentlyContinue }
+    if ($ownsMutex) {
+        Remove-Item -LiteralPath $restartPath -Force -ErrorAction SilentlyContinue
+        $mutex.ReleaseMutex()
+    }
     if ($mutex) { $mutex.Dispose() }
 }

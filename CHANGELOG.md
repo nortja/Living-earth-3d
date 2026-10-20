@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.5.3 — Install once, update from the app
+
+- Added automatic update checks at startup and every 30 minutes while Explorer is open. Verified updates download in the background and install silently after all app/screensaver windows close.
+- Added Update and restart now, persistent pause/resume, progress/error status and cancellation. Offline use continues when updates are unavailable.
+- Added a pinned 3072-bit RSA release-signing key and detached SHA-256 signatures. The helper verifies raw metadata, exact project URLs, version, bounded download size, installer checksum and installed app/helper hashes. A checksum alone never authorizes execution. Private signing material is excluded from git and CI.
+- Both small and large releases use the full installer internally. Existing preferences/favorites remain outside the installation directory; normal updates require no installer wizard or manual download.
+- Added a previous-file backup and restoration on installer/post-install verification failure. This is not a guarantee of recovery from power loss during replacement. Windows publisher signing remains separate from release authentication.
+- Passed 310 local application/security checks; the release workflow additionally gates publication on real Windows installation and rollback tests.
+- Older versions need this bootstrap installer once. No scheduled service, administrator access or global execution-policy change is required.
+
+
 ## 0.5.2 — Readable controls on large displays
 
 - Added saved interface sizes: Automatic, 100%, 125%, 150%, 175% and 200%. Changes apply immediately without reducing Earth rendering resolution.

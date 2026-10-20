@@ -26,7 +26,7 @@ Validation separates Linux native rendering, packaged-data/resource checks, and 
 - [ ] Test 0.5.0 desktop/taskbar icon, intro, upgrades, favorite preservation, uninstall, and reinstall on Windows 10/11 x64.
 - [ ] Test 1080p/4K/ultrawide displays with Windows DPI scaling and normal integrated GPUs. Measure frame time and memory, then tune quality settings.
 - [ ] Provision an authentic code-signing certificate through secure CI settings. Sign both app and installer; never weaken signature checks for unsigned previews.
-- [ ] Verify signed self-update end to end: download, same-publisher verification, consent, close, install, restart, cancellation, and rejection of bad signatures.
+- [ ] Complete field verification of 0.5.3 authenticated updates: the pinned release signature replaces manual preview updates; Windows test automation covers silent installation/rollback, while visible-app restart, sleep/resume and physical field checks remain separate.
 - [ ] Validate the revised Windows build script in a controlled manual run. The workflow remains disabled to prevent further unwanted emails. No development-tag triggers.
 - [ ] Define a signed stable update channel before 1.0; preview feed currently serves opt-in development updates.
 - [ ] Add upgrade rollback/recovery and a planned certificate-rotation path before calling auto-update production-ready.

@@ -1,13 +1,11 @@
-# Development and stable delivery
+# Preview and stable delivery
 
-There is no production stable release yet. Existing 0.5.0 downloads are unsigned previews.
+There is no production stable release. The 0.5.x installers remain Windows publisher-unsigned previews.
 
-- `main` currently preserves the existing preview application plus delivery maintenance. It is not a declaration of production readiness.
-- `development` contains the next application cycle. Development installers and their update metadata stay on that branch; the existing `main/updates/preview.json` feed is not advanced by development publication.
-- Development update metadata uses `channel: development`. The application and Windows helper both reject a different channel, unexpected installer URL, missing checksum or unsigned automatic replacement. Unsigned previews can only be downloaded and installed manually.
-- The Windows workflow is manual-only, remains disabled until one controlled validation is possible, and has read-only repository permissions. It builds/test-installs the native EXE and uploads development artifacts. It cannot publish GitHub releases or alter update feeds. No automatic push/tag runs or account-wide notification changes.
-- A production stable promotion requires successful native Windows install/upgrade/uninstall and display evidence, reviewed screenshots, physical GPU/DPI/refresh and sleep/resume testing, trusted signatures on app and installer, and an end-to-end same-publisher update test. A future stable feed must be separate and signed; it is not created by this development cycle.
+Version 0.5.3 introduces authenticated automatic preview updates, explicitly requested by the owner. A dedicated 3072-bit RSA public key is pinned in the installed update core. The corresponding private release key stays outside git and CI. A detached RSA PKCS#1 v1.5 SHA-256 signature over the exact application manifest bytes is required before any installer can execute. This replaces the earlier preview limitation to manual installation; it does not permit checksum-only updates or claim Windows Authenticode trust.
 
-Do not label a Linux render, cross-built PE, fixture parser test, provider HTTP 200, or simulated long-duration check as Windows hardware validation, live camera playback, or an actual hours-long soak.
+`updates/preview.json` remains backward compatible so 0.5.2 and older can download the bootstrap installer manually. New installations use `updates/application.json` and `updates/application.sig`. Publish the installer first; publish the signed manifest, signature and preview discovery metadata atomically only after validation. Future small/large releases use the same authenticated full-installer path. Increasing the update protocol requires a deliberate compatibility plan.
 
-Provider-network configuration is saved in the environment draft. Only the product's user-facing publication flow can activate a prepared environment snapshot/configuration; the agent has no publication tool. Git read/push access does not imply GitHub API access. No provider secrets are required for the current public services.
+The previous failing Windows workflow remains disabled and unchanged. Release-specific workflows on dedicated branches repeat source tests, cross-build, verify resources and execute Windows update/rollback checks before installer publication. They do not automatically promote an unsigned manifest or receive the private key.
+
+Stable promotion still needs physical Windows GPU/DPI/refresh and sleep/resume evidence, reviewed screenshots, long-duration reliability, Windows publisher signatures and broader field testing. Headless Windows installation checks establish installer behavior, not native display quality or audible playback.

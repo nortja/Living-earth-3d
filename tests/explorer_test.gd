@@ -56,7 +56,7 @@ func run() -> void:
     verify(scene.selected != previous, "Timed discovery advances")
     verify(scene.newer_version("v0.6.0"), "Newer minor release")
     verify(scene.newer_version("1.0.0"), "Newer major release")
-    verify(not scene.newer_version("v0.5.2"), "Current release ignored")
+    verify(not scene.newer_version("v0.5.3"), "Current release ignored")
     verify(not scene.newer_version("v0.0.9"), "Older release ignored")
     verify(not scene.newer_version("v1.0.0-beta"), "Prerelease ignored")
     scene._updates_received(0, 404, PackedStringArray(), PackedByteArray())
@@ -75,7 +75,7 @@ func run() -> void:
     invalid_feed.version = "0.5.0/../../other"
     verify(not scene.valid_update_feed(invalid_feed), "Malformed version rejected")
     scene.install_update()
-    verify(scene.update_status.text.contains("Unsigned preview"), "Unsigned previews never trigger automatic replacement")
+    verify(scene.update_status.text.contains("installed Windows app"), "Editor builds cannot run the installed updater")
     scene._updates_received(0, 200, PackedStringArray(), 'invalid'.to_utf8_buffer())
     verify(scene.update_status.text.contains("unavailable"), "Malformed response handled")
     scene._updates_received(HTTPRequest.RESULT_CANT_CONNECT, 0, PackedStringArray(), PackedByteArray())
