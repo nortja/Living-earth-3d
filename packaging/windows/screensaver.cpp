@@ -54,10 +54,8 @@ static bool start_view(View& view, const std::wstring& app) {
     RECT client{};
     if (!GetClientRect(view.host,&client)) return false;
     int width = std::max(1L,client.right), height = std::max(1L,client.bottom);
-    std::wstring command = L"\""+app+L"\" --wid "+std::to_wstring((uintptr_t)view.host)+
-        L" --resolution "+std::to_wstring(width)+L","+std::to_wstring(height)+
-        L" --position 0,0 --no-focus --audio-driver Dummy --max-fps 30 -- --saver-hosted"+
-        (preview ? L" --saver-preview" : L"");
+    std::wstring command = L"\""+app+L"\"";
+    for (const auto& argument : earth_saver::renderer_arguments((uintptr_t)view.host,width,height,preview)) command += L" "+argument;
     STARTUPINFOW si{}; si.cb=sizeof(si);
     PROCESS_INFORMATION pi{};
     if (!CreateProcessW(app.c_str(),&command[0],nullptr,nullptr,FALSE,CREATE_SUSPENDED,nullptr,nullptr,&si,&pi)) return false;
@@ -100,7 +98,10 @@ static void tick() {
     for (auto& view : views) {
         if (!view.process) continue; // Extra monitors remain black to bound GPU/memory use.
         if (WaitForSingleObject(view.process,0) == WAIT_OBJECT_0) { stop(); return; }
-        if (!view.child) EnumChildWindows(view.host,find_child,(LPARAM)&view);
+        if (!view.child) {
+            EnumChildWindows(view.host,find_child,(LPARAM)&view);
+            if (view.child && preview) EnableWindow(view.child,FALSE); // Preview paints but never takes input/focus.
+        }
         if (!view.child) { if (age>20000) stop(); continue; }
         RECT client{}; GetClientRect(view.host,&client);
         if (client.right <= 0 || client.bottom <= 0) continue;

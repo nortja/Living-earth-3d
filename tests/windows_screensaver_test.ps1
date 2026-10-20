@@ -14,6 +14,7 @@ public static class SaverWindows {
  [DllImport("user32.dll")] public static extern uint GetWindowThreadProcessId(IntPtr w,out uint p);
  [DllImport("user32.dll")] public static extern IntPtr GetParent(IntPtr w);
  [DllImport("user32.dll")] public static extern bool IsWindowVisible(IntPtr w);
+ [DllImport("user32.dll")] public static extern bool IsWindowEnabled(IntPtr w);
  [DllImport("user32.dll")] public static extern bool GetWindowRect(IntPtr w,out Rect r);
  [DllImport("user32.dll")] public static extern bool PostMessage(IntPtr w,uint m,IntPtr a,IntPtr b);
  [DllImport("user32.dll")] public static extern void keybd_event(byte k,byte s,uint f,UIntPtr e);
@@ -54,7 +55,18 @@ function Wait-Renderer($Launcher,[IntPtr]$Parent) {
  $deadline=[DateTime]::UtcNow.AddSeconds(30)
  while([DateTime]::UtcNow -lt $deadline){
   Pump
-  if($Launcher.HasExited){throw 'Saver exited before renderer became visible'}
+  if($Launcher.HasExited){
+   Write-Host ("Native launcher exit="+$Launcher.ExitCode+"; parent visible="+[SaverWindows]::IsWindowVisible($Parent))
+   $godotLog=Join-Path ([Environment]::GetFolderPath('ApplicationData')) 'Godot/app_userdata/Living Earth 3D/logs/godot.log'
+   if(Test-Path $godotLog){Get-Content $godotLog -Tail 60 | ForEach-Object {Write-Host $_}}
+   $diag=Join-Path $pwd 'dist/windows-saver-engine.log'
+   $direct=Start-Process "$root/LivingEarth3D.exe" -ArgumentList ('--wid '+$Parent.ToInt64()+' --resolution 320x200 --audio-driver Dummy --log-file "'+$diag+'" -- --saver-hosted --saver-preview') -PassThru
+   Pump 6000
+   if(!$direct.HasExited){$direct.Kill();$direct.WaitForExit()}
+   if(Test-Path $diag){Get-Content $diag -Tail 80 | ForEach-Object {Write-Host $_}}
+   Write-Host ('Direct Godot exit='+$direct.ExitCode)
+   throw 'Saver exited before renderer became visible'
+  }
   $child=Child-Process $Launcher
   if($child){$windows=@([SaverWindows]::Windows([uint32]$child.Id,$Parent)|Where-Object{[SaverWindows]::IsWindowVisible($_)});if($windows.Count){return @{Process=$child;Window=$windows[0]}}}
  }
@@ -87,6 +99,7 @@ try {
  $rect=New-Object SaverWindows+Rect
  [void][SaverWindows]::GetWindowRect($r1.Window,[ref]$rect)
  if($rect.Right-$rect.Left -ne 580 -or $rect.Bottom-$rect.Top -ne 330){throw "Preview did not track parent client size: $($rect.Right-$rect.Left)x$($rect.Bottom-$rect.Top)"}
+ if([SaverWindows]::IsWindowEnabled($r1.Window)){throw 'Preview renderer still accepts focus/input'}
  # Capture actual Godot pixels, not merely a correctly-parented blank window.
  Pump 4000
  $point=$first.PointToScreen([Drawing.Point]::Empty)
