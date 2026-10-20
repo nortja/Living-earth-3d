@@ -68,7 +68,8 @@ static bool start_view(View& view, const std::wstring& app) {
 static BOOL CALLBACK find_child(HWND window, LPARAM data) {
     View* view = (View*)data; DWORD pid=0;
     GetWindowThreadProcessId(window,&pid);
-    if (pid == view->pid) { view->child=window; return FALSE; }
+    wchar_t name[64]{}; GetClassNameW(window,name,64);
+    if (pid == view->pid && std::wstring(name) == L"Engine" && IsWindowVisible(window)) { view->child=window; return FALSE; }
     return TRUE;
 }
 static BOOL CALLBACK add_monitor(HMONITOR, HDC, LPRECT rect, LPARAM) {
@@ -100,15 +101,27 @@ static void tick() {
         if (WaitForSingleObject(view.process,0) == WAIT_OBJECT_0) { stop(); return; }
         if (!view.child) {
             EnumChildWindows(view.host,find_child,(LPARAM)&view);
-            if (view.child && preview) EnableWindow(view.child,FALSE); // Preview paints but never takes input/focus.
+            if (!view.child) EnumWindows(find_child,(LPARAM)&view);
         }
         if (!view.child) { if (age>20000) stop(); continue; }
         RECT client{}; GetClientRect(view.host,&client);
         if (client.right <= 0 || client.bottom <= 0) continue;
-        if (!EqualRect(&view.bounds,&client)) {
-            MoveWindow(view.child,0,0,client.right,client.bottom,TRUE);
-            view.bounds=client;
+        // Godot 4.6 --wid creates an owned WS_POPUP on Windows, not a WS_CHILD.
+        // Adopt the initialized offscreen renderer explicitly and reassert after any engine style update.
+        LONG_PTR style=GetWindowLongPtrW(view.child,GWL_STYLE);
+        if (!(style & WS_CHILD) || GetParent(view.child) != view.host) {
+            SetWindowLongPtrW(view.child,GWL_STYLE,(style & ~(WS_POPUP|WS_CAPTION|WS_THICKFRAME|WS_MINIMIZE|WS_MAXIMIZE))|WS_CHILD|WS_CLIPSIBLINGS);
+            SetParent(view.child,view.host);
+            if (GetParent(view.child) != view.host) { stop(); continue; }
+            LONG_PTR ex=GetWindowLongPtrW(view.child,GWL_EXSTYLE);
+            SetWindowLongPtrW(view.child,GWL_EXSTYLE,(ex & ~(WS_EX_APPWINDOW|WS_EX_WINDOWEDGE|WS_EX_CLIENTEDGE))|(preview ? WS_EX_NOACTIVATE : 0));
+            SetWindowPos(view.child,HWND_TOP,0,0,client.right,client.bottom,SWP_FRAMECHANGED|SWP_NOACTIVATE|SWP_SHOWWINDOW);
+            if (preview) EnableWindow(view.child,FALSE);
         }
+        RECT child{}; GetWindowRect(view.child,&child);
+        MapWindowPoints(HWND_DESKTOP,view.host,(LPPOINT)&child,2);
+        if (!EqualRect(&child,&client)) MoveWindow(view.child,0,0,client.right,client.bottom,TRUE);
+        view.bounds=client;
     }
 }
 int WINAPI wWinMain(HINSTANCE instance,HINSTANCE,LPWSTR,int) {
