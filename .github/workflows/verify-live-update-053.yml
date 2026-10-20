@@ -1,0 +1,15 @@
+name: Verify live signed 0.5.3 updater
+on:
+  push:
+    branches: [release/verify-update-0.5.3]
+permissions:
+  contents: read
+jobs:
+  live:
+    runs-on: windows-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify production signed download, cancellation and normal-exit update
+        shell: powershell
+        run: ./tests/windows_live_update_test.ps1
