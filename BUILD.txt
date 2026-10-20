@@ -1,0 +1,3 @@
+Native launcher source: 7611a35bafba7690a772c81cf5ae48513e45bbcc
+Godot app and render evidence preserved from validated build 39510334193, source 113f5314a5a586fc2af1b0c6dc51af78aeec8b8f.
+Windows release gates run against this exact rebuilt installer.
