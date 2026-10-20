@@ -55,14 +55,15 @@ function Wait-Renderer($Launcher,[IntPtr]$Parent) {
  while([DateTime]::UtcNow -lt $deadline){
   Pump
   if($Launcher.HasExited){
-   Write-Output ("Native launcher exit="+$Launcher.ExitCode+"; parent visible="+[SaverWindows]::IsWindowVisible($Parent))
+   Write-Host ("Native launcher exit="+$Launcher.ExitCode+"; parent visible="+[SaverWindows]::IsWindowVisible($Parent))
    $godotLog=Join-Path ([Environment]::GetFolderPath('ApplicationData')) 'Godot/app_userdata/Living Earth 3D/logs/godot.log'
-   if(Test-Path $godotLog){Get-Content $godotLog -Tail 60 | Write-Output}
+   if(Test-Path $godotLog){Get-Content $godotLog -Tail 60 | ForEach-Object {Write-Host $_}}
    $diag=Join-Path $pwd 'dist/windows-saver-engine.log'
    $direct=Start-Process "$root/LivingEarth3D.exe" -ArgumentList ('--wid '+$Parent.ToInt64()+' --resolution 320,200 --no-focus --audio-driver Dummy --log-file "'+$diag+'" -- --saver-hosted --saver-preview') -PassThru
    Pump 6000
    if(!$direct.HasExited){$direct.Kill();$direct.WaitForExit()}
-   if(Test-Path $diag){Get-Content $diag -Tail 80 | Write-Output}
+   if(Test-Path $diag){Get-Content $diag -Tail 80 | ForEach-Object {Write-Host $_}}
+   Write-Host ('Direct Godot exit='+$direct.ExitCode)
    throw 'Saver exited before renderer became visible'
   }
   $child=Child-Process $Launcher
