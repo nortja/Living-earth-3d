@@ -483,6 +483,7 @@ func _savers(box: VBoxContainer) -> void:
     box.add_child(choices)
     button(box, "Preview · move mouse or press key to return", app.preview_screensaver)
     label(box, "Slow rotation, independent clouds and ocean glints. Discovery visits a new destination every two minutes. Night lights uses artistic night-side lighting.", 12)
+    label(box, "Windows preview stays inside Screen Saver Settings. Fullscreen saver covers every monitor: up to four animated Earth views, with additional displays kept black. Saver views use 2K textures and up to 30 FPS; the small Windows preview uses 15 FPS. Keyboard, mouse or a display change exits the fullscreen saver.", 12)
     if OS.get_name() == "Windows":
         button(box, "Windows screensaver settings", func():
             var saver := OS.get_executable_path().get_base_dir().path_join("LivingEarth3D.scr")

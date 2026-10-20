@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.8.0 candidate — Earth on every screen
+
+- Native Windows screensaver launcher with embedded preview, resize/parent lifetime handling and no fullscreen fallback for invalid preview handles.
+- Per-monitor fullscreen hosts, up to four animated Earth views and black coverage on additional displays; shared input exit and bounded renderer lifetime.
+- Saver views use 2K/30 FPS and small preview 15 FPS without changing Explorer preferences. Configuration opens Screensavers directly.
+- Preserved the existing signed-update protocol and added actual Windows preview/render/lifecycle release tests. See docs/VALIDATION-0.8.0.md.
+
 ## 0.7.0 — A world worth exploring
 
 - Added Discover/Search/History/Saved subnavigation, twelve sourced daily wonders, surprise journeys, fifty local saved places and clear save feedback; existing curated favorites remain available.

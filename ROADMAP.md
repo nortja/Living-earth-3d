@@ -44,9 +44,15 @@ Updated 2026-10-20. Latest released baseline: 0.7.0 (discoveries, saved places, 
 - [x] 464 local checks, 16 update-security checks, real weather/four-camera retrievals and native layouts through 5K.
 - [x] Windows upgrades/rollback from 0.5.2 and 0.6.1, public installer verification and signed-feed promotion. Production-feed staging, cancellation, normal-exit installation and payload verification also passed on Windows.
 
+## Next build — 0.8.0 candidate
+
+- [x] Native screensaver launcher, strict preview argument handling, embedded-mode budget and per-monitor host implementation.
+- [ ] Actual Windows embedded preview/render/lifecycle tests and upgrade/rollback from 0.5.2 and 0.7.0.
+- [ ] Publish verified installer and authenticated update, then production updater round trip.
+
 ## Next priorities
 
-1. **Field validation:** confirm automatic upgrade, new desktop/taskbar icon, all camera states, visible-window restart, physical Dell scaling, frame times, memory, fullscreen, sleep/resume and monitor moves.
+1. **Field validation:** user confirmed the 0.7.0 automatic upgrade; next confirm new screensaver behavior, new desktop/taskbar icon, all camera states, visible-window restart, physical Dell scaling, frame times, memory, fullscreen, sleep/resume and monitor moves.
 2. **Continuous video:** add authorized in-app streaming playback. Current NPS views are periodically refreshed camera images; other streams open the provider website. No continuous embedded video is delivered yet.
 3. **Camera Wall expansion:** more source-verified image endpoints and authorized continuous-video playback. Initial responsive 1/2/4/6/9 layouts are implemented in 0.6.1; optimize further after actual Dell measurement.
 4. **Living planet:** UTC sunlight is released; requested point-model weather is released in 0.7.0. Next: licensed cloud refresh and broader weather layers with explicit stale/offline states. Clouds/Moon/stars remain cinematic.

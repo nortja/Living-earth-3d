@@ -32,6 +32,8 @@ var last_monitor := -1
 var external_focus := false
 var saver_style := 0
 var saver_preview := false
+var native_saver := false
+var native_saver_preview := false
 var previous_window_mode := Window.MODE_WINDOWED
 var saved_discovery := false
 var saved_interval := 120.0
@@ -75,16 +77,23 @@ var update_status: Label
 var update_feed: Dictionary = {}
 var update_request: HTTPRequest
 var preferences := ConfigFile.new()
-const VERSION := "0.7.0"
+const VERSION := "0.8.0"
 const UPDATE_FEED_URL := "https://raw.githubusercontent.com/nortja/Living-earth-3d/main/updates/preview.json"
 const RELEASES_URL := "https://github.com/nortja/Living-earth-3d/releases"
 
 
 func _ready() -> void:
     var arguments := OS.get_cmdline_args() + OS.get_cmdline_user_args()
+    native_saver = "--saver-hosted" in arguments
+    native_saver_preview = native_saver and "--saver-preview" in arguments
+    if native_saver:
+        screensaver_mode = true
+        play_intro = false
+        if DisplayServer.get_name() != "headless":
+            DisplayServer.screen_set_keep_on(false)
     for argument in arguments:
         if argument.to_lower().begins_with("/p"):
-            # Windows preview embedding is not implemented; never open a full window for /p.
+            # Preview handles belong to the native .scr launcher; direct app calls fail closed.
             set_process(false)
             get_tree().quit()
             return
@@ -155,8 +164,10 @@ func _ready() -> void:
     update_sunlight()
     if screensaver_mode:
         layer.hide()
-        get_window().mode = Window.MODE_FULLSCREEN
-        Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
+        if not native_saver:
+            get_window().mode = Window.MODE_FULLSCREEN
+        if not native_saver_preview:
+            Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
         apply_saver_style()
     if "--validate-display" in arguments:
         var validation = load("res://scripts/display_validation.gd").new()
@@ -164,6 +175,8 @@ func _ready() -> void:
         validation.call_deferred("run", self, arguments)
     elif play_intro:
         start_intro()
+    if "--screensaver-settings" in arguments:
+        interface.open_page("Screensavers")
 
 func _process(delta: float) -> void:
     screensaver_age += delta
@@ -220,6 +233,8 @@ func _process(delta: float) -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
     if screensaver_mode:
+        if native_saver:
+            return # Native host handles session-wide input; preview must ignore input.
         if screensaver_age > 1.0 and (event is InputEventKey or event is InputEventMouseButton or (event is InputEventMouseMotion and event.relative.length() > 3.0)):
             if saver_preview:
                 stop_screensaver_preview()
@@ -574,7 +589,7 @@ func _build_visual_options(box: VBoxContainer) -> void:
     quality.add_item("Balanced · 2K")
     quality.add_item("Detailed · 4K")
     var saved_quality: String = preferences.get_value("visuals", "quality", "balanced")
-    set_quality(saved_quality, false)
+    set_quality("balanced" if native_saver else saved_quality, false)
     quality.select(1 if visual_quality == "detailed" else 0)
     quality.item_selected.connect(func(index: int): set_quality("detailed" if index == 1 else "balanced"))
     row.add_child(quality)
@@ -611,7 +626,8 @@ func set_quality(quality: String, persist := true) -> void:
 
 func apply_frame_limit() -> void:
     var refresh := DisplayServer.screen_get_refresh_rate(get_window().current_screen) if DisplayServer.get_name() != "headless" else 60.0
-    Engine.max_fps = mini(30 if power_saving else 60, int(refresh)) if refresh >= 24 else (30 if power_saving else 60)
+    var cap := (15 if native_saver_preview else 30) if native_saver else (30 if power_saving else 60)
+    Engine.max_fps = mini(cap, int(refresh)) if refresh >= 24 else cap
 
 func display_summary() -> String:
     if DisplayServer.get_name() == "headless":

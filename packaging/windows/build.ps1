@@ -1,4 +1,4 @@
-param([string]$Godot = 'godot', [string]$Makensis = 'makensis', [string]$SigningPfx = '', [string]$SigningPassword = '')
+param([string]$Godot = 'godot', [string]$Makensis = 'makensis', [string]$SigningPfx = '', [string]$SigningPassword = '', [string]$SaverCompiler = 'x86_64-w64-mingw32-g++', [string]$Windres = 'x86_64-w64-mingw32-windres')
 $ErrorActionPreference = 'Stop'
 $root = Split-Path (Split-Path $PSScriptRoot -Parent) -Parent
 Push-Location $root
@@ -14,6 +14,8 @@ try {
     Invoke-EarthGodot -Executable $Godot -ProjectPath $root -Arguments @('--export-release', 'Windows Desktop', 'build/windows/LivingEarth3D.exe') -LogPath "$root/build/export.log"
     $app = Join-Path $root 'build/windows/LivingEarth3D.exe'
     $installer = Join-Path $root "dist/LivingEarth3D-Setup-$version.exe"
+    python packaging/windows/build_screensaver.py --compiler $SaverCompiler --windres $Windres --output build/windows/LivingEarth3D.scr
+    if ($LASTEXITCODE -ne 0) { throw 'Native screensaver compilation failed' }
     $signtool = $null
     if ($SigningPfx) {
         $signtool = (Get-ChildItem 'C:/Program Files (x86)/Windows Kits/10/bin/*/x64/signtool.exe' | Sort-Object FullName -Descending | Select-Object -First 1).FullName
@@ -29,7 +31,7 @@ try {
         if ((Get-AuthenticodeSignature $installer).Status -ne 'Valid') { throw 'Installer signature verification failed' }
     }
     (Get-FileHash $installer -Algorithm SHA256).Hash.ToLower() + '  ' + (Split-Path $installer -Leaf) | Set-Content "$installer.sha256" -Encoding ascii
-    $payloadHashes = @{'LivingEarth3D.exe'=(Get-FileHash $app -Algorithm SHA256).Hash.ToLower(); 'LivingEarth3D.scr'=(Get-FileHash $app -Algorithm SHA256).Hash.ToLower(); 'update.ps1'=(Get-FileHash "$PSScriptRoot/update.ps1" -Algorithm SHA256).Hash.ToLower(); 'update-core.ps1'=(Get-FileHash "$PSScriptRoot/update-core.ps1" -Algorithm SHA256).Hash.ToLower()}
+    $payloadHashes = @{'LivingEarth3D.exe'=(Get-FileHash $app -Algorithm SHA256).Hash.ToLower(); 'LivingEarth3D.scr'=(Get-FileHash (Join-Path $root 'build/windows/LivingEarth3D.scr') -Algorithm SHA256).Hash.ToLower(); 'update.ps1'=(Get-FileHash "$PSScriptRoot/update.ps1" -Algorithm SHA256).Hash.ToLower(); 'update-core.ps1'=(Get-FileHash "$PSScriptRoot/update-core.ps1" -Algorithm SHA256).Hash.ToLower()}
     [IO.File]::WriteAllText((Join-Path $root 'dist/payload-hashes.json'), ($payloadHashes | ConvertTo-Json))
     Write-Host "Installer ready: $installer"
 } finally { Pop-Location }

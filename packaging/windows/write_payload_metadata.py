@@ -8,6 +8,6 @@ p.add_argument('--application', type=Path, required=True)
 p.add_argument('--output', type=Path, required=True)
 a = p.parse_args()
 root = Path(__file__).parent
-files = {'LivingEarth3D.exe': a.application, 'LivingEarth3D.scr': a.application,
+files = {'LivingEarth3D.exe': a.application, 'LivingEarth3D.scr': a.application.with_suffix('.scr'),
          'update.ps1': root/'update.ps1', 'update-core.ps1': root/'update-core.ps1'}
 a.output.write_text(json.dumps({name: hashlib.sha256(path.read_bytes()).hexdigest() for name,path in files.items()},sort_keys=True,indent=2)+'\n')

@@ -1,4 +1,4 @@
-param([Parameter(Mandatory=$true)][string]$Installer, [Parameter(Mandatory=$true)][string]$PayloadMetadata, [ValidateSet("0.5.2","0.6.1")][string]$BaselineVersion = "0.5.2")
+param([Parameter(Mandatory=$true)][string]$Installer, [Parameter(Mandatory=$true)][string]$PayloadMetadata, [ValidateSet("0.5.2","0.6.1","0.7.0")][string]$BaselineVersion = "0.5.2")
 $ErrorActionPreference = 'Stop'
 . "$PSScriptRoot/../packaging/windows/update-core.ps1"
 if ($env:OS -ne 'Windows_NT') { throw 'This test requires Windows' }
@@ -8,7 +8,7 @@ $fixture = Join-Path $env:RUNNER_TEMP ('earth update test ' + [guid]::NewGuid().
 $installRoot = Join-Path $fixture 'Living Earth 3D'
 New-Item -ItemType Directory -Path $fixture -Force | Out-Null
 $oldInstaller = Join-Path $fixture 'old.exe'
-$baselineHashes = @{ '0.5.2'='78a011d3d7aee0f195a2ecc2605858e3133206b67161a96103bc0870acdd530b'; '0.6.1'='5471db38bb3e8b32e00bae53a42b298a386e47b13fe7f98b22071c644b8b79bf' }
+$baselineHashes = @{ '0.7.0'='6353f718972d3255a46aa414a3e7df2b050d3bd6b259a8e472ade54495936595'; '0.5.2'='78a011d3d7aee0f195a2ecc2605858e3133206b67161a96103bc0870acdd530b'; '0.6.1'='5471db38bb3e8b32e00bae53a42b298a386e47b13fe7f98b22071c644b8b79bf' }
 Invoke-WebRequest -UseBasicParsing -Uri "https://raw.githubusercontent.com/nortja/Living-earth-3d/downloads/windows-$BaselineVersion/LivingEarth3D-Setup-$BaselineVersion.exe" -OutFile $oldInstaller
 if ((Get-FileHash $oldInstaller -Algorithm SHA256).Hash.ToLowerInvariant() -ne $baselineHashes[$BaselineVersion]) { throw 'Old installer checksum mismatch' }
 $setup=Start-Process $oldInstaller -ArgumentList "/S /D=$installRoot" -PassThru -Wait
@@ -34,12 +34,12 @@ if ((Get-ItemProperty 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Uninstall
 Write-Output "PASS: actual installer failure restores $BaselineVersion files and registry version"
 Install-EarthRelease $installRoot $Installer $manifest (Join-Path $fixture 'successful-backup')
 Confirm-EarthFiles $installRoot $manifest
-if ((Get-ItemProperty 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Uninstall\LivingEarth3D').DisplayVersion -ne '0.7.0') { throw 'Updated version metadata missing' }
+if ((Get-ItemProperty 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Uninstall\LivingEarth3D').DisplayVersion -ne '0.8.0') { throw 'Updated version metadata missing' }
 if ((Get-Content $sentinel -Raw) -ne 'user preferences must survive') { throw 'User data changed' }
 $shortcut=(New-Object -ComObject WScript.Shell).CreateShortcut((Join-Path ([Environment]::GetFolderPath('Desktop')) 'Living Earth 3D.lnk'))
-if ($shortcut.IconLocation -notlike '*LivingEarth3D-0.7.0.ico*' -or !(Test-Path (Join-Path $installRoot 'LivingEarth3D-0.7.0.ico'))) { throw 'Versioned desktop icon missing' }
+if ($shortcut.IconLocation -notlike '*LivingEarth3D-0.8.0.ico*' -or !(Test-Path (Join-Path $installRoot 'LivingEarth3D-0.8.0.ico'))) { throw 'Versioned desktop icon missing' }
 Write-Output 'PASS: versioned desktop shortcut icon installed'
-Write-Output "PASS: real silent $BaselineVersion to 0.7.0 update at a path containing spaces preserves user data"
+Write-Output "PASS: real silent $BaselineVersion to 0.8.0 update at a path containing spaces preserves user data"
 # Exercise running-process protection using our own headless app process, without GPU requirements.
 $app=Start-Process (Join-Path $installRoot 'LivingEarth3D.exe') -ArgumentList '--headless --quit-after 180' -PassThru
 Start-Sleep -Milliseconds 500

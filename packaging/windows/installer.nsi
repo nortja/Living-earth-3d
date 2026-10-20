@@ -4,7 +4,7 @@ Unicode true
 !include "x64.nsh"
 !include "WinMessages.nsh"
 !ifndef VERSION
-!define VERSION "0.7.0"
+!define VERSION "0.8.0"
 !endif
 !ifndef BUILD_DIR
 !define BUILD_DIR "..\..\build\windows"
@@ -37,7 +37,11 @@ VIAddVersionKey "LegalCopyright" "Living Earth 3D contributors"
 !insertmacro MUI_LANGUAGE "English"
 !macro CloseApplication FUNCTION_NAME
 Function ${FUNCTION_NAME}
+  find_again:
   FindWindow $0 "" "Living Earth 3D"
+  ${If} $0 == 0
+    FindWindow $0 "LivingEarth3D.SaverHost" ""
+  ${EndIf}
   ${If} $0 != 0
     IfSilent running_abort
     MessageBox MB_YESNO|MB_ICONQUESTION|MB_DEFBUTTON2 "Living Earth 3D is running. Close it to continue?" IDYES request_close
@@ -56,6 +60,7 @@ Function ${FUNCTION_NAME}
     running_abort:
     Abort
     finished_close:
+    Goto find_again
   ${EndIf}
 FunctionEnd
 !macroend
@@ -87,7 +92,7 @@ Section "Living Earth 3D"
   SetShellVarContext current
   SetOutPath "$INSTDIR"
   File "${BUILD_DIR}\LivingEarth3D.exe"
-  File /oname=LivingEarth3D.scr "${BUILD_DIR}\LivingEarth3D.exe"
+  File "${BUILD_DIR}\LivingEarth3D.scr"
   File "update.ps1"
   File "update-core.ps1"
   File /oname=LivingEarth3D-${VERSION}.ico "..\..\assets\icon.ico"

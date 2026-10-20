@@ -24,6 +24,10 @@ Releases require a valid signature from the public key pinned in the installed u
 
 Explore gains Discover, Search, History and Saved tabs: twelve sourced wonders, daily/surprise journeys, fifty local bookmarks and a Giza/Rome/Tikal era slider on explicitly modern imagery. Command Center adds requested Open-Meteo model weather with units, model/retrieval times and cache/error handling. Daylight Earth and Orbital drift expand screensavers to six. Giant Forest becomes a fourth in-app image camera. Windows upgrades from 0.5.2 and 0.6.1, rollback and installer checks passed before the authenticated update feed was promoted. See [validation](docs/VALIDATION-0.7.0.md).
 
+## Next build — 0.8.0 candidate
+
+Native Windows preview embedding and per-monitor screensaver hosts are in validation. The installed baseline remains 0.7.0 until real Windows preview/lifecycle and upgrade checks pass. See [validation](docs/VALIDATION-0.8.0.md).
+
 ## Development
 
 Use Godot 4.6.3. `godot --path .` starts the app; `project.godot` opens it in the editor.
