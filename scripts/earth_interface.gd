@@ -26,6 +26,12 @@ var dock_row: HBoxContainer
 var layout_frames := 8
 var page_animation: Tween
 var camera_status: Label
+var camera_overlay: ColorRect
+var camera_viewer: PanelContainer
+var camera_image: TextureRect
+var camera_title: Label
+var camera_detail: Label
+var camera_source: Label
 const NAV := ["Explore", "Live Earth", "Cameras", "Command Center", "Screensavers"]
 
 func setup(owner_app: Node3D) -> void:
@@ -123,6 +129,7 @@ func setup(owner_app: Node3D) -> void:
     label(card_box, "MISSION OVERVIEW", 16)
     label(card_box, "Earth imagery · offline\nCloud layer · artistic drift\nCamera pages · external providers\nEarthquakes · refresh on request\nMoon & stars · artistic backdrop")
     button(card_box, "Return to full Earth", func(): close_panel(); app.reset_view())
+    _build_camera_viewer()
     panel.hide()
     command_card.hide()
     app.services.earthquakes_changed.connect(_refresh_quake_list)
@@ -223,6 +230,10 @@ func relayout() -> void:
         panel.size = Vector2(size.x - 48, 190)
     command_card.position = Vector2(24, 104)
     command_card.size = Vector2(280, 230)
+    if camera_overlay:
+        camera_overlay.size = size
+        camera_viewer.size = Vector2(minf(960, size.x - 48), minf(680, size.y - 100))
+        camera_viewer.position = (size - camera_viewer.size) / 2.0
     command_card.visible = dashboard and active_page == "Command Center" and side_layout and size.x >= 1600
 
 func set_ui_scale(value: float) -> void:
@@ -319,15 +330,70 @@ func _live(box: VBoxContainer) -> void:
 
 func _cameras(box: VBoxContainer) -> void:
     label(box, "Windows onto the planet", 18)
-    label(box, "Select a venue to fly there. Open its official page in your browser to watch. Feeds can be seasonal or offline; availability is not verified. Locations are approximate.", 12)
-    camera_status = label(box, "Choose a camera venue.")
+    label(box, "Image cameras open here. Video and seasonal sources open their official websites. Every selection also flies Earth to the approximate location.", 12)
+    camera_status = label(box, "Choose a camera below.")
     for venue in cameras:
         label(box, venue.provider, 12)
-        button(box, venue.name, func():
-            app.fly_to_location(venue)
-            camera_status.text = venue.name + "\n" + venue.kind)
+        var title: String = venue.name + ("" if venue.has("image_url") else " ↗")
+        button(box, title, func(): select_camera(venue))
         label(box, venue.kind, 12)
-        button(box, "Open official page ↗", func(): OS.shell_open(venue.url))
+
+func select_camera(venue: Dictionary) -> void:
+    app.fly_to_location(venue)
+    if venue.has("image_url"):
+        camera_overlay.show()
+        app.camera_service.open(venue)
+        refresh_layout()
+    else:
+        var error := OS.shell_open(venue.url)
+        camera_status.text = "Opened official camera website: " + venue.name if error == OK else "Could not open the browser. Try the official source again."
+
+func _build_camera_viewer() -> void:
+    camera_overlay = ColorRect.new()
+    camera_overlay.color = Color(0.002, 0.008, 0.02, 0.83)
+    camera_overlay.mouse_filter = Control.MOUSE_FILTER_STOP
+    add_child(camera_overlay)
+    camera_viewer = PanelContainer.new()
+    camera_viewer.add_theme_stylebox_override("panel", surface(Color("0e2030"), 18, 20))
+    camera_overlay.add_child(camera_viewer)
+    var box := VBoxContainer.new()
+    camera_viewer.add_child(box)
+    var row := HBoxContainer.new()
+    box.add_child(row)
+    camera_title = label(row, "Camera", 20)
+    button(row, "Close", close_camera)
+    camera_source = label(box, "", 12)
+    camera_image = TextureRect.new()
+    camera_image.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+    camera_image.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+    camera_image.size_flags_vertical = Control.SIZE_EXPAND_FILL
+    camera_image.custom_minimum_size.y = 140
+    box.add_child(camera_image)
+    camera_detail = label(box, "", 12)
+    var controls := HFlowContainer.new()
+    box.add_child(controls)
+    button(controls, "Refresh", app.camera_service.refresh)
+    button(controls, "Official source ↗", func():
+        if app.camera_service.selected.has("url"): OS.shell_open(app.camera_service.selected.url))
+    var automatic := CheckButton.new()
+    automatic.text = "Refresh every minute"
+    automatic.button_pressed = true
+    automatic.toggled.connect(func(enabled: bool): app.camera_service.automatic = enabled)
+    controls.add_child(automatic)
+    app.camera_service.changed.connect(_camera_changed)
+    camera_overlay.hide()
+
+func _camera_changed() -> void:
+    camera_title.text = app.camera_service.selected.get("name", "Camera")
+    camera_source.text = app.camera_service.selected.get("provider", "") + " · camera image"
+    camera_image.texture = app.camera_service.image
+    camera_detail.text = app.camera_service.status
+    refresh_layout()
+
+func close_camera() -> void:
+    if camera_overlay: camera_overlay.hide()
+    app.camera_service.stop()
+
 
 func _command(box: VBoxContainer) -> void:
     label(box, "Earthquake watch", 18)

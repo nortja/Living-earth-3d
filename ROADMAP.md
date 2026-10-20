@@ -1,60 +1,46 @@
-# Living Earth 3D — living roadmap
+# Living Earth 3D — current roadmap
 
-Build a beautiful offline-first Windows globe and calm screensaver. Keep installation to one EXE, interactions simple, network features optional, audio off by default, and every public release testable and traceable.
+Updated 2026-10-20. Latest released baseline: 0.5.3. Next release: 0.5.4 (camera images and icon refresh). One Windows installer, then authenticated automatic updates; the base Earth remains useful offline.
 
-## Current milestone: 0.5.0 preview
+## Completed
 
-Completed this cycle: compact navigation and responsive side/bottom panels; optional wide Command Center overview; native-resolution 3D viewport with proportional globe; automatic compact UI scaling through 5K; monitor/GPU reporting and refresh-aware frame cap; offline atlas and coordinates; optional worldwide place search; honest official-camera directory and globe journeys; on-request USGS earthquakes with UTC/cache/failure states; four screensaver styles and returnable fullscreen preview. Preserved the 4K/2K maps, independent clouds, branding, intro, controls, favorites, timed discovery, updater safeguards and one-file installer.
+- [x] Single double-clickable, per-user Windows installer with desktop/Start menu shortcuts and uninstall support. No ZIP, terminal or separate Godot runtime for users.
+- [x] User confirmed 0.5.3 installed and automatic updates enabled.
+- [x] Authenticated updates: pinned release signature, bounded download, installer/file hashes, background checks, pause/resume, apply on normal exit and an Update and restart now action. Production-feed download/cancellation/normal-exit install passed Windows CI; handled-install failures restore previous files and version metadata. Private signing key stays outside git/CI.
+- [x] Animated Earth introduction, slow startup rotation, drag inertia, wheel/double-click zoom, reset and fullscreen.
+- [x] Genuine 2K/4K Earth imagery, night lights, atmosphere, independent artistic clouds, optional artistic stars and Moon.
+- [x] Native-resolution proportional Earth and responsive controls. Saved Automatic/100–200% interface sizes, safe resizing, GPU/display reporting and 30/60 FPS caps. Physical Dell DPI/performance testing remains separate.
+- [x] Optional original offline ambient sound, saved volume and smooth fades; off by default. Screensaver stays silent.
+- [x] Offline atlas, coordinates, six curated destinations, favorites, surprise destinations and timed journeys.
+- [x] On-request worldwide place search and USGS earthquakes, with retrieval/cache/error states. These are periodic/requested data, not a continuous live feed.
+- [x] Four screensaver styles and returnable fullscreen preview. Full Windows multi-monitor/preview integration is unfinished.
 
-Validation separates Linux native rendering, packaged-data/resource checks, and actual Windows execution. The new packaged-app Windows display harness captures screenshots, GPU/platform identity and layout evidence at 1080p, ultrawide, 4K and 5K. It has not run on Windows yet. The user previously confirmed 0.3.0 installation and launch. Current Windows installation, physical Dell display/DPI/refresh, integrated-GPU frame times, and signed updates remain open.
+## This release — 0.5.4
 
-## Next cycle — immersion and trustworthy live experiences (P0/P1)
+- [x] Replace app/installer/uninstaller artwork with a cleaner Earth icon and seven native icon sizes. Shortcuts use a versioned ICO path; installation notifies Windows that icons changed. Existing pinned taskbar icons may require field verification.
+- [x] Fix camera selection: three NPS image cameras open an actual in-app viewer, rather than only moving the globe. Five video/seasonal entries visibly open official websites.
+- [x] Add loading/error feedback, refresh, optional once-per-minute refresh while open, provider attribution, retrieval/source timestamp labels, retained-image warning and unchanged-frame warning.
+- [x] Cancel requests on close/selection change/screensaver preview; prevent old responses from appearing under a different camera name. Keep network access opt-in through camera selection.
+- [ ] Publish the tested installer and signed 0.5.4 feed; exercise the first automatic upgrade on the user's Windows machine.
 
-- [ ] Execute `tests/windows_display_test.ps1` against the actual 0.5.0 Windows EXE on an interactive Windows runner; inspect screenshots and test physical Dell monitor DPI/refresh, fullscreen, sleep/resume and frame times. Cloud GitHub API access is currently denied; do not restart the old failure-email loop.
-- [x] Add a saved interface-size override with safe window bounds. Version 0.5.2 adds Automatic and 100–200% choices; real Windows DPI/readability checks remain outstanding. Maximum source texture detail is still 4K.
-- [ ] Verify provider pages from an allowed network, review embedding terms, then add authorized in-app camera playback with real availability/freshness checks. Current entries open official browser pages only.
-- [ ] Exercise USGS and worldwide search against real services from an allowed network; fixture parser/cache tests do not establish current provider availability. Cloud destination additions are saved in environment settings but require publication before affecting runtime.
-- [ ] Add optional weather estimates with source, coordinates, model time, units, cache expiry and explicit periodic labels. Do not represent modeled weather as live sensor observations.
-- [ ] Add current UTC solar illumination, documented seasonal timing and an explicit cinematic/time mode switch.
-- [ ] Add actual satellite orbits and astronomy positions with source timestamps and accuracy limits; current NASA/USGS shortcuts open external explorers.
+## Next priorities
 
-## Next — make Windows delivery dependable (P0)
+1. **Field validation:** confirm automatic upgrade, new desktop/taskbar icon, all camera states, visible-window restart, physical Dell scaling, frame times, memory, fullscreen, sleep/resume and monitor moves.
+2. **Continuous video:** add authorized in-app streaming playback. Current NPS views are periodically refreshed camera images; other streams open the provider website. No continuous embedded video is delivered yet.
+3. **Camera Wall:** opt-in 1/2/4/6/9-camera layouts with aspect-preserving tiles, focused view, saved collections, bounded simultaneous feeds and hidden-feed suspension. Optimize for ultrawide after actual monitor measurement.
+4. **Living planet:** current UTC sunlight/seasonal timing, optional weather with model/source times, licensed cloud refresh and explicit stale/offline states. Current illumination/clouds/Moon/stars remain cinematic.
+5. **Screensaver integration:** Windows /p preview, /s field checks, multiple monitors, lock/sleep/resume, background power limits and longer-duration tests.
 
-- [ ] Move recurring installer storage from dedicated Git branches to release assets or an artifact host while retaining fixed-origin and signature validation.
+## Later / dependent work
 
-- [x] User confirmed 0.5.0 installs nicely and 0.5.1 installed and works on Windows. Detailed DPI/performance and upgrade-preservation evidence remain separate.
-- [ ] Test 0.5.0 desktop/taskbar icon, intro, upgrades, favorite preservation, uninstall, and reinstall on Windows 10/11 x64.
-- [ ] Test 1080p/4K/ultrawide displays with Windows DPI scaling and normal integrated GPUs. Measure frame time and memory, then tune quality settings.
-- [ ] Provision an authentic code-signing certificate through secure CI settings. Sign both app and installer; never weaken signature checks for unsigned previews.
-- [ ] Complete field verification of 0.5.3 authenticated updates: the pinned release signature replaces manual preview updates; Windows test automation covers silent installation/rollback, while visible-app restart, sleep/resume and physical field checks remain separate.
-- [ ] Validate the revised Windows build script in a controlled manual run. The workflow remains disabled to prevent further unwanted emails. No development-tag triggers.
-- [ ] Define a signed stable update channel before 1.0; preview feed currently serves opt-in development updates.
-- [ ] Add upgrade rollback/recovery and a planned certificate-rotation path before calling auto-update production-ready.
+- [ ] Actual satellite orbits and accurate astronomical positions, with timestamps and accuracy limits.
+- [ ] Source-verified 8K imagery, documented distribution rights and integrated-GPU performance targets. No upscaling marketed as new detail.
+- [ ] Terrain/scattering improvements without compromising ordinary PCs.
+- [ ] Ancient-site/history layers with citations, dates and uncertainty; more curated discoveries and journeys.
+- [ ] Windows publisher Authenticode certificate, signed stable channel and signing-key rotation/migration plan. Preview release authentication is implemented; the installer still lacks Windows publisher signing.
+- [ ] Stronger power-loss/crash recovery and recovery launcher. Current handled-failure rollback is not a power-loss guarantee.
+- [ ] Move recurring binary delivery from Git branches to release assets/hosting while preserving update trust and compatibility.
 
-## Next — living planet visual quality (P1)
+## Release rules
 
-- [ ] Add source-verified 8K satellite imagery beyond the delivered 4K maps. Retain attribution and distribution terms; do not upscale and call it new detail.
-- [x] Separate offline cloud layer from surface imagery with independent drift.
-- [ ] Add opt-in cloud refresh with provider attribution, timestamps, bounded downloads, cache expiry, and offline fallback.
-- [ ] Add UTC-based solar illumination and seasonal changes with documented accuracy; distinguish simulated time from live data.
-- [x] Add optional stars and Moon with restrained lighting and resource costs, clearly labeled as artistic backdrops.
-- [ ] Add real astronomical positions as a separate, documented mode.
-- [x] Improve atmosphere, coastline detail, night-light transition, and artistic cloud shade while preserving compatibility-renderer support.
-- [ ] Investigate physically based scattering and terrain without making integrated GPUs unusable.
-
-## Next — meaningful exploration (P2)
-
-- [x] Add an offline city/landmark/natural-wonder atlas with selectable geographic markers.
-- [ ] Add optional live weather through a licensed provider, with fresh/stale/offline states and no required account for the base globe.
-- [ ] Expand Today's Wonder and curated journeys without intrusive popups.
-- [ ] Add ancient sites and historical layers with explicit dates, citations, uncertainty, and reconstruction labels.
-
-## Screensaver and reliability (P1/P2)
-
-- [ ] Implement Windows `/p` preview embedding and test `/s` activation and input exit on Windows.
-- [ ] Cover multiple monitors, lock/sleep/resume, low-power behavior, and background frame-rate reduction.
-- [ ] Add long-duration soak tests, crash recovery, and offline/network-loss tests.
-
-## Release discipline
-
-Update CHANGELOG.md and this roadmap with each milestone. Preserve tested controls and preferences. Keep unsigned previews visibly separate from signed public releases. Prefer local tests while iterating; do not repeatedly trigger failing workflows or change the user's global GitHub notification settings.
+Build/test first, publish installer, verify its download, sign the exact release metadata, then atomically promote discovery feed and signature. Preserve preferences and the pinned trust key. Keep the old failing automatic Windows workflow disabled. Separate source/headless/native renders, Windows installation tests, and real hardware observations; never label periodic imagery as continuous live video or a retrieval timestamp as capture time.

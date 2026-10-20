@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.5.4 — Visible cameras and a clearer Earth identity
+
+- Replaced desktop/app/installer/uninstaller artwork with a new Earth tile and seven native Windows icon sizes. Shortcuts and installed-apps entries reference a versioned ICO; setup requests a shell icon refresh.
+- Camera clicks now open an in-app periodic-image viewer for three NPS Yellowstone cameras. Added loading, failure/retained-image states, source credit, timestamps, refresh controls, late-response protection and unchanged-frame warnings. Images are not labeled as continuous live video.
+- External video/seasonal cameras now open their official pages directly when selected; added Sequoia's official camera page.
+- Preserved the pinned automatic-update trust key and update protocol so 0.5.3 can acquire this release without another manual installation.
+- Reconciled the roadmap with completed sound, interface scaling and Windows-tested signed updates, while keeping continuous video, multi-camera viewing and physical hardware checks open.
+
+
 ## 0.5.3 — Install once, update from the app
 
 - Added automatic update checks at startup and every 30 minutes while Explorer is open. Verified updates download in the background and install silently after all app/screensaver windows close.

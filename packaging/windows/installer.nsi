@@ -4,7 +4,7 @@ Unicode true
 !include "x64.nsh"
 !include "WinMessages.nsh"
 !ifndef VERSION
-!define VERSION "0.5.3"
+!define VERSION "0.5.4"
 !endif
 !ifndef BUILD_DIR
 !define BUILD_DIR "..\..\build\windows"
@@ -90,23 +90,25 @@ Section "Living Earth 3D"
   File /oname=LivingEarth3D.scr "${BUILD_DIR}\LivingEarth3D.exe"
   File "update.ps1"
   File "update-core.ps1"
+  File /oname=LivingEarth3D-${VERSION}.ico "..\..\assets\icon.ico"
   File "..\..\assets\Godot-LICENSE.txt"
   File "..\..\assets\earth\THREE-LICENSE.txt"
   File "..\..\assets\earth\CC-BY-4.0.txt"
   File "..\..\assets\earth\ATTRIBUTION.md"
   WriteUninstaller "$INSTDIR\Uninstall.exe"
-  CreateShortcut "$DESKTOP\Living Earth 3D.lnk" "$INSTDIR\LivingEarth3D.exe"
+  CreateShortcut "$DESKTOP\Living Earth 3D.lnk" "$INSTDIR\LivingEarth3D.exe" "" "$INSTDIR\LivingEarth3D-${VERSION}.ico" 0
   CreateDirectory "$SMPROGRAMS\Living Earth 3D"
-  CreateShortcut "$SMPROGRAMS\Living Earth 3D\Living Earth 3D.lnk" "$INSTDIR\LivingEarth3D.exe"
+  CreateShortcut "$SMPROGRAMS\Living Earth 3D\Living Earth 3D.lnk" "$INSTDIR\LivingEarth3D.exe" "" "$INSTDIR\LivingEarth3D-${VERSION}.ico" 0
   CreateShortcut "$SMPROGRAMS\Living Earth 3D\Uninstall.lnk" "$INSTDIR\Uninstall.exe"
   WriteRegStr HKCU "Software\LivingEarth3D" "InstallDir" "$INSTDIR"
   WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\LivingEarth3D" "DisplayName" "Living Earth 3D"
   WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\LivingEarth3D" "DisplayVersion" "${VERSION}"
   WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\LivingEarth3D" "Publisher" "Jaison Norton"
   WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\LivingEarth3D" "UninstallString" '$\"$INSTDIR\Uninstall.exe$\"'
-  WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\LivingEarth3D" "DisplayIcon" "$INSTDIR\LivingEarth3D.exe"
+  WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\LivingEarth3D" "DisplayIcon" "$INSTDIR\LivingEarth3D-${VERSION}.ico"
   WriteRegDWORD HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\LivingEarth3D" "NoModify" 1
   WriteRegDWORD HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\LivingEarth3D" "NoRepair" 1
+  System::Call 'shell32::SHChangeNotify(i 0x08000000, i 0, p 0, p 0)'
 SectionEnd
 Section "Uninstall"
   SetShellVarContext current
@@ -119,6 +121,7 @@ Section "Uninstall"
   Delete "$INSTDIR\update-core.ps1"
   RMDir /r "$INSTDIR\.updates"
   Delete "$INSTDIR\LivingEarth3D.scr"
+  Delete "$INSTDIR\LivingEarth3D-*.ico"
   Delete "$INSTDIR\Godot-LICENSE.txt"
   Delete "$INSTDIR\THREE-LICENSE.txt"
   Delete "$INSTDIR\CC-BY-4.0.txt"

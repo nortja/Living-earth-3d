@@ -1,6 +1,9 @@
 extends Node3D
 
 const EarthInterface = preload("res://scripts/earth_interface.gd")
+const CameraService = preload("res://scripts/camera_service.gd")
+var camera_service: Node
+
 const EarthServices = preload("res://scripts/earth_services.gd")
 
 const PlanetVisuals = preload("res://scripts/planet_visuals.gd")
@@ -60,7 +63,7 @@ var update_status: Label
 var update_feed: Dictionary = {}
 var update_request: HTTPRequest
 var preferences := ConfigFile.new()
-const VERSION := "0.5.3"
+const VERSION := "0.5.4"
 const UPDATE_FEED_URL := "https://raw.githubusercontent.com/nortja/Living-earth-3d/main/updates/preview.json"
 const RELEASES_URL := "https://github.com/nortja/Living-earth-3d/releases"
 
@@ -226,7 +229,9 @@ func _unhandled_input(event: InputEvent) -> void:
         elif event.keycode == KEY_F11:
             toggle_fullscreen()
         elif event.keycode == KEY_ESCAPE:
-            if interface.panel.visible:
+            if interface.camera_overlay.visible:
+                interface.close_camera()
+            elif interface.panel.visible:
                 interface.close_panel()
             elif get_window().mode == Window.MODE_FULLSCREEN:
                 get_window().mode = Window.MODE_WINDOWED
@@ -253,6 +258,8 @@ func _build_explorer(layer: CanvasLayer) -> void:
     update_request.timeout = 15.0
     add_child(update_request)
     update_request.request_completed.connect(_updates_received)
+    camera_service = CameraService.new()
+    add_child(camera_service)
     interface = EarthInterface.new()
     layer.add_child(interface)
     interface.setup(self)
@@ -628,6 +635,7 @@ func apply_saver_style() -> void:
 
 func preview_screensaver() -> void:
     finish_intro()
+    interface.close_camera()
     previous_window_mode = get_window().mode
     saved_discovery = discovery_enabled
     saved_interval = discovery_interval

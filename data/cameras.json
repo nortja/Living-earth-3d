@@ -1,6 +1,69 @@
 [
-  {"name":"Monterey Bay · Jelly Cam","provider":"Monterey Bay Aquarium","latitude":36.62,"longitude":-121.90,"kind":"Provider live stream page · availability not checked","url":"https://www.montereybayaquarium.org/animals/live-cams/jelly-cam"},
-  {"name":"Yellowstone · Old Faithful","provider":"US National Park Service","latitude":44.46,"longitude":-110.83,"kind":"Provider webcams · live and periodic views","url":"https://www.nps.gov/yell/learn/photosmultimedia/webcams.htm"},
-  {"name":"Katmai · Wildlife","provider":"Explore.org","latitude":58.56,"longitude":-155.77,"kind":"Provider directory · seasonal streams","url":"https://explore.org/livecams"},
-  {"name":"Hawai‘i · Kīlauea","provider":"USGS Hawaiian Volcano Observatory","latitude":19.42,"longitude":-155.29,"kind":"Provider webcams · periodically updated imagery","url":"https://www.usgs.gov/observatories/hvo/webcams"}
+  {
+    "name": "Yellowstone · Mammoth Hot Springs",
+    "provider": "US National Park Service",
+    "latitude": 44.976,
+    "longitude": -110.701,
+    "kind": "Periodic camera image · refreshes while open",
+    "url": "https://www.nps.gov/media/webcam/view.htm?id=696F20E1-F421-B232-FE72D6D85B157422",
+    "image_url": "https://www.nps.gov/webcams-yell/mammoth_parade.jpg"
+  },
+  {
+    "name": "Yellowstone · Electric Peak",
+    "provider": "US National Park Service",
+    "latitude": 45.029,
+    "longitude": -110.709,
+    "kind": "Periodic camera image · refreshes while open",
+    "url": "https://www.nps.gov/media/webcam/view.htm?id=81B468AB-1DD8-B71B-0BE84D8E8E0F1112",
+    "image_url": "https://www.nps.gov/webcams-yell/mammoth_electric.jpg"
+  },
+  {
+    "name": "Yellowstone · Mount Washburn",
+    "provider": "US National Park Service",
+    "latitude": 44.797,
+    "longitude": -110.434,
+    "kind": "Periodic camera image · may be seasonal",
+    "url": "https://www.nps.gov/media/webcam/view.htm?id=81B46891-1DD8-B71B-0B6575944D4DECD5",
+    "image_url": "https://www.nps.gov/webcams-yell/washburn_ne.jpg"
+  },
+  {
+    "name": "Monterey Bay · Jelly Cam",
+    "provider": "Monterey Bay Aquarium",
+    "latitude": 36.62,
+    "longitude": -121.9,
+    "kind": "Provider live stream page · availability not checked",
+    "url": "https://www.montereybayaquarium.org/animals/live-cams/jelly-cam"
+  },
+  {
+    "name": "Yellowstone · Old Faithful",
+    "provider": "US National Park Service",
+    "latitude": 44.46,
+    "longitude": -110.83,
+    "kind": "Provider webcams · live and periodic views",
+    "url": "https://www.nps.gov/yell/learn/photosmultimedia/webcams.htm"
+  },
+  {
+    "name": "Katmai · Wildlife",
+    "provider": "Explore.org",
+    "latitude": 58.56,
+    "longitude": -155.77,
+    "kind": "Provider directory · seasonal streams",
+    "url": "https://explore.org/livecams"
+  },
+  {
+    "name": "Hawai‘i · Kīlauea",
+    "provider": "USGS Hawaiian Volcano Observatory",
+    "latitude": 19.42,
+    "longitude": -155.29,
+    "kind": "Provider webcams · periodically updated imagery",
+    "url": "https://www.usgs.gov/observatories/hvo/webcams"
+  },
+  {
+    "name": "Sequoia · Giant Forest & Lower Kaweah",
+    "provider": "US National Park Service",
+    "latitude": 36.565,
+    "longitude": -118.774,
+    "kind": "Official camera page · seasonal availability",
+    "url": "https://www.nps.gov/AirWebCams/SEKI"
+  }
 ]
