@@ -25,6 +25,8 @@ const SCALE_OPTIONS := [0.0, 1.0, 1.25, 1.5, 1.75, 2.0]
 var dock_row: HBoxContainer
 var layout_frames := 8
 var page_animation: Tween
+var wall: ColorRect
+var solar_status: Label
 var camera_status: Label
 var camera_overlay: ColorRect
 var camera_viewer: PanelContainer
@@ -132,6 +134,9 @@ func setup(owner_app: Node3D) -> void:
     label(card_box, "MISSION OVERVIEW", 16)
     label(card_box, "Earth imagery · offline\nCloud layer · artistic drift\nCamera pages · external providers\nEarthquakes · refresh on request\nMoon & stars · artistic backdrop")
     button(card_box, "Return to full Earth", func(): close_panel(); app.reset_view())
+    wall = preload("res://scripts/camera_wall.gd").new()
+    add_child(wall)
+    wall.setup(app, cameras)
     _build_camera_viewer()
     panel.hide()
     command_card.hide()
@@ -233,6 +238,7 @@ func relayout() -> void:
         panel.size = Vector2(size.x - 48, 190)
     command_card.position = Vector2(24, 104)
     command_card.size = Vector2(280, 230)
+    if wall: wall.relayout()
     if camera_overlay:
         camera_overlay.size = size
         camera_viewer.size = Vector2(minf(960, size.x - 48), minf(680, size.y - 100))
@@ -325,7 +331,15 @@ func _worldwide_results() -> void:
 
 func _live(box: VBoxContainer) -> void:
     label(box, "Know what you're seeing", 18)
-    label(box, "The globe uses offline satellite textures and night-light imagery. Clouds drift as artwork. Lighting is cinematic; it does not show the current Sun position.")
+    label(box, "The globe uses offline satellite textures and night-light imagery. Clouds, Moon and stars are artistic.")
+    var sunlight := CheckButton.new()
+    sunlight.text = "Current UTC sunlight"
+    sunlight.button_pressed = app.utc_sunlight
+    sunlight.toggled.connect(app.set_utc_sunlight)
+    box.add_child(sunlight)
+    solar_status = label(box, "", 12)
+    label(box, "Approximate seasonal day/night boundary, calculated offline every 30 seconds. Keep your computer clock correct. Night lights screensaver uses artistic lighting.", 12)
+    button(box, "Sunlight calculation source · NOAA ↗", func(): OS.shell_open("https://gml.noaa.gov/grad/solcalc/solareqns.PDF"))
     button(box, "Earthquake observations", func(): open_page("Command Center"))
     button(box, "Official camera pages", func(): open_page("Cameras"))
     button(box, "NASA Eyes on Earth · browser", func(): OS.shell_open("https://eyes.nasa.gov/apps/earth/#/"))
@@ -334,6 +348,7 @@ func _live(box: VBoxContainer) -> void:
 func _cameras(box: VBoxContainer) -> void:
     label(box, "Windows onto the planet", 18)
     label(box, "Image cameras open here. Video and seasonal sources open their official websites. Every selection also flies Earth to the approximate location.", 12)
+    button(box, "Open Camera Wall", func(): wall.open())
     camera_status = label(box, "Choose a camera below.")
     for venue in cameras:
         label(box, venue.provider, 12)
@@ -344,6 +359,7 @@ func _cameras(box: VBoxContainer) -> void:
 func select_camera(venue: Dictionary) -> void:
     app.fly_to_location(venue)
     if venue.has("image_url"):
+        if wall and wall.visible: wall.manager.set_suspended(true)
         camera_overlay.show()
         app.camera_service.open(venue)
         refresh_layout()
@@ -384,7 +400,7 @@ func _build_camera_viewer() -> void:
     var automatic := CheckButton.new()
     automatic.text = "Auto refresh (backs off on errors)"
     automatic.button_pressed = true
-    automatic.toggled.connect(func(enabled: bool): app.camera_service.automatic = enabled)
+    automatic.toggled.connect(app.camera_service.set_automatic)
     controls.add_child(automatic)
     app.camera_service.changed.connect(_camera_changed)
     camera_overlay.hide()
@@ -399,6 +415,7 @@ func _camera_changed() -> void:
 func close_camera() -> void:
     if camera_overlay: camera_overlay.hide()
     app.camera_service.stop()
+    if wall and wall.visible: wall.manager.set_suspended(false)
 
 
 func _command(box: VBoxContainer) -> void:
@@ -434,7 +451,7 @@ func _refresh_quake_list() -> void:
 
 func _savers(box: VBoxContainer) -> void:
     label(box, "Your own quiet planet", 18)
-    label(box, "Offline, cinematic lighting · no network requests", 12)
+    label(box, "Offline · saved sunlight setting · no network requests", 12)
     var choices := OptionButton.new()
     for title in ["Ambient Earth", "Discovery journeys", "Night lights", "Deep space"]:
         choices.add_item(title)

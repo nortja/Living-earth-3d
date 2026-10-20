@@ -40,7 +40,11 @@ func run() -> void:
     service.automatic = false
     service._unavailable()
     verify(not service.status.contains("Automatic retry"), "Manual mode never promises an automatic retry")
-    service.automatic = true
+    service.set_automatic(true)
+    verify(service.status.contains("Automatic retry"), "Resuming automatic polling updates error message")
+    service.set_automatic(false)
+    verify(not service.status.contains("Automatic retry"), "Pausing polling removes retry promise immediately")
+    service.set_automatic(true)
     service.unchanged_since = Time.get_unix_time_from_system() - 301
     service._received(HTTPRequest.RESULT_SUCCESS, 200, PackedStringArray(), bytes, service.generation)
     verify(service.refresh_interval == 60.0 and service.consecutive_failures == 0, "Successful refresh restores normal cadence")

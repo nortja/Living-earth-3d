@@ -6,6 +6,7 @@ var image: Texture2D
 var status := "Choose a camera."
 var active := false
 var automatic := true
+var last_failed := false
 var loading := false
 var elapsed := 0.0
 var consecutive_failures := 0
@@ -23,7 +24,7 @@ func _process(delta: float) -> void:
     elapsed += delta
     if elapsed >= refresh_interval: refresh()
 
-func open(venue: Dictionary) -> void:
+func open(venue: Dictionary, start_request := true) -> void:
     stop()
     selected = venue.duplicate()
     image = null
@@ -31,9 +32,11 @@ func open(venue: Dictionary) -> void:
     digest = ""
     consecutive_failures = 0
     refresh_interval = 60.0
+    last_failed = false
     active = true
     last_attempt = -10000
-    refresh()
+    status = "Waiting to retrieve camera image…"
+    if start_request: refresh()
 
 func stop() -> void:
     active = false
@@ -69,7 +72,7 @@ func refresh() -> void:
         if not "@" in host_port and host_port.count(":") == 1:
             request.set_https_proxy(host_port.get_slice(":", 0), int(host_port.get_slice(":", 1)))
     request.request_completed.connect(_received.bind(generation))
-    if request.request(url, ["User-Agent: LivingEarth3D/0.5.4 (+https://github.com/nortja/Living-earth-3d)", "Cache-Control: no-cache"]) != OK:
+    if request.request(url, ["User-Agent: LivingEarth3D/0.6.0 (+https://github.com/nortja/Living-earth-3d)", "Cache-Control: no-cache"]) != OK:
         _received(HTTPRequest.RESULT_CANT_CONNECT, 0, PackedStringArray(), PackedByteArray(), generation)
 
 static func valid_image_url(url: String) -> bool:
@@ -89,6 +92,7 @@ func _received(result: int, code: int, headers: PackedStringArray, body: PackedB
         return
     consecutive_failures = 0
     refresh_interval = 60.0
+    last_failed = false
     image = ImageTexture.create_from_image(decoded)
     retrieved = Time.get_datetime_string_from_system(true).replace("T", " ")
     var hashing := HashingContext.new()
@@ -112,6 +116,14 @@ func _unavailable() -> void:
     consecutive_failures = mini(consecutive_failures + 1, 4)
     refresh_interval = minf(60.0 * pow(2.0, consecutive_failures - 1), 480.0)
     elapsed = 0.0
+    last_failed = true
+    _describe_unavailable()
+
+func set_automatic(enabled: bool) -> void:
+    automatic = enabled
+    if last_failed: _describe_unavailable()
+
+func _describe_unavailable() -> void:
     status = "Camera unavailable. Try Refresh or open the official source."
     if automatic:
         status += "\nAutomatic retry in %d minutes while this viewer is open." % int(refresh_interval / 60.0)

@@ -1,6 +1,6 @@
 # Living Earth 3D
 
-An offline-first interactive Windows globe and screensaver, built with Godot 4. Version **0.5.4 preview**.
+An offline-first interactive Windows globe and screensaver, built with Godot 4. Released **0.5.4 preview**; **0.6.0 candidate** is in validation.
 
 ## Windows users
 
@@ -11,6 +11,8 @@ The real globe emerges from darkness with illuminated Earth branding. Drag to sp
 The navigation bar opens **Explore**, **Live Earth**, **Cameras**, **Command Center**, and **Screensavers**. Settings contains display/GPU information, genuine 4K and lower-memory 2K texture presets, offline cloud/star/Moon toggles, and 30 FPS power saving. The normal 60 FPS limit also respects lower monitor refresh rates. This is a cap, not a promise of performance on every GPU. Preferences and favorites stay local.
 
 Explore six curated destinations, an offline atlas, or coordinates. Worldwide search uses OpenStreetMap Nominatim only when requested. Selecting one of three image cameras opens its actual camera image inside the app, with optional minute refresh and explicit retrieval/error states. Five external video/seasonal venues open official websites. These images are not continuous video; capture freshness and future availability are not guaranteed. The Command Center requests USGS M2.5+ past-day earthquakes, with event UTC times, retrieval timestamps, disk cache, and explicit unavailable/cached states. No observations are fabricated. **Live Earth** explains the difference between offline imagery, periodic data and external services.
+
+Development candidate 0.6.0 adds **Cameras → Open Camera Wall** with 1/2/4/6/9-view layouts and saved collections. Three distinct image-camera sources are available; duplicate tiles share downloads, with at most two requests at once. Offscreen/hidden feeds pause. **Live Earth → Current UTC sunlight** enables an approximate seasonal day/night boundary, calculated offline from the device clock; it does not make clouds, Moon or stars current observations. These features reach installed users only after Windows validation and signed update promotion.
 
 Four offline screensaver styles offer Ambient Earth, Discovery journeys, Night lights, and Deep space. Preview returns to the app on input after a short grace period. Windows screensaver selection is optional; preview embedding and multi-monitor coverage are unfinished. Clouds drift as offline artwork. Lighting, Moon and stars are cinematic rather than current astronomical positions. Source detail remains 4K even on larger displays.
 

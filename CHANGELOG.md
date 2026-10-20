@@ -1,10 +1,12 @@
 # Changelog
 
-## Unreleased — camera retry reliability
+## 0.6.0 candidate — Camera Wall and current sunlight
 
-- Unavailable image cameras retry after 1, 2, 4, then at most 8 minutes while the viewer is open; a successful image or a different camera restores the one-minute cadence. Manual Refresh remains available.
-- Retry messages distinguish automatic and manual refresh.
-- Validation: Godot 4.6.3 import, 27 camera checks and 43 interface/data checks passed headlessly. Windows packaging and field checks are pending.
+- Added opt-in Camera Wall with 1/2/4/6/9-view layouts, aspect-preserving images, focus view and up to eight saved local collections. Three distinct image sources are available; repeating a source shares its download.
+- Bounded wall networking to two simultaneous downloads; suspend offscreen, minimized and focused-away sources and cancel on close/screensaver entry.
+- Added opt-in approximate UTC sunlight and seasonal day/night boundary, calculated offline from NOAA equations using device time. Cinematic lighting remains available; cloud/Moon/star imagery remains artistic.
+- Failed cameras back off from one to eight minutes, recover to normal refresh after success and label retained imagery. Manual polling never promises automatic retries.
+- Validation: 398 headless checks, 16 update-security checks, native Linux wall/globe/intro renders, actual NPS image retrieval and Windows executable/installer icon verification. Windows installation and signed-feed promotion pending; see docs/VALIDATION-0.6.0.md.
 
 ## 0.5.4 — Visible cameras and a clearer Earth identity
 

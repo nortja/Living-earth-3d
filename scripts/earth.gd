@@ -1,5 +1,10 @@
 extends Node3D
 
+const SolarPosition = preload("res://scripts/solar_position.gd")
+var utc_sunlight := false
+var solar_sample: Dictionary = {}
+var solar_sample_ticks := -60000
+
 const EarthInterface = preload("res://scripts/earth_interface.gd")
 const CameraService = preload("res://scripts/camera_service.gd")
 var camera_service: Node
@@ -63,7 +68,7 @@ var update_status: Label
 var update_feed: Dictionary = {}
 var update_request: HTTPRequest
 var preferences := ConfigFile.new()
-const VERSION := "0.5.4"
+const VERSION := "0.6.0"
 const UPDATE_FEED_URL := "https://raw.githubusercontent.com/nortja/Living-earth-3d/main/updates/preview.json"
 const RELEASES_URL := "https://github.com/nortja/Living-earth-3d/releases"
 
@@ -140,6 +145,7 @@ func _ready() -> void:
     add_child(layer)
     interface_layer = layer
     _build_explorer(layer)
+    update_sunlight()
     if screensaver_mode:
         layer.hide()
         get_window().mode = Window.MODE_FULLSCREEN
@@ -181,6 +187,8 @@ func _process(delta: float) -> void:
         _update_camera()
     if selected < 0 and not external_focus:
         earth.rotate_y(delta * (0.025 if screensaver_mode else 0.08))
+    if utc_sunlight and not (screensaver_mode and saver_style == 2):
+        update_sunlight()
     if screensaver_mode and saver_style == 2:
         sun.look_at(camera.position.normalized(), Vector3.UP)
         earth_material.set_shader_parameter("sun_direction", sun.basis.z)
@@ -231,6 +239,8 @@ func _unhandled_input(event: InputEvent) -> void:
         elif event.keycode == KEY_ESCAPE:
             if interface.camera_overlay.visible:
                 interface.close_camera()
+            elif interface.wall.visible:
+                interface.wall.close()
             elif interface.panel.visible:
                 interface.close_panel()
             elif get_window().mode == Window.MODE_FULLSCREEN:
@@ -249,6 +259,7 @@ func _build_explorer(layer: CanvasLayer) -> void:
     discovery_enabled = preferences.get_value("explorer", "discovery", false)
     discovery_interval = preferences.get_value("explorer", "interval", 120.0)
     saver_style = clampi(int(preferences.get_value("screensaver", "style", 0)), 0, 3)
+    utc_sunlight = bool(preferences.get_value("visuals", "utc_sunlight", false))
     ambient = AmbientSound.new()
     add_child(ambient)
     ambient.setup(preferences, screensaver_mode)
@@ -636,6 +647,7 @@ func apply_saver_style() -> void:
 func preview_screensaver() -> void:
     finish_intro()
     interface.close_camera()
+    interface.wall.close()
     previous_window_mode = get_window().mode
     saved_discovery = discovery_enabled
     saved_interval = discovery_interval
@@ -658,11 +670,35 @@ func stop_screensaver_preview() -> void:
     ambient.set_suspended(false)
     discovery_enabled = saved_discovery
     discovery_interval = saved_interval
-    sun.rotation_degrees = Vector3(-25, 150, 0)
-    earth_material.set_shader_parameter("sun_direction", sun.basis.z)
-    atmosphere_material.set_shader_parameter("sun_direction", sun.basis.z)
+    update_sunlight()
     visuals.apply_options(preferences.get_value("visuals", "clouds", true), preferences.get_value("visuals", "stars", true), preferences.get_value("visuals", "moon", false))
     get_window().mode = previous_window_mode
     Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
     interface_layer.show()
     reset_view()
+
+
+func set_utc_sunlight(enabled: bool) -> void:
+    utc_sunlight = enabled
+    preferences.set_value("visuals", "utc_sunlight", enabled)
+    _save_preferences()
+    solar_sample_ticks = -60000
+    update_sunlight()
+
+func update_sunlight() -> void:
+    if utc_sunlight:
+        var ticks := Time.get_ticks_msec()
+        if solar_sample.is_empty() or ticks - solar_sample_ticks >= 30000:
+            solar_sample = SolarPosition.at_unix(Time.get_unix_time_from_system())
+            solar_sample_ticks = ticks
+            if interface and interface.solar_status:
+                interface.solar_status.text = "Calculated for %s UTC\nSubsolar point: %.1f°, %.1f°\nApproximate sunlight from your device clock; not a live observation." % [solar_sample.utc, solar_sample.latitude, solar_sample.longitude]
+        # Earth's cinematic spin must not move the terminator across geographic locations.
+        var direction: Vector3 = earth.global_basis * solar_sample.direction
+        sun.look_at(-direction, Vector3.UP)
+    else:
+        sun.rotation_degrees = Vector3(-25, 150, 0)
+        if interface and interface.solar_status:
+            interface.solar_status.text = "Cinematic lighting selected. Current sunlight is off."
+    earth_material.set_shader_parameter("sun_direction", sun.global_basis.z)
+    atmosphere_material.set_shader_parameter("sun_direction", sun.global_basis.z)
