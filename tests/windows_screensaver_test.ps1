@@ -1,4 +1,4 @@
-param([Parameter(Mandatory=$true)][string]$Installer,[Parameter(Mandatory=$true)][string]$MesaDirectory)
+param([Parameter(Mandatory=$true)][string]$Installer,[switch]$SoftwareRendering)
 $ErrorActionPreference='Stop'
 if ($env:OS -ne 'Windows_NT') { throw 'Windows desktop required' }
 Add-Type -AssemblyName System.Windows.Forms,System.Drawing
@@ -30,10 +30,8 @@ $root=Join-Path $fixture 'Living Earth 3D'
 New-Item -ItemType Directory -Path $fixture -Force | Out-Null
 $setup=Start-Process (Resolve-Path $Installer) -ArgumentList "/S /D=$root" -Wait -PassThru
 if($setup.ExitCode -ne 0){throw 'Test installation failed'}
-# Software OpenGL is test-only, never included in the shipped installer.
-Copy-Item (Join-Path $MesaDirectory '*.dll') $root
-$env:GALLIUM_DRIVER='llvmpipe'
-$env:LIBGL_ALWAYS_SOFTWARE='1'
+# The CI VM installs its software ICD separately; the shipped app uses its normal graphics driver.
+if($SoftwareRendering){$env:GALLIUM_DRIVER='llvmpipe';$env:LIBGL_ALWAYS_SOFTWARE='1'}
 $forms=New-Object Collections.Generic.List[Windows.Forms.Form]
 $launchers=New-Object Collections.Generic.List[Diagnostics.Process]
 function Pump([int]$Milliseconds=100) {
@@ -84,6 +82,15 @@ function Preview-Form([int]$X) {
  return $f
 }
 try {
+ $preflightLog=Join-Path $pwd 'dist/windows-saver-preflight.log'
+ $preflight=Start-Process "$root/LivingEarth3D.exe" -ArgumentList ('--resolution 320x200 --audio-driver Dummy --log-file "'+$preflightLog+'" -- --saver-hosted --saver-preview') -PassThru
+ Pump 3000
+ if($preflight.HasExited){if(Test-Path $preflightLog){Get-Content $preflightLog -Tail 50 | ForEach-Object {Write-Host $_}};throw 'Standalone software OpenGL preflight failed before preview testing'}
+ $preflightWindows=@([SaverWindows]::Windows([uint32]$preflight.Id,[IntPtr]::Zero))
+ foreach($w in $preflightWindows){[void][SaverWindows]::PostMessage($w,0x0010,[IntPtr]::Zero,[IntPtr]::Zero)}
+ if(!$preflight.WaitForExit(5000)){$preflight.Kill();throw 'Standalone graphics preflight did not close'}
+ if(Test-Path $preflightLog){Get-Content $preflightLog -Tail 15 | ForEach-Object {Write-Host $_}}
+ Write-Output 'PASS: standalone packaged Godot graphics initializes before native embedding checks'
  foreach($bad in @('/p','/p:0','/p:-1','/p:18446744073709551616','/p:123')){
   $p=Start-Saver $bad
   if(!$p.WaitForExit(5000)){throw "Invalid preview request timed out: $bad (PID $($p.Id))"}
