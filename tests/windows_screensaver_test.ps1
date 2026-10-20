@@ -40,7 +40,9 @@ function Pump([int]$Milliseconds=100) {
  while([DateTime]::UtcNow -lt $until){[Windows.Forms.Application]::DoEvents();Start-Sleep -Milliseconds 20}
 }
 function Start-Saver([string]$Arguments) {
- $p=Start-Process "$root/LivingEarth3D.scr" -ArgumentList $Arguments -PassThru
+ $start=New-Object Diagnostics.ProcessStartInfo
+ $start.FileName="$root/LivingEarth3D.scr";$start.Arguments=$Arguments;$start.UseShellExecute=$false
+ $p=[Diagnostics.Process]::Start($start)
  $launchers.Add($p);return $p
 }
 function Child-Process($Launcher) {
@@ -72,7 +74,8 @@ function Preview-Form([int]$X) {
 try {
  foreach($bad in @('/p','/p:0','/p:-1','/p:18446744073709551616','/p:123')){
   $p=Start-Saver $bad
-  if(!$p.WaitForExit(5000) -or $p.ExitCode -eq 0){throw "Invalid preview request was not rejected: $bad"}
+  if(!$p.WaitForExit(5000)){throw "Invalid preview request timed out: $bad (PID $($p.Id))"}
+  if($p.ExitCode -ne 2){throw "Unexpected invalid-preview exit: $bad -> $($p.ExitCode)"}
  }
  Write-Output 'PASS: invalid/missing/overflow/stale preview handles exit without fullscreen fallback'
  $first=Preview-Form 40
@@ -96,6 +99,11 @@ try {
  $bitmap.Save($evidence,[Drawing.Imaging.ImageFormat]::Png);$graphics.Dispose();$bitmap.Dispose()
  if($colors.Count -lt 20){throw 'Embedded preview has insufficient rendered Earth detail'}
  Write-Output 'PASS: actual Godot Earth renders inside native preview HWND, resizes and has no fullscreen window'
+ $before=(Get-FileHash "$root/LivingEarth3D.exe" -Algorithm SHA256).Hash
+ $blocked=Start-Process (Resolve-Path $Installer) -ArgumentList "/S /D=$root" -Wait -PassThru
+ if($blocked.ExitCode -eq 0 -or (Get-FileHash "$root/LivingEarth3D.exe" -Algorithm SHA256).Hash -ne $before -or $p1.HasExited){throw 'Silent installer did not defer for native preview controller'}
+ Write-Output 'PASS: silent manual installation defers while native preview controller is running'
+
  $second=Preview-Form 650
  $p2=Start-Saver ('/P:'+$second.Handle.ToInt64())
  $r2=Wait-Renderer $p2 $second.Handle
