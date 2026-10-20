@@ -23,6 +23,13 @@ func run() -> void:
             push_error("Native camera viewer leaves viewport")
             quit(1)
             return
+        for action in [ui.camera_close,ui.camera_refresh,ui.camera_source_button]:
+            var font: Font = action.get_theme_font("font")
+            var text_width: float = font.get_string_size(action.text,HORIZONTAL_ALIGNMENT_LEFT,-1,action.get_theme_font_size("font_size")).x
+            if action.size.x < text_width:
+                push_error("Camera action label has collapsed: " + action.text)
+                quit(1)
+                return
         var capture := root.get_texture().get_image()
         if capture.get_size() != pixels or capture.save_png("res://dist/camera-%dx%d.png" % [pixels.x,pixels.y]) != OK:
             push_error("Native screenshot failed")

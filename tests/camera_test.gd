@@ -48,6 +48,9 @@ func run() -> void:
         ui.set_ui_scale(2.0)
         for frame in range(10): await process_frame
         verify(Rect2(Vector2.ZERO,ui.size).encloses(Rect2(ui.camera_viewer.position,ui.camera_viewer.size)), "Viewer fits %s" % pixels)
+    for action in [ui.camera_close,ui.camera_refresh,ui.camera_source_button]:
+        var font: Font = action.get_theme_font("font")
+        verify(action.size.x >= font.get_string_size(action.text,HORIZONTAL_ALIGNMENT_LEFT,-1,action.get_theme_font_size("font_size")).x,"Camera action label stays readable: " + action.text)
     app.preview_screensaver()
     verify(not service.active and not ui.camera_overlay.visible, "Screensaver preview stops camera networking")
     DirAccess.remove_absolute(ProjectSettings.globalize_path(app.preferences_path))
