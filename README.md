@@ -1,16 +1,16 @@
 # Living Earth 3D
 
-An offline-first interactive Windows globe and screensaver, built with Godot 4. Version **0.5.3 preview**.
+An offline-first interactive Windows globe and screensaver, built with Godot 4. Version **0.5.4 preview**.
 
 ## Windows users
 
-[Download LivingEarth3D-Setup-0.5.3.exe](https://github.com/nortja/Living-earth-3d/raw/refs/heads/downloads/windows-0.5.3/LivingEarth3D-Setup-0.5.3.exe), double-click, install, then open the desktop shortcut. No ZIP extraction, terminal, separate runtime, or Godot setup is needed. This is an unsigned preview. The user confirmed installation and launch of 0.3.0 on Windows; 0.5.3 Windows hardware/upgrade testing is still outstanding.
+[Download LivingEarth3D-Setup-0.5.4.exe](https://github.com/nortja/Living-earth-3d/raw/refs/heads/downloads/windows-0.5.4/LivingEarth3D-Setup-0.5.4.exe), double-click, install, then open the desktop shortcut. No ZIP extraction, terminal, separate runtime, or Godot setup is needed. This is an unsigned preview. The user confirmed 0.5.3 installation and enabled automatic updates. Windows CI verifies installation and rollback; physical GPU/DPI checks remain outstanding.
 
 The real globe emerges from darkness with illuminated Earth branding. Drag to spin with gentle inertia, scroll or double-click to zoom, and use **Full Earth** or Home to reset. F11 toggles fullscreen. Earth stays centered and proportional at native viewport resolution, including ultrawide and 4K/5K sizes. Compact controls scale automatically with window resolution. Side panels move below the center in smaller windows; an optional wide Command Center overview uses spare space.
 
 The navigation bar opens **Explore**, **Live Earth**, **Cameras**, **Command Center**, and **Screensavers**. Settings contains display/GPU information, genuine 4K and lower-memory 2K texture presets, offline cloud/star/Moon toggles, and 30 FPS power saving. The normal 60 FPS limit also respects lower monitor refresh rates. This is a cap, not a promise of performance on every GPU. Preferences and favorites stay local.
 
-Explore six curated destinations, an offline atlas, or coordinates. Worldwide search uses OpenStreetMap Nominatim only when requested. Camera venues fly the globe to approximate locations and open official provider pages in a browser; feeds are not embedded, and availability is not verified. The Command Center requests USGS M2.5+ past-day earthquakes, with event UTC times, retrieval timestamps, disk cache, and explicit unavailable/cached states. No observations are fabricated. **Live Earth** explains the difference between offline imagery, periodic data and external services.
+Explore six curated destinations, an offline atlas, or coordinates. Worldwide search uses OpenStreetMap Nominatim only when requested. Selecting one of three image cameras opens its actual camera image inside the app, with optional minute refresh and explicit retrieval/error states. Five external video/seasonal venues open official websites. These images are not continuous video; capture freshness and future availability are not guaranteed. The Command Center requests USGS M2.5+ past-day earthquakes, with event UTC times, retrieval timestamps, disk cache, and explicit unavailable/cached states. No observations are fabricated. **Live Earth** explains the difference between offline imagery, periodic data and external services.
 
 Four offline screensaver styles offer Ambient Earth, Discovery journeys, Night lights, and Deep space. Preview returns to the app on input after a short grace period. Windows screensaver selection is optional; preview embedding and multi-monitor coverage are unfinished. Clouds drift as offline artwork. Lighting, Moon and stars are cinematic rather than current astronomical positions. Source detail remains 4K even on larger displays.
 

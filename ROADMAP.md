@@ -1,6 +1,6 @@
 # Living Earth 3D — current roadmap
 
-Updated 2026-10-20. Latest released baseline: 0.5.3. Next release: 0.5.4 (camera images and icon refresh). One Windows installer, then authenticated automatic updates; the base Earth remains useful offline.
+Updated 2026-10-20. Latest released baseline: 0.5.4 (camera images and icon refresh). One Windows installer, then authenticated automatic updates; the base Earth remains useful offline.
 
 ## Completed
 
@@ -21,7 +21,8 @@ Updated 2026-10-20. Latest released baseline: 0.5.3. Next release: 0.5.4 (camera
 - [x] Fix camera selection: three NPS image cameras open an actual in-app viewer, rather than only moving the globe. Five video/seasonal entries visibly open official websites.
 - [x] Add loading/error feedback, refresh, optional once-per-minute refresh while open, provider attribution, retrieval/source timestamp labels, retained-image warning and unchanged-frame warning.
 - [x] Cancel requests on close/selection change/screensaver preview; prevent old responses from appearing under a different camera name. Keep network access opt-in through camera selection.
-- [ ] Publish the tested installer and signed 0.5.4 feed; exercise the first automatic upgrade on the user's Windows machine.
+- [x] Publish the Windows-tested installer and signed 0.5.4 feed.
+- [ ] Exercise the first automatic 0.5.3 → 0.5.4 upgrade on the user's Windows machine.
 
 ## Next priorities
 
