@@ -24,6 +24,11 @@ Updated 2026-10-20. Latest released baseline: 0.5.4 (camera images and icon refr
 - [x] Publish the Windows-tested installer and signed 0.5.4 feed.
 - [ ] Exercise the first automatic 0.5.3 → 0.5.4 upgrade on the user's Windows machine.
 
+## In development after 0.5.4
+
+- [x] Bound failed-camera polling with 1/2/4/8-minute retry delays and recovery to normal refresh after success. Passed 27 camera and 43 interface/data headless checks.
+- [ ] Package and validate this change on Windows before promoting a new signed automatic-update feed. Released feed remains 0.5.4.
+
 ## Next priorities
 
 1. **Field validation:** confirm automatic upgrade, new desktop/taskbar icon, all camera states, visible-window restart, physical Dell scaling, frame times, memory, fullscreen, sleep/resume and monitor moves.

@@ -382,7 +382,7 @@ func _build_camera_viewer() -> void:
         if app.camera_service.selected.has("url"): OS.shell_open(app.camera_service.selected.url))
     camera_source_button.clip_text = false
     var automatic := CheckButton.new()
-    automatic.text = "Refresh every minute"
+    automatic.text = "Auto refresh (backs off on errors)"
     automatic.button_pressed = true
     automatic.toggled.connect(func(enabled: bool): app.camera_service.automatic = enabled)
     controls.add_child(automatic)

@@ -34,14 +34,23 @@ func run() -> void:
     verify(service.status.contains("fixture source time"), "Provider timestamp shown separately from retrieval")
     service._received(HTTPRequest.RESULT_CANT_CONNECT, 0, PackedStringArray(), PackedByteArray(), service.generation)
     verify(service.image != null and service.status.contains("Last successful image retained"), "Network failure labels retained image")
+    verify(service.refresh_interval == 60.0, "First failure retries after one minute")
+    for attempt in range(6): service._unavailable()
+    verify(service.refresh_interval == 480.0, "Repeated failures cap retries at eight minutes")
+    service.automatic = false
+    service._unavailable()
+    verify(not service.status.contains("Automatic retry"), "Manual mode never promises an automatic retry")
+    service.automatic = true
     service.unchanged_since = Time.get_unix_time_from_system() - 301
     service._received(HTTPRequest.RESULT_SUCCESS, 200, PackedStringArray(), bytes, service.generation)
+    verify(service.refresh_interval == 60.0 and service.consecutive_failures == 0, "Successful refresh restores normal cadence")
     verify(service.status.contains("unchanged"), "Repeated unchanged frames flagged")
     var token: int = service.generation
     ui.close_camera()
     service._received(HTTPRequest.RESULT_SUCCESS, 200, PackedStringArray(), bytes, token)
     verify(not service.active and not ui.camera_overlay.visible, "Close stops requests; late response ignored")
     ui.select_camera({"name":"Another fixture", "latitude":40.0, "longitude":-100.0, "image_url":"invalid"})
+    verify(service.refresh_interval == 60.0 and service.consecutive_failures == 0, "New camera resets failure backoff")
     verify(service.image == null and ui.camera_image.texture == null, "Switching camera never relabels an old image")
     for pixels in [Vector2i(800,600), Vector2i(1920,1080), Vector2i(5120,1440), Vector2i(5120,2880)]:
         root.size = pixels

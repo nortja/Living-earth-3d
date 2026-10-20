@@ -8,6 +8,8 @@ var active := false
 var automatic := true
 var loading := false
 var elapsed := 0.0
+var consecutive_failures := 0
+var refresh_interval := 60.0
 var generation := 0
 var request: HTTPRequest
 var last_attempt := -10000
@@ -19,7 +21,7 @@ const IMAGE_ORIGIN := "https://www.nps.gov/webcams-yell/"
 func _process(delta: float) -> void:
     if not active or not automatic or loading or get_window().mode == Window.MODE_MINIMIZED: return
     elapsed += delta
-    if elapsed >= 60.0: refresh()
+    if elapsed >= refresh_interval: refresh()
 
 func open(venue: Dictionary) -> void:
     stop()
@@ -27,6 +29,8 @@ func open(venue: Dictionary) -> void:
     image = null
     retrieved = ""
     digest = ""
+    consecutive_failures = 0
+    refresh_interval = 60.0
     active = true
     last_attempt = -10000
     refresh()
@@ -83,6 +87,8 @@ func _received(result: int, code: int, headers: PackedStringArray, body: PackedB
     if decoded.load_jpg_from_buffer(body) != OK or decoded.get_width() > 4096 or decoded.get_height() > 4096 or decoded.is_empty():
         _unavailable()
         return
+    consecutive_failures = 0
+    refresh_interval = 60.0
     image = ImageTexture.create_from_image(decoded)
     retrieved = Time.get_datetime_string_from_system(true).replace("T", " ")
     var hashing := HashingContext.new()
@@ -103,7 +109,12 @@ func _received(result: int, code: int, headers: PackedStringArray, body: PackedB
     changed.emit()
 
 func _unavailable() -> void:
+    consecutive_failures = mini(consecutive_failures + 1, 4)
+    refresh_interval = minf(60.0 * pow(2.0, consecutive_failures - 1), 480.0)
+    elapsed = 0.0
     status = "Camera unavailable. Try Refresh or open the official source."
+    if automatic:
+        status += "\nAutomatic retry in %d minutes while this viewer is open." % int(refresh_interval / 60.0)
     if image != null:
         status += "\nLast successful image retained (retrieved %s UTC)." % retrieved
     changed.emit()

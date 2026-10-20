@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased — camera retry reliability
+
+- Unavailable image cameras retry after 1, 2, 4, then at most 8 minutes while the viewer is open; a successful image or a different camera restores the one-minute cadence. Manual Refresh remains available.
+- Retry messages distinguish automatic and manual refresh.
+- Validation: Godot 4.6.3 import, 27 camera checks and 43 interface/data checks passed headlessly. Windows packaging and field checks are pending.
+
 ## 0.5.4 — Visible cameras and a clearer Earth identity
 
 - Replaced desktop/app/installer/uninstaller artwork with a new Earth tile and seven native Windows icon sizes. Shortcuts and installed-apps entries reference a versioned ICO; setup requests a shell icon refresh.
