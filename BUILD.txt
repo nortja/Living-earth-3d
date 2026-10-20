@@ -1,0 +1,2 @@
+Source: ec6e2d741878041a815ff317e2848665d70b600b
+Unsigned Linux cross-build. Windows execution and audio listening remain unverified.
