@@ -178,7 +178,10 @@ func relayout() -> void:
     if slot_count >= 6 and size.x >= 1300: columns = 3
     grid.columns = columns
     var width := maxf(220.0, (frame.size.x - 60.0) / columns - 12.0)
-    for tile in tiles: tile.tile.custom_minimum_size.x = width
+    var rows := ceili(float(slot_count) / columns)
+    var height := maxf(220.0, (scroll.size.y - float(rows - 1) * grid.get_theme_constant("v_separation")) / rows)
+    for tile in tiles:
+        tile.tile.custom_minimum_size = Vector2(width, height)
 
 func _collection_choices() -> void:
     collection_picker.clear()

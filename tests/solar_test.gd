@@ -29,6 +29,7 @@ func run() -> void:
     app.preferences_path = "user://solar-test-%d.cfg" % Time.get_ticks_usec()
     root.add_child(app)
     app.set_utc_sunlight(true)
+    verify(app.interface.sunlight_toggle.button_pressed, "Sunlight control matches enabled state")
     var local_before: Vector3 = app.earth.global_basis.inverse() * app.sun.global_basis.z
     app.earth.rotate_y(1.4)
     app.update_sunlight()
@@ -39,6 +40,7 @@ func run() -> void:
     app.preferences.load(app.preferences_path)
     verify(app.preferences.get_value("visuals", "utc_sunlight", false), "Sunlight choice saved")
     app.set_utc_sunlight(false)
+    verify(not app.interface.sunlight_toggle.button_pressed, "Sunlight control matches disabled state")
     verify(app.interface.solar_status.text.contains("Cinematic"), "Cinematic mode restored")
     DirAccess.remove_absolute(ProjectSettings.globalize_path(app.preferences_path))
     app.queue_free()

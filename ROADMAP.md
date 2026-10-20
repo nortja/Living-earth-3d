@@ -24,21 +24,21 @@ Updated 2026-10-20. Latest released baseline: 0.5.4 (camera images and icon refr
 - [x] Publish the Windows-tested installer and signed 0.5.4 feed.
 - [ ] Exercise the first automatic 0.5.3 → 0.5.4 upgrade on the user's Windows machine.
 
-## In validation — 0.6.0
+## In validation — 0.6.1
 
 - [x] Failed-camera polling: 1/2/4/8-minute retries, recovery to one minute, correct manual/automatic state messages.
 - [x] Camera Wall: 1/2/4/6/9-view responsive layouts, aspect-preserving tiles, focused viewer, eight saved collections, shared duplicate-source downloads and at most two concurrent requests. Three unique image sources currently available; no embedded video.
 - [x] Stop offscreen, minimized, focused-away, closed and screensaver-hidden wall downloads.
 - [x] Optional current UTC sunlight and seasonal day/night boundary. Offline approximate NOAA calculation; saved setting; geometric orientation remains correct during cinematic rotation. Device clock must be correct.
-- [x] 398 headless behavior/layout checks, 16 update-security checks, native Linux wall/globe/intro renders, three real NPS image retrievals and Windows icon-resource verification.
+- [x] 400 headless behavior/layout checks, 16 update-security checks, native Linux wall/globe/intro renders, three real NPS image retrievals and Windows icon-resource verification.
 - [ ] Windows installation/rollback checks and authenticated feed promotion. Discovery feed remains 0.5.4 until completed.
 
 ## Next priorities
 
 1. **Field validation:** confirm automatic upgrade, new desktop/taskbar icon, all camera states, visible-window restart, physical Dell scaling, frame times, memory, fullscreen, sleep/resume and monitor moves.
 2. **Continuous video:** add authorized in-app streaming playback. Current NPS views are periodically refreshed camera images; other streams open the provider website. No continuous embedded video is delivered yet.
-3. **Camera Wall expansion:** more source-verified image endpoints and authorized continuous-video playback. Initial responsive 1/2/4/6/9 layouts are implemented in 0.6.0; optimize further after actual Dell measurement.
-4. **Living planet:** current UTC sunlight is implemented in the 0.6.0 candidate. Next: optional weather with model/source times and licensed cloud refresh with explicit stale/offline states. Clouds/Moon/stars remain cinematic.
+3. **Camera Wall expansion:** more source-verified image endpoints and authorized continuous-video playback. Initial responsive 1/2/4/6/9 layouts are implemented in 0.6.1; optimize further after actual Dell measurement.
+4. **Living planet:** current UTC sunlight is implemented in the 0.6.1 candidate. Next: optional weather with model/source times and licensed cloud refresh with explicit stale/offline states. Clouds/Moon/stars remain cinematic.
 5. **Screensaver integration:** Windows /p preview, /s field checks, multiple monitors, lock/sleep/resume, background power limits and longer-duration tests.
 
 ## Later / dependent work

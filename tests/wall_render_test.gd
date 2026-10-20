@@ -31,6 +31,7 @@ func run() -> void:
             await RenderingServer.frame_post_draw
             verify(Rect2(Vector2.ZERO,app.interface.size).encloses(Rect2(wall.frame.position,wall.frame.size)), "Native wall fits %s/%d" % [pixels,count])
             verify(wall.grid.size.x < wall.frame.size.x, "Native grid fits width")
+            if count == 1: verify(wall.tiles[0].tile.size.y >= wall.scroll.size.y - 4.0, "Single camera uses available wall height")
             for row in wall.frame.get_child(0).get_children():
                 for control in row.get_children():
                     if control is Button and not control is OptionButton:

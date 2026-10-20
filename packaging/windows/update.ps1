@@ -1,5 +1,5 @@
 # Installed per-user helper. Authenticated releases apply on normal app exit.
-param([string]$CurrentVersion = '0.6.0', [int]$AppProcessId = 0, [switch]$RestartNow, [switch]$Cancel)
+param([string]$CurrentVersion = '0.6.1', [int]$AppProcessId = 0, [switch]$RestartNow, [switch]$Cancel)
 $ErrorActionPreference = 'Stop'
 . (Join-Path $PSScriptRoot 'update-core.ps1')
 $installRoot = [IO.Path]::GetFullPath($PSScriptRoot)

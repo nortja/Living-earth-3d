@@ -1,6 +1,6 @@
 # 0.6.0 preview validation
 
-Source candidate, 2026-10-20. Automatic update discovery remains 0.5.4 until the new installer passes Windows installation checks and its exact metadata is signed.
+Source candidate, 2026-10-20. Linux build and Windows installation/rollback checks passed in run 39495529805, but publication was refused because an older isolated development installer already occupies downloads/windows-0.6.0. That artifact is preserved. The continuation is 0.6.1. Automatic update discovery remains 0.5.4 until the new installer passes Windows installation checks and its exact metadata is signed.
 
 - Godot 4.6.3: 398 behavior/data/layout checks across explorer, interface, scale, audio, updates, camera viewer, camera wall and solar position. Fixture camera images are used only in tests.
 - Three real NPS camera images retrieved and decoded at 1920×1080. Retrieval does not establish camera capture freshness or future provider availability.

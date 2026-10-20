@@ -20,7 +20,12 @@ A cinematic 3D Earth that feels alive: day/night lighting, atmospheric effects, 
 Godot 4 is the proposed 3D engine. First milestone: working Windows Explorer with a smooth rotating globe, camera controls, atmospheric rendering, and resolution-aware layout. Then add data feeds, saved journeys, screensaver integration, packaging, and release testing.
 
 ## Current status
-Version 0.4.0 adds genuine 4K maps, independent offline clouds, artistic stars/Moon backdrops, saved quality/power settings, and preview update discovery to the branded Explorer, animated intro, inertia, zoom, reset, and offline discovery features. The user confirmed successful Windows installation and launch of 0.3.0. A self-contained installer is cross-built and checked locally. Windows installation, production signing, signed update validation, higher-resolution imagery, screensaver preview embedding, and multi-monitor coverage remain. ROADMAP.md is the prioritized living task list; CHANGELOG.md records milestones. The failing GitHub installer workflow is disabled to stop unwanted emails.
+
+The released baseline is 0.5.4; 0.6.1 is undergoing release validation. The installer and authenticated automatic updater are implemented. The user confirmed 0.5.3 installation and enabled updates. Globe navigation, responsive native-resolution layout, original optional ambient audio, offline discovery, requested USGS observations and three in-app image cameras are implemented. The 0.6.1 candidate adds Camera Wall layouts/collections and approximate current UTC sunlight.
+
+The original visual-theme and seven-channel ideas above are a concept backlog, not completed features. Current sources do not provide a broad news, weather, financial, sports or satellite-tracking service. Those channels need bounded requirements and source/access decisions before implementation. Continuous embedded video, Windows preview embedding and multiple-monitor screensavers remain unfinished. Physical GPU/DPI, monitor transitions and visible updater restart require a real Windows desktop. ROADMAP.md is authoritative for priorities; release evidence is in docs/VALIDATION-0.6.1.md.
+
+The old failing Windows installer workflow remains disabled. Releases use a narrowly scoped, one-version validation branch that tests on Linux and Windows before publishing an installer. Signed automatic-update discovery is promoted separately only after the published bytes are verified.
 
 ## Principles
 Keep the screensaver calm and nonintrusive. Preserve user privacy. Never require crypto wallets or donations. Do not store private keys. Support performance scaling and power-saving behavior.

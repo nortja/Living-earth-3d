@@ -68,7 +68,7 @@ var update_status: Label
 var update_feed: Dictionary = {}
 var update_request: HTTPRequest
 var preferences := ConfigFile.new()
-const VERSION := "0.6.0"
+const VERSION := "0.6.1"
 const UPDATE_FEED_URL := "https://raw.githubusercontent.com/nortja/Living-earth-3d/main/updates/preview.json"
 const RELEASES_URL := "https://github.com/nortja/Living-earth-3d/releases"
 
@@ -680,6 +680,8 @@ func stop_screensaver_preview() -> void:
 
 func set_utc_sunlight(enabled: bool) -> void:
     utc_sunlight = enabled
+    if interface and interface.sunlight_toggle:
+        interface.sunlight_toggle.set_pressed_no_signal(enabled)
     preferences.set_value("visuals", "utc_sunlight", enabled)
     _save_preferences()
     solar_sample_ticks = -60000

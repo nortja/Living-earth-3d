@@ -26,6 +26,7 @@ var dock_row: HBoxContainer
 var layout_frames := 8
 var page_animation: Tween
 var wall: ColorRect
+var sunlight_toggle: CheckButton
 var solar_status: Label
 var camera_status: Label
 var camera_overlay: ColorRect
@@ -333,6 +334,7 @@ func _live(box: VBoxContainer) -> void:
     label(box, "Know what you're seeing", 18)
     label(box, "The globe uses offline satellite textures and night-light imagery. Clouds, Moon and stars are artistic.")
     var sunlight := CheckButton.new()
+    sunlight_toggle = sunlight
     sunlight.text = "Current UTC sunlight"
     sunlight.button_pressed = app.utc_sunlight
     sunlight.toggled.connect(app.set_utc_sunlight)
