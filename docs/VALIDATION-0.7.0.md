@@ -1,6 +1,6 @@
 # 0.7.0 exploration update — validation
 
-Candidate, 2026-10-20. The published automatic-update baseline remains 0.6.1 until Windows validation and exact signed-feed promotion complete. The user reported that the 0.6.1 update installed well and its Camera Wall/cameras work on Windows.
+Released preview, 2026-10-20. The signed automatic-update baseline is 0.7.0. The user reported that the 0.6.1 update installed well and its Camera Wall/cameras work on Windows.
 
 ## Implemented
 
@@ -29,6 +29,10 @@ Giant Forest source page: https://www.nps.gov/media/webcam/view.htm?id=81B461CE-
 
 ## Release gates
 
-Windows tests must verify silent upgrades from both 0.5.2 and 0.6.1, rollback, user-data preservation, versioned icons, running-process protection and uninstall. Only then publish the new installer, verify its public bytes, sign exact metadata with the existing pinned trust key, and atomically promote discovery plus signature. Run the production Windows updater round trip afterward. Leave the older failing general workflow disabled.
+[Release validation run](https://github.com/nortja/Living-earth-3d/actions/runs/39507272694) passed Linux build/render checks and real Windows silent upgrades from both 0.5.2 and 0.6.1. Both baselines passed deliberate post-install failure rollback, previous-file/version restoration, user-data preservation, versioned desktop icons, running-process protection and uninstall.
+
+The published installer was downloaded and verified before signing exact metadata with the existing pinned release key. Size: 36,457,608 bytes. SHA-256: `6353f718972d3255a46aa414a3e7df2b050d3bd6b259a8e472ade54495936595`. Discovery metadata, raw signed application manifest and detached signature were promoted together. Private signing material did not enter git or CI. The older failing general workflow remains disabled.
+
+Production-feed Windows staging/cancellation/normal-exit installation is the final post-publication check.
 
 Physical monitor/DPI/performance, visible restart, Windows preview embedding, multi-monitor screensavers and embedded continuous video remain separate work. The project is still a preview.

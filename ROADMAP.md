@@ -1,6 +1,6 @@
 # Living Earth 3D — current roadmap
 
-Updated 2026-10-20. Latest released baseline: 0.6.1 (Camera Wall, collections and current UTC sunlight). One Windows installer, then authenticated automatic updates; the base Earth remains useful offline.
+Updated 2026-10-20. Latest released baseline: 0.7.0 (discoveries, saved places, model weather, history atlas and six screensavers). One Windows installer, then authenticated automatic updates; the base Earth remains useful offline.
 
 ## Completed
 
@@ -13,7 +13,7 @@ Updated 2026-10-20. Latest released baseline: 0.6.1 (Camera Wall, collections an
 - [x] Optional original offline ambient sound, saved volume and smooth fades; off by default. Screensaver stays silent.
 - [x] Offline atlas, coordinates, six curated destinations, favorites, surprise destinations and timed journeys.
 - [x] On-request worldwide place search and USGS earthquakes, with retrieval/cache/error states. These are periodic/requested data, not a continuous live feed.
-- [x] Four screensaver styles and returnable fullscreen preview. Full Windows multi-monitor/preview integration is unfinished.
+- [x] Six screensaver styles and returnable fullscreen preview. Full Windows multi-monitor/preview integration is unfinished.
 
 ## Previous release — 0.5.4
 
@@ -24,7 +24,7 @@ Updated 2026-10-20. Latest released baseline: 0.6.1 (Camera Wall, collections an
 - [x] Publish the Windows-tested installer and signed 0.5.4 feed.
 - [x] User reported the update installed nicely and Camera Wall/cameras work on Windows (2026-10-20).
 
-## This release — 0.6.1
+## Previous release — 0.6.1
 
 - [x] Failed-camera polling: 1/2/4/8-minute retries, recovery to one minute, correct manual/automatic state messages.
 - [x] Camera Wall: 1/2/4/6/9-view responsive layouts, aspect-preserving tiles, focused viewer, eight saved collections, shared duplicate-source downloads and at most two concurrent requests. Three unique image sources currently available; no embedded video.
@@ -33,7 +33,7 @@ Updated 2026-10-20. Latest released baseline: 0.6.1 (Camera Wall, collections an
 - [x] 400 headless behavior/layout checks, 16 update-security checks, native Linux wall/globe/intro renders, three real NPS image retrievals and Windows icon-resource verification.
 - [x] Windows installation/rollback and updater-security checks passed; public installer verified and signed feed promoted. Production signed-feed staging, cancellation, normal-exit installation and file verification also passed on Windows; see release validation.
 
-## Next large build — 0.7.0 candidate
+## This release — 0.7.0
 
 - [x] Reuse the development-track wonder/history prototypes while preserving main's authenticated updater and working cameras.
 - [x] Discover/Search/History/Saved sections, twelve sourced daily wonders, fifty local saved places and visible save feedback.
@@ -42,14 +42,14 @@ Updated 2026-10-20. Latest released baseline: 0.6.1 (Camera Wall, collections an
 - [x] Six screensaver styles; expanded wonder journeys and saved-sunlight restoration.
 - [x] Giant Forest in-app image camera; north-oriented polar navigation; readable favorite actions.
 - [x] 464 local checks, 16 update-security checks, real weather/four-camera retrievals and native layouts through 5K.
-- [ ] Windows upgrades/rollback from 0.5.2 and 0.6.1, public installer verification and signed-feed promotion.
+- [x] Windows upgrades/rollback from 0.5.2 and 0.6.1, public installer verification and signed-feed promotion.
 
 ## Next priorities
 
 1. **Field validation:** confirm automatic upgrade, new desktop/taskbar icon, all camera states, visible-window restart, physical Dell scaling, frame times, memory, fullscreen, sleep/resume and monitor moves.
 2. **Continuous video:** add authorized in-app streaming playback. Current NPS views are periodically refreshed camera images; other streams open the provider website. No continuous embedded video is delivered yet.
 3. **Camera Wall expansion:** more source-verified image endpoints and authorized continuous-video playback. Initial responsive 1/2/4/6/9 layouts are implemented in 0.6.1; optimize further after actual Dell measurement.
-4. **Living planet:** UTC sunlight is released; requested point-model weather is implemented in the 0.7.0 candidate. Next: licensed cloud refresh and broader weather layers with explicit stale/offline states. Clouds/Moon/stars remain cinematic.
+4. **Living planet:** UTC sunlight is released; requested point-model weather is released in 0.7.0. Next: licensed cloud refresh and broader weather layers with explicit stale/offline states. Clouds/Moon/stars remain cinematic.
 5. **Screensaver integration:** Windows /p preview, /s field checks, multiple monitors, lock/sleep/resume, background power limits and longer-duration tests.
 
 ## Later / dependent work
