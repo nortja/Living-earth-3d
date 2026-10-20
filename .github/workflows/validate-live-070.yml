@@ -1,0 +1,18 @@
+name: Validate live 0.7.0 updater once
+on:
+  push:
+    branches: [validation/live-0.7.0]
+permissions:
+  contents: read
+concurrency:
+  group: validate-live-070
+  cancel-in-progress: false
+jobs:
+  windows:
+    runs-on: windows-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate production signature, staging, cancellation and normal-exit upgrade
+        shell: powershell
+        run: ./tests/windows_live_update_test.ps1 -ExpectedVersion '0.7.0'
