@@ -22,7 +22,7 @@ Updated 2026-10-20. Latest released baseline: 0.6.1 (Camera Wall, collections an
 - [x] Add loading/error feedback, refresh, optional once-per-minute refresh while open, provider attribution, retrieval/source timestamp labels, retained-image warning and unchanged-frame warning.
 - [x] Cancel requests on close/selection change/screensaver preview; prevent old responses from appearing under a different camera name. Keep network access opt-in through camera selection.
 - [x] Publish the Windows-tested installer and signed 0.5.4 feed.
-- [ ] Exercise the first automatic 0.5.3 → 0.5.4 upgrade on the user's Windows machine.
+- [ ] Observe the first automatic upgrade on the user's Windows machine (0.6.1 is now the target release).
 
 ## This release — 0.6.1
 
@@ -31,7 +31,7 @@ Updated 2026-10-20. Latest released baseline: 0.6.1 (Camera Wall, collections an
 - [x] Stop offscreen, minimized, focused-away, closed and screensaver-hidden wall downloads.
 - [x] Optional current UTC sunlight and seasonal day/night boundary. Offline approximate NOAA calculation; saved setting; geometric orientation remains correct during cinematic rotation. Device clock must be correct.
 - [x] 400 headless behavior/layout checks, 16 update-security checks, native Linux wall/globe/intro renders, three real NPS image retrievals and Windows icon-resource verification.
-- [x] Windows installation/rollback and updater-security checks passed; public installer verified and signed feed promoted. Production updater round-trip is recorded separately in release validation.
+- [x] Windows installation/rollback and updater-security checks passed; public installer verified and signed feed promoted. Production signed-feed staging, cancellation, normal-exit installation and file verification also passed on Windows; see release validation.
 
 ## Next priorities
 

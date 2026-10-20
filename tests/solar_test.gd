@@ -39,6 +39,13 @@ func run() -> void:
     verify(app.interface.solar_status.text.contains("UTC"), "Calculation UTC disclosed")
     app.preferences.load(app.preferences_path)
     verify(app.preferences.get_value("visuals", "utc_sunlight", false), "Sunlight choice saved")
+    app.saver_style = 2
+    app.preview_screensaver()
+    app._process(0.1)
+    verify(app.sun.global_basis.z.dot(app.camera.position.normalized()) < -0.999, "Night lights preview overrides current sunlight with night-side lighting")
+    app.stop_screensaver_preview()
+    var restored: Vector3 = app.earth.global_basis * app.solar_sample.direction
+    verify(app.utc_sunlight and restored.distance_to(app.sun.global_basis.z) < 0.0001, "Leaving screensaver restores saved current sunlight")
     app.set_utc_sunlight(false)
     verify(not app.interface.sunlight_toggle.button_pressed, "Sunlight control matches disabled state")
     verify(app.interface.solar_status.text.contains("Cinematic"), "Cinematic mode restored")
