@@ -32,6 +32,9 @@ var camera_image: TextureRect
 var camera_title: Label
 var camera_detail: Label
 var camera_source: Label
+var camera_close: Button
+var camera_refresh: Button
+var camera_source_button: Button
 const NAV := ["Explore", "Live Earth", "Cameras", "Command Center", "Screensavers"]
 
 func setup(owner_app: Node3D) -> void:
@@ -361,7 +364,8 @@ func _build_camera_viewer() -> void:
     var row := HBoxContainer.new()
     box.add_child(row)
     camera_title = label(row, "Camera", 20)
-    button(row, "Close", close_camera)
+    camera_close = button(row, "Close", close_camera)
+    camera_close.clip_text = false
     camera_source = label(box, "", 12)
     camera_image = TextureRect.new()
     camera_image.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
@@ -372,9 +376,11 @@ func _build_camera_viewer() -> void:
     camera_detail = label(box, "", 12)
     var controls := HFlowContainer.new()
     box.add_child(controls)
-    button(controls, "Refresh", app.camera_service.refresh)
-    button(controls, "Official source ↗", func():
+    camera_refresh = button(controls, "Refresh", app.camera_service.refresh)
+    camera_refresh.clip_text = false
+    camera_source_button = button(controls, "Official source ↗", func():
         if app.camera_service.selected.has("url"): OS.shell_open(app.camera_service.selected.url))
+    camera_source_button.clip_text = false
     var automatic := CheckButton.new()
     automatic.text = "Refresh every minute"
     automatic.button_pressed = true

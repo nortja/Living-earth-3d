@@ -101,8 +101,13 @@ jobs:
           git config user.name 'Living Earth preview delivery'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           cp -r dist /tmp/earth-delivery
-          git checkout --orphan downloads/windows-0.5.4
-          git rm -rf . >/dev/null
+          if git ls-remote --exit-code origin refs/heads/downloads/windows-0.5.4 >/dev/null; then
+            git fetch origin downloads/windows-0.5.4
+            git checkout -B downloads/windows-0.5.4 FETCH_HEAD
+          else
+            git checkout --orphan downloads/windows-0.5.4
+            git rm -rf . >/dev/null
+          fi
           cp /tmp/earth-delivery/* .
           git add LivingEarth3D-Setup-0.5.4.exe LivingEarth3D-Setup-0.5.4.exe.sha256 payload-hashes.json BUILD.txt camera-*.png
           git commit -m 'Publish Windows-validated 0.5.4 auto-update bootstrap preview'
