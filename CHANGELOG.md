@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.5.1 — Optional ambient sound
+
+- Added an original offline synthesized ambient pad, disabled by default, with saved volume and smooth fades.
+- Screensaver launch and preview stay silent; returning to Explorer restores opted-in sound.
+- User confirmed that the 0.5.0 installer installs nicely. Display, upgrade and performance checks remain separate.
+- Existing 95 regression checks and six ambient behavior checks pass on Linux; Windows playback and installation of this version remain unverified.
+
+
 ## 0.5.0 — A spacious Earth workspace
 
 - Replaced the bottom settings tray with compact navigation, a clear full-Earth launch view, animated page transitions, a single close action, and dedicated Explore, Live Earth, Cameras, Command Center, Screensavers and Settings pages.

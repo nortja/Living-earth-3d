@@ -1,5 +1,5 @@
 # Runs without a terminal. Feed and installer locations are restricted to this project.
-param([string]$CurrentVersion = '0.5.0', [int]$AppProcessId = 0, [ValidateSet('preview','development')][string]$Channel = 'preview')
+param([string]$CurrentVersion = '0.5.1', [int]$AppProcessId = 0, [ValidateSet('preview','development')][string]$Channel = 'preview')
 $ErrorActionPreference = 'Stop'
 Add-Type -AssemblyName System.Windows.Forms
 $work = $null

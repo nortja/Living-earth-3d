@@ -359,6 +359,30 @@ func _settings(box: VBoxContainer) -> void:
     monitor_status = label(box, app.display_summary(), 12)
     app._build_visual_options(box)
     label(box, "Balanced is recommended for everyday PCs. Detailed loads 4K Earth maps; higher-resolution monitors cannot add source detail. V-sync follows the display; the app caps animation at 60 FPS, or 30 in power saving.", 12)
+    label(box, "Ambient sound", 18)
+    var sound := CheckButton.new()
+    sound.text = "Quiet ambient pad"
+    sound.button_pressed = app.ambient.enabled
+    sound.toggled.connect(func(enabled: bool):
+        app.ambient.enabled = enabled
+        app.preferences.set_value("audio", "enabled", enabled)
+        app._save_preferences()
+        app.ambient.apply())
+    box.add_child(sound)
+    var volume := HSlider.new()
+    volume.min_value = 0.0
+    volume.max_value = 1.0
+    volume.step = 0.01
+    volume.value = app.ambient.level
+    volume.custom_minimum_size = Vector2(200, 32)
+    volume.tooltip_text = "Ambient volume"
+    volume.value_changed.connect(func(value: float):
+        app.ambient.level = value
+        app.preferences.set_value("audio", "volume", value)
+        app._save_preferences()
+        app.ambient.apply())
+    box.add_child(volume)
+    label(box, "Original offline synthesized sound · off by default. Screensaver mode stays silent.", 12)
     label(box, "Updates", 18)
     var automatic := CheckButton.new()
     automatic.text = "Check for updates on startup"

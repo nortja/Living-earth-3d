@@ -5,6 +5,9 @@ const EarthServices = preload("res://scripts/earth_services.gd")
 
 const PlanetVisuals = preload("res://scripts/planet_visuals.gd")
 
+const AmbientSound = preload("res://scripts/ambient_sound.gd")
+var ambient: AudioStreamPlayer
+
 var interface: Control
 var services: Node
 var monitor_poll := 0.0
@@ -55,7 +58,7 @@ var update_status: Label
 var update_feed: Dictionary = {}
 var update_request: HTTPRequest
 var preferences := ConfigFile.new()
-const VERSION := "0.5.0"
+const VERSION := "0.5.1"
 const UPDATE_FEED_URL := "https://raw.githubusercontent.com/nortja/Living-earth-3d/main/updates/preview.json"
 const RELEASES_URL := "https://github.com/nortja/Living-earth-3d/releases"
 
@@ -230,6 +233,9 @@ func _build_explorer(layer: CanvasLayer) -> void:
     discovery_enabled = preferences.get_value("explorer", "discovery", false)
     discovery_interval = preferences.get_value("explorer", "interval", 120.0)
     saver_style = clampi(int(preferences.get_value("screensaver", "style", 0)), 0, 3)
+    ambient = AmbientSound.new()
+    add_child(ambient)
+    ambient.setup(preferences, screensaver_mode)
     services = EarthServices.new()
     add_child(services)
     update_request = HTTPRequest.new()
@@ -587,6 +593,7 @@ func preview_screensaver() -> void:
     update_request.cancel_request()
     services.quake_request.cancel_request()
     services.search_request.cancel_request()
+    ambient.set_suspended(true)
     saver_preview = true
     screensaver_mode = true
     screensaver_age = 0.0
@@ -598,6 +605,7 @@ func preview_screensaver() -> void:
 func stop_screensaver_preview() -> void:
     screensaver_mode = false
     saver_preview = false
+    ambient.set_suspended(false)
     discovery_enabled = saved_discovery
     discovery_interval = saved_interval
     sun.rotation_degrees = Vector3(-25, 150, 0)
