@@ -1,10 +1,10 @@
 # Living Earth 3D
 
-An offline-first interactive Windows globe and screensaver, built with Godot 4. Released **0.7.0 preview**.
+An offline-first interactive Windows globe and screensaver, built with Godot 4. Released **0.8.0 preview**.
 
 ## Windows users
 
-[Download LivingEarth3D-Setup-0.7.0.exe](https://github.com/nortja/Living-earth-3d/raw/refs/heads/downloads/windows-0.7.0/LivingEarth3D-Setup-0.7.0.exe), double-click, install, then open the desktop shortcut. No ZIP extraction, terminal, separate runtime, or Godot setup is needed. This is an unsigned preview. The user confirmed the 0.6.1 update and working Camera Wall/cameras. Windows CI verifies installation and rollback; physical GPU/DPI checks remain outstanding.
+[Download LivingEarth3D-Setup-0.8.0.exe](https://github.com/nortja/Living-earth-3d/raw/refs/heads/downloads/windows-0.8.0/LivingEarth3D-Setup-0.8.0.exe), double-click, install, then open the desktop shortcut. No ZIP extraction, terminal, separate runtime, or Godot setup is needed. This is an unsigned preview. The user confirmed the 0.7.0 automatic update and earlier working Camera Wall/cameras. Windows CI verifies installation and rollback; physical GPU/DPI checks remain outstanding.
 
 The real globe emerges from darkness with illuminated Earth branding. Drag to spin with gentle inertia, scroll or double-click to zoom, and use **Full Earth** or Home to reset. F11 toggles fullscreen. Earth stays centered and proportional at native viewport resolution, including ultrawide and 4K/5K sizes. Compact controls scale automatically with window resolution. Side panels move below the center in smaller windows; an optional wide Command Center overview uses spare space.
 
@@ -14,7 +14,7 @@ Explore six curated destinations, an offline atlas, or coordinates. Worldwide se
 
 Version 0.6.1 adds **Cameras → Open Camera Wall** with 1/2/4/6/9-view layouts and saved collections. Four distinct image-camera sources are available; duplicate tiles share downloads, with at most two requests at once. Offscreen/hidden feeds pause. **Live Earth → Current UTC sunlight** enables an approximate seasonal day/night boundary, calculated offline from the device clock; it does not make clouds, Moon or stars current observations. The Windows installer passed installation/rollback checks; existing updater-enabled installs receive subsequent authenticated releases automatically.
 
-Six offline screensaver styles offer Ambient Earth, Discovery journeys, Night lights, Deep space, Daylight Earth and Orbital drift. Preview returns to the app on input after a short grace period. Windows screensaver selection is optional; preview embedding and multi-monitor coverage are unfinished. Clouds drift as offline artwork. Lighting is cinematic by default, with optional approximate current UTC sunlight. Moon and stars remain cinematic. Source detail remains 4K even on larger displays.
+Six offline screensaver styles offer Ambient Earth, Discovery journeys, Night lights, Deep space, Daylight Earth and Orbital drift. Preview returns to the app on input after a short grace period. Windows screensaver selection is optional. Native Screen Saver Settings preview embeds the actual Earth, and fullscreen saver hosts cover each attached monitor: up to four animated Earth views, with additional displays black. Native saver views use 2K/30 FPS; small Windows preview uses 15 FPS. Physical mixed-DPI/multi-monitor performance remains a field check. Clouds drift as offline artwork. Lighting is cinematic by default, with optional approximate current UTC sunlight. Moon and stars remain cinematic. Source detail remains 4K even on larger displays.
 
 **Install once, then update from the app.** Version 0.5.3 includes automatic updates enabled by default. It checks at startup and every 30 minutes while open, downloads authenticated releases, and installs silently when you close the app. **Settings → Update and restart now** applies a ready release with a graceful restart; the Automatic updates toggle pauses/resumes updates. Both minor and major releases use the same process. Favorites, interface size, sound and other preferences remain local.
 
@@ -24,9 +24,9 @@ Releases require a valid signature from the public key pinned in the installed u
 
 Explore gains Discover, Search, History and Saved tabs: twelve sourced wonders, daily/surprise journeys, fifty local bookmarks and a Giza/Rome/Tikal era slider on explicitly modern imagery. Command Center adds requested Open-Meteo model weather with units, model/retrieval times and cache/error handling. Daylight Earth and Orbital drift expand screensavers to six. Giant Forest becomes a fourth in-app image camera. Windows upgrades from 0.5.2 and 0.6.1, rollback and installer checks passed before the authenticated update feed was promoted. See [validation](docs/VALIDATION-0.7.0.md).
 
-## Next build — 0.8.0 candidate
+## New in 0.8.0
 
-Native Windows preview embedding and per-monitor screensaver hosts are in validation. The installed baseline remains 0.7.0 until real Windows preview/lifecycle and upgrade checks pass. See [validation](docs/VALIDATION-0.8.0.md).
+Windows Screen Saver Settings now has an embedded, resizing Earth preview. The native launcher manages per-monitor fullscreen hosts, shared input exit and child-process cleanup. Configuration opens the Screensavers page directly. Actual Windows preview rendering/lifecycle and upgrades from 0.5.2 and 0.7.0 passed before publication. See [validation](docs/VALIDATION-0.8.0.md).
 
 ## Development
 

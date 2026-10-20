@@ -1,6 +1,6 @@
 # Living Earth 3D — current roadmap
 
-Updated 2026-10-20. Latest released baseline: 0.7.0 (discoveries, saved places, model weather, history atlas and six screensavers). One Windows installer, then authenticated automatic updates; the base Earth remains useful offline.
+Updated 2026-10-20. Latest released baseline: 0.8.0 (native Windows preview and per-monitor screensaver hosts). One Windows installer, then authenticated automatic updates; the base Earth remains useful offline.
 
 ## Completed
 
@@ -13,7 +13,7 @@ Updated 2026-10-20. Latest released baseline: 0.7.0 (discoveries, saved places, 
 - [x] Optional original offline ambient sound, saved volume and smooth fades; off by default. Screensaver stays silent.
 - [x] Offline atlas, coordinates, six curated destinations, favorites, surprise destinations and timed journeys.
 - [x] On-request worldwide place search and USGS earthquakes, with retrieval/cache/error states. These are periodic/requested data, not a continuous live feed.
-- [x] Six screensaver styles and returnable fullscreen preview. Full Windows multi-monitor/preview integration is unfinished.
+- [x] Six screensaver styles and returnable fullscreen preview. Native Windows preview and per-monitor hosts are implemented in 0.8.0; physical mixed-DPI coverage remains a field test.
 
 ## Previous release — 0.5.4
 
@@ -33,7 +33,7 @@ Updated 2026-10-20. Latest released baseline: 0.7.0 (discoveries, saved places, 
 - [x] 400 headless behavior/layout checks, 16 update-security checks, native Linux wall/globe/intro renders, three real NPS image retrievals and Windows icon-resource verification.
 - [x] Windows installation/rollback and updater-security checks passed; public installer verified and signed feed promoted. Production signed-feed staging, cancellation, normal-exit installation and file verification also passed on Windows; see release validation.
 
-## This release — 0.7.0
+## Previous release — 0.7.0
 
 - [x] Reuse the development-track wonder/history prototypes while preserving main's authenticated updater and working cameras.
 - [x] Discover/Search/History/Saved sections, twelve sourced daily wonders, fifty local saved places and visible save feedback.
@@ -44,11 +44,11 @@ Updated 2026-10-20. Latest released baseline: 0.7.0 (discoveries, saved places, 
 - [x] 464 local checks, 16 update-security checks, real weather/four-camera retrievals and native layouts through 5K.
 - [x] Windows upgrades/rollback from 0.5.2 and 0.6.1, public installer verification and signed-feed promotion. Production-feed staging, cancellation, normal-exit installation and payload verification also passed on Windows.
 
-## Next build — 0.8.0 candidate
+## This release — 0.8.0
 
 - [x] Native screensaver launcher, strict preview argument handling, embedded-mode budget and per-monitor host implementation.
-- [ ] Actual Windows embedded preview/render/lifecycle tests and upgrade/rollback from 0.5.2 and 0.7.0.
-- [ ] Publish verified installer and authenticated update, then production updater round trip.
+- [x] Actual Windows embedded preview/render/lifecycle tests and upgrade/rollback from 0.5.2 and 0.7.0.
+- [x] Published verified installer and authenticated update. Production updater round trip is the final post-publication check.
 
 ## Next priorities
 
@@ -56,7 +56,7 @@ Updated 2026-10-20. Latest released baseline: 0.7.0 (discoveries, saved places, 
 2. **Continuous video:** add authorized in-app streaming playback. Current NPS views are periodically refreshed camera images; other streams open the provider website. No continuous embedded video is delivered yet.
 3. **Camera Wall expansion:** more source-verified image endpoints and authorized continuous-video playback. Initial responsive 1/2/4/6/9 layouts are implemented in 0.6.1; optimize further after actual Dell measurement.
 4. **Living planet:** UTC sunlight is released; requested point-model weather is released in 0.7.0. Next: licensed cloud refresh and broader weather layers with explicit stale/offline states. Clouds/Moon/stars remain cinematic.
-5. **Screensaver integration:** Windows /p preview, /s field checks, multiple monitors, lock/sleep/resume, background power limits and longer-duration tests.
+5. **Screensaver integration:** Native /p preview and per-monitor hosts are released. Next: physical /s mixed-DPI/monitor checks, lock/sleep/resume, performance and longer-duration tests.
 
 ## Later / dependent work
 

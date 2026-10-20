@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.8.0 candidate — Earth on every screen
+## 0.8.0 — Earth on every screen
 
 - Native Windows screensaver launcher with embedded preview, resize/parent lifetime handling and no fullscreen fallback for invalid preview handles.
 - Per-monitor fullscreen hosts, up to four animated Earth views and black coverage on additional displays; shared input exit and bounded renderer lifetime.

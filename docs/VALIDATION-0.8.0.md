@@ -1,6 +1,6 @@
 # 0.8.0 native screensaver integration — validation
 
-Candidate, 2026-10-20. The user confirmed the 0.7.0 update installed successfully and looks good. Published update discovery stays on 0.7.0 until release gates pass.
+Released preview, 2026-10-20. The user confirmed the 0.7.0 update installed successfully and looks good. Authenticated update discovery now delivers 0.8.0.
 
 ## Changes
 
@@ -15,9 +15,15 @@ The installed `.scr` is now a small native Win32 launcher, rather than a duplica
 
 ## Evidence and release gates
 
-Local validation includes all 464 existing checks, 24 hosted-renderer checks, 25 native argument/renderer-budget checks, 16 updater-security checks, native icon verification and software-OpenGL saver renders at 320×200, 580×330, 1920×1080 and 5120×1440.
+Local validation includes all 464 existing checks, 24 hosted-renderer checks, 25 native argument/renderer-budget checks, two actual Godot command-contract cases, 16 updater-security checks, native icon verification and software-OpenGL saver renders at 320×200, 580×330, 1920×1080 and 5120×1440.
 
-Windows release validation must exercise the actual packaged Godot renderer inside a real preview HWND: parenting, no visible top-level renderer, resizing, nonblank screenshot, two independent previews, parent-close cleanup and forced-controller job cleanup. It must also cover all monitors attached to the runner, duplicate fullscreen prevention, keyboard exit, simulated display-change cleanup, plus upgrades/rollback from 0.5.2 and 0.7.0 and payload verification. Mesa software OpenGL is downloaded with a pinned digest solely for CI; its DLLs are never included in the installer.
+[Windows release validation](https://github.com/nortja/Living-earth-3d/actions/runs/39513870934) passed against the exact published installer: silent upgrades/rollback from both 0.5.2 and 0.7.0, user-data and icon preservation, running-app protection, uninstall, actual rendered Earth inside a true preview child HWND, no visible top-level renderer, resize tracking, input suppression, two independent previews, parent-close cleanup, forced-controller job cleanup, and a silent installer blocked while a native preview was active. Fullscreen covered the runner's one attached monitor, rejected a duplicate session, exited on keyboard input and cleaned up after a simulated display-change message. The Windows preview screenshot was downloaded, checksum-verified and visually inspected.
+
+The Windows test VM used a pinned Mesa 26.2.4 software OpenGL ICD. This driver setup is confined to disposable CI; no Mesa DLL, driver installer or machine graphics setting ships in the application installer. Initial per-app driver setup could not initialize its OpenGL window, so the official system-wide software-ICD deployment was used on the test VM. A standalone actual-Godot preflight verifies that graphics works before embedding is tested.
+
+[Earlier Linux build evidence](https://github.com/nortja/Living-earth-3d/actions/runs/39510334193/job/118929475631) covers the application behavior/render matrix. The native correction build reused that frozen Godot executable only after verifying its exact installed-file hash, rebuilt the native launcher/installer, regenerated payload hashes, and repeated Windows upgrade/lifecycle gates. The launcher now uses generated argument vectors validated by Godot and explicitly adopts Godot 4.6's owned popup as a WS_CHILD. Renderers start offscreen until attached. This preserves the validated Earth resources and installed update protocol.
+
+Production signed-feed staging, cancellation and normal-exit installation is the final post-publication check.
 
 Physical multi-monitor mixed-DPI performance, lock/suspend/resume behavior on real hardware, visible updater restart and longer saver runs remain field tests. CI's attached-monitor count is recorded; a one-monitor runner does not establish multi-monitor hardware coverage. A screensaver is not an authentication or lock-screen security boundary. Continuous video remains future work.
 
@@ -26,3 +32,7 @@ Physical multi-monitor mixed-DPI performance, lock/suspend/resume behavior on re
 - Godot command-line `--wid`: https://docs.godotengine.org/en/stable/tutorials/editor/command_line_tutorial.html
 - Godot 4.6.3 Windows backend parent-window handling: https://github.com/godotengine/godot/blob/4.6.3-stable/platform/windows/display_server_windows.cpp
 - Test-only Mesa distribution: https://github.com/pal1000/mesa-dist-win/releases/tag/26.2.4
+
+## Published package
+
+Installer size: 36,636,950 bytes. SHA-256: `40077feb61b467f2bd540bc2f18d2fccde663760c39e10fa356fb137db13a4c0`. Downloaded public bytes matched the published checksum before signing exact metadata with the existing pinned release key. No private key entered git or CI. The four-file update protocol and older disabled general workflow were preserved.
