@@ -1,12 +1,12 @@
 # Changelog
 
-## 0.6.1 candidate — Camera Wall and current sunlight
+## 0.6.1 — Camera Wall and current sunlight
 
 - Added opt-in Camera Wall with 1/2/4/6/9-view layouts, aspect-preserving images, focus view and up to eight saved local collections. Three distinct image sources are available; repeating a source shares its download.
 - Bounded wall networking to two simultaneous downloads; suspend offscreen, minimized and focused-away sources and cancel on close/screensaver entry.
 - Added opt-in approximate UTC sunlight and seasonal day/night boundary, calculated offline from NOAA equations using device time. Cinematic lighting remains available; cloud/Moon/star imagery remains artistic.
 - Failed cameras back off from one to eight minutes, recover to normal refresh after success and label retained imagery. Manual polling never promises automatic retries.
-- Validation: 400 headless checks, 16 update-security checks, native Linux wall/globe/intro renders, actual NPS image retrieval and Windows executable/installer icon verification. Windows installation and signed-feed promotion pending; see docs/VALIDATION-0.6.1.md.
+- Validation: 400 headless checks, 16 update-security checks, native Linux wall/globe/intro renders, actual NPS image retrieval and Windows executable/installer icon verification. Windows installation/rollback and updater-security checks passed. Public installer verified before signed-feed promotion; see docs/VALIDATION-0.6.1.md.
 
 ## 0.5.4 — Visible cameras and a clearer Earth identity
 

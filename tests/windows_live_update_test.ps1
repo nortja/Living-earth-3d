@@ -1,3 +1,4 @@
+param([string]$ExpectedVersion = '')
 # Runs only on an isolated Windows CI desktop. Exercises the production signed feed/helper.
 $ErrorActionPreference = 'Stop'
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
@@ -47,6 +48,7 @@ $manifestPath=Join-Path $fixture 'manifest.json';$signaturePath=Join-Path $fixtu
 Receive-EarthFile 'https://raw.githubusercontent.com/nortja/Living-earth-3d/main/updates/application.json' $manifestPath 65536
 Receive-EarthFile 'https://raw.githubusercontent.com/nortja/Living-earth-3d/main/updates/application.sig' $signaturePath 2048
 $manifest=Read-EarthManifest ([IO.File]::ReadAllBytes($manifestPath)) ([Convert]::FromBase64String([IO.File]::ReadAllText($signaturePath).Trim()))
+if ($ExpectedVersion -and $manifest.version -ne $ExpectedVersion) { throw ('Production version differs from expected release: ' + $manifest.version) }
 Confirm-EarthFiles $root $manifest
 if (@(Get-EarthProcesses $root).Count) { throw 'Normal exit unexpectedly restarted the app' }
 Write-Output 'PASS: production helper verifies live signature/download, installs after normal exit, verifies files and does not reopen an intentionally closed app'

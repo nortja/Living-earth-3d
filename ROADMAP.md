@@ -1,6 +1,6 @@
 # Living Earth 3D — current roadmap
 
-Updated 2026-10-20. Latest released baseline: 0.5.4 (camera images and icon refresh). One Windows installer, then authenticated automatic updates; the base Earth remains useful offline.
+Updated 2026-10-20. Latest released baseline: 0.6.1 (Camera Wall, collections and current UTC sunlight). One Windows installer, then authenticated automatic updates; the base Earth remains useful offline.
 
 ## Completed
 
@@ -15,7 +15,7 @@ Updated 2026-10-20. Latest released baseline: 0.5.4 (camera images and icon refr
 - [x] On-request worldwide place search and USGS earthquakes, with retrieval/cache/error states. These are periodic/requested data, not a continuous live feed.
 - [x] Four screensaver styles and returnable fullscreen preview. Full Windows multi-monitor/preview integration is unfinished.
 
-## This release — 0.5.4
+## Previous release — 0.5.4
 
 - [x] Replace app/installer/uninstaller artwork with a cleaner Earth icon and seven native icon sizes. Shortcuts use a versioned ICO path; installation notifies Windows that icons changed. Existing pinned taskbar icons may require field verification.
 - [x] Fix camera selection: three NPS image cameras open an actual in-app viewer, rather than only moving the globe. Five video/seasonal entries visibly open official websites.
@@ -24,14 +24,14 @@ Updated 2026-10-20. Latest released baseline: 0.5.4 (camera images and icon refr
 - [x] Publish the Windows-tested installer and signed 0.5.4 feed.
 - [ ] Exercise the first automatic 0.5.3 → 0.5.4 upgrade on the user's Windows machine.
 
-## In validation — 0.6.1
+## This release — 0.6.1
 
 - [x] Failed-camera polling: 1/2/4/8-minute retries, recovery to one minute, correct manual/automatic state messages.
 - [x] Camera Wall: 1/2/4/6/9-view responsive layouts, aspect-preserving tiles, focused viewer, eight saved collections, shared duplicate-source downloads and at most two concurrent requests. Three unique image sources currently available; no embedded video.
 - [x] Stop offscreen, minimized, focused-away, closed and screensaver-hidden wall downloads.
 - [x] Optional current UTC sunlight and seasonal day/night boundary. Offline approximate NOAA calculation; saved setting; geometric orientation remains correct during cinematic rotation. Device clock must be correct.
 - [x] 400 headless behavior/layout checks, 16 update-security checks, native Linux wall/globe/intro renders, three real NPS image retrievals and Windows icon-resource verification.
-- [ ] Windows installation/rollback checks and authenticated feed promotion. Discovery feed remains 0.5.4 until completed.
+- [x] Windows installation/rollback and updater-security checks passed; public installer verified and signed feed promoted. Production updater round-trip is recorded separately in release validation.
 
 ## Next priorities
 
