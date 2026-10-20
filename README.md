@@ -1,10 +1,10 @@
 # Living Earth 3D
 
-An offline-first interactive Windows globe and screensaver, built with Godot 4. Version **0.5.1 preview**.
+An offline-first interactive Windows globe and screensaver, built with Godot 4. Version **0.5.2 preview**.
 
 ## Windows users
 
-[Download LivingEarth3D-Setup-0.5.1.exe](https://github.com/nortja/Living-earth-3d/raw/refs/heads/downloads/windows-0.5.1/LivingEarth3D-Setup-0.5.1.exe), double-click, install, then open the desktop shortcut. No ZIP extraction, terminal, separate runtime, or Godot setup is needed. This is an unsigned preview. The user confirmed installation and launch of 0.3.0 on Windows; 0.5.1 Windows hardware/upgrade testing is still outstanding.
+[Download LivingEarth3D-Setup-0.5.2.exe](https://github.com/nortja/Living-earth-3d/raw/refs/heads/downloads/windows-0.5.2/LivingEarth3D-Setup-0.5.2.exe), double-click, install, then open the desktop shortcut. No ZIP extraction, terminal, separate runtime, or Godot setup is needed. This is an unsigned preview. The user confirmed installation and launch of 0.3.0 on Windows; 0.5.2 Windows hardware/upgrade testing is still outstanding.
 
 The real globe emerges from darkness with illuminated Earth branding. Drag to spin with gentle inertia, scroll or double-click to zoom, and use **Full Earth** or Home to reset. F11 toggles fullscreen. Earth stays centered and proportional at native viewport resolution, including ultrawide and 4K/5K sizes. Compact controls scale automatically with window resolution. Side panels move below the center in smaller windows; an optional wide Command Center overview uses spare space.
 
@@ -16,7 +16,9 @@ Four offline screensaver styles offer Ambient Earth, Discovery journeys, Night l
 
 Optional update checks use the project's preview feed. **Settings → Check updates → Download latest installer** provides the next unsigned preview. Automatic replacement requires trusted matching-publisher signatures and SHA-256 verification; production signing and Windows end-to-end update testing remain outstanding. See [ROADMAP.md](ROADMAP.md) for weather, current solar illumination, embedded cameras, higher-resolution imagery and other next steps.
 
-Optional offline ambient sound is available in Settings, off by default, with saved volume and smooth fades. Screensaver mode stays silent. The user confirmed that 0.5.0 installs nicely; 0.5.1 Windows playback and upgrade tests remain outstanding.
+Optional offline ambient sound is available in Settings, off by default, with saved volume and smooth fades. Screensaver mode stays silent. The user confirmed that 0.5.0 installs nicely; 0.5.2 Windows playback and upgrade tests remain outstanding.
+
+Settings now offers saved interface sizes from 100% to 200%, plus Automatic. Smaller windows limit the effective size to keep controls reachable. The user confirmed 0.5.1 installed and works; 0.5.2 Windows DPI and upgrade checks remain outstanding.
 
 ## Development
 
