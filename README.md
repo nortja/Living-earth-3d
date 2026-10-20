@@ -1,10 +1,10 @@
 # Living Earth 3D
 
-An offline-first interactive Windows globe and screensaver, built with Godot 4. Version **0.5.2 preview**.
+An offline-first interactive Windows globe and screensaver, built with Godot 4. Version **0.5.3 preview**.
 
 ## Windows users
 
-[Download LivingEarth3D-Setup-0.5.2.exe](https://github.com/nortja/Living-earth-3d/raw/refs/heads/downloads/windows-0.5.2/LivingEarth3D-Setup-0.5.2.exe), double-click, install, then open the desktop shortcut. No ZIP extraction, terminal, separate runtime, or Godot setup is needed. This is an unsigned preview. The user confirmed installation and launch of 0.3.0 on Windows; 0.5.2 Windows hardware/upgrade testing is still outstanding.
+[Download LivingEarth3D-Setup-0.5.3.exe](https://github.com/nortja/Living-earth-3d/raw/refs/heads/downloads/windows-0.5.3/LivingEarth3D-Setup-0.5.3.exe), double-click, install, then open the desktop shortcut. No ZIP extraction, terminal, separate runtime, or Godot setup is needed. This is an unsigned preview. The user confirmed installation and launch of 0.3.0 on Windows; 0.5.3 Windows hardware/upgrade testing is still outstanding.
 
 The real globe emerges from darkness with illuminated Earth branding. Drag to spin with gentle inertia, scroll or double-click to zoom, and use **Full Earth** or Home to reset. F11 toggles fullscreen. Earth stays centered and proportional at native viewport resolution, including ultrawide and 4K/5K sizes. Compact controls scale automatically with window resolution. Side panels move below the center in smaller windows; an optional wide Command Center overview uses spare space.
 
@@ -14,11 +14,9 @@ Explore six curated destinations, an offline atlas, or coordinates. Worldwide se
 
 Four offline screensaver styles offer Ambient Earth, Discovery journeys, Night lights, and Deep space. Preview returns to the app on input after a short grace period. Windows screensaver selection is optional; preview embedding and multi-monitor coverage are unfinished. Clouds drift as offline artwork. Lighting, Moon and stars are cinematic rather than current astronomical positions. Source detail remains 4K even on larger displays.
 
-Optional update checks use the project's preview feed. **Settings → Check updates → Download latest installer** provides the next unsigned preview. Automatic replacement requires trusted matching-publisher signatures and SHA-256 verification; production signing and Windows end-to-end update testing remain outstanding. See [ROADMAP.md](ROADMAP.md) for weather, current solar illumination, embedded cameras, higher-resolution imagery and other next steps.
+**Install once, then update from the app.** Version 0.5.3 includes automatic updates enabled by default. It checks at startup and every 30 minutes while open, downloads authenticated releases, and installs silently when you close the app. **Settings → Update and restart now** applies a ready release with a graceful restart; the Automatic updates toggle pauses/resumes updates. Both minor and major releases use the same process. Favorites, interface size, sound and other preferences remain local.
 
-Optional offline ambient sound is available in Settings, off by default, with saved volume and smooth fades. Screensaver mode stays silent. The user confirmed that 0.5.0 installs nicely; 0.5.2 Windows playback and upgrade tests remain outstanding.
-
-Settings now offers saved interface sizes from 100% to 200%, plus Automatic. Smaller windows limit the effective size to keep controls reachable. The user confirmed 0.5.1 installed and works; 0.5.2 Windows DPI and upgrade checks remain outstanding.
+Releases require a valid signature from the public key pinned in the installed updater, plus matching installer and installed-file hashes. Windows publisher signing is separate: this bootstrap installer remains an unsigned preview. Versions 0.5.2 and older need this installer once to obtain the new updater. A Windows CI run verified silent installation, preservation of user data, running-app protection and restoration of previous files after a deliberately failed verification. Physical GPU/DPI and visible-app restart field tests remain separate. See [docs/AUTO_UPDATE.md](docs/AUTO_UPDATE.md).
 
 ## Development
 
