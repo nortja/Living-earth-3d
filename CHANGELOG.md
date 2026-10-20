@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.5.2 — Readable controls on large displays
+
+- Added saved interface sizes: Automatic, 100%, 125%, 150%, 175% and 200%. Changes apply immediately without reducing Earth rendering resolution.
+- Smaller windows safely limit the effective size and explain the adjustment; the chosen size returns when the window grows again.
+- Invalid saved sizes fall back to Automatic. Existing audio, favorites and graphics preferences remain intact.
+- Passed 288 Linux headless behavior/layout checks; installer publication repeats these and checks native icon resources.
+- User confirmed 0.5.1 installed and works on Windows. This does not establish 0.5.2 Windows DPI or hardware performance.
+
+
 ## 0.5.1 — Optional ambient sound
 
 - Added an original offline synthesized ambient pad, disabled by default, with saved volume and smooth fades.

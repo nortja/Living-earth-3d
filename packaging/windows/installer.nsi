@@ -4,7 +4,7 @@ Unicode true
 !include "x64.nsh"
 !include "WinMessages.nsh"
 !ifndef VERSION
-!define VERSION "0.5.1"
+!define VERSION "0.5.2"
 !endif
 !ifndef BUILD_DIR
 !define BUILD_DIR "..\..\build\windows"

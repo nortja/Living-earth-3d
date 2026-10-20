@@ -18,6 +18,10 @@ var monitor_status: Label
 var command_card: PanelContainer
 var dashboard := false
 var display_scale := 1.0
+var preferred_scale := 0.0
+var scale_status: Label
+var scale_picker: OptionButton
+const SCALE_OPTIONS := [0.0, 1.0, 1.25, 1.5, 1.75, 2.0]
 var dock_row: HBoxContainer
 var layout_frames := 8
 var page_animation: Tween
@@ -26,6 +30,9 @@ const NAV := ["Explore", "Live Earth", "Cameras", "Command Center", "Screensaver
 
 func setup(owner_app: Node3D) -> void:
     app = owner_app
+    var saved_scale = app.preferences.get_value("interface", "ui_scale", 0.0)
+    if (saved_scale is float or saved_scale is int) and float(saved_scale) in SCALE_OPTIONS:
+        preferred_scale = float(saved_scale)
     mouse_filter = Control.MOUSE_FILTER_IGNORE
     theme = Theme.new()
     theme.default_font_size = 14
@@ -187,9 +194,19 @@ func close_panel() -> void:
 func relayout() -> void:
     var pixels := get_viewport_rect().size
     # Keep controls compact on ultrawide displays; scale for high pixel density.
-    display_scale = clampf(pixels.y / 1080.0, 1.0, 1.75)
+    var requested := preferred_scale if preferred_scale > 0.0 else clampf(pixels.y / 1080.0, 1.0, 1.75)
+    # Preserve at least an 800 x 600 logical workspace when a window shrinks.
+    # Only the interface scales; the 3D framebuffer remains native resolution.
+    var fitting_scale := maxf(1.0, minf(pixels.x / 800.0, pixels.y / 600.0))
+    display_scale = minf(requested, fitting_scale)
     scale = Vector2.ONE * display_scale
     size = pixels / display_scale
+    if scale_status:
+        scale_status.text = "Interface size: %d%%" % roundi(display_scale * 100.0)
+        if display_scale < requested - 0.001:
+            scale_status.text += " · reduced to fit this window"
+        elif preferred_scale == 0.0:
+            scale_status.text += " · automatic"
     header.position = Vector2(24, 18)
     header.size = Vector2(size.x - 48, 48)
     dock.size = dock.get_combined_minimum_size()
@@ -207,6 +224,14 @@ func relayout() -> void:
     command_card.position = Vector2(24, 104)
     command_card.size = Vector2(280, 230)
     command_card.visible = dashboard and active_page == "Command Center" and side_layout and size.x >= 1600
+
+func set_ui_scale(value: float) -> void:
+    preferred_scale = value if value in SCALE_OPTIONS else 0.0
+    app.preferences.set_value("interface", "ui_scale", preferred_scale)
+    app._save_preferences()
+    if scale_picker:
+        scale_picker.select(SCALE_OPTIONS.find(preferred_scale))
+    refresh_layout()
 
 func _explore(box: VBoxContainer) -> void:
     label(box, "A world worth exploring", 18)
@@ -357,6 +382,15 @@ func _savers(box: VBoxContainer) -> void:
 func _settings(box: VBoxContainer) -> void:
     label(box, "Display & graphics", 18)
     monitor_status = label(box, app.display_summary(), 12)
+    label(box, "Interface size", 16)
+    scale_picker = OptionButton.new()
+    for value in SCALE_OPTIONS:
+        scale_picker.add_item("Automatic" if value == 0.0 else "%d%%" % roundi(value * 100.0))
+    scale_picker.select(SCALE_OPTIONS.find(preferred_scale))
+    scale_picker.item_selected.connect(func(index: int): set_ui_scale(SCALE_OPTIONS[index]))
+    box.add_child(scale_picker)
+    scale_status = label(box, "", 12)
+    label(box, "Make controls easier to read on large displays. Your choice is saved; smaller windows limit the size so controls stay within reach. Earth stays at native resolution.", 12)
     app._build_visual_options(box)
     label(box, "Balanced is recommended for everyday PCs. Detailed loads 4K Earth maps; higher-resolution monitors cannot add source detail. V-sync follows the display; the app caps animation at 60 FPS, or 30 in power saving.", 12)
     label(box, "Ambient sound", 18)

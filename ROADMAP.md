@@ -11,7 +11,7 @@ Validation separates Linux native rendering, packaged-data/resource checks, and 
 ## Next cycle — immersion and trustworthy live experiences (P0/P1)
 
 - [ ] Execute `tests/windows_display_test.ps1` against the actual 0.5.0 Windows EXE on an interactive Windows runner; inspect screenshots and test physical Dell monitor DPI/refresh, fullscreen, sleep/resume and frame times. Cloud GitHub API access is currently denied; do not restart the old failure-email loop.
-- [ ] Add an explicit UI-scale override after measuring real Windows DPI behavior. Current automatic scale follows window pixels; maximum source texture detail is still 4K.
+- [x] Add a saved interface-size override with safe window bounds. Version 0.5.2 adds Automatic and 100–200% choices; real Windows DPI/readability checks remain outstanding. Maximum source texture detail is still 4K.
 - [ ] Verify provider pages from an allowed network, review embedding terms, then add authorized in-app camera playback with real availability/freshness checks. Current entries open official browser pages only.
 - [ ] Exercise USGS and worldwide search against real services from an allowed network; fixture parser/cache tests do not establish current provider availability. Cloud destination additions are saved in environment settings but require publication before affecting runtime.
 - [ ] Add optional weather estimates with source, coordinates, model time, units, cache expiry and explicit periodic labels. Do not represent modeled weather as live sensor observations.
@@ -22,7 +22,7 @@ Validation separates Linux native rendering, packaged-data/resource checks, and 
 
 - [ ] Move recurring installer storage from dedicated Git branches to release assets or an artifact host while retaining fixed-origin and signature validation.
 
-- [x] Basic 0.3.0 installation and launch confirmed by the user on Windows.
+- [x] User confirmed 0.5.0 installs nicely and 0.5.1 installed and works on Windows. Detailed DPI/performance and upgrade-preservation evidence remain separate.
 - [ ] Test 0.5.0 desktop/taskbar icon, intro, upgrades, favorite preservation, uninstall, and reinstall on Windows 10/11 x64.
 - [ ] Test 1080p/4K/ultrawide displays with Windows DPI scaling and normal integrated GPUs. Measure frame time and memory, then tune quality settings.
 - [ ] Provision an authentic code-signing certificate through secure CI settings. Sign both app and installer; never weaken signature checks for unsigned previews.
