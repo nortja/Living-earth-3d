@@ -40,7 +40,8 @@
     "latitude": 44.46,
     "longitude": -110.83,
     "kind": "Provider webcams · live and periodic views",
-    "url": "https://www.nps.gov/yell/learn/photosmultimedia/webcams.htm"
+    "url": "https://www.nps.gov/yell/learn/photosmultimedia/webcams.htm",
+    "id": "old-faithful"
   },
   {
     "name": "Katmai · Wildlife",
@@ -48,7 +49,8 @@
     "latitude": 58.56,
     "longitude": -155.77,
     "kind": "Provider directory · seasonal streams",
-    "url": "https://explore.org/livecams"
+    "url": "https://explore.org/livecams",
+    "id": "katmai"
   },
   {
     "name": "Hawai‘i · Kīlauea",

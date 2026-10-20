@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.9.0 candidate — Arrive somewhere
+
+- Every discovery, curated destination, saved place, search result and earthquake journey opens a destination card automatically, with arrival confirmation, context, coordinates, save, weather and next-discovery actions.
+- Camera journeys open the viewer automatically and leave useful destination context when closed. External camera pages report browser launch status with an official-source retry.
+- Discovery cards link available catalog cameras. Screensaver journeys remain silent and free of browsing controls.
+- Added journey behavior and six-size native arrival rendering checks; retained the working camera wall, native Windows screensaver launcher and authenticated updater.
+
 ## 0.8.0 — Earth on every screen
 
 - Native Windows screensaver launcher with embedded preview, resize/parent lifetime handling and no fullscreen fallback for invalid preview handles.

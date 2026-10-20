@@ -1,6 +1,9 @@
 extends Control
 ## Physical-pixel layout: the 3D viewport keeps the display's native resolution.
 var exploration_panel: RefCounted
+var arrival_place: Dictionary = {}
+var arrival_status: Label
+var arrival_save: Button
 var exploration_poll := 0.0
 var app: Node3D
 var page_scroll: ScrollContainer
@@ -119,7 +122,7 @@ func setup(owner_app: Node3D) -> void:
     var page_stack := VBoxContainer.new()
     page_stack.size_flags_horizontal = Control.SIZE_EXPAND_FILL
     scroll.add_child(page_stack)
-    for title in NAV + ["Settings"]:
+    for title in NAV + ["Settings", "Destination"]:
         var page := VBoxContainer.new()
         page.size_flags_horizontal = Control.SIZE_EXPAND_FILL
         page_stack.add_child(page)
@@ -376,7 +379,8 @@ func _cameras(box: VBoxContainer) -> void:
         label(box, venue.kind, 12)
 
 func select_camera(venue: Dictionary) -> void:
-    app.fly_to_location(venue)
+    if not app.fly_to_location(venue, false): return
+    show_arrival(venue)
     if venue.has("image_url"):
         if wall and wall.visible: wall.manager.set_suspended(true)
         camera_overlay.show()
@@ -385,6 +389,48 @@ func select_camera(venue: Dictionary) -> void:
     else:
         var error := OS.shell_open(venue.url)
         camera_status.text = "Opened official camera website: " + venue.name if error == OK else "Could not open the browser. Try the official source again."
+        label(pages.Destination, camera_status.text, 14)
+        refresh_layout()
+
+func show_arrival(place: Dictionary) -> void:
+    if app.screensaver_mode: return
+    close_camera()
+    arrival_place = place.duplicate(true)
+    var box: VBoxContainer = pages.Destination
+    _clear(box)
+    label(box, str(place.get("name", "Your destination")), 23)
+    label(box, str(place.get("region", place.get("provider", "Exploring Earth"))), 12)
+    arrival_status = label(box, "Travelling to your destination…", 14)
+    var story := str(place.get("note", place.get("fact", place.get("kind", ""))))
+    if story.is_empty():
+        story = "Explore this location on Earth, save it for another journey, or request its current weather."
+    label(box, story, 16)
+    label(box, "%.4f°, %.4f° · approximate location on modern Earth imagery" % [place.latitude, place.longitude], 12)
+    arrival_save = button(box, "", func():
+        app.exploration.toggle_save(arrival_place)
+        _arrival_save_state())
+    _arrival_save_state()
+    button(box, "Weather here", exploration_panel.request_selected_weather)
+    var source := str(place.get("source", place.get("url", "")))
+    if source.begins_with("https://"):
+        button(box, "Explore the official source ↗", func(): OS.shell_open(source))
+    for venue in cameras:
+        if venue.name == place.get("name") or (place.has("camera_id") and venue.get("id", "") == place.camera_id):
+            button(box, "View camera", func(): select_camera(venue))
+    button(box, "Discover another place", exploration_panel.surprise_wonder)
+    button(box, "Back to the globe", close_panel)
+    # Repeated arrivals must replace the card rather than toggle it closed.
+    active_page = ""
+    open_page("Destination")
+    if app.journey and app.journey.is_running():
+        app.journey.finished.connect(func():
+            if is_instance_valid(arrival_status): arrival_status.text = "You’re here · " + str(arrival_place.get("name", "Earth")))
+    else:
+        arrival_status.text = "You’re here"
+
+func _arrival_save_state() -> void:
+    arrival_save.text = "Remove saved place" if app.exploration.is_saved(arrival_place) else "Save this place"
+    arrival_save.disabled = not app.exploration.is_saved(arrival_place) and app.exploration.bookmarks.size() >= 50
 
 func _build_camera_viewer() -> void:
     camera_overlay = ColorRect.new()

@@ -77,7 +77,7 @@ var update_status: Label
 var update_feed: Dictionary = {}
 var update_request: HTTPRequest
 var preferences := ConfigFile.new()
-const VERSION := "0.8.0"
+const VERSION := "0.9.0"
 const UPDATE_FEED_URL := "https://raw.githubusercontent.com/nortja/Living-earth-3d/main/updates/preview.json"
 const RELEASES_URL := "https://github.com/nortja/Living-earth-3d/releases"
 
@@ -351,6 +351,7 @@ func visit(index: int) -> void:
     journey.tween_property(self, "pitch", deg_to_rad(float(place.latitude)), 2.5)
     journey.tween_property(self, "distance", 3.0, 2.5)
     journey.step_finished.connect(func(_step: int): _update_camera())
+    if interface and not screensaver_mode: interface.show_arrival(place)
 
 func surprise_me() -> void:
     if destinations.is_empty():
@@ -640,9 +641,15 @@ func toggle_fullscreen() -> void:
     get_window().mode = Window.MODE_WINDOWED if get_window().mode == Window.MODE_FULLSCREEN else Window.MODE_FULLSCREEN
     apply_frame_limit()
 
-func fly_to_location(place: Dictionary) -> bool:
+func fly_to_location(place: Dictionary, show_destination := true) -> bool:
     if not EarthServices.valid_coordinates(place.get("latitude"), place.get("longitude")):
         return false
+    # Restored/search camera destinations use the same viewer as camera buttons.
+    if show_destination and interface and not screensaver_mode:
+        for venue in interface.cameras:
+            if venue.name == place.get("name") and absf(float(venue.latitude) - float(place.latitude)) < 0.0001 and absf(float(venue.longitude) - float(place.longitude)) < 0.0001:
+                interface.select_camera(venue)
+                return true
     exploration.set_location(place)
     finish_intro()
     selected = -1
@@ -675,6 +682,8 @@ func fly_to_location(place: Dictionary) -> bool:
     journey.tween_property(self, "yaw", target, 2.2)
     journey.tween_property(self, "pitch", latitude, 2.2)
     journey.tween_property(self, "distance", 3.0, 2.2)
+    if show_destination and interface and not screensaver_mode:
+        interface.show_arrival(place)
     return true
 
 func apply_saver_style() -> void:
