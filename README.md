@@ -1,6 +1,6 @@
 # Living Earth 3D
 
-An offline-first interactive Windows globe and screensaver, built with Godot 4. Version **0.6.1 preview**.
+An offline-first interactive Windows globe and screensaver, built with Godot 4. Released **0.6.1 preview**; **0.7.0 candidate** is in validation.
 
 ## Windows users
 
@@ -19,6 +19,10 @@ Four offline screensaver styles offer Ambient Earth, Discovery journeys, Night l
 **Install once, then update from the app.** Version 0.5.3 includes automatic updates enabled by default. It checks at startup and every 30 minutes while open, downloads authenticated releases, and installs silently when you close the app. **Settings → Update and restart now** applies a ready release with a graceful restart; the Automatic updates toggle pauses/resumes updates. Both minor and major releases use the same process. Favorites, interface size, sound and other preferences remain local.
 
 Releases require a valid signature from the public key pinned in the installed updater, plus matching installer and installed-file hashes. Windows publisher signing is separate: this bootstrap installer remains an unsigned preview. Versions 0.5.2 and older need this installer once to obtain the new updater. A Windows CI run verified silent installation, preservation of user data, running-app protection and restoration of previous files after a deliberately failed verification. Physical GPU/DPI and visible-app restart field tests remain separate. See [docs/AUTO_UPDATE.md](docs/AUTO_UPDATE.md).
+
+## Next large update — 0.7.0 candidate
+
+Explore gains Discover, Search, History and Saved tabs: twelve sourced wonders, daily/surprise journeys, fifty local bookmarks and a Giza/Rome/Tikal era slider on explicitly modern imagery. Command Center adds requested Open-Meteo model weather with units, model/retrieval times and cache/error handling. Daylight Earth and Orbital drift expand screensavers to six. Giant Forest becomes a fourth in-app image camera. The installed baseline stays 0.6.1 until Windows tests and authenticated feed promotion pass. See [validation](docs/VALIDATION-0.7.0.md).
 
 ## Development
 

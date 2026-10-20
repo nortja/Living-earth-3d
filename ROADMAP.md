@@ -22,7 +22,7 @@ Updated 2026-10-20. Latest released baseline: 0.6.1 (Camera Wall, collections an
 - [x] Add loading/error feedback, refresh, optional once-per-minute refresh while open, provider attribution, retrieval/source timestamp labels, retained-image warning and unchanged-frame warning.
 - [x] Cancel requests on close/selection change/screensaver preview; prevent old responses from appearing under a different camera name. Keep network access opt-in through camera selection.
 - [x] Publish the Windows-tested installer and signed 0.5.4 feed.
-- [ ] Observe the first automatic upgrade on the user's Windows machine (0.6.1 is now the target release).
+- [x] User reported the update installed nicely and Camera Wall/cameras work on Windows (2026-10-20).
 
 ## This release — 0.6.1
 
@@ -33,12 +33,23 @@ Updated 2026-10-20. Latest released baseline: 0.6.1 (Camera Wall, collections an
 - [x] 400 headless behavior/layout checks, 16 update-security checks, native Linux wall/globe/intro renders, three real NPS image retrievals and Windows icon-resource verification.
 - [x] Windows installation/rollback and updater-security checks passed; public installer verified and signed feed promoted. Production signed-feed staging, cancellation, normal-exit installation and file verification also passed on Windows; see release validation.
 
+## Next large build — 0.7.0 candidate
+
+- [x] Reuse the development-track wonder/history prototypes while preserving main's authenticated updater and working cameras.
+- [x] Discover/Search/History/Saved sections, twelve sourced daily wonders, fifty local saved places and visible save feedback.
+- [x] Historical-era site filtering for Giza/Rome/Tikal with persistent modern-imagery disclosure.
+- [x] On-request Open-Meteo point-model weather, units, model/retrieval timestamps, bounded cache/expiry, retained-data context and request cancellation.
+- [x] Six screensaver styles; expanded wonder journeys and saved-sunlight restoration.
+- [x] Giant Forest in-app image camera; north-oriented polar navigation; readable favorite actions.
+- [x] 464 local checks, 16 update-security checks, real weather/four-camera retrievals and native layouts through 5K.
+- [ ] Windows upgrades/rollback from 0.5.2 and 0.6.1, public installer verification and signed-feed promotion.
+
 ## Next priorities
 
 1. **Field validation:** confirm automatic upgrade, new desktop/taskbar icon, all camera states, visible-window restart, physical Dell scaling, frame times, memory, fullscreen, sleep/resume and monitor moves.
 2. **Continuous video:** add authorized in-app streaming playback. Current NPS views are periodically refreshed camera images; other streams open the provider website. No continuous embedded video is delivered yet.
 3. **Camera Wall expansion:** more source-verified image endpoints and authorized continuous-video playback. Initial responsive 1/2/4/6/9 layouts are implemented in 0.6.1; optimize further after actual Dell measurement.
-4. **Living planet:** current UTC sunlight is implemented in the 0.6.1 candidate. Next: optional weather with model/source times and licensed cloud refresh with explicit stale/offline states. Clouds/Moon/stars remain cinematic.
+4. **Living planet:** UTC sunlight is released; requested point-model weather is implemented in the 0.7.0 candidate. Next: licensed cloud refresh and broader weather layers with explicit stale/offline states. Clouds/Moon/stars remain cinematic.
 5. **Screensaver integration:** Windows /p preview, /s field checks, multiple monitors, lock/sleep/resume, background power limits and longer-duration tests.
 
 ## Later / dependent work

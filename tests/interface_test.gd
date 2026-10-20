@@ -64,7 +64,7 @@ func run() -> void:
     verify(services.results.is_empty() and services.search_status.contains("unavailable"), "Failed worldwide query never leaves misleading results")
     app.saver_style = 1
     app.apply_saver_style()
-    verify(app.discovery_enabled and app.selected >= 0, "Discovery screensaver visits places")
+    verify(app.discovery_enabled and app.external_focus and app.exploration.catalog.places.any(func(place): return place.name == app.exploration.location.name), "Discovery screensaver visits the expanded wonder catalog")
     app.saver_style = 3
     app.apply_saver_style()
     verify(not app.discovery_enabled and app.visuals.moon.visible, "Deep space includes Moon and free rotation")

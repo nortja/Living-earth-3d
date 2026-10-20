@@ -59,11 +59,12 @@
     "url": "https://www.usgs.gov/observatories/hvo/webcams"
   },
   {
-    "name": "Sequoia · Giant Forest & Lower Kaweah",
+    "name": "Sequoia · Giant Forest",
     "provider": "US National Park Service",
     "latitude": 36.565,
     "longitude": -118.774,
-    "kind": "Official camera page · seasonal availability",
-    "url": "https://www.nps.gov/AirWebCams/SEKI"
+    "kind": "Periodic camera image · air-quality view",
+    "url": "https://www.nps.gov/media/webcam/view.htm?id=81B461CE-1DD8-B71B-0B5150F44017DA05",
+    "image_url": "https://www.nps.gov/featurecontent/ard/webcams/images/sekilarge.jpg"
   }
 ]

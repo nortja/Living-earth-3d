@@ -72,11 +72,11 @@ func refresh() -> void:
         if not "@" in host_port and host_port.count(":") == 1:
             request.set_https_proxy(host_port.get_slice(":", 0), int(host_port.get_slice(":", 1)))
     request.request_completed.connect(_received.bind(generation))
-    if request.request(url, ["User-Agent: LivingEarth3D/0.6.1 (+https://github.com/nortja/Living-earth-3d)", "Cache-Control: no-cache"]) != OK:
+    if request.request(url, ["User-Agent: LivingEarth3D/0.7.0 (+https://github.com/nortja/Living-earth-3d)", "Cache-Control: no-cache"]) != OK:
         _received(HTTPRequest.RESULT_CANT_CONNECT, 0, PackedStringArray(), PackedByteArray(), generation)
 
 static func valid_image_url(url: String) -> bool:
-    return url in [IMAGE_ORIGIN + "mammoth_parade.jpg", IMAGE_ORIGIN + "mammoth_electric.jpg", IMAGE_ORIGIN + "washburn_ne.jpg"]
+    return url in [IMAGE_ORIGIN + "mammoth_parade.jpg", IMAGE_ORIGIN + "mammoth_electric.jpg", IMAGE_ORIGIN + "washburn_ne.jpg", "https://www.nps.gov/featurecontent/ard/webcams/images/sekilarge.jpg"]
 
 func _received(result: int, code: int, headers: PackedStringArray, body: PackedByteArray, token: int) -> void:
     if not active or token != generation: return

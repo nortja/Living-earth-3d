@@ -5,6 +5,13 @@ var utc_sunlight := false
 var solar_sample: Dictionary = {}
 var solar_sample_ticks := -60000
 
+const ExplorationData = preload("res://scripts/exploration_data.gd")
+const WeatherService = preload("res://scripts/weather_service.gd")
+var exploration: Node
+var observations: Node
+var saved_solar := false
+var weather_cache_path := "user://weather-v2.json"
+
 const EarthInterface = preload("res://scripts/earth_interface.gd")
 const CameraService = preload("res://scripts/camera_service.gd")
 var camera_service: Node
@@ -68,7 +75,7 @@ var update_status: Label
 var update_feed: Dictionary = {}
 var update_request: HTTPRequest
 var preferences := ConfigFile.new()
-const VERSION := "0.6.1"
+const VERSION := "0.7.0"
 const UPDATE_FEED_URL := "https://raw.githubusercontent.com/nortja/Living-earth-3d/main/updates/preview.json"
 const RELEASES_URL := "https://github.com/nortja/Living-earth-3d/releases"
 
@@ -190,14 +197,26 @@ func _process(delta: float) -> void:
     if utc_sunlight and not (screensaver_mode and saver_style == 2):
         update_sunlight()
     if screensaver_mode and saver_style == 2:
-        sun.look_at(camera.position.normalized(), Vector3.UP)
+        sun.look_at(camera.position.normalized(), camera.global_basis.y)
         earth_material.set_shader_parameter("sun_direction", sun.basis.z)
         atmosphere_material.set_shader_parameter("sun_direction", sun.basis.z)
+    if screensaver_mode and saver_style == 4:
+        update_sunlight()
+        var direction: Vector3 = earth.global_basis * solar_sample.direction
+        yaw = atan2(direction.x,direction.z)
+        pitch = asin(clampf(direction.y,-1.0,1.0))
+        distance = 3.6
+        _update_camera()
+    elif screensaver_mode and saver_style == 5:
+        yaw += delta * 0.035
+        pitch = sin(screensaver_age * 0.025) * 0.35
+        _update_camera()
     if discovery_enabled:
         elapsed += delta
         if elapsed >= discovery_interval:
             elapsed = 0.0
-            surprise_me()
+            if screensaver_mode and saver_style == 1: surprise_wonder_journey()
+            else: surprise_me()
 
 func _unhandled_input(event: InputEvent) -> void:
     if screensaver_mode:
@@ -250,7 +269,8 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func _update_camera() -> void:
     camera.position = Vector3(sin(yaw) * cos(pitch), sin(pitch), cos(yaw) * cos(pitch)) * distance
-    camera.look_at(Vector3.ZERO, Vector3.UP)
+    var north_tangent := Vector3(-sin(yaw) * sin(pitch), cos(pitch), -cos(yaw) * sin(pitch))
+    camera.look_at(Vector3.ZERO, north_tangent)
 
 func _build_explorer(layer: CanvasLayer) -> void:
     destinations = JSON.parse_string(FileAccess.get_file_as_string("res://data/destinations.json"))
@@ -258,7 +278,7 @@ func _build_explorer(layer: CanvasLayer) -> void:
     favorites = preferences.get_value("explorer", "favorites", [])
     discovery_enabled = preferences.get_value("explorer", "discovery", false)
     discovery_interval = preferences.get_value("explorer", "interval", 120.0)
-    saver_style = clampi(int(preferences.get_value("screensaver", "style", 0)), 0, 3)
+    saver_style = clampi(int(preferences.get_value("screensaver", "style", 0)), 0, 5)
     utc_sunlight = bool(preferences.get_value("visuals", "utc_sunlight", false))
     ambient = AmbientSound.new()
     add_child(ambient)
@@ -271,6 +291,12 @@ func _build_explorer(layer: CanvasLayer) -> void:
     update_request.request_completed.connect(_updates_received)
     camera_service = CameraService.new()
     add_child(camera_service)
+    observations = WeatherService.new()
+    observations.cache_path = weather_cache_path
+    add_child(observations)
+    exploration = ExplorationData.new()
+    add_child(exploration)
+    exploration.setup(self)
     interface = EarthInterface.new()
     layer.add_child(interface)
     interface.setup(self)
@@ -294,6 +320,7 @@ func visit(index: int) -> void:
     favorite_button.disabled = false
     if focus_marker: focus_marker.hide()
     var place: Dictionary = destinations[index]
+    exploration.set_location(place)
     place_picker.select(index + 1)
     description.text = "%s • %s\n%s\n%.2f°, %.2f° • Globe-level journey" % [place.name, place.region, place.fact, place.latitude, place.longitude]
     favorite_button.text = "Remove favorite" if place.name in favorites else "Save favorite"
@@ -600,6 +627,7 @@ func toggle_fullscreen() -> void:
 func fly_to_location(place: Dictionary) -> bool:
     if not EarthServices.valid_coordinates(place.get("latitude"), place.get("longitude")):
         return false
+    exploration.set_location(place)
     finish_intro()
     selected = -1
     external_focus = true
@@ -638,9 +666,12 @@ func apply_saver_style() -> void:
     discovery_interval = 120.0
     elapsed = 0.0
     if saver_style == 1:
-        surprise_me()
+        surprise_wonder_journey()
     else:
         reset_view()
+    if saver_style == 4:
+        utc_sunlight = true
+        update_sunlight()
     if saver_style == 3:
         visuals.apply_options(visuals.clouds_enabled, true, true)
 
@@ -651,6 +682,8 @@ func preview_screensaver() -> void:
     previous_window_mode = get_window().mode
     saved_discovery = discovery_enabled
     saved_interval = discovery_interval
+    saved_solar = utc_sunlight
+    observations.cancel_weather()
     update_request.cancel_request()
     services.quake_request.cancel_request()
     services.search_request.cancel_request()
@@ -670,6 +703,7 @@ func stop_screensaver_preview() -> void:
     ambient.set_suspended(false)
     discovery_enabled = saved_discovery
     discovery_interval = saved_interval
+    utc_sunlight = saved_solar
     update_sunlight()
     visuals.apply_options(preferences.get_value("visuals", "clouds", true), preferences.get_value("visuals", "stars", true), preferences.get_value("visuals", "moon", false))
     get_window().mode = previous_window_mode
@@ -704,3 +738,8 @@ func update_sunlight() -> void:
             interface.solar_status.text = "Cinematic lighting selected. Current sunlight is off."
     earth_material.set_shader_parameter("sun_direction", sun.global_basis.z)
     atmosphere_material.set_shader_parameter("sun_direction", sun.global_basis.z)
+
+
+func surprise_wonder_journey() -> void:
+    var choices: Array = exploration.catalog.places.filter(func(place): return place.name != exploration.location.get("name",""))
+    if not choices.is_empty(): fly_to_location(choices.pick_random())

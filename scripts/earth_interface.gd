@@ -1,6 +1,9 @@
 extends Control
 ## Physical-pixel layout: the 3D viewport keeps the display's native resolution.
+var exploration_panel: RefCounted
+var exploration_poll := 0.0
 var app: Node3D
+var page_scroll: ScrollContainer
 var panel: PanelContainer
 var pages: Dictionary = {}
 var navigation: Dictionary = {}
@@ -109,6 +112,7 @@ func setup(owner_app: Node3D) -> void:
     page_title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
     button(title_row, "Close", close_panel).clip_text = false
     var scroll := ScrollContainer.new()
+    page_scroll = scroll
     scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
     scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
     box.add_child(scroll)
@@ -147,11 +151,17 @@ func setup(owner_app: Node3D) -> void:
     relayout()
 
 func _process(_delta: float) -> void:
+    exploration_poll += _delta
+    if exploration_poll >= 60.0 and exploration_panel:
+        exploration_poll = 0.0
+        exploration_panel.refresh_daily()
+        exploration_panel._weather_changed()
     if layout_frames > 0:
         layout_frames -= 1
         relayout()
 
 func refresh_layout() -> void:
+    if not command_card: return
     layout_frames = 8
     relayout()
 
@@ -187,6 +197,7 @@ func open_page(title: String) -> void:
         close_panel()
         return
     active_page = title
+    page_scroll.scroll_vertical = 0
     page_title.text = title
     for key in pages:
         pages[key].visible = key == title
@@ -255,6 +266,11 @@ func set_ui_scale(value: float) -> void:
     refresh_layout()
 
 func _explore(box: VBoxContainer) -> void:
+    exploration_panel = preload("res://scripts/exploration_panel.gd").new()
+    exploration_panel.setup(self)
+    exploration_panel.build_explore(box)
+
+func _explore_search(box: VBoxContainer) -> void:
     label(box, "A world worth exploring", 18)
     var query := LineEdit.new()
     query.placeholder_text = "Place or latitude, longitude"
@@ -277,7 +293,8 @@ func _explore(box: VBoxContainer) -> void:
     var row := HFlowContainer.new()
     box.add_child(row)
     app.favorite_button = button(row, "Save favorite", app.toggle_favorite)
-    button(row, "Visit favorite", app.visit_favorite)
+    app.favorite_button.clip_text = false
+    button(row, "Visit favorite", app.visit_favorite).clip_text = false
     var timed := CheckButton.new()
     timed.text = "Timed journeys in Explorer"
     timed.button_pressed = app.discovery_enabled
@@ -345,7 +362,7 @@ func _live(box: VBoxContainer) -> void:
     button(box, "Earthquake observations", func(): open_page("Command Center"))
     button(box, "Official camera pages", func(): open_page("Cameras"))
     button(box, "NASA Eyes on Earth · browser", func(): OS.shell_open("https://eyes.nasa.gov/apps/earth/#/"))
-    label(box, "NASA's external explorer provides satellite and Earth science views. In-app satellite tracking, current weather and seasonal imagery remain on the roadmap.", 12)
+    label(box, "NASA's external explorer provides satellite and Earth science views. Requested point weather is in Command Center. Satellite tracking and seasonal imagery remain on the roadmap.", 12)
 
 func _cameras(box: VBoxContainer) -> void:
     label(box, "Windows onto the planet", 18)
@@ -421,6 +438,7 @@ func close_camera() -> void:
 
 
 func _command(box: VBoxContainer) -> void:
+    exploration_panel.build_weather(box)
     label(box, "Earthquake watch", 18)
     quake_status = label(box, app.services.quake_status, 12)
     button(box, "Refresh USGS · M2.5+ past day", app.services.refresh_quakes)
@@ -455,7 +473,7 @@ func _savers(box: VBoxContainer) -> void:
     label(box, "Your own quiet planet", 18)
     label(box, "Offline · saved sunlight setting · no network requests", 12)
     var choices := OptionButton.new()
-    for title in ["Ambient Earth", "Discovery journeys", "Night lights", "Deep space"]:
+    for title in ["Ambient Earth", "Discovery journeys", "Night lights", "Deep space", "Daylight Earth", "Orbital drift"]:
         choices.add_item(title)
     choices.select(app.saver_style)
     choices.item_selected.connect(func(index: int):

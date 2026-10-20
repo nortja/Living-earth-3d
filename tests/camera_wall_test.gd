@@ -30,7 +30,7 @@ func run() -> void:
     manager.set_process(false)
     verify(not wall.visible and manager.services.is_empty(), "Wall never fetches on startup")
     wall.open()
-    verify(manager.services.size() == 3, "Only three distinct sources requested")
+    verify(manager.services.size() == 4, "Four distinct sources requested")
     manager._process(0.0)
     var running := 0
     for service in manager.services.values():

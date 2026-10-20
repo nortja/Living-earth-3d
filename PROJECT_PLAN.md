@@ -21,7 +21,7 @@ Godot 4 is the proposed 3D engine. First milestone: working Windows Explorer wit
 
 ## Current status
 
-The released baseline is 0.6.1. The installer and authenticated automatic updater are implemented. The user confirmed 0.5.3 installation and enabled updates. Globe navigation, responsive native-resolution layout, original optional ambient audio, offline discovery, requested USGS observations and three in-app image cameras are implemented. Version 0.6.1 adds Camera Wall layouts/collections and approximate current UTC sunlight.
+The released baseline is 0.6.1. The installer and authenticated automatic updater are implemented. The user confirmed 0.5.3 installation and enabled updates. Globe navigation, responsive native-resolution layout, original optional ambient audio, offline discovery, requested USGS observations and three in-app image cameras are implemented. Version 0.6.1 adds Camera Wall layouts/collections and approximate current UTC sunlight. The 0.7.0 candidate integrates daily wonders, saved places, a dated historical-site atlas, requested point-model weather, two more screensavers and Giant Forest camera imagery.
 
 The original visual-theme and seven-channel ideas above are a concept backlog, not completed features. Current sources do not provide a broad news, weather, financial, sports or satellite-tracking service. Those channels need bounded requirements and source/access decisions before implementation. Continuous embedded video, Windows preview embedding and multiple-monitor screensavers remain unfinished. Physical GPU/DPI, monitor transitions and visible updater restart require a real Windows desktop. ROADMAP.md is authoritative for priorities; release evidence is in docs/VALIDATION-0.6.1.md.
 

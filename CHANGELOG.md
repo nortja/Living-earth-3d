@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.7.0 candidate — A world worth exploring
+
+- Added Discover/Search/History/Saved subnavigation, twelve sourced daily wonders, surprise journeys, fifty local saved places and clear save feedback; existing curated favorites remain available.
+- Added a dated Giza/Rome/Tikal atlas foundation with persistent modern-imagery disclosure.
+- Added explicitly requested point-model weather, Celsius/Fahrenheit and km/h/mph, timestamps, bounded cache/expiry, failure context and cancellation when changing location or entering a screensaver.
+- Added Daylight Earth and Orbital drift; Discovery journeys now use the twelve-wonder catalog. Preserved saved sunlight/audio settings.
+- Added Sequoia Giant Forest as a fourth in-app image camera and fixed exact-pole navigation plus favorite-button readability.
+- User confirmed the prior update and working Camera Wall/cameras on Windows. Local validation: 464 checks, 16 updater-security checks, real provider requests and native layouts through 5K; Windows release validation is pending.
+
 ## 0.6.1 — Camera Wall and current sunlight
 
 - Added opt-in Camera Wall with 1/2/4/6/9-view layouts, aspect-preserving images, focus view and up to eight saved local collections. Three distinct image sources are available; repeating a source shares its download.

@@ -19,4 +19,4 @@ func run() -> void:
         service.stop()
     service.queue_free()
     await process_frame
-    quit(0 if passed == 3 else 1)
+    quit(0 if passed == 4 else 1)

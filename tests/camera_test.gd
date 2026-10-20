@@ -20,7 +20,7 @@ func run() -> void:
         if venue.has("image_url"):
             snapshots += 1
             verify(service.valid_image_url(venue.image_url), "Snapshot URL is allowlisted")
-    verify(snapshots == 3, "Three explicit in-app image cameras")
+    verify(snapshots == 4, "Four explicit in-app image cameras")
     verify(not service.valid_image_url("https://example.com/private.jpg"), "Unknown image origin rejected")
     # Invalid URL fixture exercises the UI action without accessing a real provider.
     ui.select_camera({"name":"Fixture image", "provider":"Test only", "latitude":44.97, "longitude":-110.7, "image_url":"invalid", "url":"https://www.nps.gov/"})

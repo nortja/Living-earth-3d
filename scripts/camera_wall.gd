@@ -71,7 +71,7 @@ func setup(owner_app: Node3D, cameras: Array) -> void:
     collection_name.custom_minimum_size.x = 170
     saved_row.add_child(collection_name)
     _button(saved_row, "Save collection", save_collection)
-    note = app.interface.label(box, "Periodic images, not video · three available sources · repeated tiles share a download · at most two downloads at once", 12)
+    note = app.interface.label(box, "Periodic images, not video · %d image sources · repeated tiles share a download · at most two downloads at once" % sources.size(), 12)
     scroll = ScrollContainer.new()
     scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
     scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
