@@ -1,0 +1,109 @@
+name: Publish 0.5.5 preview once
+on:
+  push:
+    branches: [release/preview-0.5.5]
+permissions:
+  contents: read
+concurrency:
+  group: publish-preview-055
+  cancel-in-progress: false
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install pinned Godot and build tools
+        shell: bash
+        run: |
+          set -euo pipefail
+          sudo apt-get update -qq
+          sudo apt-get install -y nsis xvfb libgl1-mesa-dri
+          python3 -m pip install --break-system-packages -r packaging/windows/requirements-build.txt
+          base=https://github.com/godotengine/godot-builds/releases/download/4.6.3-stable
+          mkdir -p /tmp/earth-tools
+          cd /tmp/earth-tools
+          curl -fLsS "$base/SHA512-SUMS.txt" -o SHA512-SUMS.txt
+          for name in Godot_v4.6.3-stable_linux.x86_64.zip Godot_v4.6.3-stable_export_templates.tpz; do
+            curl -fLsS "$base/$name" -o "$name"
+            awk -v n="$name" '$2 == n || $2 == "*" n { print }' SHA512-SUMS.txt > selected.sha512
+            test -s selected.sha512
+            sha512sum -c selected.sha512
+          done
+          unzip -q Godot_v4.6.3-stable_linux.x86_64.zip
+          chmod +x Godot_v4.6.3-stable_linux.x86_64
+          echo /tmp/earth-tools >> "$GITHUB_PATH"
+          mkdir -p "$HOME/.local/share/godot/export_templates/4.6.3.stable"
+          unzip -j -q Godot_v4.6.3-stable_export_templates.tpz templates/windows_release_x86_64.exe templates/version.txt -d "$HOME/.local/share/godot/export_templates/4.6.3.stable"
+      - name: Test and build unsigned preview
+        shell: bash
+        run: |
+          set -euo pipefail
+          godot=Godot_v4.6.3-stable_linux.x86_64
+          "$godot" --headless --path . --editor --import --quit
+          for suite in explorer_test interface_test ambient_test ui_scale_test automatic_updates_test camera_test; do
+            "$godot" --headless --path . --script "res://tests/$suite.gd"
+          done
+          pwsh -NoProfile -File tests/update_security_test.ps1
+          pwsh -NoProfile -File tests/windows_build_scripts_test.ps1
+          mkdir -p build/windows dist
+          cp "$HOME/.local/share/godot/export_templates/4.6.3.stable/windows_release_x86_64.exe" build/windows/earth_template.exe
+          python3 packaging/windows/set_icon.py build/windows/earth_template.exe assets/icon.ico
+          "$godot" --headless --path . --export-release 'Windows Desktop' build/windows/LivingEarth3D.exe
+          python3 tests/windows_icon_test.py build/windows/LivingEarth3D.exe
+          makensis -V2 -DVERSION=0.5.5 -DBUILD_DIR="$PWD/build/windows" -DOUTPUT="$PWD/dist/LivingEarth3D-Setup-0.5.5.exe" packaging/windows/installer.nsi
+          python3 tests/windows_icon_test.py dist/LivingEarth3D-Setup-0.5.5.exe --installer
+          cd dist
+          sha256sum LivingEarth3D-Setup-0.5.5.exe > LivingEarth3D-Setup-0.5.5.exe.sha256
+          printf 'Source: %s\nUnsigned Linux cross-build. Windows execution and audio listening remain unverified.\n' "$GITHUB_SHA" > BUILD.txt
+      - name: Native Linux camera screenshots
+        run: xvfb-run -a -s '-screen 0 5120x2880x24' Godot_v4.6.3-stable_linux.x86_64 --path . --audio-driver Dummy --script res://tests/camera_render_test.gd
+      - name: Record installed-file hashes
+        run: python3 packaging/windows/write_payload_metadata.py --application build/windows/LivingEarth3D.exe --output dist/payload-hashes.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: LivingEarth3D-0.5.5-candidate
+          path: dist/*
+  windows:
+    needs: build
+    runs-on: windows-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: LivingEarth3D-0.5.5-candidate
+          path: dist
+      - name: Verify signatures and real installer update on Windows PowerShell 5.1
+        shell: powershell
+        run: |
+          ./tests/windows_build_scripts_test.ps1
+          ./tests/update_security_test.ps1
+          ./tests/windows_update_install_test.ps1 -Installer dist/LivingEarth3D-Setup-0.5.5.exe -PayloadMetadata dist/payload-hashes.json
+  publish:
+    needs: [build, windows]
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: LivingEarth3D-0.5.5-candidate
+          path: dist
+      - name: Publish installer only (feed requires separate release signature)
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd dist
+          sha256sum -c LivingEarth3D-Setup-0.5.5.exe.sha256
+          cd ..
+          git config user.name 'Living Earth preview delivery'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          cp -r dist /tmp/earth-delivery
+          git checkout --orphan downloads/windows-0.5.5
+          git rm -rf . >/dev/null
+          cp /tmp/earth-delivery/* .
+          git add LivingEarth3D-Setup-0.5.5.exe LivingEarth3D-Setup-0.5.5.exe.sha256 payload-hashes.json BUILD.txt camera-*.png
+          git commit -m 'Publish Windows-validated 0.5.5 auto-update bootstrap preview'
+          git push origin HEAD:refs/heads/downloads/windows-0.5.5

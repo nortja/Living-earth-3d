@@ -15,6 +15,12 @@ func run() -> void:
     var service = app.camera_service
     var ui = app.interface
     verify(not service.active and not ui.camera_overlay.visible, "Startup does not fetch or show a camera")
+    var viewer_buttons: Array = []
+    for control in ui.camera_viewer.find_children("*", "Button", true, false):
+        if control.get_class() != "Button": continue
+        viewer_buttons.append(control)
+        verify(not control.clip_text, "Camera action preserves its visible text: " + control.text)
+    verify(viewer_buttons.size() == 3, "Close, Refresh and Official source are visible actions")
     var snapshots := 0
     for venue in ui.cameras:
         if venue.has("image_url"):
@@ -48,6 +54,10 @@ func run() -> void:
         ui.set_ui_scale(2.0)
         for frame in range(10): await process_frame
         verify(Rect2(Vector2.ZERO,ui.size).encloses(Rect2(ui.camera_viewer.position,ui.camera_viewer.size)), "Viewer fits %s" % pixels)
+        for action in viewer_buttons:
+            var font: Font = action.get_theme_font("font")
+            var text_width: float = font.get_string_size(action.text, HORIZONTAL_ALIGNMENT_LEFT, -1, action.get_theme_font_size("font_size")).x
+            verify(action.size.x >= text_width, "Camera action text fits %s at %s" % [action.text,pixels])
     app.preview_screensaver()
     verify(not service.active and not ui.camera_overlay.visible, "Screensaver preview stops camera networking")
     DirAccess.remove_absolute(ProjectSettings.globalize_path(app.preferences_path))

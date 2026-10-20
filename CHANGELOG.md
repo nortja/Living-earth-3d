@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.5.5 — Readable camera viewer actions
+
+- Fixed camera viewer Close, Refresh and Official source buttons shrinking to blank pills. Their labels now retain their minimum width on small and large displays.
+- Added behavior/layout checks that measure each action label against its actual button width from 800×600 through 5K.
+- Preserved the 0.5.4 camera image viewer, Earth icons, authenticated updater and user preferences.
+
 ## 0.5.4 — Visible cameras and a clearer Earth identity
 
 - Replaced desktop/app/installer/uninstaller artwork with a new Earth tile and seven native Windows icon sizes. Shortcuts and installed-apps entries reference a versioned ICO; setup requests a shell icon refresh.

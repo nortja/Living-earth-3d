@@ -361,7 +361,7 @@ func _build_camera_viewer() -> void:
     var row := HBoxContainer.new()
     box.add_child(row)
     camera_title = label(row, "Camera", 20)
-    button(row, "Close", close_camera)
+    button(row, "Close", close_camera).clip_text = false
     camera_source = label(box, "", 12)
     camera_image = TextureRect.new()
     camera_image.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
@@ -372,9 +372,9 @@ func _build_camera_viewer() -> void:
     camera_detail = label(box, "", 12)
     var controls := HFlowContainer.new()
     box.add_child(controls)
-    button(controls, "Refresh", app.camera_service.refresh)
+    button(controls, "Refresh", app.camera_service.refresh).clip_text = false
     button(controls, "Official source ↗", func():
-        if app.camera_service.selected.has("url"): OS.shell_open(app.camera_service.selected.url))
+        if app.camera_service.selected.has("url"): OS.shell_open(app.camera_service.selected.url)).clip_text = false
     var automatic := CheckButton.new()
     automatic.text = "Refresh every minute"
     automatic.button_pressed = true
