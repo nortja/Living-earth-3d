@@ -33,6 +33,6 @@ Giant Forest source page: https://www.nps.gov/media/webcam/view.htm?id=81B461CE-
 
 The published installer was downloaded and verified before signing exact metadata with the existing pinned release key. Size: 36,457,608 bytes. SHA-256: `6353f718972d3255a46aa414a3e7df2b050d3bd6b259a8e472ade54495936595`. Discovery metadata, raw signed application manifest and detached signature were promoted together. Private signing material did not enter git or CI. The older failing general workflow remains disabled.
 
-Production-feed Windows staging/cancellation/normal-exit installation is the final post-publication check.
+[Production updater run](https://github.com/nortja/Living-earth-3d/actions/runs/39508409043) passed on Windows: the live signed release downloaded while the app stayed open, cancellation left it unchanged, resuming installed after natural app exit, final payload hashes matched and an intentionally closed app stayed closed.
 
 Physical monitor/DPI/performance, visible restart, Windows preview embedding, multi-monitor screensavers and embedded continuous video remain separate work. The project is still a preview.

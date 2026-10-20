@@ -42,7 +42,7 @@ Updated 2026-10-20. Latest released baseline: 0.7.0 (discoveries, saved places, 
 - [x] Six screensaver styles; expanded wonder journeys and saved-sunlight restoration.
 - [x] Giant Forest in-app image camera; north-oriented polar navigation; readable favorite actions.
 - [x] 464 local checks, 16 update-security checks, real weather/four-camera retrievals and native layouts through 5K.
-- [x] Windows upgrades/rollback from 0.5.2 and 0.6.1, public installer verification and signed-feed promotion.
+- [x] Windows upgrades/rollback from 0.5.2 and 0.6.1, public installer verification and signed-feed promotion. Production-feed staging, cancellation, normal-exit installation and payload verification also passed on Windows.
 
 ## Next priorities
 
