@@ -48,7 +48,7 @@ Updated 2026-10-20. Latest released baseline: 0.8.0 (native Windows preview and 
 
 - [x] Native screensaver launcher, strict preview argument handling, embedded-mode budget and per-monitor host implementation.
 - [x] Actual Windows embedded preview/render/lifecycle tests and upgrade/rollback from 0.5.2 and 0.7.0.
-- [x] Published verified installer and authenticated update. Production updater round trip is the final post-publication check.
+- [x] Published verified installer and authenticated update. Production signed-feed staging, cancellation, normal-exit installation and payload verification passed on Windows.
 
 ## Next priorities
 

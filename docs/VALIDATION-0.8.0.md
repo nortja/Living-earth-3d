@@ -23,7 +23,7 @@ The Windows test VM used a pinned Mesa 26.2.4 software OpenGL ICD. This driver s
 
 [Earlier Linux build evidence](https://github.com/nortja/Living-earth-3d/actions/runs/39510334193/job/118929475631) covers the application behavior/render matrix. The native correction build reused that frozen Godot executable only after verifying its exact installed-file hash, rebuilt the native launcher/installer, regenerated payload hashes, and repeated Windows upgrade/lifecycle gates. The launcher now uses generated argument vectors validated by Godot and explicitly adopts Godot 4.6's owned popup as a WS_CHILD. Renderers start offscreen until attached. This preserves the validated Earth resources and installed update protocol.
 
-Production signed-feed staging, cancellation and normal-exit installation is the final post-publication check.
+[Production updater validation](https://github.com/nortja/Living-earth-3d/actions/runs/39514718712) passed on Windows: the public signed installer staged while the app stayed open, cancellation preserved the installed app, resuming installed after natural exit, installed payload hashes matched, and an intentionally closed app stayed closed.
 
 Physical multi-monitor mixed-DPI performance, lock/suspend/resume behavior on real hardware, visible updater restart and longer saver runs remain field tests. CI's attached-monitor count is recorded; a one-monitor runner does not establish multi-monitor hardware coverage. A screensaver is not an authentication or lock-screen security boundary. Continuous video remains future work.
 
