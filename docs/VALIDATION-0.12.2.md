@@ -31,3 +31,11 @@ Final installed Windows desktop job 119010422314 passed: twelve actual PCK photo
 Final Windows job 119010422265 passed upgrades/rollback against 0.5.2 and deployed 0.9.0, real embedded rendering, the ten-minute OS private-memory/resize/parenting/input-isolation soak, active-saver install deferral, independent previews, parent/controller-death cleanup, one-monitor fullscreen and keyboard exit, plus simulated display/suspend/session-lock cleanup. All four release jobs, including installer publication, completed successfully.
 
 Published installer: `LivingEarth3D-Setup-0.12.2.exe`, 51,339,954 bytes, SHA-256 `0471ce0b33b7463e99eab58be821203a2b8a46ec3d164234f53a2f03e4a8356e`. The public refs/heads download was verified against the published checksum and BUILD source commit before signing. The signed manifest was independently verified against the installed pinned public key and all four payload hashes; the temporary private-key copy was removed. Source, application.json, application.sig and preview.json are promoted together. Production live-helper roundtrip evidence follows.
+
+## Production live-update roundtrip
+
+The no-query raw production manifest, detached signature and backward-compatible preview metadata matched the local verified bytes after atomic promotion `a1da99c4d1284e47ffb46ad6f09c2be6f129444e`. Independent pinned-key verification passed again.
+
+[Live run 39536745077, attempt 2](https://github.com/nortja/Living-earth-3d/actions/runs/39536745077/attempts/2), Windows job 119015531135, passed: production signed download stages while the old app remains open; cancellation leaves it unchanged; resume installs after normal exit; all four installed-file hashes match; the intentionally closed app does not reopen; fixture cleanup succeeds.
+
+Attempt 1 reported a staging filesystem deferral, “Cannot create a file when that file already exists,” and failed the gate. It is not counted as a pass. A fresh Windows retry completed with the unchanged production helper. The exact cause remains unconfirmed; investigate transient file contention and add deterministic coverage before changing status-file replacement behavior. This is a pending resilience item, not a claim that every filesystem condition is repaired.

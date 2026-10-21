@@ -65,6 +65,7 @@ Updated 2026-10-21. Latest released baseline: 0.12.2 (photographs, history, expa
 - [x] Optional sixteen-place Open-Meteo model layer, dated clickable points, units, cache validation and stale/offline states. Manual requests only; no device location or native-saver service.
 - [x] Local five-active-minute performance recording and JSON display report; unavailable release engine-memory counters explicitly represented as null.
 - [x] Interrupted-journey status and Full Earth destination cleanup. Existing destination and camera handoffs preserved.
+- [x] Fresh export/native/Windows package gates, authenticated 0.12.2 feed promotion and production staging/cancellation/normal-exit update roundtrip (successful second attempt; initial filesystem deferral retained as open evidence).
 
 ## Next priorities
 
@@ -73,6 +74,10 @@ Updated 2026-10-21. Latest released baseline: 0.12.2 (photographs, history, expa
 3. **Camera Wall:** eight image sources and bounded textures are implemented; prioritize authorized continuous-video playback and optimize further after actual Dell measurement.
 4. **Living planet:** UTC sunlight is released; requested point-model weather is released in 0.7.0. Sixteen-place model weather points are released in 0.12.2. Next: licensed current cloud refresh and broader weather coverage. Clouds/Moon/stars remain cinematic.
 5. **Screensaver integration:** Native /p preview and per-monitor hosts are released. Next: physical /s mixed-DPI/monitor checks, lock/sleep/resume, performance and overnight hardware tests. One-hour Linux renderer and Windows preview foundation tests supplement the current-package gates; they do not establish physical hardware behavior.
+
+## Updater resilience follow-up
+
+- [ ] Reproduce the intermittent production-roundtrip staging filesystem deferral from run 39536745077 attempt 1. Attempt 2 passed unchanged. Investigate transient file contention and bounded atomic status-write replacement without weakening signature/hash checks or active-app protection.
 
 ## Later / dependent work
 

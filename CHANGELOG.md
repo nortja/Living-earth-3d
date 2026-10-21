@@ -5,6 +5,8 @@
 - Includes the 0.10.0–0.12.0 camera, local performance, photograph, history and opt-in weather-globe work in one authenticated preview update. Those intermediate versions were validation candidates.
 - Added a compiled opt-in installed desktop validator with isolated preferences and durable progress evidence; it verifies exported photographs, weather points, saver isolation and the five-active-minute display report.
 - Reports unavailable engine-memory counters and unknown/non-finite display refresh honestly as unavailable/null. Known fractional refresh rates are retained; JSON export no longer warns on virtual displays. Windows screensaver soak measures actual OS private memory independently.
+- Published after native/Windows package gates, verified public bytes and pinned-key signing; production update staging/cancellation/normal-exit installation passed on retry. An initial filesystem deferral remains documented for resilience follow-up.
+
 
 ## 0.12.0 candidate — A living weather globe
 
