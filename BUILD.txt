@@ -1,0 +1,2 @@
+Source: 2a9197c03fa68354423cd837c8a0565d90778f8f
+Fresh application and native screensaver build. Windows release gates follow; physical mixed-DPI and audio listening remain field checks.
