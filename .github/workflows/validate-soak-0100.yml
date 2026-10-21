@@ -1,0 +1,44 @@
+name: Validate 0.10.0 native Linux soak once
+on:
+  push:
+    branches: [validation/soak-0.10.0]
+permissions:
+  contents: read
+jobs:
+  linux:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 75
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install pinned renderer and software graphics
+        run: |
+          set -euo pipefail
+          sudo apt-get update -qq
+          sudo apt-get install -y xvfb libgl1-mesa-dri
+          base=https://github.com/godotengine/godot-builds/releases/download/4.6.3-stable
+          mkdir -p /tmp/earth-tools
+          cd /tmp/earth-tools
+          curl -fLsS "$base/SHA512-SUMS.txt" -o SHA512-SUMS.txt
+          name=Godot_v4.6.3-stable_linux.x86_64.zip
+          curl -fLsS "$base/$name" -o "$name"
+          awk -v n="$name" '$2 == n || $2 == "*" n { print }' SHA512-SUMS.txt > selected.sha512
+          test -s selected.sha512
+          sha512sum -c selected.sha512
+          unzip -q "$name"
+          chmod +x Godot_v4.6.3-stable_linux.x86_64
+          echo /tmp/earth-tools >> "$GITHUB_PATH"
+      - name: Real-time one-hour native saver renderer soak
+        env:
+          LIBGL_ALWAYS_SOFTWARE: '1'
+        run: |
+          set -euo pipefail
+          mkdir -p dist
+          Godot_v4.6.3-stable_linux.x86_64 --headless --path . --editor --import --quit
+          xvfb-run -a -s '-screen 0 1280x720x24' Godot_v4.6.3-stable_linux.x86_64 --path . --audio-driver Dummy --script res://tests/screensaver_soak_test.gd -- --saver-hosted --saver-preview --soak-seconds=3600 2>&1 | tee /tmp/earth-soak.log
+          if grep -Eq '^(SCRIPT ERROR|ERROR):' /tmp/earth-soak.log; then exit 1; fi
+          grep -F 'Screensaver real-time soak: 0 failures' /tmp/earth-soak.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: Linux-saver-0.10.0-hour-soak
+          path: dist/saver-soak*
