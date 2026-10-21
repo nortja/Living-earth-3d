@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.11.0 candidate — See where you arrive
+
+- Includes the camera expansion, local performance report and journey fixes validated in the 0.10.0 candidate. The signed production baseline remains 0.9.0 during testing.
+- Added twelve offline destination photographs with source, creator, license and modification credit; full photograph viewer and saved-place resolution. Photographs are explicitly distinct from live imagery and ancient reconstructions.
+- Expanded the historical atlas from three to ten sourced teaching contexts, with inclusive era filtering and two more presets. Modern globe imagery is preserved.
+- Compact destination sheets make room for their photograph. Photo overlays close on Escape, a new arrival or screensaver preview; their full-size texture reference is released on close.
+
 ## 0.10.0 candidate — More windows, quieter operation
 
 - Added Grand Canyon, Look Rock, Alpine Visitor Center and Kīlauea V1 periodic-image cameras: eight distinct in-app feeds, with provider credits and source-specific refresh schedules.

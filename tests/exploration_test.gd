@@ -17,7 +17,7 @@ func run() -> void:
     verify(catalog.places.size() == 12,"Twelve curated wonders")
     for place in catalog.places:
         verify(place.source.begins_with("https://") and place.note.length() > 40,"Wonder has source and original explanatory note")
-    verify(catalog.historical_sites(-2550).size() == 1 and catalog.historical_sites(100).size() == 1 and catalog.historical_sites(600).size() == 1,"Timeline era presets select appropriate site")
+    verify(catalog.historical_sites(-2550).size() == 2 and catalog.historical_sites(100).size() == 1 and catalog.historical_sites(600).size() == 1,"Timeline era presets select appropriate site")
     verify(catalog.historical_sites(-1500).is_empty(),"Timeline never invents uncatalogued sites")
     verify(catalog.year_label(-2550) == "2550 BCE" and catalog.year_label(0) == "1 CE","Era labels omit year zero")
     var app = load("res://scenes/earth.tscn").instantiate()

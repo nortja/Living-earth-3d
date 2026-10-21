@@ -2,6 +2,7 @@ extends Control
 ## Physical-pixel layout: the 3D viewport keeps the display's native resolution.
 var exploration_panel: RefCounted
 var arrival_place: Dictionary = {}
+var arrival_has_photo := false
 var arrival_status: Label
 var arrival_save: Button
 var performance_values: Label
@@ -34,6 +35,7 @@ const SCALE_OPTIONS := [0.0, 1.0, 1.25, 1.5, 1.75, 2.0]
 var dock_row: HBoxContainer
 var layout_frames := 8
 var page_animation: Tween
+var photo_viewer: ColorRect
 var wall: ColorRect
 var sunlight_toggle: CheckButton
 var solar_status: Label
@@ -152,6 +154,9 @@ func setup(owner_app: Node3D) -> void:
     add_child(wall)
     wall.setup(app, cameras)
     _build_camera_viewer()
+    photo_viewer = preload("res://scripts/photo_viewer.gd").new()
+    add_child(photo_viewer)
+    photo_viewer.setup(app)
     panel.hide()
     command_card.hide()
     app.services.earthquakes_changed.connect(_refresh_quake_list)
@@ -257,11 +262,13 @@ func relayout() -> void:
         panel.position = Vector2(size.x - width - 24, 88)
         panel.size = Vector2(width, maxf(250, size.y - 88 - dock.size.y - 44))
     else:
-        panel.position = Vector2(24, size.y - 282)
-        panel.size = Vector2(size.x - 48, 190)
+        var sheet_height := minf(360,size.y-190) if active_page == "Destination" and arrival_has_photo else 190.0
+        panel.position = Vector2(24, size.y - sheet_height - 92)
+        panel.size = Vector2(size.x - 48, sheet_height)
     command_card.position = Vector2(24, 104)
     command_card.size = Vector2(280, 230)
     if wall: wall.relayout()
+    if photo_viewer: photo_viewer.relayout()
     if camera_overlay:
         camera_overlay.size = size
         camera_viewer.size = Vector2(minf(960, size.x - 48), minf(680, size.y - 100))
@@ -425,6 +432,7 @@ func select_camera(venue: Dictionary) -> void:
 
 func show_arrival(place: Dictionary) -> void:
     if app.screensaver_mode: return
+    if photo_viewer: photo_viewer.close()
     close_camera()
     arrival_place = place.duplicate(true)
     var box: VBoxContainer = pages.Destination
@@ -432,6 +440,18 @@ func show_arrival(place: Dictionary) -> void:
     label(box, str(place.get("name", "Your destination")), 23)
     label(box, str(place.get("region", place.get("provider", "Exploring Earth"))), 12)
     arrival_status = label(box, "Travelling to your destination…", 14)
+    var photo: Dictionary = preload("res://scripts/discovery_photos.gd").lookup(place)
+    arrival_has_photo = not photo.is_empty()
+    if arrival_has_photo:
+        var image := TextureRect.new()
+        image.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+        image.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+        image.custom_minimum_size.y = 170
+        image.texture = load(photo.image)
+        box.add_child(image)
+        label(box, "Photo: %s · %s · not live" % [photo.author,photo.license],12)
+        button(box,"View photograph & credits",func(): photo_viewer.open(photo,str(place.get("name","Earth"))))
+
     var story := str(place.get("note", place.get("fact", place.get("kind", ""))))
     if story.is_empty():
         story = "Explore this location on Earth, save it for another journey, or request its current weather."

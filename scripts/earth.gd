@@ -78,7 +78,7 @@ var update_status: Label
 var update_feed: Dictionary = {}
 var update_request: HTTPRequest
 var preferences := ConfigFile.new()
-const VERSION := "0.10.0"
+const VERSION := "0.11.0"
 const UPDATE_FEED_URL := "https://raw.githubusercontent.com/nortja/Living-earth-3d/main/updates/preview.json"
 const RELEASES_URL := "https://github.com/nortja/Living-earth-3d/releases"
 
@@ -272,7 +272,9 @@ func _unhandled_input(event: InputEvent) -> void:
         elif event.keycode == KEY_F11:
             toggle_fullscreen()
         elif event.keycode == KEY_ESCAPE:
-            if interface.camera_overlay.visible:
+            if interface.photo_viewer.visible:
+                interface.photo_viewer.close()
+            elif interface.camera_overlay.visible:
                 interface.close_camera()
             elif interface.wall.visible:
                 interface.wall.close()
@@ -707,6 +709,7 @@ func apply_saver_style() -> void:
         visuals.apply_options(visuals.clouds_enabled, true, true)
 
 func preview_screensaver() -> void:
+    interface.photo_viewer.close()
     finish_intro()
     interface.close_camera()
     interface.wall.close()

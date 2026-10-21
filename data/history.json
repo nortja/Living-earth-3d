@@ -1,5 +1,92 @@
 [
-{"name":"Giza pyramid complex, Egypt","latitude":29.9792,"longitude":31.1342,"start_year":-2600,"end_year":-2500,"note":"Approximate Old Kingdom pyramid-building era. Dates are broad teaching ranges, not a reconstruction of a specific year.","source":"https://whc.unesco.org/en/list/86/"},
-{"name":"Imperial Rome, Italy","latitude":41.8902,"longitude":12.4922,"start_year":-27,"end_year":476,"note":"A simplified interval for the Roman imperial era in the West. This marker does not depict the city's changing footprint or imperial borders.","source":"https://whc.unesco.org/en/list/91/"},
-{"name":"Classic-period Tikal, Guatemala","latitude":17.222,"longitude":-89.624,"start_year":250,"end_year":900,"note":"A broad Classic-period Maya context. Site histories and chronology are more complex than this teaching interval.","source":"https://whc.unesco.org/en/list/64/"}
+  {
+    "name": "Giza pyramid complex, Egypt",
+    "latitude": 29.9792,
+    "longitude": 31.1342,
+    "start_year": -2600,
+    "end_year": -2500,
+    "note": "Approximate Old Kingdom pyramid-building era. Dates are broad teaching ranges, not a reconstruction of a specific year.",
+    "source": "https://whc.unesco.org/en/list/86/"
+  },
+  {
+    "name": "Imperial Rome, Italy",
+    "latitude": 41.8902,
+    "longitude": 12.4922,
+    "start_year": -27,
+    "end_year": 476,
+    "note": "A simplified interval for the Roman imperial era in the West. This marker does not depict the city's changing footprint or imperial borders.",
+    "source": "https://whc.unesco.org/en/list/91/"
+  },
+  {
+    "name": "Classic-period Tikal, Guatemala",
+    "latitude": 17.222,
+    "longitude": -89.624,
+    "start_year": 250,
+    "end_year": 900,
+    "note": "A broad Classic-period Maya context. Site histories and chronology are more complex than this teaching interval.",
+    "source": "https://whc.unesco.org/en/list/64/"
+  },
+  {
+    "name": "Stonehenge stone circle, England",
+    "latitude": 51.1789,
+    "longitude": -1.8262,
+    "start_year": -2600,
+    "end_year": -2400,
+    "note": "Teaching window around the stone-circle construction near 2500 BCE. Earlier earthworks and later alterations are not represented by this interval.",
+    "source": "https://www.english-heritage.org.uk/visit/places/stonehenge/history-and-stories/history/"
+  },
+  {
+    "name": "Classical Acropolis, Athens, Greece",
+    "latitude": 37.9715,
+    "longitude": 23.7267,
+    "start_year": -500,
+    "end_year": -400,
+    "note": "A broad fifth-century BCE context for major Classical monuments. This is a selected building era, not the complete history of the hill.",
+    "source": "https://whc.unesco.org/en/list/404/"
+  },
+  {
+    "name": "Borobudur, Indonesia",
+    "latitude": -7.6079,
+    "longitude": 110.2038,
+    "start_year": 700,
+    "end_year": 900,
+    "note": "A rounded eighth- to ninth-century temple-building context. The modern view includes later conservation and does not show an ancient reconstruction.",
+    "source": "https://whc.unesco.org/en/list/592/"
+  },
+  {
+    "name": "Angkor, Cambodia",
+    "latitude": 13.4125,
+    "longitude": 103.867,
+    "start_year": 800,
+    "end_year": 1500,
+    "note": "Broad context for Khmer capitals from the ninth through fifteenth centuries. A single marker cannot portray their changing extent or each monument’s construction date.",
+    "source": "https://whc.unesco.org/en/list/668/"
+  },
+  {
+    "name": "Lalibela churches, Ethiopia",
+    "latitude": 12.0317,
+    "longitude": 39.0411,
+    "start_year": 1200,
+    "end_year": 1300,
+    "note": "A thirteenth-century context for the rock-cut churches. Lalibela remains a place of worship; the teaching interval does not mark the end of its history.",
+    "source": "https://whc.unesco.org/en/list/18/"
+  },
+  {
+    "name": "Great Zimbabwe, Zimbabwe",
+    "latitude": -20.2675,
+    "longitude": 30.9338,
+    "start_year": 1000,
+    "end_year": 1500,
+    "note": "A rounded eleventh- to fifteenth-century context for this Shona urban and trading centre. Its full chronology is more complex than the selected teaching interval.",
+    "source": "https://whc.unesco.org/en/list/364/"
+  },
+  {
+    "name": "Rapa Nui monumental landscape, Chile",
+    "latitude": -27.1258,
+    "longitude": -109.2768,
+    "start_year": 900,
+    "end_year": 1600,
+    "note": "A broad monumental-building window following UNESCO’s tenth- to sixteenth-century overview. Chronologies vary; this is not a settlement-date claim or an ancient landscape reconstruction.",
+    "source": "https://whc.unesco.org/en/list/715/"
+  }
 ]

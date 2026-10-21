@@ -124,11 +124,11 @@ func _history(box: VBoxContainer) -> void:
     box.add_child(history_slider)
     var row := HFlowContainer.new()
     box.add_child(row)
-    for preset in [{"title":"Pyramids","year":-2550},{"title":"Rome","year":100},{"title":"Tikal","year":600}]:
+    for preset in [{"title":"Pyramids","year":-2550},{"title":"Rome","year":100},{"title":"Tikal","year":600},{"title":"Temples","year":850},{"title":"Medieval","year":1250}]:
         action(row,preset.title,func(): history_slider.value = preset.year)
     history_results = VBoxContainer.new()
     box.add_child(history_results)
-    ui.label(box,"Three introductory sites. The intervals are broad editorial teaching ranges, not exact founding dates or a complete historical map.",12)
+    ui.label(box,"Ten introductory sites. The intervals are broad editorial teaching ranges, not exact founding dates or a complete historical map.",12)
     refresh_history()
 
 func refresh_history() -> void:
