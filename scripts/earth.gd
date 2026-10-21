@@ -102,6 +102,13 @@ func _ready() -> void:
             return
         if argument.to_lower() == "/s":
             screensaver_mode = true
+    if "--validate-packaged-desktop" in arguments and not screensaver_mode:
+        play_intro = false
+        preferences_path = "user://packaged-ui-%d.cfg" % Time.get_ticks_usec()
+        weather_layer_cache_path = "user://packaged-ui-weather-%d.json" % Time.get_ticks_usec()
+        var isolated_preferences := ConfigFile.new()
+        isolated_preferences.set_value("updates", "background", false)
+        isolated_preferences.save(preferences_path)
     if DisplayServer.get_name() != "headless" and not screensaver_mode and "--validate-display" not in arguments:
         var available := DisplayServer.screen_get_usable_rect()
         get_window().size = Vector2i(mini(1600, int(available.size.x * 0.85)), mini(900, int(available.size.y * 0.85)))
@@ -172,7 +179,11 @@ func _ready() -> void:
         if not native_saver_preview:
             Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
         apply_saver_style()
-    if "--validate-display" in arguments:
+    if "--validate-packaged-desktop" in arguments and not screensaver_mode:
+        var validation = load("res://scripts/packaged_validation.gd").new()
+        add_child(validation)
+        validation.call_deferred("run", self, arguments)
+    elif "--validate-display" in arguments:
         var validation = load("res://scripts/display_validation.gd").new()
         add_child(validation)
         validation.call_deferred("run", self, arguments)

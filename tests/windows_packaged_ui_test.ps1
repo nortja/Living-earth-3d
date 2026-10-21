@@ -6,8 +6,6 @@ $evidence=Join-Path $pwd 'dist/packaged-desktop'
 New-Item -ItemType Directory -Path $fixture,$evidence -Force|Out-Null
 $setup=Start-Process (Resolve-Path $Installer) -ArgumentList "/S /D=$root" -Wait -PassThru
 if($setup.ExitCode -ne 0){throw 'Packaged desktop fixture installation failed'}
-$script=Join-Path $fixture 'packaged_ui.gd'
-Copy-Item "$PSScriptRoot/windows_packaged_ui_test.gd" $script
 $log=Join-Path $evidence 'windows-packaged.log'
 $env:GALLIUM_DRIVER='llvmpipe';$env:LIBGL_ALWAYS_SOFTWARE='1'
 $app=$null
@@ -15,9 +13,13 @@ try {
  $start=New-Object Diagnostics.ProcessStartInfo
  $start.FileName=Join-Path $root 'LivingEarth3D.exe'
  $start.WorkingDirectory=$root;$start.UseShellExecute=$false
- $start.Arguments='--resolution 1280x720 --audio-driver Dummy --log-file "'+$log+'" --script "'+$script+'" -- "--evidence-directory='+$evidence+'"'
+ $start.Arguments='--resolution 1280x720 --audio-driver Dummy --log-file "'+$log.Replace('\','/')+'" -- --validate-packaged-desktop "--evidence-directory='+$evidence.Replace('\','/')+'"'
  $app=[Diagnostics.Process]::Start($start)
- if(!$app.WaitForExit(450000)){throw 'Packaged desktop test timed out'}
+ if(!$app.WaitForExit(450000)){
+  if(Test-Path $log){Get-Content $log|Write-Output}
+  if(Test-Path (Join-Path $evidence 'windows-packaged-progress.txt')){Get-Content (Join-Path $evidence 'windows-packaged-progress.txt')|Write-Output}
+  throw 'Packaged desktop test timed out'
+ }
  if(Test-Path $log){Get-Content $log|ForEach-Object{Write-Output $_}}
  if($app.ExitCode -ne 0){throw ('Packaged desktop test failed: '+$app.ExitCode)}
  $text=Get-Content $log -Raw
