@@ -16,6 +16,9 @@ func run() -> void:
     app.play_intro=false
     app.preferences_path="user://packaged-ui-%d.cfg" % Time.get_ticks_usec()
     app.weather_layer_cache_path="user://packaged-ui-weather-%d.json" % Time.get_ticks_usec()
+    var isolated_preferences := ConfigFile.new()
+    isolated_preferences.set_value("updates","background",false)
+    verify(isolated_preferences.save(app.preferences_path)==OK,"Isolated test preferences save")
     root.add_child(app)
     var ui=app.interface
     for place in app.exploration.catalog.places:

@@ -671,7 +671,8 @@ func build_performance_controls() -> void:
 func _performance_changed() -> void:
     var report: Dictionary = app.performance_report.snapshot
     var frames: Dictionary = report.get("recent_frames", {})
-    performance_values.text = "Gathering active frames…" if frames.is_empty() else "%.1f FPS · %.1f ms average · %.1f ms p95\nEngine tracked memory: %.1f MiB" % [frames.fps,frames.mean_ms,frames.p95_ms,float(report.engine_tracked_memory_bytes)/1048576.0]
+    var memory_text := "Engine memory: unavailable in this build" if not report.get("memory_counter_available",false) else "Engine tracked memory: %.1f MiB" % (float(report.engine_tracked_memory_bytes)/1048576.0)
+    performance_values.text = "Gathering active frames…" if frames.is_empty() else "%.1f FPS · %.1f ms average · %.1f ms p95\n%s" % [frames.fps,frames.mean_ms,frames.p95_ms,memory_text]
     var recording: Dictionary = report.get("recording", {})
     if not recording.is_empty() and recording.frames > 0:
         performance_values.text += "\nRecording: %d / 300 active seconds · %d frames over 50 ms" % [int(recording.active_seconds),recording.frames_over_50ms]

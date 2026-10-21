@@ -56,7 +56,7 @@ func run() -> void:
     verify(scene.selected != previous, "Timed discovery advances")
     verify(scene.newer_version("v0.13.0"), "Newer minor release")
     verify(scene.newer_version("1.0.0"), "Newer major release")
-    verify(not scene.newer_version("v0.12.0"), "Current release ignored")
+    verify(not scene.newer_version("v0.12.1"), "Current release ignored")
     verify(not scene.newer_version("v0.0.9"), "Older release ignored")
     verify(not scene.newer_version("v1.0.0-beta"), "Prerelease ignored")
     scene._updates_received(0, 404, PackedStringArray(), PackedByteArray())

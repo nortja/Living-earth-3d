@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.12.1 candidate — Combined exploration update
+
+- Includes the 0.10.0–0.12.0 camera, local performance, photograph, history and opt-in weather-globe work. These were validation candidates; the production feed remains 0.9.0 until final promotion.
+- Corrected the installed desktop test launcher to use isolated preferences instead of the separate display-validation mode.
+- Reports unavailable engine-memory counters honestly as unavailable/null in release builds. Windows screensaver soak still measures actual OS private memory independently.
+
 ## 0.12.0 candidate — A living weather globe
 
 - Combines the camera, performance-report, photograph and history work validated in the 0.10.0/0.11.0 candidates. The production baseline stays 0.9.0 until final release gates pass.

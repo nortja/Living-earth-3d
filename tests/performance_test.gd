@@ -13,6 +13,8 @@ func run() -> void:
     root.add_child(app)
     var report = app.performance_report
     report.set_process(false)
+    verify(Report.memory_value(0) == null,"Unavailable memory counter is not presented as zero usage")
+    verify(Report.memory_value(1048576) == 1048576,"Available engine memory remains numeric")
     var stats := Report.frame_stats([10.0,10.0,20.0,40.0])
     verify(stats.mean_ms == 20.0 and stats.fps == 50.0, "FPS uses total active frame intervals")
     verify(stats.p95_ms == 40.0 and stats.max_ms == 40.0, "Tail frame intervals retained")

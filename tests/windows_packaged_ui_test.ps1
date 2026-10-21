@@ -15,7 +15,7 @@ try {
  $start=New-Object Diagnostics.ProcessStartInfo
  $start.FileName=Join-Path $root 'LivingEarth3D.exe'
  $start.WorkingDirectory=$root;$start.UseShellExecute=$false
- $start.Arguments='--resolution 1280x720 --audio-driver Dummy --log-file "'+$log+'" --script "'+$script+'" -- --validate-display "--evidence-directory='+$evidence+'"'
+ $start.Arguments='--resolution 1280x720 --audio-driver Dummy --log-file "'+$log+'" --script "'+$script+'" -- "--evidence-directory='+$evidence+'"'
  $app=[Diagnostics.Process]::Start($start)
  if(!$app.WaitForExit(450000)){throw 'Packaged desktop test timed out'}
  if(Test-Path $log){Get-Content $log|ForEach-Object{Write-Output $_}}
