@@ -49,7 +49,7 @@ Updated 2026-10-21. Latest released baseline: 0.9.0 (destination arrivals and ca
 - [x] Discovery, curated, saved and search journeys automatically show a named destination card, story/context, approximate coordinates, arrival confirmation and clear next actions.
 - [x] Camera journeys and saved known camera destinations open their viewer; closing it retains destination context. External camera pages report launch status and offer an official-source retry.
 - [x] 488 behavior/layout checks and six native arrival render sizes; fresh application export, Windows upgrade/rollback from 0.5.2 and 0.8.0 and native screensaver lifecycle gates.
-- [x] Published verified installer and authenticated update; production updater round trip is the final post-publication gate.
+- [x] Published verified installer and authenticated update; production staging, cancellation, normal-exit installation and installed-file verification passed on Windows.
 
 ## Previous release — 0.8.0
 

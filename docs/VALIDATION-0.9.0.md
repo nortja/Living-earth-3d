@@ -13,3 +13,7 @@ Windows installer upgrade/rollback, native screensaver lifecycle and production 
 Release workflow 39517861702 built the application from source, passed 488 behavior/layout checks, 16 updater-security checks, native exploration/camera/globe/intro/arrival renders and native launcher argument/command validation. Windows passed real upgrade/rollback from 0.5.2 and 0.8.0 and actual embedded screensaver preview/render/lifecycle checks using a pinned software OpenGL ICD on the disposable test VM. No test driver is shipped. Physical mixed-DPI and multiple-monitor hardware remain separate.
 
 Public installer: 36,640,289 bytes; SHA-256 `b26c5f434d1e55f76311aeba441290f16b8971dc2b906b4dd0c2668c437fe668`. Public bytes matched the published checksum before signing exact metadata with the existing pinned release key. The four-file protocol is unchanged and the private key never entered git or CI. Production-feed staging, cancellation and normal-exit installation are checked after promotion.
+
+## Production updater round trip
+
+Windows workflow 39518843589 passed against the actual production feed: live RSA signature and installer verification, staging while 0.5.2 remains open, cancellation preserving the old installation, resume and installation after normal application exit, all four installed-file hashes, no unwanted restart and cleanup. Direct public feed bytes also matched the signed publication exactly. The temporary signing-key copy was removed; its existing backup was preserved.
