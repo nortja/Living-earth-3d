@@ -67,6 +67,49 @@
     "longitude": -118.774,
     "kind": "Periodic camera image · air-quality view",
     "url": "https://www.nps.gov/media/webcam/view.htm?id=81B461CE-1DD8-B71B-0B5150F44017DA05",
-    "image_url": "https://www.nps.gov/featurecontent/ard/webcams/images/sekilarge.jpg"
+    "image_url": "https://www.nps.gov/featurecontent/ard/webcams/images/sekilarge.jpg",
+    "image_interval_seconds": 900
+  },
+  {
+    "id": "grand-canyon",
+    "name": "Grand Canyon · Yavapai Point",
+    "provider": "US National Park Service",
+    "latitude": 36.065,
+    "longitude": -112.118,
+    "kind": "Periodic camera image · provider updates about every 15 minutes; may be seasonal",
+    "url": "https://www.nps.gov/media/webcam/view.htm?id=6AB2E06A-B28C-A55F-6E7C6519E2AA8F51",
+    "image_url": "https://www.nps.gov/featurecontent/ard/webcams/images/grcalarge.jpg",
+    "image_interval_seconds": 900
+  },
+  {
+    "id": "smokies-look-rock",
+    "name": "Great Smoky Mountains · Look Rock",
+    "provider": "US National Park Service",
+    "latitude": 35.633,
+    "longitude": -83.943,
+    "kind": "Periodic air-quality camera image · provider updates about every 15 minutes",
+    "url": "https://www.nps.gov/media/webcam/view.htm?id=6878C635-B83A-8F41-A6E3B0160539BEAA",
+    "image_url": "https://www.nps.gov/featurecontent/ard/webcams/images/grsmlarge.jpg",
+    "image_interval_seconds": 900
+  },
+  {
+    "id": "rocky-alpine",
+    "name": "Rocky Mountain · Alpine Visitor Center",
+    "provider": "US National Park Service",
+    "latitude": 40.442,
+    "longitude": -105.754,
+    "kind": "Periodic alpine camera image · visibility and availability vary with weather",
+    "url": "https://www.nps.gov/media/webcam/view.htm?id=81B4681E-1DD8-B71B-0B8311E4FAC15EF4",
+    "image_url": "https://www.nps.gov/webcams-romo/alpine_visitor_center.jpg"
+  },
+  {
+    "id": "kilauea-v1",
+    "name": "Kīlauea · West Halemaʻumaʻu",
+    "provider": "USGS Hawaiian Volcano Observatory · Public Domain",
+    "latitude": 19.421,
+    "longitude": -155.287,
+    "kind": "Periodic visible-light camera image · dark at night; view may move; not continuous video",
+    "url": "https://www.usgs.gov/volcanoes/kilauea/v1cam-kilauea-volcano-hawaii-west-halemaumau-crater",
+    "image_url": "https://volcanoes.usgs.gov/observatories/hvo/cams/V1cam/images/M.jpg"
   }
 ]

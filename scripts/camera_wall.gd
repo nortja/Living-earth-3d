@@ -54,6 +54,7 @@ func setup(owner_app: Node3D, cameras: Array) -> void:
         _rebuild())
     controls.add_child(layout_picker)
     _button(controls, "Refresh images", manager.request_refresh)
+    _button(controls, "Fill different cameras", fill_different_cameras)
     var auto := CheckButton.new()
     auto.text = "Auto refresh"
     auto.button_pressed = true
@@ -228,3 +229,9 @@ func _process(_delta: float) -> void:
         if scroll.get_global_rect().intersects(tiles[index].tile.get_global_rect()):
             visible_urls.append(slots[index])
     manager.set_visible_urls(visible_urls)
+
+func fill_different_cameras() -> void:
+    for index in range(9):
+        slots[index] = sources[index].image_url if index < sources.size() else ""
+    _save()
+    _rebuild()

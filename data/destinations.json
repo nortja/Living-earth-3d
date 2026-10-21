@@ -1,8 +1,46 @@
 [
-  {"name":"Grand Canyon", "region":"Arizona, United States", "latitude":36.1, "longitude":-112.1, "fact":"The Colorado River exposes nearly two billion years of rock history here."},
-  {"name":"Great Barrier Reef", "region":"Queensland, Australia", "latitude":-18.3, "longitude":147.7, "fact":"This vast reef system supports thousands of species along Australia's northeast coast."},
-  {"name":"Mount Everest", "region":"Himalayas, Nepal / China", "latitude":27.9881, "longitude":86.925, "fact":"Earth's highest mountain above sea level rises where the Indian and Eurasian plates meet."},
-  {"name":"Galápagos Islands", "region":"Ecuador", "latitude":-0.7, "longitude":-90.5, "fact":"These volcanic islands are known for distinctive wildlife shaped by isolation."},
-  {"name":"Lake Baikal", "region":"Siberia, Russia", "latitude":53.5, "longitude":108.0, "fact":"The world's deepest lake contains about one fifth of Earth's unfrozen surface fresh water."},
-  {"name":"Victoria Falls", "region":"Zambia / Zimbabwe", "latitude":-17.924, "longitude":25.857, "fact":"The Zambezi River plunges across a broad basalt ledge into a narrow gorge."}
+  {
+    "name": "Grand Canyon",
+    "region": "Arizona, United States",
+    "latitude": 36.1,
+    "longitude": -112.1,
+    "fact": "The Colorado River exposes nearly two billion years of rock history here.",
+    "camera_id": "grand-canyon",
+    "source": "https://www.nps.gov/grca/index.htm"
+  },
+  {
+    "name": "Great Barrier Reef",
+    "region": "Queensland, Australia",
+    "latitude": -18.3,
+    "longitude": 147.7,
+    "fact": "This vast reef system supports thousands of species along Australia's northeast coast."
+  },
+  {
+    "name": "Mount Everest",
+    "region": "Himalayas, Nepal / China",
+    "latitude": 27.9881,
+    "longitude": 86.925,
+    "fact": "Earth's highest mountain above sea level rises where the Indian and Eurasian plates meet."
+  },
+  {
+    "name": "Galápagos Islands",
+    "region": "Ecuador",
+    "latitude": -0.7,
+    "longitude": -90.5,
+    "fact": "These volcanic islands are known for distinctive wildlife shaped by isolation."
+  },
+  {
+    "name": "Lake Baikal",
+    "region": "Siberia, Russia",
+    "latitude": 53.5,
+    "longitude": 108.0,
+    "fact": "The world's deepest lake contains about one fifth of Earth's unfrozen surface fresh water."
+  },
+  {
+    "name": "Victoria Falls",
+    "region": "Zambia / Zimbabwe",
+    "latitude": -17.924,
+    "longitude": 25.857,
+    "fact": "The Zambezi River plunges across a broad basalt ledge into a narrow gorge."
+  }
 ]

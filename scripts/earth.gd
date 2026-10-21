@@ -15,6 +15,7 @@ var weather_cache_path := "user://weather-v2.json"
 const EarthInterface = preload("res://scripts/earth_interface.gd")
 const CameraService = preload("res://scripts/camera_service.gd")
 var camera_service: Node
+var performance_report: Node
 
 const EarthServices = preload("res://scripts/earth_services.gd")
 
@@ -77,7 +78,7 @@ var update_status: Label
 var update_feed: Dictionary = {}
 var update_request: HTTPRequest
 var preferences := ConfigFile.new()
-const VERSION := "0.9.0"
+const VERSION := "0.10.0"
 const UPDATE_FEED_URL := "https://raw.githubusercontent.com/nortja/Living-earth-3d/main/updates/preview.json"
 const RELEASES_URL := "https://github.com/nortja/Living-earth-3d/releases"
 
@@ -315,6 +316,10 @@ func _build_explorer(layer: CanvasLayer) -> void:
     interface = EarthInterface.new()
     layer.add_child(interface)
     interface.setup(self)
+    performance_report = preload("res://scripts/performance_report.gd").new()
+    add_child(performance_report)
+    performance_report.setup(self)
+    interface.build_performance_controls()
     if not screensaver_mode and "--validate-display" not in OS.get_cmdline_user_args() and DisplayServer.get_name() != "headless":
         call_deferred("start_auto_update")
 
@@ -543,6 +548,7 @@ func finish_intro() -> void:
         interface_layer.show()
 
 func reset_view() -> void:
+    if interface and interface.active_page == "Destination": interface.close_panel()
     finish_intro()
     angular_velocity = Vector2.ZERO
     dragging = false

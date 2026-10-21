@@ -1,4 +1,4 @@
-param([Parameter(Mandatory=$true)][string]$Installer,[switch]$SoftwareRendering)
+param([Parameter(Mandatory=$true)][string]$Installer,[switch]$SoftwareRendering,[ValidateRange(0,120)][int]$SoakMinutes=0)
 $ErrorActionPreference='Stop'
 if ($env:OS -ne 'Windows_NT') { throw 'Windows desktop required' }
 Add-Type -AssemblyName System.Windows.Forms,System.Drawing
@@ -119,6 +119,42 @@ try {
  $bitmap.Save($evidence,[Drawing.Imaging.ImageFormat]::Png);$graphics.Dispose();$bitmap.Dispose()
  if($colors.Count -lt 20){throw 'Embedded preview has insufficient rendered Earth detail'}
  Write-Output 'PASS: actual Godot Earth renders inside native preview HWND, resizes and has no fullscreen window'
+ if($SoakMinutes -gt 0){
+  $soakStart=[DateTime]::UtcNow;$baselineMemory=0L
+  $samples=New-Object 'Collections.Generic.List[object]'
+  while(([DateTime]::UtcNow-$soakStart).TotalMinutes -lt $SoakMinutes){
+   Pump 30000
+   if($p1.HasExited -or $r1.Process.HasExited){throw 'Long preview soak exited unexpectedly'}
+   $r1.Process.Refresh()
+   $elapsed=([DateTime]::UtcNow-$soakStart).TotalSeconds
+   $memory=$r1.Process.PrivateMemorySize64
+   if($baselineMemory -eq 0 -and $elapsed -ge 120){$baselineMemory=$memory}
+   if($baselineMemory -gt 0 -and $memory-$baselineMemory -gt 268435456){throw 'Long preview soak private-memory growth exceeds 256 MiB after warmup'}
+   $large=([int]($elapsed/60)%2 -eq 0)
+   $width=if($large){580}else{320};$height=if($large){330}else{200}
+   $first.ClientSize=New-Object Drawing.Size($width,$height);Pump 200
+   $bounds=New-Object SaverWindows+Rect
+   [void][SaverWindows]::GetWindowRect($r1.Window,[ref]$bounds)
+   if([SaverWindows]::GetParent($r1.Window) -ne $first.Handle -or $bounds.Right-$bounds.Left -ne $width -or $bounds.Bottom-$bounds.Top -ne $height){throw 'Long preview soak lost embedding or resize tracking'}
+   if([SaverWindows]::IsWindowEnabled($r1.Window)){throw 'Long preview soak enabled renderer input'}
+   $sample=[pscustomobject]@{seconds=[math]::Round($elapsed,1);private_bytes=$memory;working_set_bytes=$r1.Process.WorkingSet64;cpu_seconds=[math]::Round($r1.Process.TotalProcessorTime.TotalSeconds,2);width=$width;height=$height}
+   $point=$first.PointToScreen([Drawing.Point]::Empty)
+   $soakBitmap=New-Object Drawing.Bitmap($width,$height)
+   $soakGraphics=[Drawing.Graphics]::FromImage($soakBitmap)
+   try {
+    $soakGraphics.CopyFromScreen($point,[Drawing.Point]::Empty,$soakBitmap.Size)
+    $soakColors=New-Object 'Collections.Generic.HashSet[int]'
+    for($sx=10;$sx -lt $width-10;$sx+=10){for($sy=10;$sy -lt $height-10;$sy+=10){[void]$soakColors.Add($soakBitmap.GetPixel($sx,$sy).ToArgb())}}
+    if($soakColors.Count -lt 20){throw 'Long preview soak lost rendered Earth pixels'}
+    $soakBitmap.Save((Join-Path $pwd 'dist/windows-screensaver-soak-latest.png'),[Drawing.Imaging.ImageFormat]::Png)
+   } finally {$soakGraphics.Dispose();$soakBitmap.Dispose()}
+   $samples.Add($sample)
+   Write-Output ('SAVER_SOAK '+($sample|ConvertTo-Json -Compress))
+  }
+  $samples|Export-Csv (Join-Path $pwd 'dist/windows-screensaver-soak.csv') -NoTypeInformation
+  Write-Output "PASS: $SoakMinutes-minute actual Windows preview soak retains rendering process, bounded private memory, input isolation, parenting and resize tracking"
+ }
+
  $before=(Get-FileHash "$root/LivingEarth3D.exe" -Algorithm SHA256).Hash
  $blocked=Start-Process (Resolve-Path $Installer) -ArgumentList "/S /D=$root" -Wait -PassThru
  if($blocked.ExitCode -eq 0 -or (Get-FileHash "$root/LivingEarth3D.exe" -Algorithm SHA256).Hash -ne $before -or $p1.HasExited){throw 'Silent installer did not defer for native preview controller'}
@@ -159,6 +195,15 @@ try {
  [void][SaverWindows]::PostMessage($hosts[0],0x007e,[IntPtr]::Zero,[IntPtr]::Zero)
  Assert-Exit $full $renderer
  Write-Output 'PASS: simulated display-change notification closes the full saver session and renderer'
+ foreach($event in @(@(0x0218,4,'suspend'),@(0x02B1,7,'session lock'))){
+  $full=Start-Saver '/s';Pump 3000
+  $renderer=Child-Process $full
+  $hosts=@([SaverWindows]::Windows([uint32]$full.Id,[IntPtr]::Zero)|Where-Object{[SaverWindows]::IsWindowVisible($_)})
+  if(!$renderer -or !$hosts.Count){throw 'Lifecycle notification fixture did not start'}
+  [void][SaverWindows]::PostMessage($hosts[0],[uint32]$event[0],[IntPtr]$event[1],[IntPtr]::Zero)
+  Assert-Exit $full $renderer
+  Write-Output ('PASS: simulated '+$event[2]+' notification cleans up native host and renderer')
+ }
  Write-Output 'Native Windows screensaver checks passed (software OpenGL; physical multi-monitor/DPI/sleep remain separate)'
 } finally {
  foreach($p in $launchers){if(!$p.HasExited){$p.Kill();$p.WaitForExit()}}

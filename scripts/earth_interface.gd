@@ -4,6 +4,9 @@ var exploration_panel: RefCounted
 var arrival_place: Dictionary = {}
 var arrival_status: Label
 var arrival_save: Button
+var performance_values: Label
+var performance_record: Button
+var performance_export_status: Label
 var exploration_poll := 0.0
 var app: Node3D
 var page_scroll: ScrollContainer
@@ -34,6 +37,9 @@ var page_animation: Tween
 var wall: ColorRect
 var sunlight_toggle: CheckButton
 var solar_status: Label
+var camera_rows: VBoxContainer
+var camera_query: LineEdit
+var camera_images_only := false
 var camera_status: Label
 var camera_overlay: ColorRect
 var camera_viewer: PanelContainer
@@ -122,7 +128,7 @@ func setup(owner_app: Node3D) -> void:
     var page_stack := VBoxContainer.new()
     page_stack.size_flags_horizontal = Control.SIZE_EXPAND_FILL
     scroll.add_child(page_stack)
-    for title in NAV + ["Settings", "Destination"]:
+    for title in NAV + ["Settings", "Destination", "Display report"]:
         var page := VBoxContainer.new()
         page.size_flags_horizontal = Control.SIZE_EXPAND_FILL
         page_stack.add_child(page)
@@ -154,6 +160,8 @@ func setup(owner_app: Node3D) -> void:
     relayout()
 
 func _process(_delta: float) -> void:
+    if is_instance_valid(arrival_status) and arrival_status.text.begins_with("Travelling") and app.journey and not app.journey.is_running():
+        arrival_status.text = "Journey paused · " + str(arrival_place.get("name", "Earth"))
     exploration_poll += _delta
     if exploration_poll >= 60.0 and exploration_panel:
         exploration_poll = 0.0
@@ -372,11 +380,34 @@ func _cameras(box: VBoxContainer) -> void:
     label(box, "Image cameras open here. Video and seasonal sources open their official websites. Every selection also flies Earth to the approximate location.", 12)
     button(box, "Open Camera Wall", func(): wall.open())
     camera_status = label(box, "Choose a camera below.")
+    camera_query = LineEdit.new()
+    camera_query.placeholder_text = "Find a camera or provider"
+    camera_query.max_length = 80
+    camera_query.text_changed.connect(func(_text: String): _camera_list())
+    box.add_child(camera_query)
+    var image_filter := CheckButton.new()
+    image_filter.text = "Image cameras only"
+    image_filter.toggled.connect(func(enabled: bool): camera_images_only = enabled; _camera_list())
+    box.add_child(image_filter)
+    camera_rows = VBoxContainer.new()
+    box.add_child(camera_rows)
+    _camera_list()
+
+func _camera_list() -> void:
+    if not camera_rows: return
+    _clear(camera_rows)
+    var query := camera_query.text.strip_edges().to_lower()
+    var count := 0
     for venue in cameras:
-        label(box, venue.provider, 12)
+        if camera_images_only and not venue.has("image_url"): continue
+        if not query.is_empty() and query not in (str(venue.name)+" "+str(venue.provider)+" "+str(venue.kind)).to_lower(): continue
+        count += 1
+        label(camera_rows, venue.provider, 12)
         var title: String = venue.name + ("" if venue.has("image_url") else " ↗")
-        button(box, title, func(): select_camera(venue))
-        label(box, venue.kind, 12)
+        button(camera_rows, title, func(): select_camera(venue))
+        label(camera_rows, venue.kind, 12)
+    camera_status.text = "%d camera%s · select a view below" % [count,"" if count == 1 else "s"] if count > 0 else "No cameras match. Try another place or provider."
+    refresh_layout()
 
 func select_camera(venue: Dictionary) -> void:
     if not app.fly_to_location(venue, false): return
@@ -538,6 +569,7 @@ func _savers(box: VBoxContainer) -> void:
 func _settings(box: VBoxContainer) -> void:
     label(box, "Display & graphics", 18)
     monitor_status = label(box, app.display_summary(), 12)
+    button(box, "Performance & support", func(): open_page("Display report"))
     label(box, "Interface size", 16)
     scale_picker = OptionButton.new()
     for value in SCALE_OPTIONS:
@@ -586,3 +618,31 @@ func _settings(box: VBoxContainer) -> void:
     label(box, "Automatic checks run at startup and every 30 minutes while open. Small and large releases use the same verified update process. Turn this off to defer pending updates. Offline exploration always works.", 12)
     button(box, "Version history ↗", func(): OS.shell_open("https://github.com/nortja/Living-earth-3d/blob/main/CHANGELOG.md"))
     label(box, "Earth maps: Solar System Scope / INOVE · CC BY 4.0. Moon: three.js · MIT. Cloud and space layers are offline artwork.", 12)
+
+func build_performance_controls() -> void:
+    var box: VBoxContainer = pages["Display report"]
+    label(box, "Local performance report", 18)
+    performance_values = label(box, "Open Settings for live frame and memory measurements.", 12)
+    performance_record = button(box, "Record 5 active minutes", func():
+        if app.performance_report.recording: app.performance_report.stop_recording()
+        else: app.performance_report.start_recording())
+    button(box, "Save local display report", func():
+        var error: Error = app.performance_report.export_report()
+        performance_export_status.text = "Saved display-report.json in the app data folder." if error == OK else "Could not save the display report. Try again."
+        refresh_layout())
+    if OS.get_name() == "Windows":
+        button(box, "Open report folder", func(): OS.shell_open(ProjectSettings.globalize_path("user://")))
+    performance_export_status = label(box, "Report stays on this computer. No upload, account name, file paths, saved places or camera images.", 12)
+    label(box, "Frame intervals include the FPS cap. Engine memory excludes driver/GPU allocations. Recording pauses while minimized or in screensaver mode; sleep gaps over two seconds are excluded. This is a measurement, not a hardware rating.", 12)
+    button(box, "Back to the globe · keep recording", close_panel)
+    app.performance_report.changed.connect(_performance_changed)
+
+func _performance_changed() -> void:
+    var report: Dictionary = app.performance_report.snapshot
+    var frames: Dictionary = report.get("recent_frames", {})
+    performance_values.text = "Gathering active frames…" if frames.is_empty() else "%.1f FPS · %.1f ms average · %.1f ms p95\nEngine tracked memory: %.1f MiB" % [frames.fps,frames.mean_ms,frames.p95_ms,float(report.engine_tracked_memory_bytes)/1048576.0]
+    var recording: Dictionary = report.get("recording", {})
+    if not recording.is_empty() and recording.frames > 0:
+        performance_values.text += "\nRecording: %d / 300 active seconds · %d frames over 50 ms" % [int(recording.active_seconds),recording.frames_over_50ms]
+    performance_record.text = "Stop recording" if app.performance_report.recording else "Record 5 active minutes"
+    if active_page == "Display report": refresh_layout()

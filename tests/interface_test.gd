@@ -40,7 +40,7 @@ func run() -> void:
     verify(app.earth.rotation.y == rotation, "Globe holds data location steady")
     app.reset_view()
     verify(not app.external_focus and not app.focus_marker.visible and not app.favorite_button.disabled, "Reset clears data focus")
-    verify(ui.cameras.size() == 8, "Eight curated camera venues")
+    verify(ui.cameras.size() == 12, "Twelve curated camera venues")
     for venue in ui.cameras:
         verify(Services.valid_coordinates(venue.latitude, venue.longitude) and venue.url.begins_with("https://"), "Camera source and location valid")
     var fixture := {"type": "FeatureCollection", "features": [{"geometry": {"type": "Point", "coordinates": [-122.5, 38.0, 2]}, "properties": {"place": "Fixture observation", "mag": 3.2, "time": 1700000000000}}, {"geometry": {"type": "Point", "coordinates": [200, 95]}, "properties": {"mag": 4.0}}, null]}

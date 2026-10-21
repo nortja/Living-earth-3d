@@ -43,6 +43,12 @@ func run() -> void:
     verify(app.camera_service.selected.name == venue.name, "Saved camera resolves official catalog entry")
     app.fly_to_location({"name":"Search result","latitude":12.0,"longitude":25.0})
     verify(ui.active_page == "Destination" and not ui.camera_overlay.visible, "Search arrival closes previous camera")
+    app.fly_to_location(app.exploration.catalog.places[1])
+    app._zoom(-0.2)
+    ui._process(0.1)
+    verify(ui.arrival_status.text.contains("paused"), "Interrupted journey stops claiming it is travelling")
+    app.reset_view()
+    verify(not ui.panel.visible, "Full Earth dismisses old destination card")
     ui.close_panel()
     app.screensaver_mode = true
     app.fly_to_location(app.exploration.catalog.places[0])

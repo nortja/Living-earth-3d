@@ -15,12 +15,24 @@ func run() -> void:
     var service = app.camera_service
     var ui = app.interface
     verify(not service.active and not ui.camera_overlay.visible, "Startup does not fetch or show a camera")
+    ui.camera_query.text = "Yellowstone"
+    ui._camera_list()
+    verify(ui.camera_rows.get_child_count() == 12, "Camera search filters local list without a request")
+    ui.camera_images_only = true
+    ui._camera_list()
+    verify(ui.camera_rows.get_child_count() == 9, "Image-only filter removes external Yellowstone source")
+    ui.camera_query.text = "no-such-camera-fixture"
+    ui._camera_list()
+    verify(ui.camera_rows.get_child_count() == 0 and ui.camera_status.text.contains("No cameras match"), "Empty camera search is clear")
+    ui.camera_query.text = ""
+    ui.camera_images_only = false
+    ui._camera_list()
     var snapshots := 0
     for venue in ui.cameras:
         if venue.has("image_url"):
             snapshots += 1
             verify(service.valid_image_url(venue.image_url), "Snapshot URL is allowlisted")
-    verify(snapshots == 4, "Four explicit in-app image cameras")
+    verify(snapshots == 8, "Eight explicit in-app image cameras")
     verify(not service.valid_image_url("https://example.com/private.jpg"), "Unknown image origin rejected")
     # Invalid URL fixture exercises the UI action without accessing a real provider.
     ui.select_camera({"name":"Fixture image", "provider":"Test only", "latitude":44.97, "longitude":-110.7, "image_url":"invalid", "url":"https://www.nps.gov/"})

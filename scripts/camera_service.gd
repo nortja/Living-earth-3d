@@ -11,6 +11,8 @@ var loading := false
 var elapsed := 0.0
 var consecutive_failures := 0
 var refresh_interval := 60.0
+var base_interval := 60.0
+var max_texture_edge := 4096
 var generation := 0
 var request: HTTPRequest
 var last_attempt := -10000
@@ -31,7 +33,8 @@ func open(venue: Dictionary, start_request := true) -> void:
     retrieved = ""
     digest = ""
     consecutive_failures = 0
-    refresh_interval = 60.0
+    base_interval = clampf(float(venue.get("image_interval_seconds",60.0)),60.0,1800.0)
+    refresh_interval = base_interval
     last_failed = false
     active = true
     last_attempt = -10000
@@ -72,11 +75,11 @@ func refresh() -> void:
         if not "@" in host_port and host_port.count(":") == 1:
             request.set_https_proxy(host_port.get_slice(":", 0), int(host_port.get_slice(":", 1)))
     request.request_completed.connect(_received.bind(generation))
-    if request.request(url, ["User-Agent: LivingEarth3D/0.8.0 (+https://github.com/nortja/Living-earth-3d)", "Cache-Control: no-cache"]) != OK:
+    if request.request(url, ["User-Agent: LivingEarth3D/0.10.0 (+https://github.com/nortja/Living-earth-3d)", "Cache-Control: no-cache"]) != OK:
         _received(HTTPRequest.RESULT_CANT_CONNECT, 0, PackedStringArray(), PackedByteArray(), generation)
 
 static func valid_image_url(url: String) -> bool:
-    return url in [IMAGE_ORIGIN + "mammoth_parade.jpg", IMAGE_ORIGIN + "mammoth_electric.jpg", IMAGE_ORIGIN + "washburn_ne.jpg", "https://www.nps.gov/featurecontent/ard/webcams/images/sekilarge.jpg"]
+    return url in [IMAGE_ORIGIN + "mammoth_parade.jpg", IMAGE_ORIGIN + "mammoth_electric.jpg", IMAGE_ORIGIN + "washburn_ne.jpg", "https://www.nps.gov/featurecontent/ard/webcams/images/sekilarge.jpg", "https://www.nps.gov/featurecontent/ard/webcams/images/grcalarge.jpg", "https://www.nps.gov/featurecontent/ard/webcams/images/grsmlarge.jpg", "https://www.nps.gov/webcams-romo/alpine_visitor_center.jpg", "https://volcanoes.usgs.gov/observatories/hvo/cams/V1cam/images/M.jpg"]
 
 func _received(result: int, code: int, headers: PackedStringArray, body: PackedByteArray, token: int) -> void:
     if not active or token != generation: return
@@ -91,8 +94,11 @@ func _received(result: int, code: int, headers: PackedStringArray, body: PackedB
         _unavailable()
         return
     consecutive_failures = 0
-    refresh_interval = 60.0
+    refresh_interval = base_interval
     last_failed = false
+    if maxi(decoded.get_width(),decoded.get_height()) > max_texture_edge:
+        var factor := float(max_texture_edge) / maxi(decoded.get_width(),decoded.get_height())
+        decoded.resize(maxi(1,roundi(decoded.get_width()*factor)),maxi(1,roundi(decoded.get_height()*factor)),Image.INTERPOLATE_LANCZOS)
     image = ImageTexture.create_from_image(decoded)
     retrieved = Time.get_datetime_string_from_system(true).replace("T", " ")
     var hashing := HashingContext.new()
@@ -108,13 +114,14 @@ func _received(result: int, code: int, headers: PackedStringArray, body: PackedB
         if header.to_lower().begins_with("last-modified:"):
             status += "\nSource Last-Modified: " + header.substr(14).strip_edges().left(80)
             break
-    if now - unchanged_since >= 300.0:
-        status += "\nImage unchanged for 5+ minutes; the provider may be delayed."
+    var stale_after := maxf(300.0,base_interval * 2.0)
+    if now - unchanged_since >= stale_after:
+        status += "\nImage unchanged for %d+ minutes; the provider may be delayed." % int(stale_after / 60.0)
     changed.emit()
 
 func _unavailable() -> void:
     consecutive_failures = mini(consecutive_failures + 1, 4)
-    refresh_interval = minf(60.0 * pow(2.0, consecutive_failures - 1), 480.0)
+    refresh_interval = minf(base_interval * pow(2.0, consecutive_failures - 1), 7200.0)
     elapsed = 0.0
     last_failed = true
     _describe_unavailable()

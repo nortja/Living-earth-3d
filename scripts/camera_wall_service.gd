@@ -27,6 +27,7 @@ func configure(venues: Array) -> void:
         var service = service_script.new()
         add_child(service)
         service.set_process(false)
+        service.max_texture_edge = 1920
         service.changed.connect(func(): changed.emit())
         service.automatic = automatic
         service.open(wanted[url], false)

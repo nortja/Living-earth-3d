@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.10.0 candidate — More windows, quieter operation
+
+- Added Grand Canyon, Look Rock, Alpine Visitor Center and Kīlauea V1 periodic-image cameras: eight distinct in-app feeds, with provider credits and source-specific refresh schedules.
+- Added local camera search, image-only filtering and a wall action that fills different sources. Wall textures are bounded to a 1920-pixel edge while focused views retain full source detail.
+- Added Settings → Performance & support with live frame intervals, optional five-active-minute recording and an explicitly local JSON display report. No telemetry upload or personal browsing content.
+- Interrupted flights now say paused; Full Earth dismisses stale destination context.
+- Added native render/behavior checks and longer native Linux/Windows screensaver soak gates, plus simulated suspend/session-lock cleanup tests. Physical Windows hardware testing remains separate.
+
 ## 0.9.0 — Arrive somewhere
 
 - Every discovery, curated destination, saved place, search result and earthquake journey opens a destination card automatically, with arrival confirmation, context, coordinates, save, weather and next-discovery actions.
