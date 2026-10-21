@@ -1,6 +1,6 @@
 # Living Earth 3D — Discovery Features
 
-Approved direction (October 2026): add optional cinematic discovery experiences without interrupting the calm screensaver.
+Approved direction (October 2026): optional cinematic discovery experiences without interrupting the calm screensaver. Current delivery includes twelve sourced daily wonders with offline photographs, saved journeys, destination cards and ten historical teaching contexts on modern imagery. See DISCOVERY_PHOTOS.md and HISTORY_ATLAS.md. The richer sky, terrain, reconstructions and event concepts below remain future work.
 
 ## Earth Serendipity
 - Occasionally showcase an extraordinary place with name, location, and a short fact.
@@ -33,4 +33,4 @@ Approved direction (October 2026): add optional cinematic discovery experiences 
 4. Living Sky with Sun/Moon calculations.
 5. Rich terrain, Earth Moments, and Time Travel as resources permit.
 
-Keep all of these features optional, low-power-aware, and compatible with ultrawide screens. No external website is planned; distribute via GitHub Releases.
+Keep all of these features optional, low-power-aware, and compatible with ultrawide screens. No external website is planned. Current installers use immutable GitHub download branches and authenticated automatic updates; moving binary delivery to release assets/hosting remains planned.

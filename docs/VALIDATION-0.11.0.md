@@ -7,3 +7,5 @@ Candidate, 2026-10-20. Signed production remains 0.9.0 during release validation
 Native arrival and full-photo layouts are verified from 800×600 through 5K, including attribution bounds. Historical markers use original notes with source links and deliberately broad editorial windows. Modern photographs are not labelled as ancient reconstructions. See DISCOVERY_PHOTOS.md and HISTORY_ATLAS.md for provenance and scope.
 
 Release gates include fresh Windows export and packaging, actual upgrades/rollback from 0.5.2 and the deployed 0.9.0, an actual one-hour embedded Windows preview/render/resize/memory soak, lifecycle cleanup, and production authenticated update staging/cancellation/normal-exit install. Software-rendered CI and simulated power/session messages do not establish physical Dell, multiple-monitor or sleep/resume results. The general failing automatic workflow remains disabled.
+
+Archived candidate outcome: fresh export/native checks, upgrades/rollback and the actual one-hour Windows preview/lifecycle gate passed in run 39527917531. This candidate was not promoted to the authenticated feed; its features ship in combined 0.12.2. See VALIDATION-0.12.2.md.

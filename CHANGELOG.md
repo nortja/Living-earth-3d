@@ -1,10 +1,10 @@
 # Changelog
 
-## 0.12.1 candidate — Combined exploration update
+## 0.12.2 — Combined exploration update
 
-- Includes the 0.10.0–0.12.0 camera, local performance, photograph, history and opt-in weather-globe work. These were validation candidates; the production feed remains 0.9.0 until final promotion.
-- Corrected the installed desktop test launcher to use isolated preferences instead of the separate display-validation mode.
-- Reports unavailable engine-memory counters honestly as unavailable/null in release builds. Windows screensaver soak still measures actual OS private memory independently.
+- Includes the 0.10.0–0.12.0 camera, local performance, photograph, history and opt-in weather-globe work in one authenticated preview update. Those intermediate versions were validation candidates.
+- Added a compiled opt-in installed desktop validator with isolated preferences and durable progress evidence; it verifies exported photographs, weather points, saver isolation and the five-active-minute display report.
+- Reports unavailable engine-memory counters and unknown/non-finite display refresh honestly as unavailable/null. Known fractional refresh rates are retained; JSON export no longer warns on virtual displays. Windows screensaver soak measures actual OS private memory independently.
 
 ## 0.12.0 candidate — A living weather globe
 

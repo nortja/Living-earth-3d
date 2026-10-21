@@ -2,15 +2,15 @@
 
 ## End-user installation
 
-The 0.5.0 artifact is `LivingEarth3D-Setup-0.5.0.exe`: one self-contained NSIS installer, with no ZIP extraction, terminal, web bootstrapper, Godot installation, or separate runtime. It installs under `%LOCALAPPDATA%\Programs\Living Earth 3D` with desktop/Start menu shortcuts, an installed-apps uninstall entry, and a launch option. No administrator rights are requested. If the app is running, the interactive installer/uninstaller asks before closing it gracefully; cancellation or an unresponsive app aborts instead of forcing termination. This close-window path still needs Windows testing. Upgrades retain local favorites/preferences; uninstall removes only known app files and retains user data.
+The current artifact is `LivingEarth3D-Setup-0.12.2.exe`: one per-user NSIS installer with desktop/Start menu shortcuts, installed-apps uninstall and no separate runtime. Install once; updater-enabled versions subsequently receive authenticated releases and apply them after normal app/screensaver exit. Preferences and bookmarks remain local. Native screensaver selection is optional.
+
+The installer remains Windows publisher-unsigned. Authenticated update metadata uses the existing pinned RSA key independently of Windows Authenticode. Silent installs defer while matching app/screensaver processes are active; they do not force a running user process closed. Handled verification failures restore known previous files and version metadata. This is not a power-loss recovery guarantee.
 
 ## Current evidence
 
-The installer is cross-built on Linux and remains an unsigned preview. Ninety-five behavior/interface/data checks passed. Graphical tests passed for the three intro stages and in both Balanced and Detailed modes at 800×600, 1920×1080, 3440×1440, 3840×2160, 5120×1440 and 5120×2880 using Linux native software OpenGL. Six additional native layout runs captured full-Earth and Command Center views at those sizes. These are not browser tests or Windows hardware results. Native PE resource checks compare every icon image to the ICO source, and the exported executable's embedded project starts successfully after branding. Installer payloads and checksums are checked separately.
+[0.12.2 validation](VALIDATION-0.12.2.md) records the exact release gates: 735 source checks; native layouts through 5K; fresh application/screensaver/installer icon and build checks; Windows installation and rollback against 0.5.2 and deployed 0.9.0; current-package embedded preview/render/resize/memory/lifecycle testing; actual exported photograph/model UI testing and a five-active-minute performance recording. Separate one-hour foundation runs are identified by their frozen source, rather than attributed to a different final binary.
 
-PowerShell parsing and compilation of the native icon resource helper also passed locally using the verified official PowerShell distribution (`pwsh -File tests/windows_build_scripts_test.ps1`). The user reported successful Windows installation and launch of 0.3.0. Version 0.5.0 installation/upgrade behavior, Windows shell icon appearance, integrated-GPU performance, DPI scaling and signed update behavior are not established by the local checks. Earlier GitHub Windows runs failed because the script relied on `$LASTEXITCODE` from a GUI process. The revised script uses an explicitly waited process, its exit code, and runtime logs, but has not been rerun remotely.
-
-The GitHub **Windows installer** workflow is disabled after unwanted failure emails. Its source now has only `workflow_dispatch` and no automatic tag/push triggers. Leave it disabled during local iteration. Do not re-enable it or change account-wide notification preferences as a workaround. A controlled Windows validation run remains in ROADMAP.md.
+Software-rendered disposable Windows/Linux CI does not establish physical Dell GPU/DPI, multiple-monitor, sleep/wake, fan/power or audible playback results. See [field observations](FIELD_CHECKS.md). The old general Windows installer workflow stays disabled, with no automatic push/tag triggers. Release-specific branch workflows validate one candidate without receiving the private release key or promoting the production feed themselves. Promotion follows verified published bytes and a detached signature over exact metadata.
 
 ## Rebuild on Windows (maintainers only)
 
@@ -28,11 +28,11 @@ For Linux cross-builds, install the pinned tools in `packaging/windows/requireme
 python packaging/windows/set_icon.py build/windows/earth_template.exe assets/icon.ico
 godot --headless --path . --export-release 'Windows Desktop' build/windows/LivingEarth3D.exe
 python tests/windows_icon_test.py build/windows/LivingEarth3D.exe
-makensis -DVERSION=0.5.0 -DBUILD_DIR=/absolute/repo/build/windows -DOUTPUT=/absolute/repo/dist/LivingEarth3D-Setup-0.5.0.exe packaging/windows/installer.nsi
-python tests/windows_icon_test.py dist/LivingEarth3D-Setup-0.5.0.exe --installer
+makensis -DVERSION=0.12.2 -DBUILD_DIR=/absolute/repo/build/windows -DOUTPUT=/absolute/repo/dist/LivingEarth3D-Setup-0.12.2.exe packaging/windows/installer.nsi
+python tests/windows_icon_test.py dist/LivingEarth3D-Setup-0.12.2.exe --installer
 ```
 
-Version numbers in project.godot, scripts/earth.gd, export_presets.cfg, installer.nsi's fallback, and update.ps1's fallback should agree. Windows build output names use the project version. Keep private signing material out of the checkout.
+Version numbers in project.godot, scripts/earth.gd, export_presets.cfg and installer.nsi's fallback should agree. Windows build output names use the project version. Keep private signing material out of the checkout.
 
 ## Automatic updates (0.5.3 onward)
 

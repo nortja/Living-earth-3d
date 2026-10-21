@@ -1,6 +1,6 @@
 # Preview and stable delivery
 
-There is no production stable release. The 0.5.x installers remain Windows publisher-unsigned previews.
+There is no production stable release. Current installers remain Windows publisher-unsigned previews.
 
 Version 0.5.3 introduces authenticated automatic preview updates, explicitly requested by the owner. A dedicated 3072-bit RSA public key is pinned in the installed update core. The corresponding private release key stays outside git and CI. A detached RSA PKCS#1 v1.5 SHA-256 signature over the exact application manifest bytes is required before any installer can execute. This replaces the earlier preview limitation to manual installation; it does not permit checksum-only updates or claim Windows Authenticode trust.
 

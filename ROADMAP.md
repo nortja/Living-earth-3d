@@ -1,6 +1,6 @@
 # Living Earth 3D — current roadmap
 
-Updated 2026-10-21. Latest released baseline: 0.9.0 (destination arrivals and camera journey handoff). One Windows installer, then authenticated automatic updates; the base Earth remains useful offline.
+Updated 2026-10-21. Latest released baseline: 0.12.2 (photographs, history, expanded cameras, optional weather points and local display recording). One Windows installer, then authenticated automatic updates; the base Earth remains useful offline.
 
 ## Completed
 
@@ -44,7 +44,7 @@ Updated 2026-10-21. Latest released baseline: 0.9.0 (destination arrivals and ca
 - [x] 464 local checks, 16 update-security checks, real weather/four-camera retrievals and native layouts through 5K.
 - [x] Windows upgrades/rollback from 0.5.2 and 0.6.1, public installer verification and signed-feed promotion. Production-feed staging, cancellation, normal-exit installation and payload verification also passed on Windows.
 
-## This release — 0.9.0
+## Previous release — 0.9.0
 
 - [x] Discovery, curated, saved and search journeys automatically show a named destination card, story/context, approximate coordinates, arrival confirmation and clear next actions.
 - [x] Camera journeys and saved known camera destinations open their viewer; closing it retains destination context. External camera pages report launch status and offer an official-source retry.
@@ -57,20 +57,29 @@ Updated 2026-10-21. Latest released baseline: 0.9.0 (destination arrivals and ca
 - [x] Actual Windows embedded preview/render/lifecycle tests and upgrade/rollback from 0.5.2 and 0.7.0.
 - [x] Published verified installer and authenticated update. Production signed-feed staging, cancellation, normal-exit installation and payload verification passed on Windows.
 
+## This release — 0.12.2
+
+- [x] Eight verified in-app periodic-image feeds and four official external venues; searchable camera catalog, image-only filter and different-camera wall fill.
+- [x] Provider-specific refresh/backoff, slower-feed unchanged warnings and bounded wall textures.
+- [x] Twelve licensed offline discovery photographs with visible creator/license/source credit and full viewer; ten sourced historical teaching contexts on modern imagery.
+- [x] Optional sixteen-place Open-Meteo model layer, dated clickable points, units, cache validation and stale/offline states. Manual requests only; no device location or native-saver service.
+- [x] Local five-active-minute performance recording and JSON display report; unavailable release engine-memory counters explicitly represented as null.
+- [x] Interrupted-journey status and Full Earth destination cleanup. Existing destination and camera handoffs preserved.
+
 ## Next priorities
 
 1. **Field validation:** user confirmed the 0.7.0 automatic upgrade; next confirm new screensaver behavior, new desktop/taskbar icon, all camera states, visible-window restart, physical Dell scaling, frame times, memory, fullscreen, sleep/resume and monitor moves.
 2. **Continuous video:** add authorized in-app streaming playback. Current NPS views are periodically refreshed camera images; other streams open the provider website. No continuous embedded video is delivered yet.
-3. **Camera Wall expansion:** more source-verified image endpoints and authorized continuous-video playback. Initial responsive 1/2/4/6/9 layouts are implemented in 0.6.1; optimize further after actual Dell measurement.
-4. **Living planet:** UTC sunlight is released; requested point-model weather is released in 0.7.0. Next: licensed cloud refresh and broader weather layers with explicit stale/offline states. Clouds/Moon/stars remain cinematic.
-5. **Screensaver integration:** Native /p preview and per-monitor hosts are released. Next: physical /s mixed-DPI/monitor checks, lock/sleep/resume, performance and longer-duration tests.
+3. **Camera Wall:** eight image sources and bounded textures are implemented; prioritize authorized continuous-video playback and optimize further after actual Dell measurement.
+4. **Living planet:** UTC sunlight is released; requested point-model weather is released in 0.7.0. Sixteen-place model weather points are released in 0.12.2. Next: licensed current cloud refresh and broader weather coverage. Clouds/Moon/stars remain cinematic.
+5. **Screensaver integration:** Native /p preview and per-monitor hosts are released. Next: physical /s mixed-DPI/monitor checks, lock/sleep/resume, performance and overnight hardware tests. One-hour Linux renderer and Windows preview foundation tests supplement the current-package gates; they do not establish physical hardware behavior.
 
 ## Later / dependent work
 
 - [ ] Actual satellite orbits and accurate astronomical positions, with timestamps and accuracy limits.
 - [ ] Source-verified 8K imagery, documented distribution rights and integrated-GPU performance targets. No upscaling marketed as new detail.
 - [ ] Terrain/scattering improvements without compromising ordinary PCs.
-- [ ] Ancient-site/history layers with citations, dates and uncertainty; more curated discoveries and journeys.
+- [ ] Extend the ten sourced historical contexts and twelve photographed discoveries with further documented sources and explicit uncertainty.
 - [ ] Windows publisher Authenticode certificate, signed stable channel and signing-key rotation/migration plan. Preview release authentication is implemented; the installer still lacks Windows publisher signing.
 - [ ] Stronger power-loss/crash recovery and recovery launcher. Current handled-failure rollback is not a power-loss guarantee.
 - [ ] Move recurring binary delivery from Git branches to release assets/hosting while preserving update trust and compatibility.
