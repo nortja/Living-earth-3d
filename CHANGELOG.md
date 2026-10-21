@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.12.0 candidate — A living weather globe
+
+- Combines the camera, performance-report, photograph and history work validated in the 0.10.0/0.11.0 candidates. The production baseline stays 0.9.0 until final release gates pass.
+- Added an opt-in sixteen-place Open-Meteo model layer with temperature-coloured globe points, click/selector journeys, an accessible legend badge, units, model times and cached/offline states. It is a point sample, not a continuous global map.
+- Rejects mislocated, mismatched, malformed, future and expired data. Stale points turn grey; expired points hide. The cache is tied to the fixed place dataset.
+- No startup downloads, automatic weather refresh or location tracking. Five-minute manual-request cooldown, bounded responses, cancellation/generation protection and screensaver isolation. The service is not constructed in native saver mode.
+- Added installed Windows desktop resource/UI checks and a real five-active-minute performance recording, alongside current-candidate and longer foundation screensaver tests.
+
 ## 0.11.0 candidate — See where you arrive
 
 - Includes the camera expansion, local performance report and journey fixes validated in the 0.10.0 candidate. The signed production baseline remains 0.9.0 during testing.

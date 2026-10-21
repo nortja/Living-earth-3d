@@ -34,12 +34,12 @@ if ((Get-ItemProperty 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Uninstall
 Write-Output "PASS: actual installer failure restores $BaselineVersion files and registry version"
 Install-EarthRelease $installRoot $Installer $manifest (Join-Path $fixture 'successful-backup')
 Confirm-EarthFiles $installRoot $manifest
-if ((Get-ItemProperty 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Uninstall\LivingEarth3D').DisplayVersion -ne '0.11.0') { throw 'Updated version metadata missing' }
+if ((Get-ItemProperty 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Uninstall\LivingEarth3D').DisplayVersion -ne '0.12.0') { throw 'Updated version metadata missing' }
 if ((Get-Content $sentinel -Raw) -ne 'user preferences must survive') { throw 'User data changed' }
 $shortcut=(New-Object -ComObject WScript.Shell).CreateShortcut((Join-Path ([Environment]::GetFolderPath('Desktop')) 'Living Earth 3D.lnk'))
-if ($shortcut.IconLocation -notlike '*LivingEarth3D-0.11.0.ico*' -or !(Test-Path (Join-Path $installRoot 'LivingEarth3D-0.11.0.ico'))) { throw 'Versioned desktop icon missing' }
+if ($shortcut.IconLocation -notlike '*LivingEarth3D-0.12.0.ico*' -or !(Test-Path (Join-Path $installRoot 'LivingEarth3D-0.12.0.ico'))) { throw 'Versioned desktop icon missing' }
 Write-Output 'PASS: versioned desktop shortcut icon installed'
-Write-Output "PASS: real silent $BaselineVersion to 0.11.0 update at a path containing spaces preserves user data"
+Write-Output "PASS: real silent $BaselineVersion to 0.12.0 update at a path containing spaces preserves user data"
 # Exercise running-process protection using our own headless app process, without GPU requirements.
 $app=Start-Process (Join-Path $installRoot 'LivingEarth3D.exe') -ArgumentList '--headless --quit-after 180' -PassThru
 Start-Sleep -Milliseconds 500

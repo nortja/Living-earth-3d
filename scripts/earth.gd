@@ -16,6 +16,8 @@ const EarthInterface = preload("res://scripts/earth_interface.gd")
 const CameraService = preload("res://scripts/camera_service.gd")
 var camera_service: Node
 var performance_report: Node
+var weather_layer: Node
+var weather_layer_cache_path := "user://weather-points-v1.json"
 
 const EarthServices = preload("res://scripts/earth_services.gd")
 
@@ -78,7 +80,7 @@ var update_status: Label
 var update_feed: Dictionary = {}
 var update_request: HTTPRequest
 var preferences := ConfigFile.new()
-const VERSION := "0.11.0"
+const VERSION := "0.12.0"
 const UPDATE_FEED_URL := "https://raw.githubusercontent.com/nortja/Living-earth-3d/main/updates/preview.json"
 const RELEASES_URL := "https://github.com/nortja/Living-earth-3d/releases"
 
@@ -246,6 +248,12 @@ func _unhandled_input(event: InputEvent) -> void:
         finish_intro()
     if event is InputEventMouseButton:
         if event.button_index == MOUSE_BUTTON_LEFT:
+            if event.pressed and not event.double_click and weather_layer:
+                var point: int = weather_layer.pick(event.position)
+                if point >= 0:
+                    dragging = false
+                    weather_layer.visit(point)
+                    return
             if event.pressed and event.double_click:
                 dragging = false
                 angular_velocity = Vector2.ZERO
@@ -322,6 +330,12 @@ func _build_explorer(layer: CanvasLayer) -> void:
     add_child(performance_report)
     performance_report.setup(self)
     interface.build_performance_controls()
+    if not screensaver_mode:
+        weather_layer = preload("res://scripts/weather_layer.gd").new()
+        weather_layer.cache_path = weather_layer_cache_path
+        add_child(weather_layer)
+        weather_layer.setup(self)
+        interface.build_weather_layer_controls()
     if not screensaver_mode and "--validate-display" not in OS.get_cmdline_user_args() and DisplayServer.get_name() != "headless":
         call_deferred("start_auto_update")
 
@@ -718,6 +732,7 @@ func preview_screensaver() -> void:
     saved_interval = discovery_interval
     saved_solar = utc_sunlight
     observations.cancel_weather()
+    if weather_layer: weather_layer.set_suspended(true)
     update_request.cancel_request()
     services.quake_request.cancel_request()
     services.search_request.cancel_request()
@@ -733,6 +748,7 @@ func preview_screensaver() -> void:
 
 func stop_screensaver_preview() -> void:
     screensaver_mode = false
+    if weather_layer: weather_layer.set_suspended(false)
     saver_preview = false
     ambient.set_suspended(false)
     discovery_enabled = saved_discovery

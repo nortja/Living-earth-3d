@@ -5,6 +5,13 @@ var arrival_place: Dictionary = {}
 var arrival_has_photo := false
 var arrival_status: Label
 var arrival_save: Button
+var weather_model_badge: Button
+var weather_layer_refresh: Button
+var weather_layer_cancel: Button
+var weather_layer_status: Label
+var weather_layer_toggle: CheckButton
+var weather_layer_picker: OptionButton
+var weather_layer_legend: Label
 var performance_values: Label
 var performance_record: Button
 var performance_export_status: Label
@@ -130,7 +137,7 @@ func setup(owner_app: Node3D) -> void:
     var page_stack := VBoxContainer.new()
     page_stack.size_flags_horizontal = Control.SIZE_EXPAND_FILL
     scroll.add_child(page_stack)
-    for title in NAV + ["Settings", "Destination", "Display report"]:
+    for title in NAV + ["Settings", "Destination", "Display report", "Weather globe"]:
         var page := VBoxContainer.new()
         page.size_flags_horizontal = Control.SIZE_EXPAND_FILL
         page_stack.add_child(page)
@@ -165,6 +172,8 @@ func setup(owner_app: Node3D) -> void:
     relayout()
 
 func _process(_delta: float) -> void:
+    if weather_model_badge:
+        weather_model_badge.visible = app.weather_layer != null and app.weather_layer.marker_root.visible and not panel.visible and not wall.visible and not camera_overlay.visible and not photo_viewer.visible
     if is_instance_valid(arrival_status) and arrival_status.text.begins_with("Travelling") and app.journey and not app.journey.is_running():
         arrival_status.text = "Journey paused · " + str(arrival_place.get("name", "Earth"))
     exploration_poll += _delta
@@ -209,6 +218,7 @@ func button(parent: Node, text: String, action: Callable) -> Button:
     return item
 
 func open_page(title: String) -> void:
+    if title in ["Live Earth", "Weather globe"] and app.weather_layer: _weather_layer_changed()
     if active_page == title and panel.visible:
         close_panel()
         return
@@ -262,11 +272,12 @@ func relayout() -> void:
         panel.position = Vector2(size.x - width - 24, 88)
         panel.size = Vector2(width, maxf(250, size.y - 88 - dock.size.y - 44))
     else:
-        var sheet_height := minf(360,size.y-190) if active_page == "Destination" and arrival_has_photo else 190.0
+        var sheet_height := minf(360,size.y-190) if (active_page == "Destination" and arrival_has_photo) or active_page == "Weather globe" else 190.0
         panel.position = Vector2(24, size.y - sheet_height - 92)
         panel.size = Vector2(size.x - 48, sheet_height)
     command_card.position = Vector2(24, 104)
     command_card.size = Vector2(280, 230)
+    if weather_model_badge: weather_model_badge.position = Vector2(24,size.y-136)
     if wall: wall.relayout()
     if photo_viewer: photo_viewer.relayout()
     if camera_overlay:
@@ -666,3 +677,50 @@ func _performance_changed() -> void:
         performance_values.text += "\nRecording: %d / 300 active seconds · %d frames over 50 ms" % [int(recording.active_seconds),recording.frames_over_50ms]
     performance_record.text = "Stop recording" if app.performance_report.recording else "Record 5 active minutes"
     if active_page == "Display report": refresh_layout()
+
+func build_weather_layer_controls() -> void:
+    var entry := button(pages["Live Earth"],"Weather around Earth",func(): open_page("Weather globe"))
+    pages["Live Earth"].move_child(entry,2)
+    var box: VBoxContainer = pages["Weather globe"]
+    label(box,"Weather around Earth",18)
+    label(box,"Sixteen public model points · refreshed only when requested",12)
+    weather_layer_status = label(box,"",12)
+    weather_layer_refresh = button(box,"Load / refresh weather points",app.weather_layer.refresh)
+    weather_layer_cancel = button(box,"Cancel weather-layer request",app.weather_layer.cancel)
+    weather_layer_toggle = CheckButton.new()
+    weather_layer_toggle.text = "Show temperature points on Earth"
+    weather_layer_toggle.toggled.connect(app.weather_layer.set_enabled)
+    box.add_child(weather_layer_toggle)
+    weather_layer_legend = label(box,"",12)
+    weather_layer_picker = OptionButton.new()
+    weather_layer_picker.clip_text = true
+    weather_layer_picker.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+    weather_layer_picker.item_selected.connect(func(index: int):
+        if index > 0: app.weather_layer.visit(index-1))
+    box.add_child(weather_layer_picker)
+    label(box,"Choose a place above or click a visible globe point. Model times stay with each place. Grey points are stale; expired points are hidden. This samples sixteen places, not a continuous global weather map.",12)
+    label(box,"Loading submits only the fixed public coordinates to Open-Meteo, without tracking your location. No automatic weather downloads run at startup or in screensaver mode.",12)
+    button(box,"Weather data · Open-Meteo · CC BY 4.0 ↗",func(): OS.shell_open("https://open-meteo.com/"))
+    weather_model_badge = button(self,"Model weather · Open-Meteo",func(): open_page("Weather globe"))
+    weather_model_badge.clip_text = false
+    weather_model_badge.custom_minimum_size = Vector2(240,36)
+    weather_model_badge.hide()
+    app.weather_layer.changed.connect(_weather_layer_changed)
+    _weather_layer_changed()
+
+func _weather_layer_changed() -> void:
+    if not app.weather_layer: return
+    var service = app.weather_layer
+    weather_layer_status.text = service.status
+    weather_layer_refresh.disabled = service.loading
+    weather_layer_cancel.disabled = not service.loading
+    weather_layer_toggle.disabled = service.points.is_empty()
+    weather_layer_toggle.set_pressed_no_signal(service.enabled)
+    weather_layer_legend.text = "Blue ≤32°F · teal to 59°F · amber to 77°F · coral above 77°F" if app.preferences.get_value("weather","imperial",true) else "Blue ≤0°C · teal to 15°C · amber to 25°C · coral above 25°C"
+    weather_layer_picker.clear()
+    weather_layer_picker.add_item("Visit a weather point…")
+    for point in service.points:
+        weather_layer_picker.add_item(service.point_label(point))
+        weather_layer_picker.set_item_tooltip(weather_layer_picker.item_count-1,service.point_label(point)+"\nModel time: "+point.utc+" UTC")
+    weather_layer_picker.disabled = service.points.is_empty()
+    refresh_layout()

@@ -1,0 +1,15 @@
+# Optional weather model points
+
+Live Earth → Weather around Earth loads sixteen fixed public places through Open-Meteo's multi-location Forecast API. It sends those public coordinates only, not the user's device location. Startup and native screensaver mode do not download weather. The service is not constructed in native saver mode. In-app preview cancels any request and hides the layer; returning restores prior visibility without a request.
+
+The layer samples sixteen places. It does not interpolate a global surface, depict current clouds or provide continuous observations. Temperature is at model 2 m height, with requested wind at 10 m and model weather codes/humidity. Display markers float slightly above the globe for visibility; their rendered height is not an altitude measurement. Estimates can differ from local conditions. Current cloud artwork remains cinematic.
+
+Requests use HTTPS, no redirects, a 20-second timeout, a 2 MiB response bound and a five-minute manual cooldown. There is no automatic refresh. Requests have a generation token; late cancelled responses cannot replace the current state. A missing/truncated batch cannot shift place labels. Each returned coordinate must stay close to its requested place; location IDs, units, weather codes, numeric values and UTC time are validated. A bad individual row is omitted rather than relabelled.
+
+Model estimate time is retained separately from retrieval time. Estimates older than 90 minutes turn grey; estimates older than 24 hours or over one hour ahead of the device clock are rejected/hidden. Cached values are labelled cached and start hidden. The cache is bounded and keyed to the SHA-256 of the fixed-place dataset. Focus return and the minute aging check refresh labels and marker visibility without fetching. A selected arrival contains a dated model snapshot, not a perpetual claim of current conditions.
+
+Source and attribution: Open-Meteo, https://open-meteo.com/ and https://open-meteo.com/en/docs . Data license: CC BY 4.0, https://creativecommons.org/licenses/by/4.0/ . Existing offline-atlas coordinates are reused; Anchorage, Nairobi, Manila and Reykjavik coordinates were checked through Open-Meteo's GeoNames-based geocoding service, https://open-meteo.com/en/docs/geocoding-api . Names/locations are approximate public places, not a location-tracking dataset.
+
+The no-subscription/no-ad personal preview uses the free non-commercial API. Before commercial, advertising or promotional distribution, review https://open-meteo.com/en/terms and use an appropriate provider plan/architecture. No API key is bundled or purchased. This is a distribution-readiness dependency, not a blocker to this personal preview.
+
+Local validation includes batch/schema/freshness/cancellation/cache/geometry/picking tests, stale colour and expired visibility checks, and native layouts through 5K. One actual sixteen-location response was retrieved and rendered, with each estimate's time preserved. Synthetic UI fixtures are labelled synthetic in screenshots. The new weather service is absent from native screensaver mode.

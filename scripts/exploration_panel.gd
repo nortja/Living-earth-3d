@@ -183,7 +183,8 @@ func build_weather(box: VBoxContainer) -> void:
     weather_units.toggled.connect(func(enabled: bool):
         app.preferences.set_value("weather","imperial",enabled)
         app._save_preferences()
-        _weather_changed())
+        _weather_changed()
+        if app.weather_layer: ui._weather_layer_changed())
     box.add_child(weather_units)
     weather_status = ui.label(box,"",12)
     weather_values = ui.label(box,"",14)
