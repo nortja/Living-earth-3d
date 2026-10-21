@@ -1,10 +1,10 @@
 # Living Earth 3D
 
-An offline-first interactive Windows globe and screensaver, built with Godot 4. Released **0.8.0 preview**.
+An offline-first interactive Windows globe and screensaver, built with Godot 4. Released **0.9.0 preview**.
 
 ## Windows users
 
-[Download LivingEarth3D-Setup-0.8.0.exe](https://github.com/nortja/Living-earth-3d/raw/refs/heads/downloads/windows-0.8.0/LivingEarth3D-Setup-0.8.0.exe), double-click, install, then open the desktop shortcut. No ZIP extraction, terminal, separate runtime, or Godot setup is needed. This is an unsigned preview. The user confirmed the 0.7.0 automatic update and earlier working Camera Wall/cameras. Windows CI verifies installation and rollback; physical GPU/DPI checks remain outstanding.
+[Download LivingEarth3D-Setup-0.9.0.exe](https://github.com/nortja/Living-earth-3d/raw/refs/heads/downloads/windows-0.9.0/LivingEarth3D-Setup-0.9.0.exe), double-click, install, then open the desktop shortcut. No ZIP extraction, terminal, separate runtime, or Godot setup is needed. This is an unsigned preview. The user confirmed the 0.8.0 automatic update and working Camera Wall/cameras. Windows CI verifies installation and rollback; physical GPU/DPI checks remain outstanding.
 
 The real globe emerges from darkness with illuminated Earth branding. Drag to spin with gentle inertia, scroll or double-click to zoom, and use **Full Earth** or Home to reset. F11 toggles fullscreen. Earth stays centered and proportional at native viewport resolution, including ultrawide and 4K/5K sizes. Compact controls scale automatically with window resolution. Side panels move below the center in smaller windows; an optional wide Command Center overview uses spare space.
 
@@ -23,6 +23,10 @@ Releases require a valid signature from the public key pinned in the installed u
 ## New in 0.7.0
 
 Explore gains Discover, Search, History and Saved tabs: twelve sourced wonders, daily/surprise journeys, fifty local bookmarks and a Giza/Rome/Tikal era slider on explicitly modern imagery. Command Center adds requested Open-Meteo model weather with units, model/retrieval times and cache/error handling. Daylight Earth and Orbital drift expand screensavers to six. Giant Forest becomes a fourth in-app image camera. Windows upgrades from 0.5.2 and 0.6.1, rollback and installer checks passed before the authenticated update feed was promoted. See [validation](docs/VALIDATION-0.7.0.md).
+
+## New in 0.9.0
+
+Journeys now open a destination card with a name, story, arrival confirmation, approximate coordinates, save and weather actions, and another discovery to continue exploring. Camera journeys automatically open the image viewer or official provider page; closing an image leaves the destination card available. Saved camera destinations reopen their viewer. Ordinary arrivals work offline and screensaver journeys keep browsing controls hidden. See [validation](docs/VALIDATION-0.9.0.md).
 
 ## New in 0.8.0
 

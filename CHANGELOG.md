@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.9.0 candidate — Arrive somewhere
+## 0.9.0 — Arrive somewhere
 
 - Every discovery, curated destination, saved place, search result and earthquake journey opens a destination card automatically, with arrival confirmation, context, coordinates, save, weather and next-discovery actions.
 - Camera journeys open the viewer automatically and leave useful destination context when closed. External camera pages report browser launch status with an official-source retry.

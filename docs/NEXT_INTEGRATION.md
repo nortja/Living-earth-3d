@@ -16,4 +16,4 @@ Native Windows screensaver preview and per-monitor lifecycle integration shipped
 
 ## Field evidence still needed
 
-The user confirmed the 0.6.1 update and working Camera Wall/cameras. The user also confirmed the 0.7.0 update. Still needed for 0.8.0: native screensaver behavior, visible-window update restart, Dell resolution/DPI/GPU/frame times, monitor movement, sleep/resume, Windows screensaver activation/input exit and multi-monitor coverage. CI installation/rollback and Linux software renders do not establish these results.
+The user confirmed the 0.6.1 update and working Camera Wall/cameras. The user also confirmed the 0.7.0 and 0.8.0 updates. Version 0.9.0 repairs destination arrival context and saved-camera viewing. Still needed: native screensaver behavior, visible-window update restart, Dell resolution/DPI/GPU/frame times, monitor movement, sleep/resume, Windows screensaver activation/input exit and multi-monitor coverage. CI installation/rollback and Linux software renders do not establish these results.

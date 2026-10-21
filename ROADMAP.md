@@ -1,6 +1,6 @@
 # Living Earth 3D — current roadmap
 
-Updated 2026-10-20. Latest released baseline: 0.8.0 (native Windows preview and per-monitor screensaver hosts). One Windows installer, then authenticated automatic updates; the base Earth remains useful offline.
+Updated 2026-10-21. Latest released baseline: 0.9.0 (destination arrivals and camera journey handoff). One Windows installer, then authenticated automatic updates; the base Earth remains useful offline.
 
 ## Completed
 
@@ -44,7 +44,14 @@ Updated 2026-10-20. Latest released baseline: 0.8.0 (native Windows preview and 
 - [x] 464 local checks, 16 update-security checks, real weather/four-camera retrievals and native layouts through 5K.
 - [x] Windows upgrades/rollback from 0.5.2 and 0.6.1, public installer verification and signed-feed promotion. Production-feed staging, cancellation, normal-exit installation and payload verification also passed on Windows.
 
-## This release — 0.8.0
+## This release — 0.9.0
+
+- [x] Discovery, curated, saved and search journeys automatically show a named destination card, story/context, approximate coordinates, arrival confirmation and clear next actions.
+- [x] Camera journeys and saved known camera destinations open their viewer; closing it retains destination context. External camera pages report launch status and offer an official-source retry.
+- [x] 488 behavior/layout checks and six native arrival render sizes; fresh application export, Windows upgrade/rollback from 0.5.2 and 0.8.0 and native screensaver lifecycle gates.
+- [x] Published verified installer and authenticated update; production updater round trip is the final post-publication gate.
+
+## Previous release — 0.8.0
 
 - [x] Native screensaver launcher, strict preview argument handling, embedded-mode budget and per-monitor host implementation.
 - [x] Actual Windows embedded preview/render/lifecycle tests and upgrade/rollback from 0.5.2 and 0.7.0.
