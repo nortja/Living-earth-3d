@@ -87,6 +87,9 @@ static func frame_stats(values: Array[float]) -> Dictionary:
 static func memory_value(bytes: int) -> Variant:
     return bytes if bytes > 0 else null
 
+static func refresh_value(hz: float) -> Variant:
+    return hz if is_finite(hz) and hz > 0.0 else null
+
 func build_snapshot() -> Dictionary:
     var tracked_bytes := int(Performance.get_monitor(Performance.MEMORY_STATIC))
     var display: Dictionary = {"available":false}
@@ -94,7 +97,7 @@ func build_snapshot() -> Dictionary:
         var screen := app.get_window().current_screen
         var pixels := DisplayServer.screen_get_size(screen)
         var viewport := app.get_viewport().get_visible_rect().size
-        display = {"available":true,"monitor_pixels":[pixels.x,pixels.y],"viewport_pixels":[int(viewport.x),int(viewport.y)],"dpi":DisplayServer.screen_get_dpi(screen),"refresh_hz":DisplayServer.screen_get_refresh_rate(screen),"gpu":RenderingServer.get_video_adapter_name(),"renderer":RenderingServer.get_current_rendering_method(),"window_mode":app.get_window().mode}
+        display = {"available":true,"monitor_pixels":[pixels.x,pixels.y],"viewport_pixels":[int(viewport.x),int(viewport.y)],"dpi":DisplayServer.screen_get_dpi(screen),"refresh_hz":refresh_value(DisplayServer.screen_get_refresh_rate(screen)),"gpu":RenderingServer.get_video_adapter_name(),"renderer":RenderingServer.get_current_rendering_method(),"window_mode":app.get_window().mode}
     return {"schema":1,"product":"LivingEarth3D","version":app.VERSION,"retrieved_utc":Time.get_datetime_string_from_system(true)+"Z","os":OS.get_name(),"engine":Engine.get_version_info().string,"display":display,"quality":app.visual_quality,"frame_cap":Engine.max_fps,"ui_scale":app.interface.display_scale if app.interface else 1.0,"recent_frames":frame_stats(recent),"memory_counter_available":tracked_bytes > 0,"engine_tracked_memory_bytes":memory_value(tracked_bytes),"recording":{"active":recording,"active_seconds":recorded_seconds,"frames":recorded_frames,"mean_ms":record_sum_ms / recorded_frames if recorded_frames > 0 else 0.0,"max_ms":record_peak_ms,"frames_over_50ms":record_slow_frames,"start_engine_memory_bytes":memory_value(record_start_memory),"end_engine_memory_bytes":memory_value(record_end_memory),"peak_engine_memory_bytes":memory_value(record_peak_memory)},"limits":"Frame intervals include the FPS cap and scheduling. Engine tracked memory is unavailable in release builds; when available it excludes driver/GPU/process allocations. Unavailable memory values are null. Minimized or sleep intervals over two seconds are excluded. No hardware pass/fail score."}
 
 func export_report() -> Error:

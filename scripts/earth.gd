@@ -80,7 +80,7 @@ var update_status: Label
 var update_feed: Dictionary = {}
 var update_request: HTTPRequest
 var preferences := ConfigFile.new()
-const VERSION := "0.12.1"
+const VERSION := "0.12.2"
 const UPDATE_FEED_URL := "https://raw.githubusercontent.com/nortja/Living-earth-3d/main/updates/preview.json"
 const RELEASES_URL := "https://github.com/nortja/Living-earth-3d/releases"
 
@@ -668,7 +668,8 @@ func display_summary() -> String:
         return "Headless validation · display and GPU unavailable"
     var monitor := DisplayServer.screen_get_size(get_window().current_screen)
     var refresh := DisplayServer.screen_get_refresh_rate(get_window().current_screen)
-    return "%d × %d · %.0f Hz · %d DPI\n%s\nNative resolution · proportional globe · adjustable interface size" % [monitor.x, monitor.y, refresh, DisplayServer.screen_get_dpi(get_window().current_screen), RenderingServer.get_video_adapter_name()]
+    var refresh_text := "%.0f Hz" % refresh if is_finite(refresh) and refresh > 0.0 else "refresh unavailable"
+    return "%d × %d · %s · %d DPI\n%s\nNative resolution · proportional globe · adjustable interface size" % [monitor.x, monitor.y, refresh_text, DisplayServer.screen_get_dpi(get_window().current_screen), RenderingServer.get_video_adapter_name()]
 
 func toggle_fullscreen() -> void:
     get_window().mode = Window.MODE_WINDOWED if get_window().mode == Window.MODE_FULLSCREEN else Window.MODE_FULLSCREEN
