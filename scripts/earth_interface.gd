@@ -598,6 +598,9 @@ func _savers(box: VBoxContainer) -> void:
         button(box, "Windows screensaver settings", func(): _windows_saver_action(false, windows_status))
 
 func _windows_saver_action(select_earth: bool, status: Label) -> void:
+    # Let the Windows dialog be visible when Earth was fullscreen.
+    if app.get_window().mode in [Window.MODE_FULLSCREEN, Window.MODE_EXCLUSIVE_FULLSCREEN]:
+        app.get_window().mode = Window.MODE_WINDOWED
     var saver := OS.get_executable_path().get_base_dir().path_join("LivingEarth3D.scr")
     if not FileAccess.file_exists(saver):
         if select_earth:
