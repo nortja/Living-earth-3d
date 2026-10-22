@@ -14,6 +14,10 @@ int main(int argc, char** argv) {
     check(parse({L"/C:123"}).mode==Mode::Configure);
     check(parse({L"/s"}).mode==Mode::Full);
     check(parse({L"/S"}).mode==Mode::Full);
+    check(parse({L"/settings"}).mode==Mode::Settings);
+    check(parse({L"/SELECT"}).mode==Mode::Select);
+    check(parse({L"/unregister"}).mode==Mode::Unregister);
+    check(parse({L"/select",L"extra"}).mode==Mode::Invalid);
     check(parse({L"/p",L"1234"}).mode==Mode::Preview);
     check(parse({L"/P:1234"}).parent==1234);
     check(parse({L"/p",L"00012"}).parent==12);

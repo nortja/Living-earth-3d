@@ -11,10 +11,7 @@ if ($Cancel) { [IO.File]::WriteAllText($cancelPath, 'cancel'); return }
 if ($RestartNow) { [IO.File]::WriteAllText($restartPath, [string]$AppProcessId) }
 $mutex = $null; $ownsMutex = $false; $work = $null
 function Set-EarthUpdateStatus([string]$State, [string]$Message) {
-    $json = @{state=$State; message=$Message; utc=[DateTime]::UtcNow.ToString('o')} | ConvertTo-Json -Compress
-    $temporary = Join-Path $stateRoot 'status.tmp'
-    [IO.File]::WriteAllText($temporary, $json)
-    Move-Item -LiteralPath $temporary -Destination (Join-Path $stateRoot 'status.json') -Force
+    Write-EarthUpdateStatus $stateRoot $State $Message | Out-Null
 }
 try {
     $hash = [Security.Cryptography.SHA256]::Create()

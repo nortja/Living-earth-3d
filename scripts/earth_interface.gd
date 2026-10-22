@@ -593,9 +593,30 @@ func _savers(box: VBoxContainer) -> void:
     label(box, "Slow rotation, independent clouds and ocean glints. Discovery visits a new destination every two minutes. Night lights uses artistic night-side lighting.", 12)
     label(box, "Windows preview stays inside Screen Saver Settings. Fullscreen saver covers every monitor: up to four animated Earth views, with additional displays kept black. Saver views use 2K textures and up to 30 FPS; the small Windows preview uses 15 FPS. Keyboard, mouse or a display change exits the fullscreen saver.", 12)
     if OS.get_name() == "Windows":
-        button(box, "Windows screensaver settings", func():
-            var saver := OS.get_executable_path().get_base_dir().path_join("LivingEarth3D.scr")
-            if FileAccess.file_exists(saver): OS.create_process("rundll32.exe", ["desk.cpl,InstallScreenSaver", saver], false))
+        var windows_status := label(box, "Choose Use Living Earth 3D to select it for your Windows account. In Windows settings, choose the wait time and click Apply.", 12)
+        button(box, "Use Living Earth 3D · open Windows settings", func(): _windows_saver_action(true, windows_status))
+        button(box, "Windows screensaver settings", func(): _windows_saver_action(false, windows_status))
+
+func _windows_saver_action(select_earth: bool, status: Label) -> void:
+    # Let the Windows dialog be visible when Earth was fullscreen.
+    if app.get_window().mode in [Window.MODE_FULLSCREEN, Window.MODE_EXCLUSIVE_FULLSCREEN]:
+        app.get_window().mode = Window.MODE_WINDOWED
+    var saver := OS.get_executable_path().get_base_dir().path_join("LivingEarth3D.scr")
+    if not FileAccess.file_exists(saver):
+        if select_earth:
+            status.text = "The Windows screensaver file is missing. Reinstall Living Earth 3D to repair it."
+            return
+        var control := OS.get_environment("SystemRoot").path_join("System32/control.exe")
+        var pid := OS.create_process(control, ["desk.cpl,screensaver,@screensaver"], false)
+        status.text = "Windows settings requested. Check the taskbar if it opens behind Earth." if pid > 0 else "Windows settings could not open. Press Win+R and enter: control desk.cpl,screensaver,@screensaver"
+        return
+    var result := OS.execute(saver, ["/select" if select_earth else "/settings"], [], false, false)
+    match result:
+        0: status.text = "Living Earth 3D selected. Choose the wait time and click Apply in Windows settings." if select_earth else "Windows settings requested. Check the taskbar if it opens behind Earth."
+        3: status.text = "The Windows screensaver installation is incomplete. Reinstall Living Earth 3D to repair it."
+        5: status.text = "Your Windows organization policy controls the screensaver. Ask your administrator to allow Living Earth 3D."
+        6: status.text = "Windows could not save the screensaver selection. Open Windows settings and check your account permissions."
+        _: status.text = "Windows settings could not open. Press Win+R and enter: control desk.cpl,screensaver,@screensaver"
 
 func _settings(box: VBoxContainer) -> void:
     label(box, "Display & graphics", 18)

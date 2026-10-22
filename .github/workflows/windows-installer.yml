@@ -22,6 +22,8 @@ jobs:
         shell: pwsh
         run: |
           ./tests/windows_build_scripts_test.ps1
+          ./tests/update_status_test.ps1
+          ./tests/update_security_test.ps1
           $version = (Select-String -Path project.godot -Pattern 'config/version="([^"]+)"').Matches[0].Groups[1].Value
           if ($env:GITHUB_REF_TYPE -eq 'tag' -and $env:GITHUB_REF_NAME -notmatch ('^v' + [regex]::Escape($version) + '(-preview\.\d+)?$')) { throw 'Tag and project version disagree' }
       - name: Install verified Godot export tools

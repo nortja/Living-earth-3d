@@ -1,4 +1,4 @@
-// Native Windows screensaver host. No network, shell commands, elevation or installer changes.
+// Native Windows screensaver host and explicit per-user selection/settings actions.
 #ifndef UNICODE
 #define UNICODE
 #endif
@@ -49,6 +49,57 @@ static std::wstring app_path() {
     if (!n || n >= 32768) return L"";
     std::wstring root(path,n);
     return root.substr(0,root.find_last_of(L"\\/"))+L"\\LivingEarth3D.exe";
+}
+static std::wstring saver_path() {
+    wchar_t path[32768]; DWORD n=GetModuleFileNameW(nullptr,path,32768);
+    return (!n || n>=32768) ? L"" : std::wstring(path,n);
+}
+static int open_settings() {
+    wchar_t system[32768]; UINT n=GetSystemDirectoryW(system,32768);
+    if (!n || n>=32768) return 7;
+    const std::wstring control=std::wstring(system,n)+L"\\control.exe";
+    // Documented Control Panel entry point; no command shell or PATH lookup.
+    auto result=ShellExecuteW(nullptr,L"open",control.c_str(),L"desk.cpl,screensaver,@screensaver",nullptr,SW_SHOWNORMAL);
+    return reinterpret_cast<INT_PTR>(result)>32 ? 0 : 7;
+}
+static bool saver_policy() {
+    for (HKEY root : {HKEY_CURRENT_USER,HKEY_LOCAL_MACHINE}) {
+        HKEY key=nullptr;
+        if (RegOpenKeyExW(root,L"Software\\Policies\\Microsoft\\Windows\\Control Panel\\Desktop",0,KEY_QUERY_VALUE,&key)==ERROR_SUCCESS) {
+            DWORD size=0;
+            bool forced=RegQueryValueExW(key,L"SCRNSAVE.EXE",nullptr,nullptr,nullptr,&size)==ERROR_SUCCESS;
+            RegCloseKey(key);
+            if (forced) return true;
+        }
+    }
+    return false;
+}
+static int select_saver() {
+    if (saver_policy()) return 5;
+    const std::wstring path=saver_path();
+    if (path.empty() || GetFileAttributesW(app_path().c_str())==INVALID_FILE_ATTRIBUTES) return 3;
+    HKEY key=nullptr;
+    if (RegOpenKeyExW(HKEY_CURRENT_USER,L"Control Panel\\Desktop",0,KEY_SET_VALUE,&key)!=ERROR_SUCCESS) return 6;
+    LONG result=RegSetValueExW(key,L"SCRNSAVE.EXE",0,REG_SZ,reinterpret_cast<const BYTE*>(path.c_str()),DWORD((path.size()+1)*sizeof(wchar_t)));
+    RegCloseKey(key);
+    if (result!=ERROR_SUCCESS) return 6;
+    if (!SystemParametersInfoW(SPI_SETSCREENSAVEACTIVE,TRUE,nullptr,SPIF_UPDATEINIFILE|SPIF_SENDCHANGE)) return 6;
+    return open_settings();
+}
+static int unregister_saver() {
+    HKEY key=nullptr;
+    if (RegOpenKeyExW(HKEY_CURRENT_USER,L"Control Panel\\Desktop",0,KEY_QUERY_VALUE|KEY_SET_VALUE,&key)!=ERROR_SUCCESS) return 0;
+    wchar_t current[32768]{}; DWORD bytes=sizeof(current),type=0;
+    LONG result=RegQueryValueExW(key,L"SCRNSAVE.EXE",nullptr,&type,reinterpret_cast<BYTE*>(current),&bytes);
+    if (result==ERROR_SUCCESS && type==REG_SZ && bytes<sizeof(current)) {
+        std::wstring selected(current);
+        if (selected.size()>1 && selected.front()==L'"' && selected.back()==L'"') selected=selected.substr(1,selected.size()-2);
+        if (_wcsicmp(selected.c_str(),saver_path().c_str())==0) {
+            RegDeleteValueW(key,L"SCRNSAVE.EXE");
+            SystemParametersInfoW(SPI_SETSCREENSAVEACTIVE,FALSE,nullptr,SPIF_UPDATEINIFILE|SPIF_SENDCHANGE);
+        }
+    }
+    RegCloseKey(key);return 0;
 }
 static bool start_view(View& view, const std::wstring& app) {
     RECT client{};
@@ -139,6 +190,9 @@ int WINAPI wWinMain(HINSTANCE instance,HINSTANCE,LPWSTR,int) {
     LocalFree(raw);
     auto options=earth_saver::parse(args);
     if (options.mode == earth_saver::Mode::Invalid) return 2;
+    if (options.mode == earth_saver::Mode::Settings) return open_settings();
+    if (options.mode == earth_saver::Mode::Select) return select_saver();
+    if (options.mode == earth_saver::Mode::Unregister) return unregister_saver();
     std::wstring app=app_path();
     if (app.empty() || GetFileAttributesW(app.c_str()) == INVALID_FILE_ATTRIBUTES) return 3;
     if (options.mode == earth_saver::Mode::Configure) {

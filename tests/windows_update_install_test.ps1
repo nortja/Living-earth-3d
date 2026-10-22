@@ -1,6 +1,7 @@
 param([Parameter(Mandatory=$true)][string]$Installer, [Parameter(Mandatory=$true)][string]$PayloadMetadata, [ValidateSet("0.5.2","0.6.1","0.7.0","0.8.0","0.9.0")][string]$BaselineVersion = "0.5.2")
 $ErrorActionPreference = 'Stop'
 . "$PSScriptRoot/../packaging/windows/update-core.ps1"
+$expectedVersion = (Select-String -Path "$PSScriptRoot/../project.godot" -Pattern 'config/version="([^"]+)"').Matches[0].Groups[1].Value
 if ($env:OS -ne 'Windows_NT') { throw 'This test requires Windows' }
 $Installer = (Resolve-Path $Installer).Path
 $files = Get-Content $PayloadMetadata -Raw | ConvertFrom-Json
@@ -34,12 +35,12 @@ if ((Get-ItemProperty 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Uninstall
 Write-Output "PASS: actual installer failure restores $BaselineVersion files and registry version"
 Install-EarthRelease $installRoot $Installer $manifest (Join-Path $fixture 'successful-backup')
 Confirm-EarthFiles $installRoot $manifest
-if ((Get-ItemProperty 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Uninstall\LivingEarth3D').DisplayVersion -ne '0.12.2') { throw 'Updated version metadata missing' }
+if ((Get-ItemProperty 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Uninstall\LivingEarth3D').DisplayVersion -ne $expectedVersion) { throw 'Updated version metadata missing' }
 if ((Get-Content $sentinel -Raw) -ne 'user preferences must survive') { throw 'User data changed' }
 $shortcut=(New-Object -ComObject WScript.Shell).CreateShortcut((Join-Path ([Environment]::GetFolderPath('Desktop')) 'Living Earth 3D.lnk'))
-if ($shortcut.IconLocation -notlike '*LivingEarth3D-0.12.2.ico*' -or !(Test-Path (Join-Path $installRoot 'LivingEarth3D-0.12.2.ico'))) { throw 'Versioned desktop icon missing' }
+if ($shortcut.IconLocation -notlike "*LivingEarth3D-$expectedVersion.ico*" -or !(Test-Path (Join-Path $installRoot "LivingEarth3D-$expectedVersion.ico"))) { throw 'Versioned desktop icon missing' }
 Write-Output 'PASS: versioned desktop shortcut icon installed'
-Write-Output "PASS: real silent $BaselineVersion to 0.12.2 update at a path containing spaces preserves user data"
+Write-Output "PASS: real silent $BaselineVersion to $expectedVersion update at a path containing spaces preserves user data"
 # Exercise running-process protection using our own headless app process, without GPU requirements.
 $app=Start-Process (Join-Path $installRoot 'LivingEarth3D.exe') -ArgumentList '--headless --quit-after 180' -PassThru
 Start-Sleep -Milliseconds 500

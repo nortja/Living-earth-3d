@@ -1,0 +1,29 @@
+name: Updater status resilience
+on:
+  pull_request:
+    paths:
+      - 'packaging/windows/update*.ps1'
+      - 'tests/update_status_test.ps1'
+      - 'tests/update_security_test.ps1'
+      - '.github/workflows/updater-status.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  status:
+    runs-on: windows-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Status replacement and Windows reader contention
+        shell: powershell
+        run: ./tests/update_status_test.ps1
+      - name: Preserve release signature and hash checks
+        shell: powershell
+        run: ./tests/update_security_test.ps1
+      - name: PowerShell 7 status contention
+        shell: pwsh
+        run: ./tests/update_status_test.ps1
+      - name: PowerShell 7 release security
+        shell: pwsh
+        run: ./tests/update_security_test.ps1

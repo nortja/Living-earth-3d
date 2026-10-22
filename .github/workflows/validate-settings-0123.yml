@@ -1,0 +1,95 @@
+name: Validate and deliver frozen 0.12.3 installer
+on:
+  push:
+    branches: [validation/windows-settings-0.12.3]
+permissions:
+  contents: read
+  actions: read
+jobs:
+  windows:
+    runs-on: windows-latest
+    timeout-minutes: 55
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: LivingEarth3D-0.12.3-candidate
+          path: dist
+          run-id: 39712920710
+          github-token: ${{ github.token }}
+      - name: Verify signatures and real installer update on Windows PowerShell 5.1
+        shell: powershell
+        run: |
+          $ProgressPreference='SilentlyContinue'
+          ./tests/windows_build_scripts_test.ps1
+          ./tests/update_status_test.ps1
+          ./tests/update_security_test.ps1
+          pwsh -NoProfile -File tests/update_status_test.ps1
+          pwsh -NoProfile -File tests/update_security_test.ps1
+          ./tests/windows_update_install_test.ps1 -Installer dist/LivingEarth3D-Setup-0.12.3.exe -PayloadMetadata dist/payload-hashes.json
+          ./tests/windows_update_install_test.ps1 -Installer dist/LivingEarth3D-Setup-0.12.3.exe -PayloadMetadata dist/payload-hashes.json -BaselineVersion '0.9.0'
+      - name: Install pinned test-only software OpenGL
+        shell: powershell
+        run: |
+          $archive=Join-Path $env:RUNNER_TEMP 'mesa.7z'
+          curl.exe -fL --retry 3 --output $archive 'https://github.com/pal1000/mesa-dist-win/releases/download/26.2.4/mesa3d-26.2.4-release-msvc.7z'
+          if($LASTEXITCODE -ne 0){throw 'Test OpenGL download failed'}
+          if((Get-FileHash $archive -Algorithm SHA256).Hash.ToLowerInvariant() -ne '351fc8c8b695878ffb3eaa044b3ead08672a48b1a045e3c3e3975811df0f6695'){throw 'Test OpenGL checksum mismatch'}
+          7z x $archive ('-o'+(Join-Path $env:RUNNER_TEMP 'mesa')) -y
+          if($LASTEXITCODE -ne 0){throw 'Test OpenGL extraction failed'}
+          & (Join-Path $env:RUNNER_TEMP 'mesa/systemwidedeploy.cmd') 1
+          if($LASTEXITCODE -ne 0){throw 'Test OpenGL ICD deployment failed'}
+      - name: Actual Screen Saver Settings and selected Earth dropdown
+        shell: powershell
+        run: ./tests/windows_saver_settings_test.ps1 -Installer dist/LivingEarth3D-Setup-0.12.3.exe
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: Windows-saver-settings-0.12.3
+          path: dist/windows-saver-settings.png
+      - name: Actual Windows embedded preview and saver lifecycle
+        shell: powershell
+        run: ./tests/windows_screensaver_test.ps1 -Installer dist/LivingEarth3D-Setup-0.12.3.exe -SoftwareRendering -SoakMinutes 10
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: Windows-screensaver-0.12.3-evidence
+          path: dist/windows-screensaver-*
+  publish:
+    needs: [windows]
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: LivingEarth3D-0.12.3-candidate
+          path: dist
+          run-id: 39712920710
+          github-token: ${{ github.token }}
+      - name: Verify frozen build and independent desktop gate
+        run: |
+          set -euo pipefail
+          grep -F 'Source: 484bc4983a7f33223d07a60d07ee0ef96032bb84' dist/BUILD.txt
+          curl -fLsS 'https://api.github.com/repos/nortja/Living-earth-3d/actions/jobs/119610749914' -o /tmp/desktop-gate.json
+          python3 -c 'import json; d=json.load(open("/tmp/desktop-gate.json")); assert d["conclusion"] == "success" and d["run_id"] == 39712920710, d'
+      - name: Publish installer only (feed requires separate release signature)
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd dist
+          sha256sum -c LivingEarth3D-Setup-0.12.3.exe.sha256
+          cd ..
+          git config user.name 'Living Earth preview delivery'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          cp -r dist /tmp/earth-delivery
+          git checkout --orphan downloads/windows-0.12.3
+          git rm -rf . >/dev/null
+          cp /tmp/earth-delivery/* .
+          git add LivingEarth3D-Setup-0.12.3.exe LivingEarth3D-Setup-0.12.3.exe.sha256 payload-hashes.json BUILD.txt wall-*.png sunlight.png explore-*.png arrival-*.png performance-*.png discovery-*.png weather-points-*.png
+          git commit -m 'Publish Windows-validated 0.12.3 auto-update bootstrap preview'
+          git push origin HEAD:refs/heads/downloads/windows-0.12.3
+
+

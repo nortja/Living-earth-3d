@@ -4,7 +4,7 @@ Unicode true
 !include "x64.nsh"
 !include "WinMessages.nsh"
 !ifndef VERSION
-!define VERSION "0.12.2"
+!define VERSION "0.12.3"
 !endif
 !ifndef BUILD_DIR
 !define BUILD_DIR "..\..\build\windows"
@@ -105,6 +105,7 @@ Section "Living Earth 3D"
   CreateDirectory "$SMPROGRAMS\Living Earth 3D"
   CreateShortcut "$SMPROGRAMS\Living Earth 3D\Living Earth 3D.lnk" "$INSTDIR\LivingEarth3D.exe" "" "$INSTDIR\LivingEarth3D-${VERSION}.ico" 0
   CreateShortcut "$SMPROGRAMS\Living Earth 3D\Uninstall.lnk" "$INSTDIR\Uninstall.exe"
+  CreateShortcut "$SMPROGRAMS\Living Earth 3D\Use Living Earth 3D screensaver.lnk" "$INSTDIR\LivingEarth3D.scr" "/select"
   WriteRegStr HKCU "Software\LivingEarth3D" "InstallDir" "$INSTDIR"
   WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\LivingEarth3D" "DisplayName" "Living Earth 3D"
   WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\LivingEarth3D" "DisplayVersion" "${VERSION}"
@@ -117,9 +118,11 @@ Section "Living Earth 3D"
 SectionEnd
 Section "Uninstall"
   SetShellVarContext current
+  ExecWait '"$INSTDIR\LivingEarth3D.scr" /unregister'
   Delete "$DESKTOP\Living Earth 3D.lnk"
   Delete "$SMPROGRAMS\Living Earth 3D\Living Earth 3D.lnk"
   Delete "$SMPROGRAMS\Living Earth 3D\Uninstall.lnk"
+  Delete "$SMPROGRAMS\Living Earth 3D\Use Living Earth 3D screensaver.lnk"
   RMDir "$SMPROGRAMS\Living Earth 3D"
   Delete "$INSTDIR\LivingEarth3D.exe"
   Delete "$INSTDIR\update.ps1"
