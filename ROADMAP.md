@@ -78,6 +78,7 @@ Updated 2026-10-21. Latest released baseline: 0.12.2 (photographs, history, expa
 ## Updater resilience follow-up
 
 - [ ] Reproduce the intermittent production-roundtrip staging filesystem deferral from run 39536745077 attempt 1. Attempt 2 passed unchanged. Investigate transient file contention and bounded atomic status-write replacement without weakening signature/hash checks or active-app protection.
+- Development: atomic status replacement, bounded I/O retries and advisory failure handling implemented; 205 local status checks and 16 security checks pass. Windows reader-contention tests cover failure and recovery on both PowerShell runtimes. Windows results and package/release gates remain pending; see [status resilience](docs/UPDATER_STATUS_RESILIENCE.md). Original production deferral cause remains unconfirmed.
 
 ## Later / dependent work
 

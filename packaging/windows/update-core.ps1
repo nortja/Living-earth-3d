@@ -1,5 +1,35 @@
 # Release-signature verification and recoverable per-user installation. No network on import.
 $script:UpdateProtocol = 1
+function Write-EarthUpdateStatus {
+    [CmdletBinding()]
+    param([string]$Directory, [string]$State, [string]$Message)
+    # Status is advisory: a busy UI reader must not abort a verified update.
+    # Same-directory replace keeps readers on either complete JSON document.
+    $temporary = Join-Path $Directory ('status.' + [guid]::NewGuid().ToString('N') + '.tmp')
+    $destination = Join-Path $Directory 'status.json'
+    try {
+        $json = @{state=$State; message=$Message; utc=[DateTime]::UtcNow.ToString('o')} | ConvertTo-Json -Compress
+        [IO.File]::WriteAllText($temporary, $json, [Text.UTF8Encoding]::new($false))
+        for ($attempt = 0; $attempt -lt 6; $attempt++) {
+            try {
+                if ([IO.File]::Exists($destination)) {
+                    [IO.File]::Replace($temporary, $destination, [System.Management.Automation.Language.NullString]::Value)
+                } else {
+                    [IO.File]::Move($temporary, $destination)
+                }
+                return $true
+            } catch [IO.IOException] {
+                if ($attempt -eq 5) { throw }
+                Start-Sleep -Milliseconds 100
+            }
+        }
+    } catch {
+        Write-Warning ('Could not refresh update status: ' + $_.Exception.Message)
+        return $false
+    } finally {
+        if ([IO.File]::Exists($temporary)) { Remove-Item -LiteralPath $temporary -Force -ErrorAction SilentlyContinue }
+    }
+}
 $script:UpdatePublicKey = '<RSAKeyValue><Modulus>rSRVw4fXEyAafKSDgzaiL6/Rx3aIirAwA1MVKPynrwGALr2Ywe7JWIsLwOcRtMZlHPkuScwNdD7X9swMG7SLkEf4YzDygplwTjg6G+TqDvalhVPAgoo5rygIjUclU6gaWXZI4X9M/jEsIvVAyfffyIR7xRtaHSwWyVODkgwtLvSCfIoaHsw2nk0mgc+g/o2Y1wdGkDSTxmFrOC/SSJwZF9a0zgFTkbQgNX3tGZX8NfLRnh8C5vOTarZQfA7u5fXorb+NXGdNypoG+7A7ouY1HfG4TSWG6KRyI90pjVyQt6W0sO6CIpqQQZyj4vvhdDjy/E6aH2Vlz2KZIHA2pn1FU439pGDOLIWIo/3GTR9wtZgQ3VTy5o9By3bRw5mOUo+ynPcu573fz3/KuxRH4txsPLpr0f8j7iesDm/rt1w5Dx4Vsdaz5IFMrpwDWoNv6H+lnuisWOX0PufSXoCLai6ERjPIoSqk0NMFJ+p9GuoRg5iYr6JFQPNKE+YAaIgYYim3</Modulus><Exponent>AQAB</Exponent></RSAKeyValue>'
 function Read-EarthManifest {
     param([byte[]]$Bytes, [byte[]]$Signature)
