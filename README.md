@@ -1,10 +1,10 @@
 # Living Earth 3D
 
-An offline-first interactive Windows globe and screensaver, built with Godot 4. Released **0.12.2 preview**.
+An offline-first interactive Windows globe and screensaver, built with Godot 4. Released **0.12.3 preview**.
 
 ## Windows users
 
-[Download LivingEarth3D-Setup-0.12.2.exe](https://github.com/nortja/Living-earth-3d/raw/refs/heads/downloads/windows-0.12.2/LivingEarth3D-Setup-0.12.2.exe), double-click, install, then open the desktop shortcut. No ZIP extraction, terminal, separate runtime, or Godot setup is needed. This is an unsigned preview. The user confirmed the 0.8.0 automatic update and working Camera Wall/cameras. Windows CI verifies installation and rollback; physical GPU/DPI checks remain outstanding.
+[Download LivingEarth3D-Setup-0.12.3.exe](https://github.com/nortja/Living-earth-3d/raw/refs/heads/downloads/windows-0.12.3/LivingEarth3D-Setup-0.12.3.exe), double-click, install, then open the desktop shortcut. No ZIP extraction, terminal, separate runtime, or Godot setup is needed. This is an unsigned preview. The user confirmed the 0.8.0 automatic update and working Camera Wall/cameras. Windows CI verifies installation and rollback; physical GPU/DPI checks remain outstanding.
 
 The real globe emerges from darkness with illuminated Earth branding. Drag to spin with gentle inertia, scroll or double-click to zoom, and use **Full Earth** or Home to reset. F11 toggles fullscreen. Earth stays centered and proportional at native viewport resolution, including ultrawide and 4K/5K sizes. Compact controls scale automatically with window resolution. Side panels move below the center in smaller windows; an optional wide Command Center overview uses spare space.
 
@@ -19,6 +19,10 @@ Six offline screensaver styles offer Ambient Earth, Discovery journeys, Night li
 **Install once, then update from the app.** Version 0.5.3 includes automatic updates enabled by default. It checks at startup and every 30 minutes while open, downloads authenticated releases, and installs silently when you close the app. **Settings → Update and restart now** applies a ready release with a graceful restart; the Automatic updates toggle pauses/resumes updates. Both minor and major releases use the same process. Favorites, interface size, sound and other preferences remain local.
 
 Releases require a valid signature from the public key pinned in the installed updater, plus matching installer and installed-file hashes. Windows publisher signing is separate: this bootstrap installer remains an unsigned preview. Versions 0.5.2 and older need this installer once to obtain the new updater. A Windows CI run verified silent installation, preservation of user data, running-app protection and restoration of previous files after a deliberately failed verification. Physical GPU/DPI and visible-app restart field tests remain separate. See [docs/AUTO_UPDATE.md](docs/AUTO_UPDATE.md).
+
+## New in 0.12.3
+
+**Screensavers → Use Living Earth 3D · open Windows settings** selects the installed saver for your Windows account and opens the actual settings dialog. Choose a wait time and click Apply. The separate Windows screensaver settings button opens the dialog without changing your selection, with visible error feedback. Fullscreen Earth returns to a window so settings can be seen. A Start menu shortcut offers the selection action; uninstall clears its own selected saver. Updater status writes now use atomic replacement and bounded reader-lock retries. Actual Windows settings/dropdown, upgrade/rollback, installed desktop and ten-minute native preview/lifecycle checks passed. See [validation](docs/VALIDATION-0.12.3.md).
 
 ## New in 0.12.2
 

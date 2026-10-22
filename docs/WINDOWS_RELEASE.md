@@ -2,13 +2,13 @@
 
 ## End-user installation
 
-The current artifact is `LivingEarth3D-Setup-0.12.2.exe`: one per-user NSIS installer with desktop/Start menu shortcuts, installed-apps uninstall and no separate runtime. Install once; updater-enabled versions subsequently receive authenticated releases and apply them after normal app/screensaver exit. Preferences and bookmarks remain local. Native screensaver selection is optional.
+The current artifact is `LivingEarth3D-Setup-0.12.3.exe`: one per-user NSIS installer with desktop/Start menu shortcuts, installed-apps uninstall and no separate runtime. Install once; updater-enabled versions subsequently receive authenticated releases and apply them after normal app/screensaver exit. Preferences and bookmarks remain local. Native screensaver selection is optional.
 
 The installer remains Windows publisher-unsigned. Authenticated update metadata uses the existing pinned RSA key independently of Windows Authenticode. Silent installs defer while matching app/screensaver processes are active; they do not force a running user process closed. Handled verification failures restore known previous files and version metadata. This is not a power-loss recovery guarantee.
 
 ## Current evidence
 
-[0.12.2 validation](VALIDATION-0.12.2.md) records the exact release gates: 735 source checks; native layouts through 5K; fresh application/screensaver/installer icon and build checks; Windows installation and rollback against 0.5.2 and deployed 0.9.0; current-package embedded preview/render/resize/memory/lifecycle testing; actual exported photograph/model UI testing and a five-active-minute performance recording. Separate one-hour foundation runs are identified by their frozen source, rather than attributed to a different final binary.
+[0.12.3 validation](VALIDATION-0.12.3.md) records the exact release gates: 735 source checks; native layouts through 5K; fresh application/screensaver/installer icon and build checks; Windows installation and rollback against 0.5.2 and deployed 0.9.0; current-package embedded preview/render/resize/memory/lifecycle testing; actual exported photograph/model UI testing and a five-active-minute performance recording. Separate one-hour foundation runs are identified by their frozen source, rather than attributed to a different final binary.
 
 Software-rendered disposable Windows/Linux CI does not establish physical Dell GPU/DPI, multiple-monitor, sleep/wake, fan/power or audible playback results. See [field observations](FIELD_CHECKS.md). The old general Windows installer workflow stays disabled, with no automatic push/tag triggers. Release-specific branch workflows validate one candidate without receiving the private release key or promoting the production feed themselves. Promotion follows verified published bytes and a detached signature over exact metadata.
 
@@ -28,8 +28,8 @@ For Linux cross-builds, install the pinned tools in `packaging/windows/requireme
 python packaging/windows/set_icon.py build/windows/earth_template.exe assets/icon.ico
 godot --headless --path . --export-release 'Windows Desktop' build/windows/LivingEarth3D.exe
 python tests/windows_icon_test.py build/windows/LivingEarth3D.exe
-makensis -DVERSION=0.12.2 -DBUILD_DIR=/absolute/repo/build/windows -DOUTPUT=/absolute/repo/dist/LivingEarth3D-Setup-0.12.2.exe packaging/windows/installer.nsi
-python tests/windows_icon_test.py dist/LivingEarth3D-Setup-0.12.2.exe --installer
+makensis -DVERSION=0.12.3 -DBUILD_DIR=/absolute/repo/build/windows -DOUTPUT=/absolute/repo/dist/LivingEarth3D-Setup-0.12.3.exe packaging/windows/installer.nsi
+python tests/windows_icon_test.py dist/LivingEarth3D-Setup-0.12.3.exe --installer
 ```
 
 Version numbers in project.godot, scripts/earth.gd, export_presets.cfg and installer.nsi's fallback should agree. Windows build output names use the project version. Keep private signing material out of the checkout.
@@ -48,7 +48,11 @@ Older versions (0.5.2 and earlier) cannot acquire this capability without one ma
 
 ## Screensaver
 
-The installer includes `LivingEarth3D.scr`. The app's **Screen saver settings** action asks Windows to select it; installation does not change the user's screensaver automatically. `/s` uses fullscreen ambient rotation without UI and exits on input after a startup grace period. `/c` opens Explorer. `/p` exits without a preview: Windows preview embedding and multiple-monitor coverage remain unfinished.
+The installer includes the native `LivingEarth3D.scr` beside the app. In **Screensavers**, choose **Use Living Earth 3D · open Windows settings** to select it for the current Windows account and open Screen Saver Settings. Set the wait time and click Apply. **Windows screensaver settings** opens that same dialog without changing the selection. Both actions show failure feedback. Earth leaves fullscreen before opening the dialog. The Start menu also contains a selection shortcut.
+
+Selection writes the installed full path to HKCU `Control Panel\Desktop\SCRNSAVE.EXE` and enables the saver through `SystemParametersInfo`. It retains the wait time and resume-password setting and respects a forced screensaver policy. Ordinary upgrades retain the selected saver. Uninstall clears the selected path only when it belongs to that exact installation.
+
+`/settings` opens the documented `control.exe desk.cpl,screensaver,@screensaver` entry point; `/select` selects Earth and opens settings; `/unregister` performs ownership-aware cleanup. `/c` opens the app's Screensavers page. `/p` embeds a resizing native Earth preview inside the supplied Windows parent. `/s` manages fullscreen per-monitor hosts and exits on input after a startup grace period. The actual Windows dialog/dropdown, native preview rendering, ten-minute resize/private-memory soak and lifecycle checks passed for this package; physical mixed-DPI/monitor/sleep behavior remains a field check.
 
 See ROADMAP.md for prioritized release work and CHANGELOG.md for milestone changes.
 

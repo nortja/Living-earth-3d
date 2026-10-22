@@ -1,4 +1,4 @@
-# Updater status resilience — development
+# Updater status resilience — 0.12.3
 
 The released 0.12.2 helper uses `Move-Item -Force` to overwrite `status.json`.
 The first production roundtrip attempt reported “Cannot create a file when that
@@ -6,14 +6,14 @@ file already exists.” The second attempt passed unchanged. The original failur
 is not yet reproduced conclusively; this change addresses a plausible status
 replacement failure path, without claiming that it explains that incident.
 
-The development helper writes complete UTF-8 JSON to a unique adjacent temporary
+The 0.12.3 helper writes complete UTF-8 JSON to a unique adjacent temporary
 file, then uses `File.Replace` for an existing status or `File.Move` for the first
 status. An I/O replacement failure gets at most six attempts, 100 ms apart. A
 failed write preserves the previous status, cleans its temporary file, emits a
 warning and returns false. The updater treats status as advisory and continues
 its existing signature/hash/cancellation/running-app checks. A prolonged reader
 lock can leave the displayed status stale; subsequent status transitions retry.
-No installer payload, signature protocol, trust key or published feed changes.
+The signature protocol, trust key and four-file manifest are preserved.
 
 ## Validation
 
@@ -30,5 +30,8 @@ runs these tests and existing signature/hash checks on Windows PowerShell 5.1
 and PowerShell 7. The existing manual installer workflow also runs both suites;
 its automatic triggers remain disabled.
 
-Windows contention results and full installed-package gates are still required
-before a release. This source change is not an automatic update to 0.12.2.
+Windows PowerShell 5.1 and PowerShell 7 each pass 211 status checks and 16
+release-security checks, including real delete-sharing contention and transient
+lock recovery. Fresh native/package, Windows settings/dropdown, upgrade/rollback,
+installed desktop and ten-minute native preview gates passed before 0.12.3
+publication. See VALIDATION-0.12.3.md for frozen-source and release evidence.

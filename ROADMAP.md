@@ -1,6 +1,6 @@
 # Living Earth 3D — current roadmap
 
-Updated 2026-10-21. Latest released baseline: 0.12.2 (photographs, history, expanded cameras, optional weather points and local display recording). One Windows installer, then authenticated automatic updates; the base Earth remains useful offline.
+Updated 2026-10-21. Latest released baseline: 0.12.3 (Windows screensaver selection/settings and updater status resilience, plus the 0.12.2 exploration features). One Windows installer, then authenticated automatic updates; the base Earth remains useful offline.
 
 ## Completed
 
@@ -57,7 +57,7 @@ Updated 2026-10-21. Latest released baseline: 0.12.2 (photographs, history, expa
 - [x] Actual Windows embedded preview/render/lifecycle tests and upgrade/rollback from 0.5.2 and 0.7.0.
 - [x] Published verified installer and authenticated update. Production signed-feed staging, cancellation, normal-exit installation and payload verification passed on Windows.
 
-## This release — 0.12.2
+## Previous release — 0.12.2
 
 - [x] Eight verified in-app periodic-image feeds and four official external venues; searchable camera catalog, image-only filter and different-camera wall fill.
 - [x] Provider-specific refresh/backoff, slower-feed unchanged warnings and bounded wall textures.
@@ -67,9 +67,16 @@ Updated 2026-10-21. Latest released baseline: 0.12.2 (photographs, history, expa
 - [x] Interrupted-journey status and Full Earth destination cleanup. Existing destination and camera handoffs preserved.
 - [x] Fresh export/native/Windows package gates, authenticated 0.12.2 feed promotion and production staging/cancellation/normal-exit update roundtrip (successful second attempt; initial filesystem deferral retained as open evidence).
 
+## This release — 0.12.3
+
+- [x] Actual Windows settings action, explicit per-user Earth selection, native dropdown name, visible failure states, fullscreen handoff and Start menu shortcut.
+- [x] Ownership-aware screensaver unregister on uninstall; saved wait time/resume-password preferences retained.
+- [x] Atomic updater status replacement, bounded reader-lock retries and advisory failure handling; 211 status checks and 16 security checks pass on each Windows PowerShell runtime.
+- [x] Fresh source/native/build gates, actual Windows settings/dropdown and upgrade/rollback checks, installed desktop validation and ten-minute native preview/lifecycle soak.
+- [x] Verified public installer and authenticated feed promotion. Production signed-feed download/staging, cancellation and normal-exit installation also passed; see [validation](docs/VALIDATION-0.12.3.md).
+
 ## Next priorities
 
-0. **0.12.3 candidate:** fix Windows screensaver settings/selection with a direct native Control Panel action, explicit per-user Earth selection, visible failure states, Start menu shortcut and ownership-aware unregister. Includes bounded atomic updater status replacement. Fresh Windows settings/dropdown, upgrade/rollback, saver and desktop gates precede publication; see [candidate validation](docs/VALIDATION-0.12.3.md).
 
 1. **Field validation:** user confirmed the 0.7.0 automatic upgrade; next confirm new screensaver behavior, new desktop/taskbar icon, all camera states, visible-window restart, physical Dell scaling, frame times, memory, fullscreen, sleep/resume and monitor moves.
 2. **Continuous video:** add authorized in-app streaming playback. Current NPS views are periodically refreshed camera images; other streams open the provider website. No continuous embedded video is delivered yet.
@@ -80,7 +87,7 @@ Updated 2026-10-21. Latest released baseline: 0.12.2 (photographs, history, expa
 ## Updater resilience follow-up
 
 - [ ] Reproduce the intermittent production-roundtrip staging filesystem deferral from run 39536745077 attempt 1. Attempt 2 passed unchanged. Investigate transient file contention and bounded atomic status-write replacement without weakening signature/hash checks or active-app protection.
-- Development: atomic status replacement, bounded I/O retries and advisory failure handling implemented; 205 local status checks and 16 security checks pass. Windows reader-contention tests cover failure and recovery on both PowerShell runtimes. Windows results and package/release gates remain pending; see [status resilience](docs/UPDATER_STATUS_RESILIENCE.md). Original production deferral cause remains unconfirmed.
+- Released in 0.12.3: atomic status replacement, bounded I/O retries and advisory failure handling. 205 local status checks and 211 Windows status checks per runtime pass, alongside 16 security checks. Windows reader-contention, package and release gates passed; see [status resilience](docs/UPDATER_STATUS_RESILIENCE.md). Original production deferral cause remains unconfirmed.
 
 ## Later / dependent work
 

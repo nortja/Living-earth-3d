@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.12.3 — Select Earth as your Windows screensaver
+
+- Fixed the Windows settings action with an absolute native Control Panel launch and visible success/error feedback. Fullscreen Earth returns to a window before opening settings.
+- Added explicit per-user Use Living Earth 3D selection, native dropdown name, Start menu selection shortcut and ownership-aware unregister on uninstall. Wait time and resume-password settings are retained.
+- Made updater status replacement atomic, with bounded I/O retries and advisory failure handling; signature/hash checks and the installed trust key are preserved.
+- Verified actual Windows settings/dropdown selection, both PowerShell status/security suites, upgrade/rollback, installed desktop behavior and ten-minute native preview/lifecycle checks. Published installer bytes and signed discovery metadata were independently verified; the production download/cancellation/normal-exit automatic-update roundtrip passed.
+
 ## 0.12.2 — Combined exploration update
 
 - Includes the 0.10.0–0.12.0 camera, local performance, photograph, history and opt-in weather-globe work in one authenticated preview update. Those intermediate versions were validation candidates.
