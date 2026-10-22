@@ -1,5 +1,5 @@
 $ErrorActionPreference = 'Stop'
-foreach ($file in @('packaging/windows/build.ps1','packaging/windows/update.ps1','packaging/windows/update-core.ps1','packaging/windows/set-icon.ps1','tests/windows_display_test.ps1','packaging/windows/invoke-godot.ps1','tests/godot_process_test.ps1','tests/update_security_test.ps1','tests/update_status_test.ps1','tests/windows_update_install_test.ps1','tests/windows_screensaver_test.ps1')) {
+foreach ($file in @('packaging/windows/build.ps1','packaging/windows/update.ps1','packaging/windows/update-core.ps1','packaging/windows/set-icon.ps1','tests/windows_display_test.ps1','packaging/windows/invoke-godot.ps1','tests/godot_process_test.ps1','tests/update_security_test.ps1','tests/update_status_test.ps1','tests/windows_update_install_test.ps1','tests/windows_screensaver_test.ps1','tests/windows_saver_settings_test.ps1')) {
     $tokens = $null
     $errors = $null
     [Management.Automation.Language.Parser]::ParseFile((Join-Path $pwd $file), [ref]$tokens, [ref]$errors) | Out-Null

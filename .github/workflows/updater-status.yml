@@ -13,14 +13,17 @@ jobs:
   status:
     runs-on: windows-latest
     timeout-minutes: 5
-    strategy:
-      matrix:
-        shell: [powershell, pwsh]
     steps:
       - uses: actions/checkout@v4
       - name: Status replacement and Windows reader contention
-        shell: ${{ matrix.shell }}
+        shell: powershell
         run: ./tests/update_status_test.ps1
       - name: Preserve release signature and hash checks
-        shell: ${{ matrix.shell }}
+        shell: powershell
+        run: ./tests/update_security_test.ps1
+      - name: PowerShell 7 status contention
+        shell: pwsh
+        run: ./tests/update_status_test.ps1
+      - name: PowerShell 7 release security
+        shell: pwsh
         run: ./tests/update_security_test.ps1

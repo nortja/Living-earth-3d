@@ -80,7 +80,7 @@ var update_status: Label
 var update_feed: Dictionary = {}
 var update_request: HTTPRequest
 var preferences := ConfigFile.new()
-const VERSION := "0.12.2"
+const VERSION := "0.12.3"
 const UPDATE_FEED_URL := "https://raw.githubusercontent.com/nortja/Living-earth-3d/main/updates/preview.json"
 const RELEASES_URL := "https://github.com/nortja/Living-earth-3d/releases"
 
