@@ -1,0 +1,17 @@
+name: Validate live 0.12.3 updater once
+on:
+  push:
+    branches: [validation/live-0.12.3]
+permissions:
+  contents: read
+jobs:
+  windows:
+    runs-on: windows-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - name: Production signed-feed staging cancellation and normal-exit installation
+        shell: powershell
+        run: |
+          $ProgressPreference='SilentlyContinue'
+          ./tests/windows_live_update_test.ps1 -ExpectedVersion '0.12.3'
