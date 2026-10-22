@@ -54,7 +54,10 @@ function Close-TestDialogs {
  if($running.Count){throw 'Settings preview did not exit after its dialog closed'}
 }
 function Run-Helper([string]$Flag) {
- $p=Start-Process "$root/LivingEarth3D.scr" -ArgumentList $Flag -PassThru
+ $start=New-Object Diagnostics.ProcessStartInfo
+ $start.FileName="$root/LivingEarth3D.scr";$start.Arguments=$Flag
+ $start.UseShellExecute=$false;$start.CreateNoWindow=$true
+ $p=[Diagnostics.Process]::Start($start)
  if(!$p.WaitForExit(10000)){throw "Helper did not return: $Flag"}
  if($p.ExitCode -ne 0){throw "Helper failed: $Flag exit=$($p.ExitCode)"}
 }
