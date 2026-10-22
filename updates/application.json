@@ -1,15 +1,15 @@
 {
   "channel": "preview",
   "files": {
-    "LivingEarth3D.exe": "599503cba8e2bb13d58122fe78d2495844f10efc7d5e9899ff59b602089de211",
-    "LivingEarth3D.scr": "3551ca64eaa75615124dc60e77e10a2abd839661b9a6f4bac012b91bd1e0758e",
-    "update-core.ps1": "b8bf3d93fe5618bd5c8f82af3d0d3830c27dc5dfe044f734d5f6bdd87e46d310",
-    "update.ps1": "87973bf9a21dcde0e921ce2ae4be6e24b6efc9187485d79b9fa869164678e8cc"
+    "LivingEarth3D.exe": "5adee6ac3212e87b8bc8eaff38c24b233b21ece58923bfc9b780d13550ac3b14",
+    "LivingEarth3D.scr": "2a840685163379fed78d6df876d3ec472e5430ff1bb98b339e4fe58f2ae75af4",
+    "update-core.ps1": "311f11003a720af948bae265e8fc4037576883df763da914a16a16c1fbcef6bd",
+    "update.ps1": "639caa93b1ca379ae4558dfad708ec950d2e1346b6211ae01dca0000d1c2cb3c"
   },
-  "installer_url": "https://github.com/nortja/Living-earth-3d/raw/refs/heads/downloads/windows-0.12.2/LivingEarth3D-Setup-0.12.2.exe",
+  "installer_url": "https://github.com/nortja/Living-earth-3d/raw/refs/heads/downloads/windows-0.12.3/LivingEarth3D-Setup-0.12.3.exe",
   "product": "LivingEarth3D",
   "protocol": 1,
-  "sha256": "0471ce0b33b7463e99eab58be821203a2b8a46ec3d164234f53a2f03e4a8356e",
-  "size": 51339954,
-  "version": "0.12.2"
+  "sha256": "4896552a712d39957d2725385d14cb85fef2c004a2705fee6887e8350c6895a8",
+  "size": 51344236,
+  "version": "0.12.3"
 }
