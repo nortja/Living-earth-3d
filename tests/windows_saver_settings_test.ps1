@@ -29,9 +29,13 @@ public static class EarthSaverSettings {
 }
 '@
 $desktop='HKCU:\Control Panel\Desktop'
+function Read-DesktopValue([string]$Name) {
+ $key=[Microsoft.Win32.Registry]::CurrentUser.OpenSubKey('Control Panel\Desktop')
+ try {return $key.GetValue($Name,$null)} finally {$key.Dispose()}
+}
 $snapshot=@{}
 foreach($name in @('SCRNSAVE.EXE','ScreenSaveActive')) {
- $value=Get-ItemPropertyValue -LiteralPath $desktop -Name $name -ErrorAction SilentlyContinue
+ $value=Read-DesktopValue $name
  $snapshot[$name]=$value
 }
 $fixture=Join-Path $env:RUNNER_TEMP ('earth settings with spaces '+[guid]::NewGuid())
@@ -76,14 +80,14 @@ try {
  if($setup.ExitCode -ne 0){throw 'Fixture installation failed'}
  Run-Helper '/settings'
  $window=Wait-Settings
- if((Get-ItemPropertyValue $desktop -Name 'SCRNSAVE.EXE' -ErrorAction SilentlyContinue) -cne $snapshot['SCRNSAVE.EXE']){throw 'Read-only settings action changed selection'}
+ if((Read-DesktopValue 'SCRNSAVE.EXE') -cne $snapshot['SCRNSAVE.EXE']){throw 'Read-only settings action changed selection'}
  Close-TestDialogs
  Run-Helper '/select'
  $window=Wait-Settings
- if((Get-ItemPropertyValue $desktop -Name 'SCRNSAVE.EXE') -ine "$root\LivingEarth3D.scr"){throw 'Per-user selection not registered'}
+ if((Read-DesktopValue 'SCRNSAVE.EXE') -ine "$root\LivingEarth3D.scr"){throw 'Per-user selection not registered'}
  $selected=[EarthSaverSettings]::Selection($window)
  if($selected -ne 'Living Earth 3D'){throw "Living Earth 3D missing from selected dropdown item: $selected"}
- if((Get-ItemPropertyValue $desktop -Name 'ScreenSaveActive') -ne '1'){throw 'Selected screensaver is not active'}
+ if((Read-DesktopValue 'ScreenSaveActive') -ne '1'){throw 'Selected screensaver is not active'}
  $rect=New-Object EarthSaverSettings+Rect
  [EarthSaverSettings]::GetWindowRect($window,[ref]$rect)|Out-Null
  $image=New-Object Drawing.Bitmap ($rect.Right-$rect.Left),($rect.Bottom-$rect.Top)
@@ -97,13 +101,13 @@ try {
  # Removing this installation must never clear another chosen screensaver.
  Set-ItemProperty $desktop -Name 'SCRNSAVE.EXE' -Value 'C:\Windows\System32\scrnsave.scr'
  Run-Helper '/unregister'
- if((Get-ItemPropertyValue $desktop -Name 'SCRNSAVE.EXE') -ne 'C:\Windows\System32\scrnsave.scr'){throw 'Unregister changed another screensaver'}
+ if((Read-DesktopValue 'SCRNSAVE.EXE') -ne 'C:\Windows\System32\scrnsave.scr'){throw 'Unregister changed another screensaver'}
  Run-Helper '/select'
  $null=Wait-Settings
  Close-TestDialogs
  $uninstall=Start-Process "$root/Uninstall.exe" -ArgumentList "/S _?=$root" -Wait -PassThru
  if($uninstall.ExitCode -ne 0){throw 'Uninstall failed'}
- if(Get-ItemPropertyValue $desktop -Name 'SCRNSAVE.EXE' -ErrorAction SilentlyContinue){throw 'Uninstall left selected saver pointing at removed files'}
+ if(Read-DesktopValue 'SCRNSAVE.EXE'){throw 'Uninstall left selected saver pointing at removed files'}
  Write-Output 'Windows settings: dialog opened, Living Earth 3D dropdown selection confirmed, active setting and uninstall ownership checks passed.'
 } finally {
  Close-TestDialogs
