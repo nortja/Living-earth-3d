@@ -94,8 +94,8 @@ Updated 2026-10-31. Latest released baseline: 0.18.2 (fully visible compact weat
 - [x] Loaded weather filter/picker fully visible at small sizes; compact primary actions preserve source/status, toggle, units and all request rules.
 - [x] Reproduced the old 800×600 clipping, then passed all 1118 source checks, seven native layouts and actual installed Windows visibility checks.
 - [x] Full source/security/export/native, Windows upgrades/rollback/settings, five-minute installed recording, exact 1080p/ultrawide/4K/5K framebuffers and 605.2-second native preview/lifecycle passed in run 41232467353.
-- [x] Public installer/source provenance and pinned-key signature verified; authenticated source/feed promoted after successful 0.18.1 production update. 0.18.2 production roundtrip follows promotion.
-- [x] Supplemental one-hour frozen 0.16.0 and 0.18.0 native Linux runs completed with zero failures; current 0.18.2 thirty-minute run remains in progress.
+- [x] Public installer/source provenance and pinned-key signature verified; authenticated source/feed promoted after successful 0.18.1 production update. 0.18.2 production Windows updater roundtrip passed; see release validation.
+- [x] Supplemental one-hour frozen 0.16.0 and 0.18.0 native Linux runs completed with zero failures; current 0.18.2 thirty-minute run also completed with zero failures.
 
 ## Previous release — 0.18.1
 

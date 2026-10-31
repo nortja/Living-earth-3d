@@ -18,12 +18,16 @@ Weather globe compacts Load/refresh and Cancel into one row and removes its redu
 
 Installer `LivingEarth3D-Setup-0.18.2.exe`: 51,380,944 bytes; SHA256 `b92be7b7aedf3dd83bb263fee12f3b09bfec759f5250a0bcccf69edd0e3c010d`.
 
-Exact metadata was signed outside git/CI, independently checked against the installed pinned public key and promoted atomically with source/all three discovery files after 0.18.1's successful production updater. The 0.18.2 production Windows roundtrip follows promotion. Publisher Authenticode remains separate; this is a publisher-unsigned preview.
+Exact metadata was signed outside git/CI, independently checked against the installed pinned public key and promoted atomically with source/all three discovery files after 0.18.1's successful production updater. [Production Windows roundtrip 41235169019](https://github.com/nortja/Living-earth-3d/actions/runs/41235169019), job 124637289860, passed authenticated live staging while open, cancellation without replacement, normal-exit installation, exact installed-file verification, no unwanted restart and cleanup. Publisher Authenticode remains separate; this is a publisher-unsigned preview.
 
 ## Supplementary checks and limits
 
 Near 19:06 UTC, manual Linux source checks retrieved all eight real camera images, exercised an actual unchanged conditional response, accepted all 32 dated Open-Meteo model points and decoded the 2026-10-30 NASA 2048×1024 mosaic. This does not establish capture freshness, ongoing provider availability or Windows networking; see PROVIDER_CHECKS-2026-10-31.md.
 
-Frozen 0.16.0 and 0.18.0 real-time native Linux saver runs each completed about one hour with zero failures. The exact 0.18.2 source is running a separate thirty-minute six-style native check; it is not yet counted complete. See SCREENSAVER_LONG_RUNS.md.
+Frozen 0.16.0 and 0.18.0 real-time native Linux saver runs each completed about one hour with zero failures. The exact 0.18.2 source completed 1803.705 seconds of real-time native Linux preview rendering with zero failures, 60 samples, all six styles, sampled FPS 14–15 within the 15 FPS cap, peak node count 459 and 85,154 bytes of engine-tracked memory growth after warmup. See SCREENSAVER_LONG_RUNS.md.
 
 VM frame intervals vary and include cap/scheduling/renderer work. The inexpensive direct monitor-API probe does not establish a cause for earlier variation or a speedup; no hardware rating is inferred. Physical Dell GPU/DPI, mixed monitors, sleep/power, audible playback and overnight observations remain separate.
+
+The application's separate real HTTPS preview/discovery feed test accepted version 0.18.2. Its `signed=false` field describes the Windows publisher-unsigned preview, not the independently authenticated application.json/application.sig updater path. [Raw app-feed check](evidence/app-preview-feed-2026-10-31.txt).
+
+Final audit found main's runtime source/data/assets/project/export/packaging files byte-identical to frozen source da9f06f4267cf896dfb576d18402946e74f7eb15. All three production discovery files matched the independently signed local bytes. The legacy installer workflow remains manual-only. Transient signing material was removed after final signing; the owner's persistent private backup was untouched.

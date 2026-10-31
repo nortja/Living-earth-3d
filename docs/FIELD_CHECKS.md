@@ -1,27 +1,29 @@
-# Windows field observations after 0.12.3
+# Windows field observations
 
-These observations complement automated tests; CI software rendering does not establish physical Dell GPU, DPI, power or monitor behavior. Continue using the normal installed app and screensaver. Automatic updates apply after a normal app/screensaver exit; no manual reinstall is needed for updater-enabled versions.
+Current preview: 0.18.2. Automated Windows software-rendered gates cover installation/rollback, actual settings/dropdown, native preview/lifecycle, installed resources/backup callbacks, five-minute reporting and exact framebuffer sizes through 5K. They do not establish physical Dell GPU, mixed DPI/monitors, sleep/power, audible playback or overnight behavior.
 
-## Useful observations on return
+## When using the actual Dell
 
-1. Did the screensaver keep rendering throughout the unattended run? Which style was selected? Note any freeze, black screen, flashing or unexpected exit and its approximate time.
-2. Did ordinary mouse/key input dismiss it? Did normal lock/sleep/wake restore the desktop correctly?
-3. How many monitors were attached, at what resolutions and Windows scale percentages? Did the image cover each correctly?
-4. Was fan noise, heat or battery consumption unusually high? Did the 30 FPS/power-saving option help?
+1. Observe whether the selected saver stays animated, covers each attached monitor and dismisses normally on mouse/key input.
+2. Try ordinary lock/sleep/wake and monitor connect/disconnect. Note any freeze, black screen, flashing, unexpected exit and approximate time.
+3. Compare 2K/4K and normal/power-saving settings during ordinary use; observe fan/heat/battery behavior. A frame cap is not a performance guarantee.
+4. Check saved interface sizes and monitor moves at the actual Windows scale percentages. The virtual framebuffer matrix is separate from these physical checks.
 
-## Local display report
+## Local performance report
 
-Open Settings → Performance & support. The next source build also records every attached monitor’s pixel size, desktop position, scale, DPI and refresh rate, plus the active screen index. This helps compare monitor moves and mixed-DPI setups; it does not establish physical hardware correctness. Headless validation returns no monitor inventory.
+Settings → Performance & support identifies the actual GPU, viewport/monitor pixels, DPI, refresh, active screen and all attached monitor geometry/scale. Optionally record five active minutes while using the app normally and save its local JSON. Configuration segments retain quality/cap/viewport/scale/window changes; screen index comes from the latest display poll and can lag by about one active second. Monitor inventory is a current snapshot, not a historical DPI trace.
 
-The live display report identifies the GPU, monitor/viewport pixels, DPI, refresh rate, quality and frame cap. Optionally start a five-active-minute recording, use the app normally and export its local JSON report. Recording pauses in screensaver preview or while minimized and excludes sleep-size frame gaps. It does not upload anything. Engine memory is unavailable in exported release builds and is reported as null; the report is not a complete process/GPU-memory measurement or hardware benchmark.
+Nothing is uploaded. The report excludes usernames, file paths, bookmarks and camera images. Release engine-memory counters are unavailable/null and are not complete process/GPU-memory measurements. Recording pauses in saver preview/minimized state and excludes sleep-sized gaps. No hardware score is inferred.
 
-## Feature checks
+## Feature observations
 
-- Explore → Discover → visit a wonder: the destination card should show its story and photograph. Open the photograph and inspect its source/license credit. Escape returns to the destination.
-- Cameras: search a name, enable image-only filtering and open a feed. Periodic camera photographs may be unchanged between provider captures; capture and retrieval times are different. Fill a Camera Wall with different sources.
-- Live Earth → Weather around Earth: manually request the fixed public-place sample, select a point and inspect its model time and units. Stale results turn grey; this is not a continuous global weather map.
-- History: change the era and inspect the sourced context. Globe and photographs stay modern; no ancient reconstruction is implied.
+- Discover: visit a wonder, inspect its story/photo and source/license credit, then return with Escape.
+- Cameras: search/filter, open a periodic image and use a different-source Camera Wall. Retrieval/recheck time is not verified camera capture time; unchanged images can be delayed.
+- Weather globe: explicitly load the 32-place model sample, filter a city/country, select it and inspect model time/units. It is a point sample, not continuous observations/global clouds.
+- Recent days from orbit: choose one of the previous seven UTC days, press Load, inspect its observation date/real gaps and return to Offline Earth. Date selection alone makes no request.
+- Saved places: choose a backup file/location, save another place, then import the backup. Existing entries should remain and duplicate/capacity counts should be clear. Actual OS chooser interaction remains a physical field observation beyond callback fixtures.
+- History: inspect the sourced era context while remembering the globe/photos remain modern imagery.
 
-## Decisions for the next build
+## Future decisions
 
-Preferred camera regions/themes; continuous video versus current cloud imagery priority; personal/community-only distribution versus future paid, advertising or commercial use (which affects source/API arrangements); intended project-wide code license and eventual Windows publisher identity. No paid service or certificate is purchased by this build.
+Camera regions/themes, licensed continuous video versus current cloud refresh, future commercial/advertising distribution, project code license and eventual publisher identity remain planning topics. No paid service/certificate, telemetry or private-key upload was introduced by this sprint.

@@ -1,12 +1,12 @@
 # 0.18.0 preview validation
 
-Released 2026-10-31. Frozen source `d0f881d0273a591c4c174b3f9ceb5c0cb749850f`, tree `364295a8b137a0660a3858cac67392932ac68954`. [Full pipeline41229309398](https://github.com/nortja/Living-earth-3d/actions/runs/41229309398) passed all four jobs.
+Released 2026-10-31. Frozen source `d0f881d0273a591c4c174b3f9ceb5c0cb749850f`, tree `364295a8b137a0660a3858cac67392932ac68954`. [Full pipeline 41229309398](https://github.com/nortja/Living-earth-3d/actions/runs/41229309398) passed all four jobs.
 
 Saved places gain explicit chosen-file JSON export and merge. Existing entries win; duplicates/over-capacity entries are reported, invalid files change nothing and the 50-place bound remains. File/text/type/finite-coordinate/source limits, flushed temporary exports, chooser cleanup and no automatic import/upload/provider request are covered. See SAVED_PLACES_BACKUP.md.
 
 ## Evidence
 
-- Eighteen local suites passed 1115 checks, including 36 backup cases and 200 malformed JPEG cases. Native backup controls fit without scrolling at800×600,1920×1080,3840×1080 and5120×2880; screenshots reviewed.
+- Eighteen local suites passed 1115 checks, including 36 backup cases and 200 malformed JPEG cases. Native backup controls fit without scrolling at 800×600,1920×1080,3840×1080 and5120×2880; screenshots reviewed.
 - Build 124619948813 passed source/security/export/icon and native graphics/isolation gates.
 - Windows 124622308451 passed upgrades/rollback from 0.5.2 and 0.9.0, both PowerShell security/status suites, actual settings/dropdown and native preview/lifecycle. Actual preview soak lasted 605 seconds; final OS private bytes214,425,600. Fresh Windows 320×200 first-frame readiness arrived at 2225ms.
 - Installed desktop 124622308483 exercised the exported file-selected callbacks, wrote an actual chosen backup, retained a place saved since export, merged without duplicate replacement and removed the fixture file. Chooser configuration/callbacks are covered; physical OS chooser interaction is a field observation.
@@ -19,6 +19,6 @@ Installer `LivingEarth3D-Setup-0.18.0.exe`:51,381,610 bytes; SHA256 `44e2e4f9f89
 
 Exact metadata was signed outside git/CI and independently checked against the pinned public key, then promoted atomically with source/all three discovery files after the successful 0.17.0 production update. [Production Windows roundtrip 41231972951](https://github.com/nortja/Living-earth-3d/actions/runs/41231972951), job 124627899321, passed authenticated staging while open, cancellation without replacement, normal-exit installation, exact installed-file verification, no unwanted restart and cleanup. This remains a Windows publisher-unsigned preview.
 
-A separate 0.18.1 candidate improves first-result visibility and removes per-frame Windows monitor enumeration from optional recordings, explicitly describing one-second screen-index polling. It adds a current-package exact Windows framebuffer matrix to the installed desktop gate. Its earlier sourcefad1356 was cancelled to correct a test screenshot's query text, not counted as a release pass; final frozen source9515d27758b7325cd4153a6e09620fa49d19a202 is running fresh gates.
+The later 0.18.1 repair passed its complete current-package Windows framebuffer gates and production updater; see VALIDATION-0.18.1.md. Its cancelled screenshot-fixture source was not signed.
 
-A one-hour native Linux soak against this exact 0.18.0 source is still running; no completion is claimed yet. Physical Dell GPU/DPI, mixed monitors, sleep/power and overnight observations remain separate.
+The exact frozen 0.18.0 native Linux soak completed 3606.937 seconds with zero failures, 120 samples, 14–15 sampled FPS within the 15 FPS cap, and 134,334 bytes of engine-tracked memory growth after warmup. All six styles were exercised; raw evidence and limits are in SCREENSAVER_LONG_RUNS.md. Physical Dell GPU/DPI, mixed monitors, sleep/power and overnight observations remain separate.

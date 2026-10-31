@@ -1,0 +1,14 @@
+{
+  "display": "Windows",
+  "failures": [],
+  "gpu": "llvmpipe (LLVM 23.1.2, 256 bits)",
+  "passed": true,
+  "platform": "Windows",
+  "quality": "detailed",
+  "ui_scale": 1.75,
+  "version": "0.18.2",
+  "viewport": [
+    5120,
+    2880
+  ]
+}

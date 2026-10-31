@@ -1,0 +1,490 @@
+{
+  "baseline_engine_memory_bytes": 50853528,
+  "duration_seconds": 1803.705,
+  "failures": 0,
+  "limits": "Native Linux software rendering; not physical Windows multi-monitor/DPI/sleep validation.",
+  "peak_engine_memory_bytes": 50938682,
+  "samples": [
+    {
+      "active_seconds": 30.274,
+      "engine_memory_bytes": 50848760,
+      "failures": 0,
+      "fps": 15.0,
+      "nodes": 458,
+      "style": 0
+    },
+    {
+      "active_seconds": 60.34,
+      "engine_memory_bytes": 50851928,
+      "failures": 0,
+      "fps": 15.0,
+      "nodes": 458,
+      "style": 0
+    },
+    {
+      "active_seconds": 90.342,
+      "engine_memory_bytes": 50852588,
+      "failures": 0,
+      "fps": 15.0,
+      "nodes": 458,
+      "style": 0
+    },
+    {
+      "active_seconds": 120.541,
+      "engine_memory_bytes": 50853528,
+      "failures": 0,
+      "fps": 15.0,
+      "nodes": 458,
+      "style": 0
+    },
+    {
+      "active_seconds": 150.541,
+      "engine_memory_bytes": 50854364,
+      "failures": 0,
+      "fps": 15.0,
+      "nodes": 458,
+      "style": 0
+    },
+    {
+      "active_seconds": 180.54,
+      "engine_memory_bytes": 50855152,
+      "failures": 0,
+      "fps": 15.0,
+      "nodes": 458,
+      "style": 0
+    },
+    {
+      "active_seconds": 210.608,
+      "engine_memory_bytes": 50856012,
+      "failures": 0,
+      "fps": 15.0,
+      "nodes": 458,
+      "style": 0
+    },
+    {
+      "active_seconds": 240.673,
+      "engine_memory_bytes": 50856800,
+      "failures": 0,
+      "fps": 15.0,
+      "nodes": 458,
+      "style": 0
+    },
+    {
+      "active_seconds": 270.739,
+      "engine_memory_bytes": 50857588,
+      "failures": 0,
+      "fps": 15.0,
+      "nodes": 458,
+      "style": 0
+    },
+    {
+      "active_seconds": 300.806,
+      "engine_memory_bytes": 50885330,
+      "failures": 0,
+      "fps": 15.0,
+      "nodes": 459,
+      "style": 1
+    },
+    {
+      "active_seconds": 330.872,
+      "engine_memory_bytes": 50889882,
+      "failures": 0,
+      "fps": 15.0,
+      "nodes": 459,
+      "style": 1
+    },
+    {
+      "active_seconds": 360.938,
+      "engine_memory_bytes": 50890670,
+      "failures": 0,
+      "fps": 15.0,
+      "nodes": 459,
+      "style": 1
+    },
+    {
+      "active_seconds": 391.019,
+      "engine_memory_bytes": 50891458,
+      "failures": 0,
+      "fps": 15.0,
+      "nodes": 459,
+      "style": 1
+    },
+    {
+      "active_seconds": 421.104,
+      "engine_memory_bytes": 50894434,
+      "failures": 0,
+      "fps": 15.0,
+      "nodes": 459,
+      "style": 1
+    },
+    {
+      "active_seconds": 451.103,
+      "engine_memory_bytes": 50893198,
+      "failures": 0,
+      "fps": 15.0,
+      "nodes": 459,
+      "style": 1
+    },
+    {
+      "active_seconds": 481.186,
+      "engine_memory_bytes": 50893986,
+      "failures": 0,
+      "fps": 15.0,
+      "nodes": 459,
+      "style": 1
+    },
+    {
+      "active_seconds": 511.308,
+      "engine_memory_bytes": 50894774,
+      "failures": 0,
+      "fps": 16.0,
+      "nodes": 459,
+      "style": 1
+    },
+    {
+      "active_seconds": 541.308,
+      "engine_memory_bytes": 50897574,
+      "failures": 0,
+      "fps": 15.0,
+      "nodes": 459,
+      "style": 1
+    },
+    {
+      "active_seconds": 571.368,
+      "engine_memory_bytes": 50896338,
+      "failures": 0,
+      "fps": 15.0,
+      "nodes": 459,
+      "style": 1
+    },
+    {
+      "active_seconds": 601.384,
+      "engine_memory_bytes": 50900002,
+      "failures": 0,
+      "fps": 15.0,
+      "nodes": 459,
+      "style": 2
+    },
+    {
+      "active_seconds": 631.451,
+      "engine_memory_bytes": 50898622,
+      "failures": 0,
+      "fps": 15.0,
+      "nodes": 459,
+      "style": 2
+    },
+    {
+      "active_seconds": 661.632,
+      "engine_memory_bytes": 50899410,
+      "failures": 0,
+      "fps": 15.0,
+      "nodes": 459,
+      "style": 2
+    },
+    {
+      "active_seconds": 691.698,
+      "engine_memory_bytes": 50900198,
+      "failures": 0,
+      "fps": 15.0,
+      "nodes": 459,
+      "style": 2
+    },
+    {
+      "active_seconds": 721.698,
+      "engine_memory_bytes": 50900986,
+      "failures": 0,
+      "fps": 15.0,
+      "nodes": 459,
+      "style": 2
+    },
+    {
+      "active_seconds": 751.764,
+      "engine_memory_bytes": 50901774,
+      "failures": 0,
+      "fps": 15.0,
+      "nodes": 459,
+      "style": 2
+    },
+    {
+      "active_seconds": 781.831,
+      "engine_memory_bytes": 50902562,
+      "failures": 0,
+      "fps": 15.0,
+      "nodes": 459,
+      "style": 2
+    },
+    {
+      "active_seconds": 811.858,
+      "engine_memory_bytes": 50903350,
+      "failures": 0,
+      "fps": 15.0,
+      "nodes": 459,
+      "style": 2
+    },
+    {
+      "active_seconds": 841.858,
+      "engine_memory_bytes": 50904138,
+      "failures": 0,
+      "fps": 15.0,
+      "nodes": 459,
+      "style": 2
+    },
+    {
+      "active_seconds": 871.925,
+      "engine_memory_bytes": 50905262,
+      "failures": 0,
+      "fps": 15.0,
+      "nodes": 459,
+      "style": 2
+    },
+    {
+      "active_seconds": 901.991,
+      "engine_memory_bytes": 50908074,
+      "failures": 0,
+      "fps": 15.0,
+      "nodes": 459,
+      "style": 3
+    },
+    {
+      "active_seconds": 932.057,
+      "engine_memory_bytes": 50906838,
+      "failures": 0,
+      "fps": 15.0,
+      "nodes": 459,
+      "style": 3
+    },
+    {
+      "active_seconds": 962.124,
+      "engine_memory_bytes": 50907626,
+      "failures": 0,
+      "fps": 15.0,
+      "nodes": 459,
+      "style": 3
+    },
+    {
+      "active_seconds": 992.19,
+      "engine_memory_bytes": 50908414,
+      "failures": 0,
+      "fps": 15.0,
+      "nodes": 459,
+      "style": 3
+    },
+    {
+      "active_seconds": 1022.256,
+      "engine_memory_bytes": 50909202,
+      "failures": 0,
+      "fps": 15.0,
+      "nodes": 459,
+      "style": 3
+    },
+    {
+      "active_seconds": 1052.323,
+      "engine_memory_bytes": 50909990,
+      "failures": 0,
+      "fps": 15.0,
+      "nodes": 459,
+      "style": 3
+    },
+    {
+      "active_seconds": 1082.389,
+      "engine_memory_bytes": 50910778,
+      "failures": 0,
+      "fps": 15.0,
+      "nodes": 459,
+      "style": 3
+    },
+    {
+      "active_seconds": 1112.455,
+      "engine_memory_bytes": 50911566,
+      "failures": 0,
+      "fps": 15.0,
+      "nodes": 459,
+      "style": 3
+    },
+    {
+      "active_seconds": 1142.523,
+      "engine_memory_bytes": 50912354,
+      "failures": 0,
+      "fps": 15.0,
+      "nodes": 459,
+      "style": 3
+    },
+    {
+      "active_seconds": 1172.588,
+      "engine_memory_bytes": 50913142,
+      "failures": 0,
+      "fps": 15.0,
+      "nodes": 459,
+      "style": 3
+    },
+    {
+      "active_seconds": 1202.655,
+      "engine_memory_bytes": 50917422,
+      "failures": 0,
+      "fps": 15.0,
+      "nodes": 459,
+      "style": 4
+    },
+    {
+      "active_seconds": 1232.721,
+      "engine_memory_bytes": 50916114,
+      "failures": 0,
+      "fps": 15.0,
+      "nodes": 459,
+      "style": 4
+    },
+    {
+      "active_seconds": 1262.787,
+      "engine_memory_bytes": 50916902,
+      "failures": 0,
+      "fps": 15.0,
+      "nodes": 459,
+      "style": 4
+    },
+    {
+      "active_seconds": 1292.854,
+      "engine_memory_bytes": 50918194,
+      "failures": 0,
+      "fps": 15.0,
+      "nodes": 459,
+      "style": 4
+    },
+    {
+      "active_seconds": 1322.92,
+      "engine_memory_bytes": 50924050,
+      "failures": 0,
+      "fps": 15.0,
+      "nodes": 459,
+      "style": 4
+    },
+    {
+      "active_seconds": 1352.92,
+      "engine_memory_bytes": 50924838,
+      "failures": 0,
+      "fps": 15.0,
+      "nodes": 459,
+      "style": 4
+    },
+    {
+      "active_seconds": 1382.986,
+      "engine_memory_bytes": 50925626,
+      "failures": 0,
+      "fps": 15.0,
+      "nodes": 459,
+      "style": 4
+    },
+    {
+      "active_seconds": 1413.053,
+      "engine_memory_bytes": 50926414,
+      "failures": 0,
+      "fps": 15.0,
+      "nodes": 459,
+      "style": 4
+    },
+    {
+      "active_seconds": 1443.119,
+      "engine_memory_bytes": 50927202,
+      "failures": 0,
+      "fps": 15.0,
+      "nodes": 459,
+      "style": 4
+    },
+    {
+      "active_seconds": 1473.118,
+      "engine_memory_bytes": 50927990,
+      "failures": 0,
+      "fps": 15.0,
+      "nodes": 459,
+      "style": 4
+    },
+    {
+      "active_seconds": 1503.185,
+      "engine_memory_bytes": 50930802,
+      "failures": 0,
+      "fps": 15.0,
+      "nodes": 459,
+      "style": 5
+    },
+    {
+      "active_seconds": 1533.251,
+      "engine_memory_bytes": 50929566,
+      "failures": 0,
+      "fps": 15.0,
+      "nodes": 459,
+      "style": 5
+    },
+    {
+      "active_seconds": 1563.318,
+      "engine_memory_bytes": 50930354,
+      "failures": 0,
+      "fps": 15.0,
+      "nodes": 459,
+      "style": 5
+    },
+    {
+      "active_seconds": 1593.317,
+      "engine_memory_bytes": 50931142,
+      "failures": 0,
+      "fps": 15.0,
+      "nodes": 459,
+      "style": 5
+    },
+    {
+      "active_seconds": 1623.384,
+      "engine_memory_bytes": 50931930,
+      "failures": 0,
+      "fps": 15.0,
+      "nodes": 459,
+      "style": 5
+    },
+    {
+      "active_seconds": 1653.45,
+      "engine_memory_bytes": 50932718,
+      "failures": 0,
+      "fps": 15.0,
+      "nodes": 459,
+      "style": 5
+    },
+    {
+      "active_seconds": 1683.516,
+      "engine_memory_bytes": 50933506,
+      "failures": 0,
+      "fps": 15.0,
+      "nodes": 459,
+      "style": 5
+    },
+    {
+      "active_seconds": 1713.583,
+      "engine_memory_bytes": 50934294,
+      "failures": 0,
+      "fps": 15.0,
+      "nodes": 459,
+      "style": 5
+    },
+    {
+      "active_seconds": 1743.65,
+      "engine_memory_bytes": 50935082,
+      "failures": 0,
+      "fps": 15.0,
+      "nodes": 459,
+      "style": 5
+    },
+    {
+      "active_seconds": 1773.679,
+      "engine_memory_bytes": 50935870,
+      "failures": 0,
+      "fps": 14.0,
+      "nodes": 459,
+      "style": 5
+    },
+    {
+      "active_seconds": 1803.676,
+      "engine_memory_bytes": 50938682,
+      "failures": 0,
+      "fps": 15.0,
+      "nodes": 459,
+      "style": 0
+    }
+  ],
+  "version": "0.18.2"
+}
