@@ -1,3 +1,9 @@
+## 0.13.1 candidate — 2026-10-31
+
+- Revalidate camera frames using bounded provider ETags. An HTTP 304 retains the validated texture, original retrieval time and delayed-image warning while reporting a separate check time. Sources without usable validators keep the existing full-image path.
+- Check JPEG marker dimensions before decoding, preserving the 4096-pixel source bound without allocating an oversized image. Validate malformed/truncated/progressive header cases and cancellation/source isolation.
+- Correct the optional live-camera harness to derive its expected source count from the catalog rather than an obsolete four-camera constant.
+
 ## 0.13.0 candidate — 2026-10-31
 
 - Add Yesterday from orbit: manually load the previous UTC day's NASA GIBS NOAA-20 / VIIRS true-color mosaic on the globe. Keep observation date and retrieval time distinct; preserve real no-data gaps and provide immediate offline return.
