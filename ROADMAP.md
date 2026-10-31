@@ -86,8 +86,8 @@ Updated 2026-10-31. Latest released baseline: 0.12.4 (camera texture reuse and d
 - [x] Reuse validated unchanged camera textures without changing retrieval, source-time, failure recovery or delayed-image warnings.
 - [x] Refresh monitor details/frame budget after changes on the same monitor; handle non-finite and fractional refresh values safely.
 - [x] Export attached-monitor geometry, DPI, scale, refresh and active screen index in the optional local report.
-- [x] Fresh 757 source checks, native layouts through 5K, Windows upgrades/rollback/settings, actual installed desktop and a 605-second preview/lifecycle soak passed. Public installer downloaded and verified; exact manifest signed with the existing trust key. Production feed roundtrip is the next validation step.
-- [ ] Continue pending 0.13.0 satellite-view and 0.13.1 camera-revalidation candidates through their own release gates; see [sprint state](docs/SPRINT-2026-10-31.md).
+- [x] Fresh 757 source checks, native layouts through 5K, Windows upgrades/rollback/settings, actual installed desktop and a 605-second preview/lifecycle soak passed. Public installer downloaded and verified; exact manifest signed with the existing trust key. Production signed-feed staging/cancellation/normal-exit roundtrip also passed on Windows.
+- [ ] Continue final 0.13.1 satellite-view/camera-revalidation candidate through its own release gates (0.13.0 superseded before feed promotion); see [sprint state](docs/SPRINT-2026-10-31.md).
 
 ## Next priorities
 
