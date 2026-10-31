@@ -1,0 +1,31 @@
+{
+  "audited_at_utc": "2026-10-31T19:56:35.254403+00:00",
+  "audited_main": "2b0ccd716afb5922567c99a2ffea433ba5f648e3",
+  "frozen_application_source": "da9f06f4267cf896dfb576d18402946e74f7eb15",
+  "compared_scopes": [
+    "scripts",
+    "data",
+    "shaders",
+    "scenes",
+    "assets",
+    "project.godot",
+    "export_presets.cfg",
+    "packaging"
+  ],
+  "runtime_source_changed_paths": [],
+  "version": "0.18.2",
+  "version_fields_match": true,
+  "feed_files_match_independently_signed_local_bytes": true,
+  "feed_sha256": {
+    "application.json": "0de97a7bf199ac61a5e551112e2bd74150fd19421d9ab93e55f0d0196a6b9eac",
+    "application.sig": "73e4567509a9359555b3373e714986cf7e0ecab71a1bf0c229a123a691e8288f",
+    "preview.json": "f8aba53e2a9085786c9dd84d723f99f0312149f408e45ea86d2f7b964c5d8f85"
+  },
+  "pinned_rsa_sha256_signature_verified": true,
+  "installer_sha256": "b92be7b7aedf3dd83bb263fee12f3b09bfec759f5250a0bcccf69edd0e3c010d",
+  "installer_size": 51380944,
+  "payload_metadata_matches": true,
+  "packaged_update_helpers_match": true,
+  "transient_signing_directory_absent": true,
+  "limits": "Read-only audit of the fetched published source/feed and previously downloaded public installer. Does not add physical hardware validation or publisher Authenticode signing."
+}
