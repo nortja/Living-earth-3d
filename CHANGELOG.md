@@ -1,9 +1,25 @@
+## 0.13.1 preview — 2026-10-31
+
+- Revalidate camera frames using bounded provider ETags. An HTTP 304 retains the validated texture, original retrieval time and delayed-image warning while reporting a separate check time. Sources without usable validators keep the existing full-image path.
+- Check JPEG marker dimensions before decoding, preserving the 4096-pixel source bound without allocating an oversized image. Validate malformed/truncated/progressive header cases and cancellation/source isolation.
+- Keep the initial satellite Load action visible in narrow windows; verify its scroll-viewport bounds in source, native and installed Windows tests.
+- Add a maintainer-only provenance/download verifier before release signing.
+- Correct the optional live-camera harness to derive its expected source count from the catalog rather than an obsolete four-camera constant.
+
+- Final Windows/native pipeline passed, including 605.2-second saver soak and five-minute installed desktop recording. Verified public bytes and authenticated metadata promoted.
+
+## 0.13.0 superseded candidate — 2026-10-31
+
+- Add Yesterday from orbit: manually load the previous UTC day's NASA GIBS NOAA-20 / VIIRS true-color mosaic on the globe. Keep observation date and retrieval time distinct; preserve real no-data gaps and provide immediate offline return.
+- Hide artificial cloud drift/night lights while the dated, unshaded mosaic is shown. No startup, automatic or screensaver requests; preview cancels and restores safely.
+- Validate image signature/dimensions before decoding, bound network requests and preserve dated imagery after errors. Superseded by 0.13.1 before feed promotion.
+
 ## 0.12.4 preview — 2026-10-31
 
 - Reuse validated camera textures when provider image bytes are unchanged; keep retrieval/source timestamps, backoff recovery and delayed-image warnings current. Changed or oversized images still follow decode/validation and retention rules.
 - Refresh monitor information and frame budgets after same-monitor refresh/DPI changes as well as monitor moves. Handle non-finite refresh values safely; fractional 60 Hz displays use the intended 60 FPS budget. Native saver 15/30 FPS limits remain intact.
 - Local display-report exports include attached-monitor geometry, DPI, scale, refresh and active screen index for field diagnosis. No report is uploaded.
-- Fresh native/Windows packaging, settings, desktop and preview-soak gates passed; verified public installer and authenticated feed published. Production roundtrip validation follows promotion.
+- Windows/native gates, authenticated promotion and production Windows update roundtrip passed.
 
 # Changelog
 

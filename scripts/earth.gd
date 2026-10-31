@@ -16,6 +16,7 @@ const EarthInterface = preload("res://scripts/earth_interface.gd")
 const CameraService = preload("res://scripts/camera_service.gd")
 var camera_service: Node
 var performance_report: Node
+var satellite_snapshot: Node
 var weather_layer: Node
 var weather_layer_cache_path := "user://weather-points-v1.json"
 
@@ -79,7 +80,7 @@ var update_status: Label
 var update_feed: Dictionary = {}
 var update_request: HTTPRequest
 var preferences := ConfigFile.new()
-const VERSION := "0.12.4"
+const VERSION := "0.13.1"
 const UPDATE_FEED_URL := "https://raw.githubusercontent.com/nortja/Living-earth-3d/main/updates/preview.json"
 const RELEASES_URL := "https://github.com/nortja/Living-earth-3d/releases"
 
@@ -190,6 +191,25 @@ func _ready() -> void:
         start_intro()
     if "--screensaver-settings" in arguments:
         interface.open_page("Screensavers")
+    if native_saver and "--validate-native-preflight" in arguments:
+        call_deferred("_native_preflight_ready")
+
+func _native_preflight_ready() -> void:
+    if DisplayServer.get_name() == "headless": return
+    await RenderingServer.frame_post_draw
+    # Release loggers can buffer output. The opt-in harness uses an explicitly
+    # flushed, closed file as its live signal, never a buffered print message.
+    for argument in OS.get_cmdline_user_args():
+        if not argument.begins_with("--native-ready-file="): continue
+        var path := argument.trim_prefix("--native-ready-file=")
+        if not path.is_absolute_path() or FileAccess.file_exists(path): continue
+        var file := FileAccess.open(path,FileAccess.WRITE)
+        if file:
+            var pixels := get_viewport().get_visible_rect().size
+            file.store_string(JSON.stringify({"kind":"LivingEarth3D-native-frame","version":VERSION,"platform":OS.get_name(),"display_server":DisplayServer.get_name(),"frame_rendered":true,"viewport_pixels":[int(pixels.x),int(pixels.y)],"uptime_ms":Time.get_ticks_msec()}))
+            file.flush()
+            file.close()
+    print("LIVING_EARTH_NATIVE_FRAME_READY")
 
 func _process(delta: float) -> void:
     screensaver_age += delta
@@ -345,6 +365,10 @@ func _build_explorer(layer: CanvasLayer) -> void:
         add_child(weather_layer)
         weather_layer.setup(self)
         interface.build_weather_layer_controls()
+        satellite_snapshot = preload("res://scripts/satellite_snapshot.gd").new()
+        add_child(satellite_snapshot)
+        satellite_snapshot.setup(self)
+        interface.build_satellite_controls()
     if not screensaver_mode and "--validate-display" not in OS.get_cmdline_user_args() and DisplayServer.get_name() != "headless":
         call_deferred("start_auto_update")
 
@@ -644,6 +668,7 @@ func set_visual_option(option: String, enabled: bool) -> void:
     preferences.set_value("visuals", option, enabled)
     visuals.apply_options(preferences.get_value("visuals", "clouds", true), preferences.get_value("visuals", "stars", true), preferences.get_value("visuals", "moon", false))
     earth_material.set_shader_parameter("cloud_strength", 0.12 if visuals.clouds_enabled else 0.0)
+    if satellite_snapshot: satellite_snapshot.apply_view()
     _save_preferences()
 
 func set_quality(quality: String, persist := true) -> void:
@@ -747,6 +772,7 @@ func preview_screensaver() -> void:
     saved_solar = utc_sunlight
     observations.cancel_weather()
     if weather_layer: weather_layer.set_suspended(true)
+    if satellite_snapshot: satellite_snapshot.set_suspended(true)
     update_request.cancel_request()
     services.quake_request.cancel_request()
     services.search_request.cancel_request()
@@ -770,6 +796,7 @@ func stop_screensaver_preview() -> void:
     utc_sunlight = saved_solar
     update_sunlight()
     visuals.apply_options(preferences.get_value("visuals", "clouds", true), preferences.get_value("visuals", "stars", true), preferences.get_value("visuals", "moon", false))
+    if satellite_snapshot: satellite_snapshot.set_suspended(false)
     get_window().mode = previous_window_mode
     Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
     interface_layer.show()

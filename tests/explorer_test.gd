@@ -54,14 +54,17 @@ func run() -> void:
     scene.discovery_enabled = true
     scene._process(121.0)
     verify(scene.selected != previous, "Timed discovery advances")
-    verify(scene.newer_version("v0.13.0"), "Newer minor release")
-    verify(scene.newer_version("1.0.0"), "Newer major release")
+    var current_parts: PackedStringArray = scene.VERSION.split(".")
+    var next_minor := "%d.%d.0" % [int(current_parts[0]),int(current_parts[1])+1]
+    var next_major := "%d.0.0" % (int(current_parts[0])+1)
+    verify(scene.newer_version("v" + next_minor), "Newer minor release")
+    verify(scene.newer_version(next_major), "Newer major release")
     verify(not scene.newer_version("v" + str(ProjectSettings.get_setting("application/config/version"))), "Current release ignored")
     verify(not scene.newer_version("v0.0.9"), "Older release ignored")
     verify(not scene.newer_version("v1.0.0-beta"), "Prerelease ignored")
     scene._updates_received(0, 404, PackedStringArray(), PackedByteArray())
     verify(scene.update_status.text.contains("No published update"), "Missing release handled")
-    var feed := {"version": "0.13.0", "channel": "preview", "installer_url": "https://github.com/nortja/Living-earth-3d/raw/refs/heads/downloads/windows-0.13.0/LivingEarth3D-Setup-0.13.0.exe", "sha256": "a".repeat(64), "installer_signed": false}
+    var feed := {"version": next_minor, "channel": "preview", "installer_url": "https://github.com/nortja/Living-earth-3d/raw/refs/heads/downloads/windows-%s/LivingEarth3D-Setup-%s.exe" % [next_minor,next_minor], "sha256": "a".repeat(64), "installer_signed": false}
     scene._updates_received(0, 200, PackedStringArray(), JSON.stringify(feed).to_utf8_buffer())
     verify(scene.update_status.text.contains("available"), "New preview update shown")
     verify(scene.valid_update_feed(feed), "Official preview feed accepted")

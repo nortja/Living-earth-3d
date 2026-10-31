@@ -83,13 +83,36 @@ function Preview-Form([int]$X) {
 }
 try {
  $preflightLog=Join-Path $pwd 'dist/windows-saver-preflight.log'
- $preflight=Start-Process "$root/LivingEarth3D.exe" -ArgumentList ('--resolution 320x200 --audio-driver Dummy --log-file "'+$preflightLog+'" -- --saver-hosted --saver-preview') -PassThru
- Pump 3000
- if($preflight.HasExited){if(Test-Path $preflightLog){Get-Content $preflightLog -Tail 50 | ForEach-Object {Write-Host $_}};throw 'Standalone software OpenGL preflight failed before preview testing'}
- $preflightWindows=@([SaverWindows]::Windows([uint32]$preflight.Id,[IntPtr]::Zero))
+ $preflightReadyFile=Join-Path $pwd 'dist/windows-screensaver-native-ready.json'
+ if(Test-Path $preflightReadyFile){Remove-Item -LiteralPath $preflightReadyFile -Force}
+ $preflight=Start-Process "$root/LivingEarth3D.exe" -ArgumentList ('--resolution 320x200 --audio-driver Dummy --log-file "'+$preflightLog+'" -- --saver-hosted --saver-preview --validate-native-preflight "--native-ready-file='+$preflightReadyFile.Replace('\','/')+'"') -PassThru
+ $preflightDeadline=[DateTime]::UtcNow.AddSeconds(30)
+ $preflightWindows=@()
+ $frameReady=$false
+ while([DateTime]::UtcNow -lt $preflightDeadline){
+  Pump
+  if($preflight.HasExited){break}
+  if(Test-Path $preflightReadyFile){
+   try {
+    $readyData=Get-Content -LiteralPath $preflightReadyFile -Raw|ConvertFrom-Json
+    $frameReady=$readyData.kind -eq 'LivingEarth3D-native-frame' -and $readyData.platform -eq 'Windows' -and $readyData.display_server -ne 'headless' -and $readyData.frame_rendered -eq $true -and $readyData.viewport_pixels.Count -eq 2 -and $readyData.viewport_pixels[0] -gt 0 -and $readyData.viewport_pixels[1] -gt 0
+   } catch {}
+  }
+  $preflightWindows=@([SaverWindows]::Windows([uint32]$preflight.Id,[IntPtr]::Zero)|Where-Object{[SaverWindows]::IsWindowVisible($_)})
+  if($frameReady -and $preflightWindows.Count){break}
+ }
+ if(!$frameReady -or !$preflightWindows.Count -or $preflight.HasExited){
+  if(Test-Path $preflightLog){Get-Content $preflightLog -Tail 60|ForEach-Object{Write-Host $_}}
+  if(!$preflight.HasExited){$preflight.Kill();$preflight.WaitForExit()}
+  throw 'Standalone graphics preflight did not produce a rendered frame and visible window'
+ }
  foreach($w in $preflightWindows){[void][SaverWindows]::PostMessage($w,0x0010,[IntPtr]::Zero,[IntPtr]::Zero)}
- if(!$preflight.WaitForExit(5000)){$preflight.Kill();throw 'Standalone graphics preflight did not close'}
- if(Test-Path $preflightLog){Get-Content $preflightLog -Tail 15 | ForEach-Object {Write-Host $_}}
+ if(!$preflight.WaitForExit(5000)){
+  if(Test-Path $preflightLog){Get-Content $preflightLog -Tail 60|ForEach-Object{Write-Host $_}}
+  $preflight.Kill();$preflight.WaitForExit();throw 'Standalone graphics preflight did not close after its first rendered frame'
+ }
+ if($preflight.ExitCode -ne 0){throw ('Standalone graphics preflight exit code: '+$preflight.ExitCode)}
+ if(Test-Path $preflightLog){Get-Content $preflightLog -Tail 15|ForEach-Object{Write-Host $_}}
  Write-Output 'PASS: standalone packaged Godot graphics initializes before native embedding checks'
  foreach($bad in @('/p','/p:0','/p:-1','/p:18446744073709551616','/p:123')){
   $p=Start-Saver $bad

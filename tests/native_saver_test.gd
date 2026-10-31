@@ -19,6 +19,7 @@ func run() -> void:
     prefs.save(app.preferences_path)
     root.add_child(app)
     await process_frame
+    check(app.get("satellite_snapshot") == null, "Native saver does not construct a satellite service")
     check(app.native_saver, "Host flag enters native saver mode")
     check(app.screensaver_mode, "Hosted renderers are screensavers")
     check(not app.play_intro and not app.intro_running, "Hosted renderer skips intro")

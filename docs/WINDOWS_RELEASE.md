@@ -2,13 +2,13 @@
 
 ## End-user installation
 
-The current artifact is `LivingEarth3D-Setup-0.12.4.exe`: one per-user NSIS installer with desktop/Start menu shortcuts, installed-apps uninstall and no separate runtime. Install once; updater-enabled versions subsequently receive authenticated releases and apply them after normal app/screensaver exit. Preferences and bookmarks remain local. Native screensaver selection is optional.
+The current artifact is `LivingEarth3D-Setup-0.13.1.exe`: one per-user NSIS installer with desktop/Start menu shortcuts, installed-apps uninstall and no separate runtime. Install once; updater-enabled versions subsequently receive authenticated releases and apply them after normal app/screensaver exit. Preferences and bookmarks remain local. Native screensaver selection is optional.
 
 The installer remains Windows publisher-unsigned. Authenticated update metadata uses the existing pinned RSA key independently of Windows Authenticode. Silent installs defer while matching app/screensaver processes are active; they do not force a running user process closed. Handled verification failures restore known previous files and version metadata. This is not a power-loss recovery guarantee.
 
 ## Current evidence
 
-[0.12.4 validation](VALIDATION-0.12.4.md) records the current frozen source, 757 behavior/layout checks, native layouts through 5K, new application/screensaver/installer builds, Windows installation and rollback from 0.5.2 and 0.9.0, actual settings/dropdown, embedded preview/render/resize/memory/lifecycle soak, and installed desktop/resource/report checks.
+[0.13.1 validation](VALIDATION-0.13.1.md) records the exact frozen source and source/native/Windows gates, including the dated satellite surface, camera image bounds/revalidation, initial narrow-window Load action, installed desktop resources/report and native preview/lifecycle. Physical hardware checks remain separate.
 
 Software-rendered disposable Windows/Linux CI does not establish physical Dell GPU/DPI, multiple-monitor, sleep/wake, fan/power or audible playback results. See [field observations](FIELD_CHECKS.md). The old general Windows installer workflow stays disabled, with no automatic push/tag triggers. Release-specific branch workflows validate one candidate without receiving the private release key or promoting the production feed themselves. Promotion follows verified published bytes and a detached signature over exact metadata.
 
@@ -28,8 +28,8 @@ For Linux cross-builds, install the pinned tools in `packaging/windows/requireme
 python packaging/windows/set_icon.py build/windows/earth_template.exe assets/icon.ico
 godot --headless --path . --export-release 'Windows Desktop' build/windows/LivingEarth3D.exe
 python tests/windows_icon_test.py build/windows/LivingEarth3D.exe
-makensis -DVERSION=0.12.4 -DBUILD_DIR=/absolute/repo/build/windows -DOUTPUT=/absolute/repo/dist/LivingEarth3D-Setup-0.12.4.exe packaging/windows/installer.nsi
-python tests/windows_icon_test.py dist/LivingEarth3D-Setup-0.12.4.exe --installer
+makensis -DVERSION=0.13.1 -DBUILD_DIR=/absolute/repo/build/windows -DOUTPUT=/absolute/repo/dist/LivingEarth3D-Setup-0.13.1.exe packaging/windows/installer.nsi
+python tests/windows_icon_test.py dist/LivingEarth3D-Setup-0.13.1.exe --installer
 ```
 
 Version numbers in project.godot, scripts/earth.gd, export_presets.cfg and installer.nsi's fallback should agree. Windows build output names use the project version. Keep private signing material out of the checkout.

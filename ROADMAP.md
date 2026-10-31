@@ -1,6 +1,6 @@
 # Living Earth 3D — current roadmap
 
-Updated 2026-10-31. Latest released baseline: 0.12.4 (camera texture reuse and display/refresh diagnostics, with the 0.12.3 screensaver/settings fixes). One Windows installer, then authenticated automatic updates; the base Earth remains useful offline.
+Updated 2026-10-31. Latest released baseline: 0.13.1 (dated NASA satellite view, conditional camera refresh, bounded JPEG decoding and narrow-window controls). One Windows installer, then authenticated automatic updates; the base Earth remains useful offline.
 
 ## Completed
 
@@ -81,13 +81,23 @@ Updated 2026-10-31. Latest released baseline: 0.12.4 (camera texture reuse and d
 - Godot 4.6.3 import and 315 headless checks passed: performance (25), interface (47), explorer (56), UI scale (187). Native monitor-inventory assertions were added to the existing render harness but have not run in this environment. Windows/native packaging and release checks subsequently passed for 0.12.4; see its validation document.
 - A daily continuation run is configured for around 8 AM America/Los_Angeles. It must skip overlapping work and promote updates only after the existing release gates.
 
-## This release — 0.12.4
+## Previous release — 0.12.4
 
 - [x] Reuse validated unchanged camera textures without changing retrieval, source-time, failure recovery or delayed-image warnings.
 - [x] Refresh monitor details/frame budget after changes on the same monitor; handle non-finite and fractional refresh values safely.
 - [x] Export attached-monitor geometry, DPI, scale, refresh and active screen index in the optional local report.
 - [x] Fresh 757 source checks, native layouts through 5K, Windows upgrades/rollback/settings, actual installed desktop and a 605-second preview/lifecycle soak passed. Public installer downloaded and verified; exact manifest signed with the existing trust key. Production signed-feed staging/cancellation/normal-exit roundtrip also passed on Windows.
-- [ ] Continue final 0.13.1 satellite-view/camera-revalidation candidate through its own release gates (0.13.0 superseded before feed promotion); see [sprint state](docs/SPRINT-2026-10-31.md).
+- [x] Continued into 0.13.1; 0.13.0 was superseded before feed promotion.
+
+## This release — 0.13.1
+
+- [x] Optional requested previous-day NASA GIBS NOAA-20 / VIIRS surface, dated header/status, true no-data gaps, unshaded rendering, immediate offline return and native-saver exclusion.
+- [x] Camera ETag/304 revalidation with original retrieval time, separate check time, retained source metadata and delay warnings; pre-decode bounded JPEG dimensions.
+- [x] Initial satellite Load action visible in narrow windows, with source/native/installed-Windows assertions.
+- [x] Native graphics preflight waits for a real frame plus a visible window, keeps its close deadline and retains failure logs. It runs only with an explicit validation flag.
+- [x] Maintainer release-provenance/download verification with ten failure-path tests; no private key or installer execution in the verifier.
+- [x] Local sixteen-suite coverage: 807 behavior/layout cases plus 200 malformed-image inputs. Actual eight-camera retrieval, conditional provider 304 and NOAA-20 retrieval/rendering passed.
+- [x] Final complete Windows/native pipeline 41224574684 passed, public installer provenance/bytes verified and authenticated metadata promoted. Production roundtrip follows promotion.
 
 ## Next priorities
 
@@ -95,7 +105,7 @@ Updated 2026-10-31. Latest released baseline: 0.12.4 (camera texture reuse and d
 1. **Field validation:** user confirmed the 0.7.0 automatic upgrade; next confirm new screensaver behavior, new desktop/taskbar icon, all camera states, visible-window restart, physical Dell scaling, frame times, memory, fullscreen, sleep/resume and monitor moves.
 2. **Continuous video:** add authorized in-app streaming playback. Current NPS views are periodically refreshed camera images; other streams open the provider website. No continuous embedded video is delivered yet.
 3. **Camera Wall:** eight image sources and bounded textures are implemented; prioritize authorized continuous-video playback and optimize further after actual Dell measurement.
-4. **Living planet:** UTC sunlight is released; requested point-model weather is released in 0.7.0. Sixteen-place model weather points are released in 0.12.2. Next: licensed current cloud refresh and broader weather coverage. Clouds/Moon/stars remain cinematic.
+4. **Living planet:** UTC sunlight is released; requested point-model weather is released in 0.7.0. Sixteen-place model weather points are released in 0.12.2. A requested, dated previous-day NASA satellite mosaic is implemented in 0.13.1. Next: licensed current cloud refresh and broader weather coverage. Default clouds/Moon/stars remain cinematic; the satellite view shows observed imagery only for its stated date.
 5. **Screensaver integration:** Native /p preview and per-monitor hosts are released. Next: physical /s mixed-DPI/monitor checks, lock/sleep/resume, performance and overnight hardware tests. One-hour Linux renderer and Windows preview foundation tests supplement the current-package gates; they do not establish physical hardware behavior.
 
 ## Updater resilience follow-up
