@@ -1,6 +1,6 @@
 # Living Earth 3D — current roadmap
 
-Updated 2026-10-31. Latest released baseline: 0.15.0 (explicit recent-week NASA satellite dates and visible offline return, plus 32-place model weather). One Windows installer, then authenticated automatic updates; the base Earth remains useful offline.
+Updated 2026-10-31. Latest released baseline: 0.16.0 (configuration-aware local performance recordings, recent-week NASA mosaics and 32-place requested weather). One Windows installer, then authenticated automatic updates; the base Earth remains useful offline.
 
 ## Completed
 
@@ -89,12 +89,19 @@ Updated 2026-10-31. Latest released baseline: 0.15.0 (explicit recent-week NASA 
 - [x] Fresh 757 source checks, native layouts through 5K, Windows upgrades/rollback/settings, actual installed desktop and a 605-second preview/lifecycle soak passed. Public installer downloaded and verified; exact manifest signed with the existing trust key. Production signed-feed staging/cancellation/normal-exit roundtrip also passed on Windows.
 - [x] Continued into 0.13.1; 0.13.0 was superseded before feed promotion.
 
-## This release — 0.15.0
+## This release — 0.16.0
+
+- [x] Bounded local recording contexts for quality, cap, viewport, UI scale, screen and window mode; exact frame/time totals and explicitly mixed overflow.
+- [x] Readable Record/Save controls at small sizes; no upload, personal content or native-saver sampling.
+- [x] 1058 source checks, six native layouts, Windows upgrades/rollback/settings, installed desktop/real five-minute export and 605.1-second native preview/lifecycle passed in run 41227593377.
+- [x] Public bytes/source provenance and pinned-key signature verified; authenticated source/feed promoted after 0.15.0 production update passed. 0.16.0 production roundtrip follows promotion.
+
+## Previous release — 0.15.0
 
 - [x] Previous seven UTC satellite days, yesterday by default, local selection until explicit Load and retained observation identity on failed/cancelled requests.
 - [x] Readable, visible Offline Earth beside Load at small sizes; one-image memory bound and no automatic/native-saver requests.
 - [x] 1049 source checks, actual October24 retrieval and four native layouts through 5K. Final Windows upgrade/rollback/settings, installed desktop and 605.1-second preview/lifecycle gates passed in run 41227218923.
-- [x] Public installer provenance/bytes verified and pinned-key signed metadata promoted atomically. Production updater roundtrip follows promotion.
+- [x] Public installer provenance/bytes verified and pinned-key signed metadata promoted atomically. Production Windows updater roundtrip passed; see release validation.
 
 ## Previous release — 0.14.0
 

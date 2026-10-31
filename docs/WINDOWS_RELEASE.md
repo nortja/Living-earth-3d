@@ -2,13 +2,13 @@
 
 ## End-user installation
 
-The current artifact is `LivingEarth3D-Setup-0.15.0.exe`: one per-user NSIS installer with desktop/Start menu shortcuts, installed-apps uninstall and no separate runtime. Install once; updater-enabled versions subsequently receive authenticated releases and apply them after normal app/screensaver exit. Preferences and bookmarks remain local. Native screensaver selection is optional.
+The current artifact is `LivingEarth3D-Setup-0.16.0.exe`: one per-user NSIS installer with desktop/Start menu shortcuts, installed-apps uninstall and no separate runtime. Install once; updater-enabled versions subsequently receive authenticated releases and apply them after normal app/screensaver exit. Preferences and bookmarks remain local. Native screensaver selection is optional.
 
 The installer remains Windows publisher-unsigned. Authenticated update metadata uses the existing pinned RSA key independently of Windows Authenticode. Silent installs defer while matching app/screensaver processes are active; they do not force a running user process closed. Handled verification failures restore known previous files and version metadata. This is not a power-loss recovery guarantee.
 
 ## Current evidence
 
-[0.15.0 validation](VALIDATION-0.15.0.md) records the exact frozen source and source/native/Windows gates, including the dated satellite surface, camera image bounds/revalidation, initial narrow-window Load action, installed desktop resources/report and native preview/lifecycle. Physical hardware checks remain separate.
+[0.16.0 validation](VALIDATION-0.16.0.md) records the exact frozen source and source/native/Windows gates, including the dated satellite surface, camera image bounds/revalidation, initial narrow-window Load action, installed desktop resources/report and native preview/lifecycle. Physical hardware checks remain separate.
 
 Software-rendered disposable Windows/Linux CI does not establish physical Dell GPU/DPI, multiple-monitor, sleep/wake, fan/power or audible playback results. See [field observations](FIELD_CHECKS.md). The old general Windows installer workflow stays disabled, with no automatic push/tag triggers. Release-specific branch workflows validate one candidate without receiving the private release key or promoting the production feed themselves. Promotion follows verified published bytes and a detached signature over exact metadata.
 
@@ -28,8 +28,8 @@ For Linux cross-builds, install the pinned tools in `packaging/windows/requireme
 python packaging/windows/set_icon.py build/windows/earth_template.exe assets/icon.ico
 godot --headless --path . --export-release 'Windows Desktop' build/windows/LivingEarth3D.exe
 python tests/windows_icon_test.py build/windows/LivingEarth3D.exe
-makensis -DVERSION=0.15.0 -DBUILD_DIR=/absolute/repo/build/windows -DOUTPUT=/absolute/repo/dist/LivingEarth3D-Setup-0.15.0.exe packaging/windows/installer.nsi
-python tests/windows_icon_test.py dist/LivingEarth3D-Setup-0.15.0.exe --installer
+makensis -DVERSION=0.16.0 -DBUILD_DIR=/absolute/repo/build/windows -DOUTPUT=/absolute/repo/dist/LivingEarth3D-Setup-0.16.0.exe packaging/windows/installer.nsi
+python tests/windows_icon_test.py dist/LivingEarth3D-Setup-0.16.0.exe --installer
 ```
 
 Version numbers in project.godot, scripts/earth.gd, export_presets.cfg and installer.nsi's fallback should agree. Windows build output names use the project version. Keep private signing material out of the checkout.
@@ -66,6 +66,6 @@ On Windows with an interactive desktop, after building or installing the actual 
 
 The runner executes the packaged app at 1920×1080, 3440×1440, 3840×2160, 5120×1440 and 5120×2880. It requires fresh JSON evidence, a Windows platform result, exact viewport dimensions, a rendered globe, visible control bounds and an unobstructed center. It saves Earth/Command Center screenshots and GPU identity. A headless result cannot pass. A desktop or driver that clamps oversized windows fails the requested size instead of silently passing. Use an appropriately sized Windows desktop for those cases.
 
-This harness is prepared, PowerShell-parsed locally, and exercised through the Linux native application for layout checks. It has **not executed on Windows**. Screenshots still need human review; frame timing, real monitor scaling, 60/120/144 Hz behavior, Windows 10/11 installation/upgrade and physical multi-monitor checks are separate. Current release-specific CI exercises an installed desktop and native screensaver, but does not establish this full Windows display-size matrix or physical Dell behavior. The old general workflow remains disabled.
+This harness is prepared, PowerShell-parsed locally, and exercised through the Linux native application for layout checks. The full Windows size matrix is being exercised separately; no passed matrix result is claimed yet. Screenshots still need human review; frame timing, real monitor scaling, 60/120/144 Hz behavior, Windows 10/11 installation/upgrade and physical multi-monitor checks are separate. Current release-specific CI exercises an installed desktop and native screensaver, but does not establish this full Windows display-size matrix or physical Dell behavior. The old general workflow remains disabled.
 
 Public-data requests remain explicit: USGS earthquakes, OpenStreetMap search, Open-Meteo model weather and allowlisted NPS/USGS camera images. Provider availability and capture freshness are not guaranteed. See the relevant feature and release validation documents for actual retrieval evidence and limits.

@@ -36,6 +36,11 @@ func run() -> void:
     verify(report.recorded_frames == 800 and report.record_peak_memory == 1000000799, "Recording retains memory peak and total frames")
     report.sample_frame(0.06,1000100)
     verify(report.record_slow_frames == 1, "Slow frame threshold is explicit")
+    var contexts:Array[Dictionary]=report.context_snapshot()
+    verify(contexts.size()==1 and contexts[0].frames==801 and contexts[0].frames_over_50ms==1,"Unchanged configuration groups all active frames without losing slow frames")
+    verify(contexts[0].context.quality==app.visual_quality and contexts[0].context.active_screen==null,"Context records actual quality and no invented headless screen")
+    contexts[0].context.quality="tampered snapshot"
+    verify(report.context_snapshot()[0].context.quality==app.visual_quality,"Exported context copy cannot alter retained measurements")
     report.sample_frame(INF,1)
     report.sample_frame(-1.0,1)
     verify(report.recorded_frames == 801, "Invalid frame intervals ignored")
@@ -44,6 +49,25 @@ func run() -> void:
     report.sample_frame(0.01,1000000)
     verify(report.recorded_frames == total, "Stopped recording remains stable")
     report.start_recording()
+    var initial_cap:=Engine.max_fps
+    report.sample_frame(0.02,1)
+    Engine.max_fps=30
+    report.sample_frame(0.04,1)
+    verify(report.record_contexts.size()==2 and report.record_contexts[0].context.frame_cap==initial_cap and report.record_contexts[1].context.frame_cap==30,"Frame cap change starts a separate measured context")
+    verify(is_equal_approx(report.record_contexts[1].start_active_seconds,0.02) and is_equal_approx(report.context_snapshot()[1].mean_ms,40.0),"Context uses active elapsed time and its own frame intervals")
+    for index in range(50):
+        Engine.max_fps=31+index
+        report.sample_frame(0.01,1)
+    verify(report.record_contexts.size()==Report.MAX_CONTEXTS and report.context_limit_reached,"Repeated changes cannot grow the context report without bound")
+    var exported:Array[Dictionary]=report.context_snapshot()
+    verify(exported[-1].context.mixed and not exported[-1].context.has("frame_cap"),"Overflow explicitly groups mixed settings without assigning a false cap")
+    var counted:=0
+    var seconds:=0.0
+    for segment in exported: counted+=segment.frames;seconds+=segment.active_seconds
+    verify(counted==report.recorded_frames and is_equal_approx(seconds,report.recorded_seconds),"Bounded context totals retain every recorded frame and active second")
+    Engine.max_fps=initial_cap
+    report.start_recording()
+    verify(report.record_contexts.is_empty() and not report.context_limit_reached,"New recording clears old contexts and overflow state")
     for index in range(301): report.sample_frame(1.0,2000000)
     verify(not report.recording and report.recorded_frames == 300, "Five active minute recording stops automatically")
     report.start_recording()

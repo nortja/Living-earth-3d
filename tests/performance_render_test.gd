@@ -22,7 +22,14 @@ func run() -> void:
         if not app.performance_report.snapshot.display.available or str(app.performance_report.snapshot.display.gpu).is_empty():
             failures += 1
             push_error("Native report lacks actual GPU/display")
+        if not ui.page_scroll.get_global_rect().encloses(ui.performance_record.get_global_rect()) or not ui.page_scroll.get_global_rect().encloses(ui.performance_save.get_global_rect()):
+            failures += 1
+            push_error("Recording/save actions require scrolling")
         var display: Dictionary = app.performance_report.snapshot.display
+        var contexts:Array=app.performance_report.snapshot.recording.contexts
+        if contexts.is_empty() or contexts[-1].context.viewport_pixels != [pixels.x,pixels.y]:
+            failures += 1
+            push_error("Native recording context lacks the current measured viewport")
         if display.monitors.size() != DisplayServer.get_screen_count() or display.active_screen != root.current_screen:
             failures += 1
             push_error("Native report lacks complete monitor inventory or active screen")
@@ -33,6 +40,9 @@ func run() -> void:
                 push_error("Monitor geometry/scale differs from display server")
         root.get_texture().get_image().save_png("res://dist/performance-%dx%d.png" % [pixels.x,pixels.y])
     app.performance_report.stop_recording()
+    if app.performance_report.record_contexts.size()<6:
+        failures += 1
+        push_error("Native recording did not separate changed viewport sizes")
     DirAccess.remove_absolute(ProjectSettings.globalize_path(app.preferences_path))
     app.queue_free()
     await process_frame

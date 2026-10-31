@@ -1,4 +1,4 @@
-name: Actual packaged Windows display matrix 0.16.0
+name: Actual Windows 0.16.0 framebuffer matrix after startup resize
 on:
   push:
     branches: [validation/display-0.16.0]
@@ -31,7 +31,7 @@ jobs:
           $root=Join-Path $env:RUNNER_TEMP 'Living Earth display test'
           $p=Start-Process $installer -ArgumentList "/S /D=$root" -PassThru -Wait
           if($p.ExitCode -ne 0){throw 'Display-test installation failed'}
-          ./tests/windows_display_test.ps1 -Application (Join-Path $root 'LivingEarth3D.exe')
+          ./tests/windows_display_test.ps1 -Application (Join-Path $root 'LivingEarth3D.exe') -ResizeAfterStartup
       - uses: actions/upload-artifact@v4
         if: always()
         with:
