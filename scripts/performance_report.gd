@@ -17,6 +17,7 @@ var record_peak_memory := 0
 var record_end_memory := 0
 var record_contexts: Array[Dictionary] = []
 var context_limit_reached := false
+var context_screen_index:Variant=null
 var snapshot: Dictionary = {}
 var tick := 0.0
 var report_path := "user://display-report.json"
@@ -85,7 +86,8 @@ func stop_recording() -> void:
 func recording_context() -> Dictionary:
     var pixels := app.get_viewport().get_visible_rect().size
     var native := DisplayServer.get_name() != "headless"
-    return {"quality":app.visual_quality,"frame_cap":Engine.max_fps,"ui_scale":app.interface.display_scale if app.interface else 1.0,"viewport_pixels":[int(pixels.x),int(pixels.y)],"active_screen":app.get_window().current_screen if native else null,"window_mode":app.get_window().mode if native else null}
+    # Windows current_screen enumerates monitors; sample it with the report, not every frame.
+    return {"quality":app.visual_quality,"frame_cap":Engine.max_fps,"ui_scale":app.interface.display_scale if app.interface else 1.0,"viewport_pixels":[int(pixels.x),int(pixels.y)],"active_screen":context_screen_index if native else null,"window_mode":app.get_window().mode if native else null}
 
 func _record_context(seconds: float, ms: float) -> void:
     var context := recording_context()
@@ -136,12 +138,14 @@ func monitor_snapshot() -> Array[Dictionary]:
 func build_snapshot() -> Dictionary:
     var tracked_bytes := int(Performance.get_monitor(Performance.MEMORY_STATIC))
     var display: Dictionary = {"available":false}
+    context_screen_index=null
     if DisplayServer.get_name() != "headless":
         var screen := app.get_window().current_screen
+        context_screen_index=screen
         var pixels := DisplayServer.screen_get_size(screen)
         var viewport := app.get_viewport().get_visible_rect().size
         display = {"available":true,"active_screen":screen,"monitors":monitor_snapshot(),"monitor_pixels":[pixels.x,pixels.y],"viewport_pixels":[int(viewport.x),int(viewport.y)],"dpi":DisplayServer.screen_get_dpi(screen),"refresh_hz":refresh_value(DisplayServer.screen_get_refresh_rate(screen)),"gpu":RenderingServer.get_video_adapter_name(),"renderer":RenderingServer.get_current_rendering_method(),"window_mode":app.get_window().mode}
-    return {"schema":1,"product":"LivingEarth3D","version":app.VERSION,"retrieved_utc":Time.get_datetime_string_from_system(true)+"Z","os":OS.get_name(),"engine":Engine.get_version_info().string,"display":display,"quality":app.visual_quality,"frame_cap":Engine.max_fps,"ui_scale":app.interface.display_scale if app.interface else 1.0,"recent_frames":frame_stats(recent),"memory_counter_available":tracked_bytes > 0,"engine_tracked_memory_bytes":memory_value(tracked_bytes),"recording":{"active":recording,"active_seconds":recorded_seconds,"frames":recorded_frames,"mean_ms":record_sum_ms / recorded_frames if recorded_frames > 0 else 0.0,"max_ms":record_peak_ms,"frames_over_50ms":record_slow_frames,"start_engine_memory_bytes":memory_value(record_start_memory),"end_engine_memory_bytes":memory_value(record_end_memory),"peak_engine_memory_bytes":memory_value(record_peak_memory),"contexts":context_snapshot(),"context_limit_reached":context_limit_reached},"limits":"Frame intervals include the FPS cap and scheduling. Engine tracked memory is unavailable in release builds; when available it excludes driver/GPU/process allocations. Unavailable memory values are null. Minimized or sleep intervals over two seconds are excluded. Recording contexts group active frames by quality, frame cap, viewport, interface scale, screen index and window mode; after 31 configuration segments, remaining frames use an explicitly mixed bucket. Monitor inventory is a current snapshot, not a historical DPI trace. No hardware pass/fail score."}
+    return {"schema":1,"product":"LivingEarth3D","version":app.VERSION,"retrieved_utc":Time.get_datetime_string_from_system(true)+"Z","os":OS.get_name(),"engine":Engine.get_version_info().string,"display":display,"quality":app.visual_quality,"frame_cap":Engine.max_fps,"ui_scale":app.interface.display_scale if app.interface else 1.0,"recent_frames":frame_stats(recent),"memory_counter_available":tracked_bytes > 0,"engine_tracked_memory_bytes":memory_value(tracked_bytes),"recording":{"active":recording,"active_seconds":recorded_seconds,"frames":recorded_frames,"mean_ms":record_sum_ms / recorded_frames if recorded_frames > 0 else 0.0,"max_ms":record_peak_ms,"frames_over_50ms":record_slow_frames,"start_engine_memory_bytes":memory_value(record_start_memory),"end_engine_memory_bytes":memory_value(record_end_memory),"peak_engine_memory_bytes":memory_value(record_peak_memory),"contexts":context_snapshot(),"context_limit_reached":context_limit_reached,"screen_index_poll_seconds":1.0},"limits":"Frame intervals include the FPS cap and scheduling. Engine tracked memory is unavailable in release builds; when available it excludes driver/GPU/process allocations. Unavailable memory values are null. Minimized or sleep intervals over two seconds are excluded. Recording contexts group active frames by quality, frame cap, viewport, interface scale, screen index and window mode; after 31 configuration segments, remaining frames use an explicitly mixed bucket. Screen index is sampled with the display report and can lag by about one active second; other context settings are sampled each frame. Monitor inventory is a current snapshot, not a historical DPI trace. No hardware pass/fail score."}
 
 func export_report() -> Error:
     snapshot = build_snapshot()

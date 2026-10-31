@@ -1,4 +1,4 @@
-param([Parameter(Mandatory=$true)][string]$Installer)
+param([Parameter(Mandatory=$true)][string]$Installer,[switch]$FullDisplayMatrix)
 $ErrorActionPreference='Stop'
 $fixture=Join-Path $env:RUNNER_TEMP ('earth packaged desktop '+[guid]::NewGuid())
 $root=Join-Path $fixture 'Living Earth 3D'
@@ -25,6 +25,9 @@ try {
  $text=Get-Content $log -Raw
  if($text -match '(?m)^(SCRIPT ERROR|ERROR):' -or $text -notmatch 'Packaged Windows desktop: 0 failures'){throw 'Packaged desktop output did not pass'}
  Write-Output 'PASS: installed photographs, model layer, preview isolation and five-minute local performance recording'
+ if($FullDisplayMatrix){
+  & "$PSScriptRoot/windows_display_test.ps1" -Application (Join-Path $root 'LivingEarth3D.exe') -OutputDirectory (Join-Path $evidence 'native-display') -ResizeAfterStartup
+ }
 } finally {
  if($app -and !$app.HasExited){$app.Kill();$app.WaitForExit()}
  $uninstall=Start-Process "$root/Uninstall.exe" -ArgumentList "/S _?=$root" -Wait -PassThru
