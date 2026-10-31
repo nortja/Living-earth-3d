@@ -83,18 +83,19 @@ function Preview-Form([int]$X) {
 }
 try {
  $preflightLog=Join-Path $pwd 'dist/windows-saver-preflight.log'
- $preflight=Start-Process "$root/LivingEarth3D.exe" -ArgumentList ('--resolution 320x200 --audio-driver Dummy --log-file "'+$preflightLog+'" -- --saver-hosted --saver-preview --validate-native-preflight') -PassThru
+ $preflightReadyFile=Join-Path $pwd 'dist/windows-screensaver-native-ready.json'
+ if(Test-Path $preflightReadyFile){Remove-Item -LiteralPath $preflightReadyFile -Force}
+ $preflight=Start-Process "$root/LivingEarth3D.exe" -ArgumentList ('--resolution 320x200 --audio-driver Dummy --log-file "'+$preflightLog+'" -- --saver-hosted --saver-preview --validate-native-preflight "--native-ready-file='+$preflightReadyFile.Replace('\','/')+'"') -PassThru
  $preflightDeadline=[DateTime]::UtcNow.AddSeconds(30)
  $preflightWindows=@()
  $frameReady=$false
  while([DateTime]::UtcNow -lt $preflightDeadline){
   Pump
   if($preflight.HasExited){break}
-  if(Test-Path $preflightLog){
+  if(Test-Path $preflightReadyFile){
    try {
-    $stream=[IO.File]::Open($preflightLog,[IO.FileMode]::Open,[IO.FileAccess]::Read,([IO.FileShare]::ReadWrite -bor [IO.FileShare]::Delete))
-    $reader=[IO.StreamReader]::new($stream)
-    try {$frameReady=$reader.ReadToEnd().Contains('LIVING_EARTH_NATIVE_FRAME_READY')} finally {$reader.Dispose()}
+    $readyData=Get-Content -LiteralPath $preflightReadyFile -Raw|ConvertFrom-Json
+    $frameReady=$readyData.kind -eq 'LivingEarth3D-native-frame' -and $readyData.platform -eq 'Windows' -and $readyData.display_server -ne 'headless' -and $readyData.frame_rendered -eq $true -and $readyData.viewport_pixels.Count -eq 2 -and $readyData.viewport_pixels[0] -gt 0 -and $readyData.viewport_pixels[1] -gt 0
    } catch {}
   }
   $preflightWindows=@([SaverWindows]::Windows([uint32]$preflight.Id,[IntPtr]::Zero)|Where-Object{[SaverWindows]::IsWindowVisible($_)})

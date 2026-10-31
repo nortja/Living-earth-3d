@@ -197,7 +197,18 @@ func _ready() -> void:
 func _native_preflight_ready() -> void:
     if DisplayServer.get_name() == "headless": return
     await RenderingServer.frame_post_draw
-    # Opt-in release-harness signal, after a real native graphics frame.
+    # Release loggers can buffer output. The opt-in harness uses an explicitly
+    # flushed, closed file as its live signal, never a buffered print message.
+    for argument in OS.get_cmdline_user_args():
+        if not argument.begins_with("--native-ready-file="): continue
+        var path := argument.trim_prefix("--native-ready-file=")
+        if not path.is_absolute_path() or FileAccess.file_exists(path): continue
+        var file := FileAccess.open(path,FileAccess.WRITE)
+        if file:
+            var pixels := get_viewport().get_visible_rect().size
+            file.store_string(JSON.stringify({"kind":"LivingEarth3D-native-frame","version":VERSION,"platform":OS.get_name(),"display_server":DisplayServer.get_name(),"frame_rendered":true,"viewport_pixels":[int(pixels.x),int(pixels.y)],"uptime_ms":Time.get_ticks_msec()}))
+            file.flush()
+            file.close()
     print("LIVING_EARTH_NATIVE_FRAME_READY")
 
 func _process(delta: float) -> void:
