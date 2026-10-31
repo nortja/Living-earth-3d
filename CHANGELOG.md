@@ -1,3 +1,10 @@
+## 0.17.0 preview — 2026-10-31
+
+- Add 243 pinned public-domain Natural Earth city reference points, merged with original places without replacing their coordinates.
+- Search offline country codes, common aliases and Latin diacritics; rank exact/prefix city matches and browse bounded eight-result pages.
+- Keep coordinate and explicit online search separate. Added source credit and a reproducible checksum-verified data converter.
+- All 1079 source checks and native atlas layouts through 5K passed; complete fresh Windows/native gates passed; verified public bytes and authenticated metadata promoted.
+
 ## 0.16.0 preview — 2026-10-31
 
 - Keep quality, FPS cap, viewport, interface scale, screen and window changes beside their measured frame intervals in local performance recordings.

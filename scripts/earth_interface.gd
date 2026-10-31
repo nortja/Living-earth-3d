@@ -34,8 +34,14 @@ var dock: PanelContainer
 var header: HBoxContainer
 var page_title: Label
 var atlas: Array = []
+const OfflineAtlas = preload("res://scripts/offline_atlas.gd")
+var offline_query := ""
+var offline_page := 0
+var offline_previous: Button
+var offline_next: Button
 var cameras: Array = []
 var search_results: VBoxContainer
+var search_query: LineEdit
 var search_status: Label
 var quake_results: VBoxContainer
 var quake_status: Label
@@ -92,7 +98,7 @@ func setup(owner_app: Node3D) -> void:
         theme.set_stylebox("focus", type, focus)
     theme.set_constant("separation", "VBoxContainer", 10)
     theme.set_constant("separation", "HBoxContainer", 8)
-    atlas = JSON.parse_string(FileAccess.get_file_as_string("res://data/atlas.json"))
+    atlas = OfflineAtlas.load_places()
     cameras = JSON.parse_string(FileAccess.get_file_as_string("res://data/cameras.json"))
     header = HBoxContainer.new()
     add_child(header)
@@ -281,7 +287,8 @@ func relayout() -> void:
         panel.position = Vector2(size.x - width - 24, 88)
         panel.size = Vector2(width, maxf(250, size.y - 88 - dock.size.y - 44))
     else:
-        var sheet_height := minf(360,size.y-190) if (active_page == "Destination" and arrival_has_photo) or active_page in ["Weather globe", "Satellite view", "Display report"] else 190.0
+        var search_open:bool=active_page=="Explore" and exploration_panel!=null and exploration_panel.sections.Search.visible
+        var sheet_height := minf(360,size.y-190) if search_open or (active_page == "Destination" and arrival_has_photo) or active_page in ["Weather globe", "Satellite view", "Display report"] else 190.0
         panel.position = Vector2(24, size.y - sheet_height - 92)
         panel.size = Vector2(size.x - 48, sheet_height)
     command_card.position = Vector2(24, 104)
@@ -311,15 +318,26 @@ func _explore(box: VBoxContainer) -> void:
 func _explore_search(box: VBoxContainer) -> void:
     label(box, "A world worth exploring", 18)
     var query := LineEdit.new()
+    search_query=query
     query.placeholder_text = "Place or latitude, longitude"
+    query.max_length = 80
     query.custom_minimum_size.y = 38
     box.add_child(query)
     query.text_submitted.connect(_search_offline)
-    button(box, "Search offline atlas", func(): _search_offline(query.text))
-    button(box, "Search worldwide · online", func(): app.services.search_worldwide(query.text))
+    var search_actions:=HBoxContainer.new()
+    box.add_child(search_actions)
+    var local_search:=button(search_actions,"Search offline atlas",func(): _search_offline(query.text))
+    var worldwide_search:=button(search_actions,"Worldwide · online",func(): app.services.search_worldwide(query.text))
+    local_search.size_flags_horizontal=Control.SIZE_EXPAND_FILL
+    worldwide_search.size_flags_horizontal=Control.SIZE_EXPAND_FILL
     search_status = label(box, app.services.search_status, 12)
+    offline_previous=button(box,"Previous offline results",func(): _search_offline_page(offline_page-1))
+    offline_next=button(box,"Next offline results",func(): _search_offline_page(offline_page+1))
+    offline_previous.hide();offline_next.hide()
     search_results = VBoxContainer.new()
     box.add_child(search_results)
+    label(box,"Offline cities: Natural Earth reference points, plus the original places. Modern globe imagery; not street-level detail.",12)
+    button(box,"Offline atlas source · Natural Earth ↗",func(): OS.shell_open("https://www.naturalearthdata.com/downloads/110m-cultural-vectors/110m-populated-places/"))
     app.place_picker = OptionButton.new()
     app.place_picker.add_item("Curated destinations…")
     for place in app.destinations:
@@ -366,6 +384,9 @@ func _show_search(places: Array) -> void:
 
 func _search_offline(query: String) -> void:
     query = query.strip_edges()
+    offline_query=query
+    offline_page=0
+    offline_previous.hide();offline_next.hide()
     var matches: Array = []
     var coordinates := query.split(",")
     if coordinates.size() == 2 and coordinates[0].strip_edges().is_valid_float() and coordinates[1].strip_edges().is_valid_float():
@@ -374,14 +395,21 @@ func _search_offline(query: String) -> void:
         if app.services.valid_coordinates(lat, lon):
             matches.append({"name": "%.4f°, %.4f°" % [lat, lon], "latitude": lat, "longitude": lon})
     elif not query.is_empty():
-        for place in atlas + app.destinations:
-            if str(place.name).to_lower().contains(query.to_lower()):
-                matches.append(place)
-            if matches.size() == 8: break
+        _search_offline_page(0)
+        return
     search_status.text = "%d offline results · use worldwide search for more" % matches.size()
     _show_search(matches)
 
+func _search_offline_page(page: int) -> void:
+    var result:Dictionary=OfflineAtlas.search(offline_query,atlas+app.destinations,page)
+    offline_page=result.page
+    search_status.text="%d offline matches · page %d of %d" % [result.total,result.page+1,result.pages] if result.total>0 else "No offline matches · try another place or request worldwide search"
+    offline_previous.visible=result.page>0
+    offline_next.visible=result.page+1<result.pages
+    _show_search(result.places)
+
 func _worldwide_results() -> void:
+    offline_previous.hide();offline_next.hide()
     search_status.text = app.services.search_status
     _show_search(app.services.results)
 

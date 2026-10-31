@@ -1,6 +1,6 @@
 # Living Earth 3D — current roadmap
 
-Updated 2026-10-31. Latest released baseline: 0.16.0 (configuration-aware local performance recordings, recent-week NASA mosaics and 32-place requested weather). One Windows installer, then authenticated automatic updates; the base Earth remains useful offline.
+Updated 2026-10-31. Latest released baseline: 0.17.0 (expanded sourced offline atlas and paginated local city/country search, plus recent satellite dates, 32-point weather and configuration-aware local reports). One Windows installer, then authenticated automatic updates; the base Earth remains useful offline.
 
 ## Completed
 
@@ -89,12 +89,20 @@ Updated 2026-10-31. Latest released baseline: 0.16.0 (configuration-aware local 
 - [x] Fresh 757 source checks, native layouts through 5K, Windows upgrades/rollback/settings, actual installed desktop and a 605-second preview/lifecycle soak passed. Public installer downloaded and verified; exact manifest signed with the existing trust key. Production signed-feed staging/cancellation/normal-exit roundtrip also passed on Windows.
 - [x] Continued into 0.13.1; 0.13.0 was superseded before feed promotion.
 
-## This release — 0.16.0
+## This release — 0.17.0
+
+- [x] Natural Earth 243-city reference dataset merged with original atlas; original coordinates retained, matching aliases merged and nearby landmarks kept distinct.
+- [x] Local country/code/diacritic terms, ranked results, complete eight-result paging and separate coordinate/online search. Public-domain source, pinned hash and reproducible conversion recorded.
+- [x] 1079 source checks, seven native layouts through 5K and full Windows upgrades/rollback/settings, installed resources/paging/recording and 605.1-second native preview/lifecycle passed in run 41228250585.
+- [x] Public source/bytes and pinned-key signature verified; authenticated source/feed promoted after successful 0.16.0 production roundtrip. 0.17.0 production roundtrip follows promotion.
+- [x] Supplementary frozen 0.16.0 actual Windows framebuffer matrix passed at 1080p, ultrawide, 4K and 5K using explicit post-start resizing on a small virtual desktop; physical monitor/DPI checks remain separate.
+
+## Previous release — 0.16.0
 
 - [x] Bounded local recording contexts for quality, cap, viewport, UI scale, screen and window mode; exact frame/time totals and explicitly mixed overflow.
 - [x] Readable Record/Save controls at small sizes; no upload, personal content or native-saver sampling.
 - [x] 1058 source checks, six native layouts, Windows upgrades/rollback/settings, installed desktop/real five-minute export and 605.1-second native preview/lifecycle passed in run 41227593377.
-- [x] Public bytes/source provenance and pinned-key signature verified; authenticated source/feed promoted after 0.15.0 production update passed. 0.16.0 production roundtrip follows promotion.
+- [x] Public bytes/source provenance and pinned-key signature verified; authenticated source/feed promoted after 0.15.0 production update passed. 0.16.0 production Windows updater roundtrip passed; see release validation.
 
 ## Previous release — 0.15.0
 
