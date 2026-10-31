@@ -5,7 +5,8 @@ const Weather = preload("res://scripts/weather_service.gd")
 const Data = preload("res://scripts/earth_services.gd")
 const MAX_AGE := 86400.0
 const STALE_AGE := 5400.0
-const COOLDOWN_MS := 300000
+const COOLDOWN_MS := 600000
+const MAX_PLACES := 32
 var app: Node3D
 var places: Array = JSON.parse_string(FileAccess.get_file_as_string("res://data/weather_places.json"))
 var points: Array = []
@@ -48,13 +49,13 @@ func _process(delta: float) -> void:
 func refresh() -> void:
     if app.screensaver_mode or suspended or loading: return
     if Time.get_ticks_msec()-last_attempt < COOLDOWN_MS:
-        status = "Wait five minutes between model-layer requests. Previous points remain labelled."
+        status = "Wait ten minutes between model-layer requests. Previous points remain labelled."
         changed.emit()
         return
     cancel()
     last_attempt = Time.get_ticks_msec()
     loading = true
-    status = "Requesting sixteen public model points…"
+    status = "Requesting %d public model points…" % places.size()
     changed.emit()
     request = HTTPRequest.new()
     request.timeout = 20
@@ -66,7 +67,7 @@ func refresh() -> void:
         var host_port := proxy.get_slice("://",1).get_slice("/",0)
         if not "@" in host_port and host_port.count(":") == 1: request.set_https_proxy(host_port.get_slice(":",0),int(host_port.get_slice(":",1)))
     request.request_completed.connect(_received.bind(generation))
-    if request.request(request_url(),["User-Agent: LivingEarth3D/0.12.0 (+https://github.com/nortja/Living-earth-3d)"]) != OK:
+    if request.request(request_url(),["User-Agent: LivingEarth3D/0.14.0 (+https://github.com/nortja/Living-earth-3d)"]) != OK:
         _received(HTTPRequest.RESULT_CANT_CONNECT,0,PackedStringArray(),PackedByteArray(),generation)
 
 func request_url() -> String:
@@ -103,7 +104,7 @@ static func age(point: Dictionary, now: float) -> float:
 
 static func parse_batch(feed: Variant, locations: Array, now: float) -> Array:
     var result: Array = []
-    if not feed is Array or feed.size() != locations.size() or locations.size() != 16: return result
+    if not feed is Array or feed.size() != locations.size() or locations.is_empty() or locations.size() > MAX_PLACES: return result
     for index in range(locations.size()):
         var row = feed[index]
         var place: Dictionary = locations[index]
@@ -130,7 +131,7 @@ func _received(result: int, code: int, _headers: PackedStringArray, bytes: Packe
     else:
         points = parsed
         retrieved = Time.get_datetime_string_from_system(true).replace("T"," ")
-        status = "Retrieved %s UTC · %d / 16 Open-Meteo model points" % [retrieved,points.size()]
+        status = "Retrieved %s UTC · %d / %d Open-Meteo model points" % [retrieved,points.size(),places.size()]
         _rebuild_markers()
         enabled = true
         var file := FileAccess.open(cache_path,FileAccess.WRITE)
@@ -236,3 +237,20 @@ func pick(screen_position: Vector2) -> int:
             best = index
             best_distance = distance
     return best
+
+func search_indices(query: String) -> Array[int]:
+    var result: Array[int] = []
+    var text := query.strip_edges().to_lower()
+    var aliases := {"us":"united states usa","gb":"united kingdom uk britain","ae":"united arab emirates uae","tr":"turkey türkiye","kr":"south korea republic of korea"}
+    var exact: String = str({"usa":"us","uk":"gb","uae":"ae"}.get(text,text))
+    var known_code := false
+    for place in places:
+        if str(place.get("country_code","")).to_lower() == exact: known_code = true;break
+    for index in range(points.size()):
+        var point: Dictionary = points[index]
+        var place: Dictionary = places[int(point.location_index)]
+        var code := str(place.get("country_code","")).to_lower()
+        var searchable := str(point.name).to_lower()+" "+code+" "+str(aliases.get(code,""))
+        if text.is_empty() or (known_code and code == exact) or (not known_code and searchable.contains(text)):
+            result.append(index)
+    return result

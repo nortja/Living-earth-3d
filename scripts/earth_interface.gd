@@ -14,6 +14,7 @@ var weather_layer_refresh: Button
 var weather_layer_cancel: Button
 var weather_layer_status: Label
 var weather_layer_toggle: CheckButton
+var weather_layer_query: LineEdit
 var weather_layer_picker: OptionButton
 var weather_layer_legend: Label
 var performance_values: Label
@@ -709,7 +710,7 @@ func build_weather_layer_controls() -> void:
     pages["Live Earth"].move_child(entry,2)
     var box: VBoxContainer = pages["Weather globe"]
     label(box,"Weather around Earth",18)
-    label(box,"Sixteen public model points · refreshed only when requested",12)
+    label(box,"32 public model points · loaded only when requested",12)
     weather_layer_status = label(box,"",12)
     weather_layer_refresh = button(box,"Load / refresh weather points",app.weather_layer.refresh)
     weather_layer_cancel = button(box,"Cancel weather-layer request",app.weather_layer.cancel)
@@ -718,13 +719,20 @@ func build_weather_layer_controls() -> void:
     weather_layer_toggle.toggled.connect(app.weather_layer.set_enabled)
     box.add_child(weather_layer_toggle)
     weather_layer_legend = label(box,"",12)
+    weather_layer_query = LineEdit.new()
+    weather_layer_query.placeholder_text = "Find a loaded place or country"
+    weather_layer_query.max_length = 80
+    weather_layer_query.clear_button_enabled = true
+    weather_layer_query.text_changed.connect(func(_query: String): _weather_layer_changed())
+    box.add_child(weather_layer_query)
     weather_layer_picker = OptionButton.new()
     weather_layer_picker.clip_text = true
     weather_layer_picker.size_flags_horizontal = Control.SIZE_EXPAND_FILL
     weather_layer_picker.item_selected.connect(func(index: int):
-        if index > 0: app.weather_layer.visit(index-1))
+        if index > 0 and weather_layer_picker.get_item_metadata(index) is int:
+            app.weather_layer.visit(int(weather_layer_picker.get_item_metadata(index))))
     box.add_child(weather_layer_picker)
-    label(box,"Choose a place above or click a visible globe point. Model times stay with each place. Grey points are stale; expired points are hidden. This samples sixteen places, not a continuous global weather map.",12)
+    label(box,"Choose a place above or click a visible globe point. Model times stay with each place. Grey points are stale; expired points are hidden. This samples 32 places, not a continuous global weather map.",12)
     label(box,"Loading submits only the fixed public coordinates to Open-Meteo, without tracking your location. No automatic weather downloads run at startup or in screensaver mode.",12)
     button(box,"Weather data · Open-Meteo · CC BY 4.0 ↗",func(): OS.shell_open("https://open-meteo.com/"))
     weather_model_badge = button(self,"Model weather · Open-Meteo",func(): open_page("Weather globe"))
@@ -743,12 +751,19 @@ func _weather_layer_changed() -> void:
     weather_layer_toggle.disabled = service.points.is_empty()
     weather_layer_toggle.set_pressed_no_signal(service.enabled)
     weather_layer_legend.text = "Blue ≤32°F · teal to 59°F · amber to 77°F · coral above 77°F" if app.preferences.get_value("weather","imperial",true) else "Blue ≤0°C · teal to 15°C · amber to 25°C · coral above 25°C"
+    weather_layer_query.editable = not service.points.is_empty()
+    var query := weather_layer_query.text.strip_edges().to_lower()
     weather_layer_picker.clear()
     weather_layer_picker.add_item("Visit a weather point…")
-    for point in service.points:
+    for index in service.search_indices(query):
+        var point: Dictionary = service.points[index]
         weather_layer_picker.add_item(service.point_label(point))
-        weather_layer_picker.set_item_tooltip(weather_layer_picker.item_count-1,service.point_label(point)+"\nModel time: "+point.utc+" UTC")
-    weather_layer_picker.disabled = service.points.is_empty()
+        var item := weather_layer_picker.item_count-1
+        weather_layer_picker.set_item_metadata(item,index)
+        weather_layer_picker.set_item_tooltip(item,service.point_label(point)+"\nModel time: "+point.utc+" UTC")
+    weather_layer_picker.disabled = weather_layer_picker.item_count == 1
+    if not service.points.is_empty() and weather_layer_picker.disabled:
+        weather_layer_picker.set_item_text(0,"No loaded places match this search")
     refresh_layout()
 
 func build_satellite_controls() -> void:
