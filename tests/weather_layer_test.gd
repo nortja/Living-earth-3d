@@ -58,6 +58,10 @@ func run() -> void:
     verify(layer.search_indices("CA").size()==1 and layer.points[layer.search_indices("CA")[0]].name=="Vancouver, Canada","Country code chooses Canada without matching Cape Town")
     verify(layer.search_indices("UK").size()==1 and layer.search_indices("turkey").size()==1,"Common country aliases find provider names")
     var ui=app.interface
+    root.size=Vector2i(800,600)
+    ui.open_page("Weather globe")
+    for frame in range(12):await process_frame
+    verify(ui.page_scroll.get_global_rect().encloses(ui.weather_layer_query.get_global_rect()) and ui.page_scroll.get_global_rect().encloses(ui.weather_layer_picker.get_global_rect()),"Loaded weather filter and place picker are fully visible at 800×600")
     ui.weather_layer_query.text="Cebu"
     ui.weather_layer_query.text_changed.emit("Cebu")
     verify(ui.weather_layer_picker.item_count==2 and layer.request==null,"Local place search filters choices without a network request")

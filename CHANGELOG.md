@@ -1,3 +1,9 @@
+## 0.18.2 candidate — 2026-10-31
+
+- Keep loaded weather filtering and place selection fully visible in small windows by compacting primary actions and removing the redundant heading.
+- Preserve all 32-place data, freshness, request/cancellation, privacy and preview rules.
+- All 1118 source checks and seven native weather layouts passed after reproducing the previous clipping. Fresh full Windows/native/framebuffer gates follow.
+
 ## 0.18.1 candidate — 2026-10-31
 
 - Keep the first offline search result fully visible in small windows; use one compact row for previous/next page controls and remove the redundant heading.

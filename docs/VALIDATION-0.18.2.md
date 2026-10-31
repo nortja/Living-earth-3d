@@ -1,0 +1,7 @@
+# 0.18.2 candidate validation
+
+Prepared 2026-10-31. Compacts Weather globe's primary actions into one Load/refresh and Cancel row, and removes the redundant inner heading. At small sizes this keeps the loaded-place filter and picker fully visible without scrolling, while retaining source/status, toggle, units and all request behavior.
+
+A new 800×600 source assertion reproduced the prior clipping (84 weather cases, one failure), then all 84 passed after repair. Seven native layouts through 5K, including 3840×1080, now require both filter and picker to be inside the scroll viewport; screenshots reviewed after the final change. The installed Windows validator adds the same visibility requirement. Dataset/hash, retrieval/model timestamps, ten-minute cooldown, cancellation and no-startup/native-saver requests are unchanged.
+
+The patch retains 0.18.1's first-result repair, bounded screen-index polling, strict Windows framebuffer matrix and native monitor-query diagnostic. All eighteen local source suites pass 1118 counted checks, including 84 weather, 52 performance, 22 atlas and 36 backup cases. Fresh full source/security/export/native, actual Windows upgrade/rollback/settings, five-minute installed recording, ten-minute native preview/lifecycle and exact 1080p/ultrawide/4K/5K framebuffer gates must pass before verified signing and production promotion. Physical Dell DPI/GPU/multi-monitor/sleep/power observations remain separate.
