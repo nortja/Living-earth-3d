@@ -4,6 +4,8 @@ uniform sampler2D day_map : source_color, filter_linear_mipmap_anisotropic, repe
 uniform sampler2D night_map : source_color, filter_linear_mipmap_anisotropic, repeat_enable;
 uniform sampler2D ocean_mask : filter_linear_mipmap_anisotropic, repeat_enable;
 uniform sampler2D cloud_map : filter_linear_mipmap_anisotropic, repeat_enable;
+uniform sampler2D satellite_map : source_color, filter_linear_mipmap_anisotropic, repeat_enable;
+uniform bool satellite_view = false;
 uniform float visibility : hint_range(0.0, 1.0) = 1.0;
 uniform float cloud_offset = 0.0;
 uniform float cloud_strength = 0.12;
@@ -26,4 +28,11 @@ void fragment() {
     SPECULAR = mix(0.12, 0.32, ocean);
     float rim = pow(1.0 - max(dot(normalize(NORMAL), normalize(VIEW)), 0.0), 3.0);
     EMISSION = (texture(night_map, UV).rgb * (1.0 - day) * 1.15 + vec3(0.015, 0.04, 0.08) * rim * day) * visibility;
+    if (satellite_view) {
+        // Dated multi-pass observations: no invented current night lights/clouds.
+        ALBEDO = vec3(0.0);
+        EMISSION = texture(satellite_map, UV).rgb * visibility;
+        ROUGHNESS = 1.0;
+        SPECULAR = 0.0;
+    }
 }

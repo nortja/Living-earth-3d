@@ -24,6 +24,24 @@ func run(app: Node3D, arguments: PackedStringArray) -> void:
     await RenderingServer.frame_post_draw
     root.get_texture().get_image().save_png(directory.path_join("windows-packaged-discovery.png"))
     progress("All twelve installed photographs decoded")
+    var satellite=app.satellite_snapshot
+    var synthetic:=Image.create(2048,1024,false,Image.FORMAT_RGBA8)
+    synthetic.fill(Color("35788e"))
+    satellite.pending_date="2026-10-30"
+    satellite._received(0,200,PackedStringArray(),synthetic.save_png_to_buffer(),satellite.generation)
+    verify(satellite.enabled and app.earth_material.get_shader_parameter("satellite_view") and not app.visuals.clouds.visible,"Installed satellite mosaic shader is active without artistic clouds")
+    satellite.status="Synthetic NASA mosaic · packaged Windows rendering fixture · not an observation"
+    ui._satellite_changed();ui.open_page("Satellite view")
+    for frame in range(16):await get_tree().process_frame
+    await RenderingServer.frame_post_draw
+    root.get_texture().get_image().save_png(directory.path_join("windows-packaged-satellite-fixture.png"))
+    app.preview_screensaver()
+    verify(satellite.suspended and not app.earth_material.get_shader_parameter("satellite_view") and satellite.request==null,"Installed native-style preview excludes satellite surface and requests")
+    app.stop_screensaver_preview()
+    verify(not satellite.suspended and app.earth_material.get_shader_parameter("satellite_view"),"Installed preview return restores dated mosaic")
+    satellite.set_enabled(false)
+    verify(not app.earth_material.get_shader_parameter("satellite_view") and app.visuals.clouds.visible,"Installed offline return restores artistic view")
+    progress("Satellite surface, source date, preview isolation and offline return passed")
     var layer=app.weather_layer
     var feed: Array=[]
     for index in range(layer.places.size()):

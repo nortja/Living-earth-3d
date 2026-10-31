@@ -1,3 +1,9 @@
+## 0.13.0 candidate — 2026-10-31
+
+- Add Yesterday from orbit: manually load the previous UTC day's NASA GIBS NOAA-20 / VIIRS true-color mosaic on the globe. Keep observation date and retrieval time distinct; preserve real no-data gaps and provide immediate offline return.
+- Hide artificial cloud drift/night lights while the dated, unshaded mosaic is shown. No startup, automatic or screensaver requests; preview cancels and restores safely.
+- Validate image signature/dimensions before decoding, bound network requests and preserve dated imagery after errors. Fresh native/Windows release gates remain required.
+
 ## 0.12.4 candidate — 2026-10-31
 
 - Reuse validated camera textures when provider image bytes are unchanged; keep retrieval/source timestamps, backoff recovery and delayed-image warnings current. Changed or oversized images still follow decode/validation and retention rules.

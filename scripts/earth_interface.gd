@@ -5,6 +5,10 @@ var arrival_place: Dictionary = {}
 var arrival_has_photo := false
 var arrival_status: Label
 var arrival_save: Button
+var satellite_status: Label
+var satellite_load: Button
+var satellite_cancel: Button
+var satellite_toggle: CheckButton
 var weather_model_badge: Button
 var weather_layer_refresh: Button
 var weather_layer_cancel: Button
@@ -137,7 +141,7 @@ func setup(owner_app: Node3D) -> void:
     var page_stack := VBoxContainer.new()
     page_stack.size_flags_horizontal = Control.SIZE_EXPAND_FILL
     scroll.add_child(page_stack)
-    for title in NAV + ["Settings", "Destination", "Display report", "Weather globe"]:
+    for title in NAV + ["Settings", "Destination", "Display report", "Weather globe", "Satellite view"]:
         var page := VBoxContainer.new()
         page.size_flags_horizontal = Control.SIZE_EXPAND_FILL
         page_stack.add_child(page)
@@ -155,7 +159,7 @@ func setup(owner_app: Node3D) -> void:
     var card_box := VBoxContainer.new()
     command_card.add_child(card_box)
     label(card_box, "MISSION OVERVIEW", 16)
-    label(card_box, "Earth imagery · offline\nCloud layer · artistic drift\nCamera pages · external providers\nEarthquakes · refresh on request\nMoon & stars · artistic backdrop")
+    label(card_box, "Earth imagery · selected view\nCloud layer · artistic drift\nCamera pages · external providers\nEarthquakes · refresh on request\nMoon & stars · artistic backdrop")
     button(card_box, "Return to full Earth", func(): close_panel(); app.reset_view())
     wall = preload("res://scripts/camera_wall.gd").new()
     add_child(wall)
@@ -378,7 +382,7 @@ func _worldwide_results() -> void:
 
 func _live(box: VBoxContainer) -> void:
     label(box, "Know what you're seeing", 18)
-    label(box, "The globe uses offline satellite textures and night-light imagery. Clouds, Moon and stars are artistic.")
+    label(box, "The base globe uses offline satellite textures and night-light imagery. An optional dated NASA mosaic can replace its surface. Clouds, Moon and stars are artistic.")
     var sunlight := CheckButton.new()
     sunlight_toggle = sunlight
     sunlight.text = "Current UTC sunlight"
@@ -746,3 +750,33 @@ func _weather_layer_changed() -> void:
         weather_layer_picker.set_item_tooltip(weather_layer_picker.item_count-1,service.point_label(point)+"\nModel time: "+point.utc+" UTC")
     weather_layer_picker.disabled = service.points.is_empty()
     refresh_layout()
+
+func build_satellite_controls() -> void:
+    var entry := button(pages["Live Earth"],"Yesterday from orbit · NASA",func(): open_page("Satellite view"))
+    pages["Live Earth"].move_child(entry,2)
+    var box: VBoxContainer = pages["Satellite view"]
+    label(box,"Yesterday from orbit",18)
+    label(box,"NASA GIBS · NOAA-20 / VIIRS · dated satellite mosaic",12)
+    satellite_status = label(box,"",12)
+    satellite_load = button(box,"Load yesterday's mosaic",app.satellite_snapshot.refresh)
+    satellite_cancel = button(box,"Cancel satellite request",app.satellite_snapshot.cancel)
+    satellite_toggle = CheckButton.new()
+    satellite_toggle.text = "Show satellite mosaic on Earth"
+    satellite_toggle.toggled.connect(app.satellite_snapshot.set_enabled)
+    box.add_child(satellite_toggle)
+    button(box,"Return to offline Earth",func(): app.satellite_snapshot.cancel(); app.satellite_snapshot.set_enabled(false))
+    label(box,"Black gaps mean no imagery, including unobserved passes or seasonal darkness. This is a daily composite, not a current cloud map or continuous video. Lighting is unshaded; artistic clouds and night lights are hidden while it is shown.",12)
+    label(box,"One 2048 × 1024 image is requested from NASA GIBS only when you press Load. No device location, automatic downloads or screensaver requests. The mosaic stays in memory for this session.",12)
+    label(box,"Imagery: NASA GIBS, part of NASA ESDIS. NOAA-20 / VIIRS corrected reflectance. Globe atmosphere and stars remain artistic.",12)
+    button(box,"NASA imagery source and acknowledgement ↗",func(): OS.shell_open("https://nasa-gibs.github.io/gibs-api-docs/"))
+    app.satellite_snapshot.changed.connect(_satellite_changed)
+    _satellite_changed()
+
+func _satellite_changed() -> void:
+    var service = app.satellite_snapshot
+    satellite_status.text = service.status
+    satellite_load.disabled = service.loading
+    satellite_cancel.disabled = not service.loading
+    satellite_toggle.disabled = service.texture == null
+    satellite_toggle.set_pressed_no_signal(service.enabled)
+    if active_page == "Satellite view": refresh_layout()
