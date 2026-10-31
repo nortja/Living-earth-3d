@@ -1,0 +1,3 @@
+Godot Engine v4.6.3.stable.official.7d41c59c4 - https://godotengine.org
+
+Real Open-Meteo layer: PASS · 32/32 dated model points; local provider estimates, not observations

@@ -23,6 +23,6 @@ The initial source `fad1356` / run 41231390016 was cancelled before publication 
 
 Installer `LivingEarth3D-Setup-0.18.1.exe`: 51,383,323 bytes; SHA256 `ed017bd586efc6477ada9ffcc120cf04b5024e1a3bbf1ca15067d491c764fb70`.
 
-Exact metadata was signed outside git/CI, independently checked against the installed pinned public key and promoted atomically with source/all three discovery files after the successful 0.18.0 production Windows updater. The 0.18.1 production roundtrip follows promotion. Publisher Authenticode remains separate; this is a publisher-unsigned preview.
+Exact metadata was signed outside git/CI, independently checked against the installed pinned public key and promoted atomically with source/all three discovery files after the successful 0.18.0 production Windows updater. [Production Windows roundtrip 41234109461](https://github.com/nortja/Living-earth-3d/actions/runs/41234109461), job 124634160709, passed authenticated staging while open, cancellation without replacement, normal-exit installation, exact installed-file verification, no unwanted restart and cleanup. Publisher Authenticode remains separate; this is a publisher-unsigned preview.
 
-Physical Dell GPU/DPI, mixed monitors, sleep/power and overnight observations remain field work. Source 0.16.0's completed one-hour Linux soak and the still-running 0.18.0/0.18.2 runs are supplementary, not substitutes for current Windows gates.
+Physical Dell GPU/DPI, mixed monitors, sleep/power and overnight observations remain field work. The completed one-hour 0.16.0/0.18.0 native Linux runs and still-running thirty-minute 0.18.2 run are supplementary, not substitutes for current Windows gates.

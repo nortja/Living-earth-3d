@@ -1,15 +1,15 @@
 {
   "channel": "preview",
   "files": {
-    "LivingEarth3D.exe": "5e48cf83ce9914f2347e733cb8c454b56b2ae35f1ac1f7adaa97e01760c019b9",
-    "LivingEarth3D.scr": "21c0d8432a14f2e1873a23efb8615ec2cbd7a6e21ba5210d8d863dcbc8c69c60",
+    "LivingEarth3D.exe": "670406ceda0a96a671612afffeb5493e4b24fb037742900ccc2677bd217bea10",
+    "LivingEarth3D.scr": "720260de7322c5495bba2e49249327191fea9b8346e17c55064b27a9c6f699a8",
     "update-core.ps1": "311f11003a720af948bae265e8fc4037576883df763da914a16a16c1fbcef6bd",
     "update.ps1": "639caa93b1ca379ae4558dfad708ec950d2e1346b6211ae01dca0000d1c2cb3c"
   },
-  "installer_url": "https://github.com/nortja/Living-earth-3d/raw/refs/heads/downloads/windows-0.18.1/LivingEarth3D-Setup-0.18.1.exe",
+  "installer_url": "https://github.com/nortja/Living-earth-3d/raw/refs/heads/downloads/windows-0.18.2/LivingEarth3D-Setup-0.18.2.exe",
   "product": "LivingEarth3D",
   "protocol": 1,
-  "sha256": "ed017bd586efc6477ada9ffcc120cf04b5024e1a3bbf1ca15067d491c764fb70",
-  "size": 51383323,
-  "version": "0.18.1"
+  "sha256": "b92be7b7aedf3dd83bb263fee12f3b09bfec759f5250a0bcccf69edd0e3c010d",
+  "size": 51380944,
+  "version": "0.18.2"
 }

@@ -1,0 +1,3 @@
+Godot Engine v4.6.3.stable.official.7d41c59c4 - https://godotengine.org
+
+Real NASA GIBS satellite request: PASS · 2026-10-30 · 2048×1024 dated mosaic

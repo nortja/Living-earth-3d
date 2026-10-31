@@ -1,6 +1,6 @@
 # Living Earth 3D — current roadmap
 
-Updated 2026-10-31. Latest released baseline: 0.18.1 (visible first offline result, bounded recording monitor queries, and current-package Windows framebuffer gates; includes saved-place backups and the expanded exploration features). One Windows installer, then authenticated automatic updates; the base Earth remains useful offline.
+Updated 2026-10-31. Latest released baseline: 0.18.2 (fully visible compact weather controls, search repair, bounded report polling, saved-place backups and expanded exploration). One Windows installer, then authenticated automatic updates; the base Earth remains useful offline.
 
 ## Completed
 
@@ -89,13 +89,21 @@ Updated 2026-10-31. Latest released baseline: 0.18.1 (visible first offline resu
 - [x] Fresh 757 source checks, native layouts through 5K, Windows upgrades/rollback/settings, actual installed desktop and a 605-second preview/lifecycle soak passed. Public installer downloaded and verified; exact manifest signed with the existing trust key. Production signed-feed staging/cancellation/normal-exit roundtrip also passed on Windows.
 - [x] Continued into 0.13.1; 0.13.0 was superseded before feed promotion.
 
-## This release — 0.18.1
+## This release — 0.18.2
+
+- [x] Loaded weather filter/picker fully visible at small sizes; compact primary actions preserve source/status, toggle, units and all request rules.
+- [x] Reproduced the old 800×600 clipping, then passed all 1118 source checks, seven native layouts and actual installed Windows visibility checks.
+- [x] Full source/security/export/native, Windows upgrades/rollback/settings, five-minute installed recording, exact 1080p/ultrawide/4K/5K framebuffers and 605.2-second native preview/lifecycle passed in run 41232467353.
+- [x] Public installer/source provenance and pinned-key signature verified; authenticated source/feed promoted after successful 0.18.1 production update. 0.18.2 production roundtrip follows promotion.
+- [x] Supplemental one-hour frozen 0.16.0 and 0.18.0 native Linux runs completed with zero failures; current 0.18.2 thirty-minute run remains in progress.
+
+## Previous release — 0.18.1
 
 - [x] First offline search result fully visible, compact first/middle-page controls and explicit input/fixture consistency.
 - [x] Recording monitor index sampled at the report poll, with one-active-second latency stated; quality/cap/viewport/scale/window fields remain per-frame. No speedup claim is inferred from VM comparisons.
 - [x] 1117 source checks; complete Windows upgrade/rollback/settings, installed resources/recording and exact 1080p/ultrawide/4K/5K framebuffer matrix; 605.1-second preview/lifecycle passed in run 41231442929.
-- [x] Public installer/source provenance and pinned-key signature verified; authenticated source/feed promoted after successful 0.18.0 production update. 0.18.1 production roundtrip follows promotion.
-- [ ] Compact weather patch 0.18.2 is running fresh full gates for visible loaded-place filtering/selection.
+- [x] Public installer/source provenance and pinned-key signature verified; authenticated source/feed promoted after successful 0.18.0 production update. 0.18.1 production Windows updater roundtrip passed; see release validation.
+- [x] Compact weather patch 0.18.2 passed fresh loaded-place visibility and full release gates.
 
 ## Previous release — 0.18.0
 

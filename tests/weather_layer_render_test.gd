@@ -32,6 +32,7 @@ func run() -> void:
         await RenderingServer.frame_post_draw
         verify(Rect2(Vector2.ZERO,ui.size).encloses(Rect2(ui.panel.position,ui.panel.size)),"Weather controls fit native viewport")
         verify(ui.page_scroll.get_child(0).size.x <= ui.page_scroll.size.x,"Weather controls fit scroll width")
+        verify(ui.page_scroll.get_global_rect().encloses(ui.weather_layer_query.get_global_rect()) and ui.page_scroll.get_global_rect().encloses(ui.weather_layer_picker.get_global_rect()),"Weather filter and picker are visible without scrolling")
         root.get_texture().get_image().save_png("res://dist/weather-points-%s-%dx%d.png" % ["actual" if actual else "fixture",pixels.x,pixels.y])
         ui.close_panel()
         for frame in range(12):await process_frame

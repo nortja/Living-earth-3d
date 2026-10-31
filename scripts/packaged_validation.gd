@@ -104,6 +104,7 @@ func run(app: Node3D, arguments: PackedStringArray) -> void:
     verify(ui.weather_layer_picker.item_count==33,"Installed cleared search restores all 32 choices")
     ui.open_page("Weather globe")
     for frame in range(16):await get_tree().process_frame
+    verify(ui.page_scroll.get_global_rect().encloses(ui.weather_layer_query.get_global_rect()) and ui.page_scroll.get_global_rect().encloses(ui.weather_layer_picker.get_global_rect()),"Installed weather filter and picker are fully visible without scrolling")
     await RenderingServer.frame_post_draw
     root.get_texture().get_image().save_png(directory.path_join("windows-packaged-weather-fixture.png"))
     app.preview_screensaver()

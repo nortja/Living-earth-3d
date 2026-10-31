@@ -750,11 +750,14 @@ func build_weather_layer_controls() -> void:
     var entry := button(pages["Live Earth"],"Weather around Earth",func(): open_page("Weather globe"))
     pages["Live Earth"].move_child(entry,2)
     var box: VBoxContainer = pages["Weather globe"]
-    label(box,"Weather around Earth",18)
     label(box,"32 public model points · loaded only when requested",12)
     weather_layer_status = label(box,"",12)
-    weather_layer_refresh = button(box,"Load / refresh weather points",app.weather_layer.refresh)
-    weather_layer_cancel = button(box,"Cancel weather-layer request",app.weather_layer.cancel)
+    var actions:=HBoxContainer.new()
+    box.add_child(actions)
+    weather_layer_refresh = button(actions,"Load / refresh",app.weather_layer.refresh)
+    weather_layer_refresh.size_flags_horizontal=Control.SIZE_EXPAND_FILL
+    weather_layer_cancel = button(actions,"Cancel",app.weather_layer.cancel)
+    weather_layer_cancel.custom_minimum_size.x=80
     weather_layer_toggle = CheckButton.new()
     weather_layer_toggle.text = "Show temperature points on Earth"
     weather_layer_toggle.toggled.connect(app.weather_layer.set_enabled)

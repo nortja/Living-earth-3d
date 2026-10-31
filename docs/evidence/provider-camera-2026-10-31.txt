@@ -1,0 +1,12 @@
+Godot Engine v4.6.3.stable.official.7d41c59c4 - https://godotengine.org
+
+PASS: real camera image decoded for Yellowstone · Mammoth Hot Springs (1920 x 1080). Retrieval does not establish capture freshness.
+PASS: real conditional request accepted for Yellowstone · Mammoth Hot Springs; Checked 2026-10-31 19:06:03 UTC · provider reports unchanged.
+PASS: real camera image decoded for Yellowstone · Electric Peak (1920 x 1080). Retrieval does not establish capture freshness.
+PASS: real camera image decoded for Yellowstone · Mount Washburn (1920 x 1080). Retrieval does not establish capture freshness.
+PASS: real camera image decoded for Sequoia · Giant Forest (3840 x 2160). Retrieval does not establish capture freshness.
+PASS: real camera image decoded for Grand Canyon · Yavapai Point (3840 x 2160). Retrieval does not establish capture freshness.
+PASS: real camera image decoded for Great Smoky Mountains · Look Rock (3840 x 2160). Retrieval does not establish capture freshness.
+PASS: real camera image decoded for Rocky Mountain · Alpine Visitor Center (1920 x 1080). Retrieval does not establish capture freshness.
+PASS: real camera image decoded for Kīlauea · West Halemaʻumaʻu (1920 x 1080). Retrieval does not establish capture freshness.
+Camera live: 8/8 sources; conditional provider path exercised: true

@@ -19,3 +19,7 @@ The maintainer harness supports Windows PowerShell5.1/Core via the OS environmen
 ## Current 0.18.1 package gate
 
 Full release run 41231442929, installed desktop job 124628418801, repeated all five exact sizes with the current 0.18.1 installer under Windows PowerShell 5.1. All reports passed using llvmpipe (LLVM 23.1.2, 256 bits), detailed textures and the same explicit small-virtual-desktop context. Archive digest verified and 5K/search images reviewed. The matrix is now required by the release-specific installed desktop gate, alongside its real five-minute recording and resource/backup checks.
+
+## Current 0.18.2 package gate
+
+Full run 41232467353, desktop job 124631103649, passed all five exact sizes with the current 0.18.2 package under Windows PowerShell 5.1 / llvmpipe (LLVM 23.1.2, 256 bits). The same virtual-desktop and physical-monitor limits apply. Its artifact archive was digest-verified and weather controls were reviewed on the actual installed Windows screenshot.
