@@ -1,0 +1,53 @@
+name: Diagnose frozen 0.13.1 Windows startup
+on:
+  push:
+    branches: [validation/startup-0.13.1]
+permissions:
+  contents: read
+  actions: read
+jobs:
+  startup:
+    strategy:
+      fail-fast: false
+      matrix:
+        settings: [false, true]
+        cache: [default, disabled]
+    runs-on: windows-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: LivingEarth3D-0.13.1-candidate
+          run-id: 41222250448
+          github-token: ${{ github.token }}
+          path: dist
+      - name: Verify frozen candidate
+        shell: powershell
+        run: |
+          if((Get-Content dist/BUILD.txt -Raw) -notmatch '441553991c4885902f2efba9f8db4750a730f097'){throw 'Frozen candidate mismatch'}
+          $expected=(Get-Content dist/LivingEarth3D-Setup-0.13.1.exe.sha256 -Raw).Split(' ')[0]
+          if((Get-FileHash dist/LivingEarth3D-Setup-0.13.1.exe -Algorithm SHA256).Hash.ToLowerInvariant() -ne $expected){throw 'Candidate checksum mismatch'}
+      - name: Install pinned test-only software OpenGL
+        shell: powershell
+        run: |
+          $archive=Join-Path $env:RUNNER_TEMP 'mesa.7z'
+          curl.exe -fL --retry 3 --output $archive 'https://github.com/pal1000/mesa-dist-win/releases/download/26.2.4/mesa3d-26.2.4-release-msvc.7z'
+          if($LASTEXITCODE -ne 0){throw 'Test OpenGL download failed'}
+          if((Get-FileHash $archive -Algorithm SHA256).Hash.ToLowerInvariant() -ne '351fc8c8b695878ffb3eaa044b3ead08672a48b1a045e3c3e3975811df0f6695'){throw 'Test OpenGL checksum mismatch'}
+          7z x $archive ('-o'+(Join-Path $env:RUNNER_TEMP 'mesa')) -y
+          if($LASTEXITCODE -ne 0){throw 'Test OpenGL extraction failed'}
+          & (Join-Path $env:RUNNER_TEMP 'mesa/systemwidedeploy.cmd') 1
+          if($LASTEXITCODE -ne 0){throw 'Test OpenGL deployment failed'}
+      - name: Compare real process startup paths
+        shell: powershell
+        run: |
+          $arguments=@{Installer='dist/LivingEarth3D-Setup-0.13.1.exe'}
+          if('${{ matrix.settings }}' -eq 'true'){$arguments.PriorSettings=$true}
+          if('${{ matrix.cache }}' -eq 'disabled'){$arguments.DisableCache=$true}
+          ./tests/windows_startup_diagnostic.ps1 @arguments
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: Startup-0131-settings-${{ matrix.settings }}-cache-${{ matrix.cache }}
+          path: dist/startup-diagnostic/*
