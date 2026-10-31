@@ -1,0 +1,3453 @@
+[
+  {
+    "id": "natural-earth-1159151439",
+    "name": "Abidjan, Ivory Coast",
+    "latitude": 5.323126,
+    "longitude": -4.020207,
+    "country_code": "CI",
+    "aliases": [
+      "Abidjan",
+      "Ivory Coast",
+      "CI"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159150565",
+    "name": "Abu Dhabi, United Arab Emirates",
+    "latitude": 24.466684,
+    "longitude": 54.366593,
+    "country_code": "AE",
+    "aliases": [
+      "Abu Dhabi",
+      "United Arab Emirates",
+      "AE"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159150799",
+    "name": "Abuja, Nigeria",
+    "latitude": 9.05462,
+    "longitude": 7.489505,
+    "country_code": "NG",
+    "aliases": [
+      "Abuja",
+      "Nigeria",
+      "NG"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151403",
+    "name": "Accra, Ghana",
+    "latitude": 5.55198,
+    "longitude": -0.218662,
+    "country_code": "GH",
+    "aliases": [
+      "Accra",
+      "Ghana",
+      "GH"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151549",
+    "name": "Addis Ababa, Ethiopia",
+    "latitude": 9.035256,
+    "longitude": 38.698059,
+    "country_code": "ET",
+    "aliases": [
+      "Addis Ababa",
+      "Ethiopia",
+      "ET"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151471",
+    "name": "Algiers, Algeria",
+    "latitude": 36.765011,
+    "longitude": 3.048607,
+    "country_code": "DZ",
+    "aliases": [
+      "Algiers",
+      "El Djazacr",
+      "Algeria",
+      "DZ"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159150807",
+    "name": "Amman, Jordan",
+    "latitude": 31.951971,
+    "longitude": 35.931354,
+    "country_code": "JO",
+    "aliases": [
+      "Amman",
+      "Jordan",
+      "JO"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151519",
+    "name": "Amsterdam, Netherlands",
+    "latitude": 52.351914,
+    "longitude": 4.914694,
+    "country_code": "NL",
+    "aliases": [
+      "Amsterdam",
+      "Netherlands",
+      "NL"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159149089",
+    "name": "Andorra la Vella, Andorra",
+    "latitude": 42.510753,
+    "longitude": 1.526594,
+    "country_code": "AD",
+    "aliases": [
+      "Andorra",
+      "AD"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151255",
+    "name": "Ankara, Turkey",
+    "latitude": 39.929184,
+    "longitude": 32.862446,
+    "country_code": "TR",
+    "aliases": [
+      "Ankara",
+      "Turkey",
+      "TR"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159150835",
+    "name": "Antananarivo, Madagascar",
+    "latitude": -18.914691,
+    "longitude": 47.514678,
+    "country_code": "MG",
+    "aliases": [
+      "Antananarivo",
+      "Madagascar",
+      "MG"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151197",
+    "name": "Apia, Samoa",
+    "latitude": -13.835715,
+    "longitude": -171.768599,
+    "country_code": "WS",
+    "aliases": [
+      "Apia",
+      "Samoa",
+      "WS"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159150567",
+    "name": "Ashgabat, Turkmenistan",
+    "latitude": 37.949995,
+    "longitude": 58.383299,
+    "country_code": "TM",
+    "aliases": [
+      "Ashgabat",
+      "Turkmenistan",
+      "TM"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159150873",
+    "name": "Asmara, Eritrea",
+    "latitude": 15.333339,
+    "longitude": 38.933324,
+    "country_code": "ER",
+    "aliases": [
+      "Asmara",
+      "Eritrea",
+      "ER"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159150621",
+    "name": "Asunción, Paraguay",
+    "latitude": -25.290671,
+    "longitude": -57.625834,
+    "country_code": "PY",
+    "aliases": [
+      "Asunción",
+      "Asuncion",
+      "Paraguay",
+      "PY"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151545",
+    "name": "Athens, Greece",
+    "latitude": 37.985272,
+    "longitude": 23.731375,
+    "country_code": "GR",
+    "aliases": [
+      "Athens",
+      "Athinai",
+      "Greece",
+      "GR"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151489",
+    "name": "Atlanta, United States of America",
+    "latitude": 33.739457,
+    "longitude": -84.367642,
+    "country_code": "US",
+    "aliases": [
+      "Atlanta",
+      "United States of America",
+      "US"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151703",
+    "name": "Auckland, New Zealand",
+    "latitude": -36.848055,
+    "longitude": 174.763027,
+    "country_code": "NZ",
+    "aliases": [
+      "Auckland",
+      "New Zealand",
+      "NZ"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151547",
+    "name": "Baghdad, Iraq",
+    "latitude": 33.340594,
+    "longitude": 44.391923,
+    "country_code": "IQ",
+    "aliases": [
+      "Baghdad",
+      "Iraq",
+      "IQ"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159149605",
+    "name": "Baguio, Philippines",
+    "latitude": 16.429991,
+    "longitude": 120.569943,
+    "country_code": "PH",
+    "aliases": [
+      "Baguio",
+      "Baguio City",
+      "Philippines",
+      "PH"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151123",
+    "name": "Baku, Azerbaijan",
+    "latitude": 40.397218,
+    "longitude": 49.860271,
+    "country_code": "AZ",
+    "aliases": [
+      "Baku",
+      "Azerbaijan",
+      "AZ"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159150945",
+    "name": "Bamako, Mali",
+    "latitude": 12.65196,
+    "longitude": -8.001985,
+    "country_code": "ML",
+    "aliases": [
+      "Bamako",
+      "Mali",
+      "ML"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151083",
+    "name": "Bandar Seri Begawan, Brunei",
+    "latitude": 4.883331,
+    "longitude": 114.933284,
+    "country_code": "BN",
+    "aliases": [
+      "Bandar Seri Begawan",
+      "Brunei",
+      "BN"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151509",
+    "name": "Bangkok, Thailand",
+    "latitude": 13.751945,
+    "longitude": 100.514699,
+    "country_code": "TH",
+    "aliases": [
+      "Bangkok",
+      "Krung Thep",
+      "Thailand",
+      "TH"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151111",
+    "name": "Bangui, Central African Republic",
+    "latitude": 4.366644,
+    "longitude": 18.558288,
+    "country_code": "CF",
+    "aliases": [
+      "Bangui",
+      "Central African Republic",
+      "CF"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159149997",
+    "name": "Banjul, The Gambia",
+    "latitude": 13.453876,
+    "longitude": -16.591701,
+    "country_code": "GM",
+    "aliases": [
+      "Banjul",
+      "The Gambia",
+      "GM"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159150435",
+    "name": "Basseterre, Saint Kitts and Nevis",
+    "latitude": 17.302031,
+    "longitude": -62.717009,
+    "country_code": "KN",
+    "aliases": [
+      "Basseterre",
+      "Saint Kitts and Nevis",
+      "KN"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151595",
+    "name": "Beijing, China",
+    "latitude": 39.90172,
+    "longitude": 116.394201,
+    "country_code": "CN",
+    "aliases": [
+      "Beijing",
+      "China",
+      "CN"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159150957",
+    "name": "Beirut, Lebanon",
+    "latitude": 33.873921,
+    "longitude": 35.507762,
+    "country_code": "LB",
+    "aliases": [
+      "Beirut",
+      "Bayrut",
+      "Lebanon",
+      "LB"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151079",
+    "name": "Belgrade, Serbia",
+    "latitude": 44.820591,
+    "longitude": 20.466045,
+    "country_code": "RS",
+    "aliases": [
+      "Belgrade",
+      "Serbia",
+      "RS"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151109",
+    "name": "Belmopan, Belize",
+    "latitude": 17.252033,
+    "longitude": -88.767073,
+    "country_code": "BZ",
+    "aliases": [
+      "Belmopan",
+      "Belize",
+      "BZ"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151543",
+    "name": "Bengaluru, India",
+    "latitude": 12.971941,
+    "longitude": 77.558064,
+    "country_code": "IN",
+    "aliases": [
+      "Bengaluru",
+      "India",
+      "IN"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151529",
+    "name": "Berlin, Germany",
+    "latitude": 52.523764,
+    "longitude": 13.399603,
+    "country_code": "DE",
+    "aliases": [
+      "Berlin",
+      "Germany",
+      "DE"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159149737",
+    "name": "Bern, Switzerland",
+    "latitude": 46.916683,
+    "longitude": 7.466976,
+    "country_code": "CH",
+    "aliases": [
+      "Bern",
+      "Switzerland",
+      "CH"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159149075",
+    "name": "Bir Lehlou, Western Sahara",
+    "latitude": 26.119167,
+    "longitude": -9.652522,
+    "country_code": "EH",
+    "aliases": [
+      "Bir Lehlou",
+      "Western Sahara",
+      "EH"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159150813",
+    "name": "Bishkek, Kyrgyzstan",
+    "latitude": 42.875025,
+    "longitude": 74.583258,
+    "country_code": "KG",
+    "aliases": [
+      "Bishkek",
+      "Kyrgyzstan",
+      "KG"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159150803",
+    "name": "Bissau, Guinea Bissau",
+    "latitude": 11.865024,
+    "longitude": -15.598361,
+    "country_code": "GW",
+    "aliases": [
+      "Bissau",
+      "Guinea Bissau",
+      "GW"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159150659",
+    "name": "Bloemfontein, South Africa",
+    "latitude": -29.119994,
+    "longitude": 26.229913,
+    "country_code": "ZA",
+    "aliases": [
+      "Bloemfontein",
+      "South Africa",
+      "ZA"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151601",
+    "name": "Bogotá, Colombia",
+    "latitude": 4.598369,
+    "longitude": -74.08529,
+    "country_code": "CO",
+    "aliases": [
+      "Bogota",
+      "Colombia",
+      "CO"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151443",
+    "name": "Brasília, Brazil",
+    "latitude": -15.781394,
+    "longitude": -47.917998,
+    "country_code": "BR",
+    "aliases": [
+      "Brasília",
+      "Brasilia",
+      "Brazil",
+      "BR"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159149463",
+    "name": "Bratislava, Slovakia",
+    "latitude": 48.150018,
+    "longitude": 17.116981,
+    "country_code": "SK",
+    "aliases": [
+      "Bratislava",
+      "Slovakia",
+      "SK"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159150993",
+    "name": "Brazzaville, Congo (Brazzaville)",
+    "latitude": -4.25724,
+    "longitude": 15.282744,
+    "country_code": "CG",
+    "aliases": [
+      "Brazzaville",
+      "Congo (Brazzaville)",
+      "CG"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159150339",
+    "name": "Bridgetown, Barbados",
+    "latitude": 13.102003,
+    "longitude": -59.616527,
+    "country_code": "BB",
+    "aliases": [
+      "Bridgetown",
+      "Barbados",
+      "BB"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151465",
+    "name": "Brussels, Belgium",
+    "latitude": 50.835263,
+    "longitude": 4.331371,
+    "country_code": "BE",
+    "aliases": [
+      "Brussels",
+      "Bruxelles-Brussel",
+      "Belgium",
+      "BE"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151263",
+    "name": "Bucharest, Romania",
+    "latitude": 44.435318,
+    "longitude": 26.098001,
+    "country_code": "RO",
+    "aliases": [
+      "Bucharest",
+      "Romania",
+      "RO"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151257",
+    "name": "Budapest, Hungary",
+    "latitude": 47.501952,
+    "longitude": 19.081375,
+    "country_code": "HU",
+    "aliases": [
+      "Budapest",
+      "Hungary",
+      "HU"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151559",
+    "name": "Buenos Aires, Argentina",
+    "latitude": -34.610715,
+    "longitude": -58.432513,
+    "country_code": "AR",
+    "aliases": [
+      "Buenos Aires",
+      "Argentina",
+      "AR"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159150427",
+    "name": "Bujumbura, Burundi",
+    "latitude": -3.376087,
+    "longitude": 29.360006,
+    "country_code": "BI",
+    "aliases": [
+      "Bujumbura",
+      "Burundi",
+      "BI"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151603",
+    "name": "Cairo, Egypt",
+    "latitude": 30.051906,
+    "longitude": 31.248022,
+    "country_code": "EG",
+    "aliases": [
+      "Cairo",
+      "Al-Qahirah",
+      "Egypt",
+      "EG"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151161",
+    "name": "Canberra, Australia",
+    "latitude": -35.283029,
+    "longitude": 149.129026,
+    "country_code": "AU",
+    "aliases": [
+      "Canberra",
+      "Australia",
+      "AU"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151583",
+    "name": "Cape Town, South Africa",
+    "latitude": -33.918065,
+    "longitude": 18.433042,
+    "country_code": "ZA",
+    "aliases": [
+      "Cape Town",
+      "South Africa",
+      "ZA"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151493",
+    "name": "Caracas, Venezuela",
+    "latitude": 10.502944,
+    "longitude": -66.918983,
+    "country_code": "VE",
+    "aliases": [
+      "Caracas",
+      "Venezuela",
+      "VE"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151521",
+    "name": "Casablanca, Morocco",
+    "latitude": 33.601922,
+    "longitude": -7.618313,
+    "country_code": "MA",
+    "aliases": [
+      "Casablanca",
+      "Dar-el-Beida",
+      "Morocco",
+      "MA"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159150433",
+    "name": "Castries, Saint Lucia",
+    "latitude": 14.007875,
+    "longitude": -60.992875,
+    "country_code": "LC",
+    "aliases": [
+      "Castries",
+      "Saint Lucia",
+      "LC"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151533",
+    "name": "Chengdu, China",
+    "latitude": 30.671946,
+    "longitude": 104.068074,
+    "country_code": "CN",
+    "aliases": [
+      "Chengdu",
+      "China",
+      "CN"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151491",
+    "name": "Chicago, United States of America",
+    "latitude": 41.847961,
+    "longitude": -87.635237,
+    "country_code": "US",
+    "aliases": [
+      "Chicago",
+      "United States of America",
+      "US"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159150677",
+    "name": "Chișinău, Moldova",
+    "latitude": 47.005024,
+    "longitude": 28.857711,
+    "country_code": "MD",
+    "aliases": [
+      "Chișinău",
+      "Chisinau",
+      "Moldova",
+      "MD"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159150719",
+    "name": "Colombo, Sri Lanka",
+    "latitude": 6.931966,
+    "longitude": 79.857751,
+    "country_code": "LK",
+    "aliases": [
+      "Colombo",
+      "Sri Lanka",
+      "LK"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159150997",
+    "name": "Conakry, Guinea",
+    "latitude": 9.533469,
+    "longitude": -13.682181,
+    "country_code": "GN",
+    "aliases": [
+      "Conakry",
+      "Guinea",
+      "GN"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151437",
+    "name": "Copenhagen, Denmark",
+    "latitude": 55.68051,
+    "longitude": 12.56154,
+    "country_code": "DK",
+    "aliases": [
+      "København",
+      "Kobenhavn",
+      "Denmark",
+      "DK"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151141",
+    "name": "Cotonou, Benin",
+    "latitude": 6.36298,
+    "longitude": 2.404355,
+    "country_code": "BJ",
+    "aliases": [
+      "Cotonou",
+      "Benin",
+      "BJ"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151513",
+    "name": "Dakar, Senegal",
+    "latitude": 14.717778,
+    "longitude": -17.475076,
+    "country_code": "SN",
+    "aliases": [
+      "Dakar",
+      "Senegal",
+      "SN"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151269",
+    "name": "Damascus, Syria",
+    "latitude": 33.50198,
+    "longitude": 36.29805,
+    "country_code": "SY",
+    "aliases": [
+      "Damascus",
+      "Dimashq",
+      "Syria",
+      "SY"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151305",
+    "name": "Dar es Salaam, Tanzania",
+    "latitude": -6.798067,
+    "longitude": 39.266396,
+    "country_code": "TZ",
+    "aliases": [
+      "Dar es Salaam",
+      "Tanzania",
+      "TZ"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151483",
+    "name": "Denver, United States of America",
+    "latitude": 39.741134,
+    "longitude": -104.985962,
+    "country_code": "US",
+    "aliases": [
+      "Denver",
+      "Denver-Aurora",
+      "United States of America",
+      "US"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151467",
+    "name": "Dhaka, Bangladesh",
+    "latitude": 23.725006,
+    "longitude": 90.406634,
+    "country_code": "BD",
+    "aliases": [
+      "Dhaka",
+      "Bangladesh",
+      "BD"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159150577",
+    "name": "Dili, East Timor",
+    "latitude": -8.559388,
+    "longitude": 125.579456,
+    "country_code": "TL",
+    "aliases": [
+      "Dili",
+      "East Timor",
+      "TL"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159149869",
+    "name": "Djibouti, Djibouti",
+    "latitude": 11.595014,
+    "longitude": 43.148002,
+    "country_code": "DJ",
+    "aliases": [
+      "Djibouti",
+      "DJ"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159149731",
+    "name": "Dodoma, Tanzania",
+    "latitude": -6.183306,
+    "longitude": 35.750004,
+    "country_code": "TZ",
+    "aliases": [
+      "Dodoma",
+      "Tanzania",
+      "TZ"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159149469",
+    "name": "Doha, Qatar",
+    "latitude": 25.286556,
+    "longitude": 51.532968,
+    "country_code": "QA",
+    "aliases": [
+      "Doha",
+      "Qatar",
+      "QA"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151497",
+    "name": "Dubai, United Arab Emirates",
+    "latitude": 25.214912,
+    "longitude": 55.286946,
+    "country_code": "AE",
+    "aliases": [
+      "Dubai",
+      "United Arab Emirates",
+      "AE"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151309",
+    "name": "Dublin, Ireland",
+    "latitude": 53.346731,
+    "longitude": -6.25698,
+    "country_code": "IE",
+    "aliases": [
+      "Dublin",
+      "Ireland",
+      "IE"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159150609",
+    "name": "Dushanbe, Tajikistan",
+    "latitude": 38.560035,
+    "longitude": 68.773879,
+    "country_code": "TJ",
+    "aliases": [
+      "Dushanbe",
+      "Tajikistan",
+      "TJ"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159150625",
+    "name": "Freetown, Sierra Leone",
+    "latitude": 8.471957,
+    "longitude": -13.236162,
+    "country_code": "SL",
+    "aliases": [
+      "Freetown",
+      "Sierra Leone",
+      "SL"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159149071",
+    "name": "Funafuti, Tuvalu",
+    "latitude": -8.516652,
+    "longitude": 179.216647,
+    "country_code": "TV",
+    "aliases": [
+      "Funafuti",
+      "Tuvalu",
+      "TV"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151153",
+    "name": "Gaborone, Botswana",
+    "latitude": -24.646314,
+    "longitude": 25.911948,
+    "country_code": "BW",
+    "aliases": [
+      "Gaborone",
+      "Botswana",
+      "BW"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151505",
+    "name": "Geneva, Switzerland",
+    "latitude": 46.210008,
+    "longitude": 6.140028,
+    "country_code": "CH",
+    "aliases": [
+      "Geneva",
+      "Switzerland",
+      "CH"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159150585",
+    "name": "Georgetown, Guyana",
+    "latitude": 6.801974,
+    "longitude": -58.167029,
+    "country_code": "GY",
+    "aliases": [
+      "Georgetown",
+      "Guyana",
+      "GY"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159150909",
+    "name": "Guatemala City, Guatemala",
+    "latitude": 14.623081,
+    "longitude": -90.528911,
+    "country_code": "GT",
+    "aliases": [
+      "Guatemala City",
+      "Guatemala",
+      "Ciudad de Guatemala (Guatemala City)",
+      "GT"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151251",
+    "name": "Hanoi, Vietnam",
+    "latitude": 21.035273,
+    "longitude": 105.848068,
+    "country_code": "VN",
+    "aliases": [
+      "Hanoi",
+      "H",
+      "Vietnam",
+      "VN"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159150573",
+    "name": "Harare, Zimbabwe",
+    "latitude": -17.815844,
+    "longitude": 31.042764,
+    "country_code": "ZW",
+    "aliases": [
+      "Harare",
+      "Zimbabwe",
+      "ZW"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151189",
+    "name": "Hargeisa, Somaliland",
+    "latitude": 9.560022,
+    "longitude": 44.06531,
+    "country_code": "",
+    "aliases": [
+      "Hargeisa",
+      "Hargeysa",
+      "Somaliland"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151347",
+    "name": "Havana, Cuba",
+    "latitude": 23.133905,
+    "longitude": -82.366128,
+    "country_code": "CU",
+    "aliases": [
+      "Havana",
+      "La Habana",
+      "Cuba",
+      "CU"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151419",
+    "name": "Helsinki, Finland",
+    "latitude": 60.163804,
+    "longitude": 24.932457,
+    "country_code": "FI",
+    "aliases": [
+      "Helsinki",
+      "Finland",
+      "FI"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151629",
+    "name": "Hong Kong, Hong Kong S.A.R.",
+    "latitude": 22.306927,
+    "longitude": 114.183064,
+    "country_code": "HK",
+    "aliases": [
+      "Hong Kong",
+      "Hong Kong S.A.R.",
+      "HK"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159150665",
+    "name": "Honiara, Solomon Islands",
+    "latitude": -9.437994,
+    "longitude": 159.949766,
+    "country_code": "SB",
+    "aliases": [
+      "Honiara",
+      "Solomon Islands",
+      "SB"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151485",
+    "name": "Houston, United States of America",
+    "latitude": 29.741273,
+    "longitude": -95.348436,
+    "country_code": "US",
+    "aliases": [
+      "Houston",
+      "United States of America",
+      "US"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159150645",
+    "name": "Islamabad, Pakistan",
+    "latitude": 33.689368,
+    "longitude": 73.08063,
+    "country_code": "PK",
+    "aliases": [
+      "Islamabad",
+      "Pakistan",
+      "PK"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151579",
+    "name": "Istanbul, Turkey",
+    "latitude": 41.017602,
+    "longitude": 28.974277,
+    "country_code": "TR",
+    "aliases": [
+      "Istanbul",
+      "Turkey",
+      "TR"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151599",
+    "name": "Jakarta, Indonesia",
+    "latitude": -6.172472,
+    "longitude": 106.827492,
+    "country_code": "ID",
+    "aliases": [
+      "Jakarta",
+      "Indonesia",
+      "ID"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151203",
+    "name": "Jerusalem, Israel",
+    "latitude": 31.778408,
+    "longitude": 35.206626,
+    "country_code": "IL",
+    "aliases": [
+      "Jerusalem",
+      "Israel",
+      "IL"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151515",
+    "name": "Johannesburg, South Africa",
+    "latitude": -26.168099,
+    "longitude": 28.028064,
+    "country_code": "ZA",
+    "aliases": [
+      "Johannesburg",
+      "South Africa",
+      "ZA"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159149449",
+    "name": "Juba, South Sudan",
+    "latitude": 4.829975,
+    "longitude": 31.580026,
+    "country_code": "SS",
+    "aliases": [
+      "Juba",
+      "South Sudan",
+      "SS"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151561",
+    "name": "Kabul, Afghanistan",
+    "latitude": 34.518636,
+    "longitude": 69.181314,
+    "country_code": "AF",
+    "aliases": [
+      "Kabul",
+      "Afghanistan",
+      "AF"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159150593",
+    "name": "Kampala, Uganda",
+    "latitude": 0.318605,
+    "longitude": 32.581378,
+    "country_code": "UG",
+    "aliases": [
+      "Kampala",
+      "Uganda",
+      "UG"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159150655",
+    "name": "Kathmandu, Nepal",
+    "latitude": 27.718638,
+    "longitude": 85.314696,
+    "country_code": "NP",
+    "aliases": [
+      "Kathmandu",
+      "Nepal",
+      "NP"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151275",
+    "name": "Khartoum, Sudan",
+    "latitude": 15.590024,
+    "longitude": 32.532233,
+    "country_code": "SD",
+    "aliases": [
+      "Khartoum",
+      "Al-Khartum",
+      "Sudan",
+      "SD"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159149385",
+    "name": "Kigali, Rwanda",
+    "latitude": -1.951644,
+    "longitude": 30.058586,
+    "country_code": "RW",
+    "aliases": [
+      "Kigali",
+      "Rwanda",
+      "RW"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159150855",
+    "name": "Kingston, Jamaica",
+    "latitude": 17.977077,
+    "longitude": -76.767434,
+    "country_code": "JM",
+    "aliases": [
+      "Kingston",
+      "Jamaica",
+      "JM"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159150431",
+    "name": "Kingstown, Saint Vincent and the Grenadines",
+    "latitude": 13.155756,
+    "longitude": -61.220236,
+    "country_code": "VC",
+    "aliases": [
+      "Kingstown",
+      "Saint Vincent and the Grenadines",
+      "VC"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151539",
+    "name": "Kinshasa, Congo (Kinshasa)",
+    "latitude": -4.327778,
+    "longitude": 15.313026,
+    "country_code": "CD",
+    "aliases": [
+      "Kinshasa",
+      "Congo (Kinshasa)",
+      "CD"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151617",
+    "name": "Kolkata, India",
+    "latitude": 22.569579,
+    "longitude": 88.369126,
+    "country_code": "IN",
+    "aliases": [
+      "Kolkata",
+      "India",
+      "IN"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151317",
+    "name": "Kuala Lumpur, Malaysia",
+    "latitude": 3.139797,
+    "longitude": 101.688699,
+    "country_code": "MY",
+    "aliases": [
+      "Kuala Lumpur",
+      "Malaysia",
+      "MY"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151361",
+    "name": "Kuwait City, Kuwait",
+    "latitude": 29.371664,
+    "longitude": 47.976355,
+    "country_code": "KW",
+    "aliases": [
+      "Kuwait City",
+      "Al Kuwayt|Kuwait",
+      "Kuwait",
+      "KW"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151495",
+    "name": "Kyiv, Ukraine",
+    "latitude": 50.435313,
+    "longitude": 30.514682,
+    "country_code": "UA",
+    "aliases": [
+      "Kyiv",
+      "Kiev",
+      "Ukraine",
+      "UA"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159149967",
+    "name": "Kyoto, Japan",
+    "latitude": 35.031938,
+    "longitude": 135.748052,
+    "country_code": "JP",
+    "aliases": [
+      "Kyoto",
+      "Japan",
+      "JP"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151133",
+    "name": "La Paz, Bolivia",
+    "latitude": -16.496028,
+    "longitude": -68.151931,
+    "country_code": "BO",
+    "aliases": [
+      "La Paz",
+      "Bolivia",
+      "BO"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159149741",
+    "name": "Laayoune, Morocco",
+    "latitude": 27.149982,
+    "longitude": -13.200006,
+    "country_code": "MA",
+    "aliases": [
+      "Laayoune",
+      "Morocco",
+      "MA"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151591",
+    "name": "Lagos, Nigeria",
+    "latitude": 6.445208,
+    "longitude": 3.389585,
+    "country_code": "NG",
+    "aliases": [
+      "Lagos",
+      "Nigeria",
+      "NG"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159150913",
+    "name": "Libreville, Gabon",
+    "latitude": 0.385389,
+    "longitude": 9.457965,
+    "country_code": "GA",
+    "aliases": [
+      "Libreville",
+      "Gabon",
+      "GA"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159150907",
+    "name": "Lilongwe, Malawi",
+    "latitude": -13.983295,
+    "longitude": 33.783302,
+    "country_code": "MW",
+    "aliases": [
+      "Lilongwe",
+      "Malawi",
+      "MW"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151511",
+    "name": "Lima, Peru",
+    "latitude": -12.046067,
+    "longitude": -77.052008,
+    "country_code": "PE",
+    "aliases": [
+      "Lima",
+      "Peru",
+      "PE"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151273",
+    "name": "Lisbon, Portugal",
+    "latitude": 38.724669,
+    "longitude": -9.146812,
+    "country_code": "PT",
+    "aliases": [
+      "Lisbon",
+      "Portugal",
+      "PT"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159149461",
+    "name": "Ljubljana, Slovenia",
+    "latitude": 46.055288,
+    "longitude": 14.514969,
+    "country_code": "SI",
+    "aliases": [
+      "Ljubljana",
+      "Slovenia",
+      "SI"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159146343",
+    "name": "Lobamba, eSwatini",
+    "latitude": -26.466667,
+    "longitude": 31.199997,
+    "country_code": "SZ",
+    "aliases": [
+      "Lobamba",
+      "eSwatini",
+      "SZ"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159150535",
+    "name": "Lomé, Togo",
+    "latitude": 6.133883,
+    "longitude": 1.220811,
+    "country_code": "TG",
+    "aliases": [
+      "Lomé",
+      "Lome",
+      "Togo",
+      "TG"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151577",
+    "name": "London, United Kingdom",
+    "latitude": 51.501941,
+    "longitude": -0.118668,
+    "country_code": "GB",
+    "aliases": [
+      "London",
+      "United Kingdom",
+      "GB"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151569",
+    "name": "Los Angeles, United States of America",
+    "latitude": 34.049219,
+    "longitude": -118.231986,
+    "country_code": "US",
+    "aliases": [
+      "Los Angeles",
+      "Los Angeles-Long Beach-Santa Ana",
+      "United States of America",
+      "US"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151469",
+    "name": "Luanda, Angola",
+    "latitude": -8.83634,
+    "longitude": 13.232481,
+    "country_code": "AO",
+    "aliases": [
+      "Luanda",
+      "Angola",
+      "AO"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159150571",
+    "name": "Lusaka, Zambia",
+    "latitude": -15.414698,
+    "longitude": 28.281382,
+    "country_code": "ZM",
+    "aliases": [
+      "Lusaka",
+      "Zambia",
+      "ZM"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159146437",
+    "name": "Luxembourg, Luxembourg",
+    "latitude": 49.61166,
+    "longitude": 6.130003,
+    "country_code": "LU",
+    "aliases": [
+      "Luxembourg",
+      "LU"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151503",
+    "name": "Madrid, Spain",
+    "latitude": 40.401972,
+    "longitude": -3.685297,
+    "country_code": "ES",
+    "aliases": [
+      "Madrid",
+      "Spain",
+      "ES"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159149063",
+    "name": "Majuro, Marshall Islands",
+    "latitude": 7.103004,
+    "longitude": 171.38,
+    "country_code": "MH",
+    "aliases": [
+      "Majuro",
+      "Marshall Islands",
+      "MH"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159150867",
+    "name": "Malabo, Equatorial Guinea",
+    "latitude": 3.750015,
+    "longitude": 8.783278,
+    "country_code": "GQ",
+    "aliases": [
+      "Malabo",
+      "Equatorial Guinea",
+      "GQ"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151201",
+    "name": "Malé, Maldives",
+    "latitude": 4.172037,
+    "longitude": 73.508901,
+    "country_code": "MV",
+    "aliases": [
+      "Malé",
+      "Male",
+      "Maldives",
+      "MV"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159150623",
+    "name": "Managua, Nicaragua",
+    "latitude": 12.154962,
+    "longitude": -86.270437,
+    "country_code": "NI",
+    "aliases": [
+      "Managua",
+      "Nicaragua",
+      "NI"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159150451",
+    "name": "Manama, Bahrain",
+    "latitude": 26.236136,
+    "longitude": 50.583052,
+    "country_code": "BH",
+    "aliases": [
+      "Manama",
+      "Bahrain",
+      "BH"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151525",
+    "name": "Manila, Philippines",
+    "latitude": 14.606105,
+    "longitude": 120.980271,
+    "country_code": "PH",
+    "aliases": [
+      "Manila",
+      "Philippines",
+      "PH"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159150683",
+    "name": "Maputo, Mozambique",
+    "latitude": -25.953332,
+    "longitude": 32.587217,
+    "country_code": "MZ",
+    "aliases": [
+      "Maputo",
+      "Mozambique",
+      "MZ"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159150831",
+    "name": "Maseru, Lesotho",
+    "latitude": -29.316674,
+    "longitude": 27.483273,
+    "country_code": "LS",
+    "aliases": [
+      "Maseru",
+      "Lesotho",
+      "LS"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159149413",
+    "name": "Mbabane, eSwatini",
+    "latitude": -26.316651,
+    "longitude": 31.133335,
+    "country_code": "SZ",
+    "aliases": [
+      "Mbabane",
+      "eSwatini",
+      "SZ"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151565",
+    "name": "Melbourne, Australia",
+    "latitude": -37.818086,
+    "longitude": 144.97307,
+    "country_code": "AU",
+    "aliases": [
+      "Melbourne",
+      "Australia",
+      "AU"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159149073",
+    "name": "Melekeok, Palau",
+    "latitude": 7.487396,
+    "longitude": 134.626549,
+    "country_code": "PW",
+    "aliases": [
+      "Melekeok",
+      "Palau",
+      "PW"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151587",
+    "name": "Mexico City, Mexico",
+    "latitude": 19.444388,
+    "longitude": -99.132934,
+    "country_code": "MX",
+    "aliases": [
+      "Mexico City",
+      "Ciudad de M",
+      "Mexico",
+      "MX"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151487",
+    "name": "Miami, United States of America",
+    "latitude": 25.789557,
+    "longitude": -80.226052,
+    "country_code": "US",
+    "aliases": [
+      "Miami",
+      "United States of America",
+      "US"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151149",
+    "name": "Minsk, Belarus",
+    "latitude": 53.901923,
+    "longitude": 27.564681,
+    "country_code": "BY",
+    "aliases": [
+      "Minsk",
+      "Belarus",
+      "BY"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159150715",
+    "name": "Mogadishu, Somalia",
+    "latitude": 2.068627,
+    "longitude": 45.364732,
+    "country_code": "SO",
+    "aliases": [
+      "Mogadishu",
+      "Muqdisho",
+      "Somalia",
+      "SO"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159149077",
+    "name": "Monaco, Monaco",
+    "latitude": 43.739646,
+    "longitude": 7.406913,
+    "country_code": "MC",
+    "aliases": [
+      "Monaco",
+      "MC"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151311",
+    "name": "Monrovia, Liberia",
+    "latitude": 6.314582,
+    "longitude": -10.79966,
+    "country_code": "LR",
+    "aliases": [
+      "Monrovia",
+      "Liberia",
+      "LR"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151527",
+    "name": "Monterrey, Mexico",
+    "latitude": 25.671941,
+    "longitude": -100.331931,
+    "country_code": "MX",
+    "aliases": [
+      "Monterrey",
+      "Mexico",
+      "MX"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159150469",
+    "name": "Montevideo, Uruguay",
+    "latitude": -34.905376,
+    "longitude": -56.186823,
+    "country_code": "UY",
+    "aliases": [
+      "Montevideo",
+      "Uruguay",
+      "UY"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159149083",
+    "name": "Moroni, Comoros",
+    "latitude": -11.704158,
+    "longitude": 43.240244,
+    "country_code": "KM",
+    "aliases": [
+      "Moroni",
+      "Comoros",
+      "KM"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151585",
+    "name": "Moscow, Russia",
+    "latitude": 55.75411,
+    "longitude": 37.613577,
+    "country_code": "RU",
+    "aliases": [
+      "Moscow",
+      "Russia",
+      "RU"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151611",
+    "name": "Mumbai, India",
+    "latitude": 19.068408,
+    "longitude": 72.875839,
+    "country_code": "IN",
+    "aliases": [
+      "Mumbai",
+      "India",
+      "IN"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159150717",
+    "name": "Muscat, Oman",
+    "latitude": 23.585179,
+    "longitude": 58.378311,
+    "country_code": "OM",
+    "aliases": [
+      "Muscat",
+      "Oman",
+      "OM"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159150863",
+    "name": "N'Djamena, Chad",
+    "latitude": 12.115042,
+    "longitude": 15.047202,
+    "country_code": "TD",
+    "aliases": [
+      "N'Djamena",
+      "Ndjamena",
+      "N'Djamnna",
+      "Chad",
+      "TD"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151597",
+    "name": "Nairobi, Kenya",
+    "latitude": -1.281401,
+    "longitude": 36.814711,
+    "country_code": "KE",
+    "aliases": [
+      "Nairobi",
+      "Kenya",
+      "KE"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151207",
+    "name": "Nassau, The Bahamas",
+    "latitude": 25.08339,
+    "longitude": -77.350044,
+    "country_code": "BS",
+    "aliases": [
+      "Nassau",
+      "The Bahamas",
+      "BS"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151179",
+    "name": "Naypyidaw, Myanmar",
+    "latitude": 19.768503,
+    "longitude": 96.116673,
+    "country_code": "MM",
+    "aliases": [
+      "Naypyidaw",
+      "Nay Pyi Taw",
+      "Myanmar",
+      "MM"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151541",
+    "name": "New Delhi, India",
+    "latitude": 28.600023,
+    "longitude": 77.19998,
+    "country_code": "IN",
+    "aliases": [
+      "New Delhi",
+      "India",
+      "IN"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151575",
+    "name": "New York City, United States of America",
+    "latitude": 40.721562,
+    "longitude": -73.995718,
+    "country_code": "US",
+    "aliases": [
+      "New York",
+      "New York-Newark",
+      "United States of America",
+      "US"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159150605",
+    "name": "Niamey, Niger",
+    "latitude": 13.518652,
+    "longitude": 2.11471,
+    "country_code": "NE",
+    "aliases": [
+      "Niamey",
+      "Niger",
+      "NE"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151209",
+    "name": "Nicosia, Cyprus",
+    "latitude": 35.166677,
+    "longitude": 33.366635,
+    "country_code": "CY",
+    "aliases": [
+      "Nicosia",
+      "Cyprus",
+      "CY"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159150943",
+    "name": "Nouakchott, Mauritania",
+    "latitude": 18.086427,
+    "longitude": -15.97534,
+    "country_code": "MR",
+    "aliases": [
+      "Nouakchott",
+      "Mauritania",
+      "MR"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151187",
+    "name": "Nuku'alofa, Tonga",
+    "latitude": -21.138512,
+    "longitude": -175.220564,
+    "country_code": "TO",
+    "aliases": [
+      "Nuku'alofa",
+      "Nukualofa",
+      "Tonga",
+      "TO"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159150965",
+    "name": "Nur-Sultan, Kazakhstan",
+    "latitude": 51.181125,
+    "longitude": 71.427774,
+    "country_code": "KZ",
+    "aliases": [
+      "Nur-Sultan",
+      "Astana",
+      "Kazakhstan",
+      "KZ"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151537",
+    "name": "Osaka, Japan",
+    "latitude": 34.691095,
+    "longitude": 135.503754,
+    "country_code": "JP",
+    "aliases": [
+      "Ōsaka",
+      "Osaka",
+      "Osaka-Kobe",
+      "Japan",
+      "JP"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151281",
+    "name": "Oslo, Norway",
+    "latitude": 59.918636,
+    "longitude": 10.748033,
+    "country_code": "NO",
+    "aliases": [
+      "Oslo",
+      "Norway",
+      "NO"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151059",
+    "name": "Ottawa, Canada",
+    "latitude": 45.418643,
+    "longitude": -75.701961,
+    "country_code": "CA",
+    "aliases": [
+      "Ottawa",
+      "Ottawa-Gatineau",
+      "Canada",
+      "CA"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151173",
+    "name": "Ouagadougou, Burkina Faso",
+    "latitude": 12.372262,
+    "longitude": -1.52667,
+    "country_code": "BF",
+    "aliases": [
+      "Ouagadougou",
+      "Burkina Faso",
+      "BF"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159149061",
+    "name": "Palikir, Federated States of Micronesia",
+    "latitude": 6.916644,
+    "longitude": 158.149974,
+    "country_code": "FM",
+    "aliases": [
+      "Palikir",
+      "Federated States of Micronesia",
+      "FM"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159150667",
+    "name": "Panama City, Panama",
+    "latitude": 8.969963,
+    "longitude": -79.534983,
+    "country_code": "PA",
+    "aliases": [
+      "Panama City",
+      "Ciudad de Panam|Panama",
+      "Panama",
+      "PA"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159150597",
+    "name": "Paramaribo, Suriname",
+    "latitude": 5.83503,
+    "longitude": -55.167031,
+    "country_code": "SR",
+    "aliases": [
+      "Paramaribo",
+      "Suriname",
+      "SR"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151613",
+    "name": "Paris, France",
+    "latitude": 48.858092,
+    "longitude": 2.352992,
+    "country_code": "FR",
+    "aliases": [
+      "Paris",
+      "France",
+      "FR"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151127",
+    "name": "Phnom Penh, Cambodia",
+    "latitude": 11.551976,
+    "longitude": 104.914689,
+    "country_code": "KH",
+    "aliases": [
+      "Phnom Penh",
+      "Phnum Penh",
+      "Cambodia",
+      "KH"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159149511",
+    "name": "Podgorica, Montenegro",
+    "latitude": 42.465972,
+    "longitude": 19.266307,
+    "country_code": "ME",
+    "aliases": [
+      "Podgorica",
+      "Montenegro",
+      "ME"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159150443",
+    "name": "Port Louis, Mauritius",
+    "latitude": -20.166639,
+    "longitude": 57.499994,
+    "country_code": "MU",
+    "aliases": [
+      "Port Louis",
+      "Mauritius",
+      "MU"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159150663",
+    "name": "Port Moresby, Papua New Guinea",
+    "latitude": -9.464708,
+    "longitude": 147.192504,
+    "country_code": "PG",
+    "aliases": [
+      "Port Moresby",
+      "Papua New Guinea",
+      "PG"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159149307",
+    "name": "Port of Spain, Trinidad and Tobago",
+    "latitude": 10.651997,
+    "longitude": -61.517031,
+    "country_code": "TT",
+    "aliases": [
+      "Port-of-Spain",
+      "Trinidad and Tobago",
+      "TT"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159150579",
+    "name": "Port Vila, Vanuatu",
+    "latitude": -17.73335,
+    "longitude": 168.316641,
+    "country_code": "VU",
+    "aliases": [
+      "Port Vila",
+      "Vanuatu",
+      "VU"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159150589",
+    "name": "Port-au-Prince, Haiti",
+    "latitude": 18.54297,
+    "longitude": -72.33798,
+    "country_code": "HT",
+    "aliases": [
+      "Port-au-Prince",
+      "Haiti",
+      "HT"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159150345",
+    "name": "Porto-Novo, Benin",
+    "latitude": 6.483311,
+    "longitude": 2.616626,
+    "country_code": "BJ",
+    "aliases": [
+      "Porto-Novo",
+      "Benin",
+      "BJ"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151359",
+    "name": "Prague, Czechia",
+    "latitude": 50.086967,
+    "longitude": 14.422939,
+    "country_code": "CZ",
+    "aliases": [
+      "Prague",
+      "Czechia",
+      "CZ"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151205",
+    "name": "Praia, Cape Verde",
+    "latitude": 14.916698,
+    "longitude": -23.516689,
+    "country_code": "CV",
+    "aliases": [
+      "Praia",
+      "Cape Verde",
+      "CV"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159150661",
+    "name": "Pretoria, South Africa",
+    "latitude": -25.704975,
+    "longitude": 28.227483,
+    "country_code": "ZA",
+    "aliases": [
+      "Pretoria",
+      "South Africa",
+      "ZA"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159149757",
+    "name": "Pristina, Kosovo",
+    "latitude": 42.66671,
+    "longitude": 21.165984,
+    "country_code": "",
+    "aliases": [
+      "Pristina",
+      "Kosovo"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159149883",
+    "name": "Putrajaya, Malaysia",
+    "latitude": 2.932515,
+    "longitude": 101.695037,
+    "country_code": "MY",
+    "aliases": [
+      "Putrajaya",
+      "Malaysia",
+      "MY"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151303",
+    "name": "Pyongyang, North Korea",
+    "latitude": 39.021385,
+    "longitude": 125.752745,
+    "country_code": "KP",
+    "aliases": [
+      "Pyongyang",
+      "P'yongyang",
+      "North Korea",
+      "KP"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159150847",
+    "name": "Quito, Ecuador",
+    "latitude": -0.213042,
+    "longitude": -78.501997,
+    "country_code": "EC",
+    "aliases": [
+      "Quito",
+      "Ecuador",
+      "EC"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159150673",
+    "name": "Rabat, Morocco",
+    "latitude": 34.025307,
+    "longitude": -6.836408,
+    "country_code": "MA",
+    "aliases": [
+      "Rabat",
+      "Morocco",
+      "MA"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159150587",
+    "name": "Reykjavík, Iceland",
+    "latitude": 64.143459,
+    "longitude": -21.936546,
+    "country_code": "IS",
+    "aliases": [
+      "Reykjavík",
+      "Reykjavik",
+      "Iceland",
+      "IS"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159150811",
+    "name": "Riga, Latvia",
+    "latitude": 56.950024,
+    "longitude": 24.099965,
+    "country_code": "LV",
+    "aliases": [
+      "Riga",
+      "Latvia",
+      "LV"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151619",
+    "name": "Rio de Janeiro, Brazil",
+    "latitude": -22.907308,
+    "longitude": -43.212117,
+    "country_code": "BR",
+    "aliases": [
+      "Rio de Janeiro",
+      "Brazil",
+      "BR"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151581",
+    "name": "Riyadh, Saudi Arabia",
+    "latitude": 24.634497,
+    "longitude": 46.720487,
+    "country_code": "SA",
+    "aliases": [
+      "Riyadh",
+      "Ar-Riyadh",
+      "Saudi Arabia",
+      "SA"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151593",
+    "name": "Rome, Italy",
+    "latitude": 41.897902,
+    "longitude": 12.481313,
+    "country_code": "IT",
+    "aliases": [
+      "Rome",
+      "Italy",
+      "IT"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159149847",
+    "name": "Roseau, Dominica",
+    "latitude": 15.301016,
+    "longitude": -61.387013,
+    "country_code": "DM",
+    "aliases": [
+      "Roseau",
+      "Dominica",
+      "DM"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159150457",
+    "name": "Saint John's, Antigua and Barbuda",
+    "latitude": 17.118036,
+    "longitude": -61.850034,
+    "country_code": "AG",
+    "aliases": [
+      "Saint John's",
+      "Antigua and Barbuda",
+      "AG"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151479",
+    "name": "San Francisco, United States of America",
+    "latitude": 37.784263,
+    "longitude": -122.3996,
+    "country_code": "US",
+    "aliases": [
+      "San Francisco",
+      "San Francisco-Oakland",
+      "United States of America",
+      "US"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159150849",
+    "name": "San José, Costa Rica",
+    "latitude": 9.930371,
+    "longitude": -84.078814,
+    "country_code": "CR",
+    "aliases": [
+      "San José",
+      "San Jose",
+      "Costa Rica",
+      "CR"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159146051",
+    "name": "San Marino, San Marino",
+    "latitude": 43.936096,
+    "longitude": 12.44177,
+    "country_code": "SM",
+    "aliases": [
+      "San Marino",
+      "SM"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159150853",
+    "name": "San Salvador, El Salvador",
+    "latitude": 13.70328,
+    "longitude": -89.215576,
+    "country_code": "SV",
+    "aliases": [
+      "San Salvador",
+      "El Salvador",
+      "SV"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151259",
+    "name": "Sanaa, Yemen",
+    "latitude": 15.356679,
+    "longitude": 44.204648,
+    "country_code": "YE",
+    "aliases": [
+      "Sanaa",
+      "Sana'a'",
+      "Yemen",
+      "YE"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151615",
+    "name": "Santiago, Chile",
+    "latitude": -33.440205,
+    "longitude": -70.650504,
+    "country_code": "CL",
+    "aliases": [
+      "Santiago",
+      "Chile",
+      "CL"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151401",
+    "name": "Santo Domingo, Dominican Republic",
+    "latitude": 18.470745,
+    "longitude": -69.929742,
+    "country_code": "DO",
+    "aliases": [
+      "Santo Domingo",
+      "Dominican Republic",
+      "DO"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151177",
+    "name": "Sarajevo, Bosnia and Herzegovina",
+    "latitude": 43.850022,
+    "longitude": 18.383002,
+    "country_code": "BA",
+    "aliases": [
+      "Sarajevo",
+      "Bosnia and Herzegovina",
+      "BA"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151523",
+    "name": "Seoul, South Korea",
+    "latitude": 37.568295,
+    "longitude": 126.997785,
+    "country_code": "KR",
+    "aliases": [
+      "Seoul",
+      "South Korea",
+      "KR"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151605",
+    "name": "Shanghai, China",
+    "latitude": 31.218398,
+    "longitude": 121.434559,
+    "country_code": "CN",
+    "aliases": [
+      "Shanghai",
+      "China",
+      "CN"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151627",
+    "name": "Singapore, Singapore",
+    "latitude": 1.294979,
+    "longitude": 103.853875,
+    "country_code": "SG",
+    "aliases": [
+      "Singapore",
+      "SG"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159150073",
+    "name": "Skopje, North Macedonia",
+    "latitude": 42.000006,
+    "longitude": 21.433461,
+    "country_code": "MK",
+    "aliases": [
+      "Skopje",
+      "North Macedonia",
+      "MK"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151147",
+    "name": "Sofia, Bulgaria",
+    "latitude": 42.685295,
+    "longitude": 23.314708,
+    "country_code": "BG",
+    "aliases": [
+      "Sofia",
+      "Bulgaria",
+      "BG"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159149079",
+    "name": "South Tarawa, Kiribati",
+    "latitude": 1.338188,
+    "longitude": 173.017571,
+    "country_code": "KI",
+    "aliases": [
+      "Tarawa",
+      "Kiribati",
+      "KI"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159149593",
+    "name": "Sri Jayawardenepura Kotte, Sri Lanka",
+    "latitude": 6.900004,
+    "longitude": 79.949993,
+    "country_code": "LK",
+    "aliases": [
+      "Sri Jayawardenepura Kotte",
+      "Sri Jawewardenepura Kotte",
+      "Sri Lanka",
+      "LK"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159150447",
+    "name": "St. George's, Grenada",
+    "latitude": 12.052633,
+    "longitude": -61.741643,
+    "country_code": "GD",
+    "aliases": [
+      "Saint George's",
+      "Grenada",
+      "GD"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151507",
+    "name": "Stockholm, Sweden",
+    "latitude": 59.324127,
+    "longitude": 18.0663,
+    "country_code": "SE",
+    "aliases": [
+      "Stockholm",
+      "Sweden",
+      "SE"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151095",
+    "name": "Sucre, Bolivia",
+    "latitude": -19.040971,
+    "longitude": -65.259516,
+    "country_code": "BO",
+    "aliases": [
+      "Sucre",
+      "Bolivia",
+      "BO"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159150917",
+    "name": "Suva, Fiji",
+    "latitude": -18.133016,
+    "longitude": 178.441707,
+    "country_code": "FJ",
+    "aliases": [
+      "Suva",
+      "Fiji",
+      "FJ"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151623",
+    "name": "Sydney, Australia",
+    "latitude": -33.871373,
+    "longitude": 151.212548,
+    "country_code": "AU",
+    "aliases": [
+      "Sydney",
+      "Australia",
+      "AU"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151621",
+    "name": "São Paulo, Brazil",
+    "latitude": -23.556734,
+    "longitude": -46.626966,
+    "country_code": "BR",
+    "aliases": [
+      "São Paulo",
+      "Sao Paulo",
+      "Sao Paulo|Sio Paulo",
+      "Brazil",
+      "BR"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151195",
+    "name": "São Tomé, Sao Tome and Principe",
+    "latitude": 0.337466,
+    "longitude": 6.72965,
+    "country_code": "ST",
+    "aliases": [
+      "São Tomé",
+      "Sao Tome",
+      "Sao Tome and Principe",
+      "ST"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151567",
+    "name": "Taipei, Taiwan",
+    "latitude": 25.035833,
+    "longitude": 121.568333,
+    "country_code": "TW",
+    "aliases": [
+      "Taipei",
+      "Taiwan",
+      "TW"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159150877",
+    "name": "Tallinn, Estonia",
+    "latitude": 59.433877,
+    "longitude": 24.728041,
+    "country_code": "EE",
+    "aliases": [
+      "Tallinn",
+      "Estonia",
+      "EE"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151501",
+    "name": "Tashkent, Uzbekistan",
+    "latitude": 41.303828,
+    "longitude": 69.268823,
+    "country_code": "UZ",
+    "aliases": [
+      "Tashkent",
+      "Uzbekistan",
+      "UZ"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159150961",
+    "name": "Tbilisi, Georgia",
+    "latitude": 41.726956,
+    "longitude": 44.78885,
+    "country_code": "GE",
+    "aliases": [
+      "Tbilisi",
+      "T'Bilisi",
+      "Georgia",
+      "GE"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159150583",
+    "name": "Tegucigalpa, Honduras",
+    "latitude": 14.103991,
+    "longitude": -87.219475,
+    "country_code": "HN",
+    "aliases": [
+      "Tegucigalpa",
+      "Honduras",
+      "HN"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151551",
+    "name": "Tehran, Iran",
+    "latitude": 35.673889,
+    "longitude": 51.422398,
+    "country_code": "IR",
+    "aliases": [
+      "Tehran",
+      "Iran",
+      "IR"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151417",
+    "name": "Tel Aviv, Israel",
+    "latitude": 32.081937,
+    "longitude": 34.768066,
+    "country_code": "IL",
+    "aliases": [
+      "Tel Aviv",
+      "Tel Aviv-Yafo",
+      "Tel Aviv-Jaffa",
+      "Israel",
+      "IL"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159149457",
+    "name": "The Hague, Netherlands",
+    "latitude": 52.080037,
+    "longitude": 4.269961,
+    "country_code": "NL",
+    "aliases": [
+      "The Hague",
+      "Netherlands",
+      "NL"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151151",
+    "name": "Thimphu, Bhutan",
+    "latitude": 27.472986,
+    "longitude": 89.639014,
+    "country_code": "BT",
+    "aliases": [
+      "Thimphu",
+      "Bhutan",
+      "BT"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151117",
+    "name": "Tirana, Albania",
+    "latitude": 41.327541,
+    "longitude": 19.818883,
+    "country_code": "AL",
+    "aliases": [
+      "Tirana",
+      "Albania",
+      "AL"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151609",
+    "name": "Tokyo, Japan",
+    "latitude": 35.686963,
+    "longitude": 139.749462,
+    "country_code": "JP",
+    "aliases": [
+      "Tokyo",
+      "Japan",
+      "JP"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151557",
+    "name": "Toronto, Canada",
+    "latitude": 43.664645,
+    "longitude": -79.389459,
+    "country_code": "CA",
+    "aliases": [
+      "Toronto",
+      "Canada",
+      "CA"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151415",
+    "name": "Tripoli, Libya",
+    "latitude": 32.8925,
+    "longitude": 13.180012,
+    "country_code": "LY",
+    "aliases": [
+      "Tripoli",
+      "Libya",
+      "LY"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159150537",
+    "name": "Tunis, Tunisia",
+    "latitude": 36.802778,
+    "longitude": 10.179678,
+    "country_code": "TN",
+    "aliases": [
+      "Tunis",
+      "Tunisia",
+      "TN"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159150781",
+    "name": "Ulaanbaatar, Mongolia",
+    "latitude": 47.918619,
+    "longitude": 106.91467,
+    "country_code": "MN",
+    "aliases": [
+      "Ulaanbaatar",
+      "Mongolia",
+      "MN"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159146061",
+    "name": "Vaduz, Liechtenstein",
+    "latitude": 47.133724,
+    "longitude": 9.51667,
+    "country_code": "LI",
+    "aliases": [
+      "Vaduz",
+      "Liechtenstein",
+      "LI"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151199",
+    "name": "Valletta, Malta",
+    "latitude": 35.899732,
+    "longitude": 14.514711,
+    "country_code": "MT",
+    "aliases": [
+      "Valletta",
+      "Malta",
+      "MT"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159150931",
+    "name": "Valparaíso, Chile",
+    "latitude": -33.047739,
+    "longitude": -71.617026,
+    "country_code": "CL",
+    "aliases": [
+      "Valparaíso",
+      "Valparaiso",
+      "Chile",
+      "CL"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151555",
+    "name": "Vancouver, Canada",
+    "latitude": 49.275362,
+    "longitude": -123.12359,
+    "country_code": "CA",
+    "aliases": [
+      "Vancouver",
+      "Canada",
+      "CA"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159127243",
+    "name": "Vatican City, Vatican",
+    "latitude": 41.903282,
+    "longitude": 12.453387,
+    "country_code": "VA",
+    "aliases": [
+      "Vatican City",
+      "Vatican",
+      "VA"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151191",
+    "name": "Victoria, Seychelles",
+    "latitude": -4.616632,
+    "longitude": 55.44999,
+    "country_code": "SC",
+    "aliases": [
+      "Victoria",
+      "Seychelles",
+      "SC"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151563",
+    "name": "Vienna, Austria",
+    "latitude": 48.201961,
+    "longitude": 16.364693,
+    "country_code": "AT",
+    "aliases": [
+      "Vienna",
+      "Austria",
+      "AT"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159150991",
+    "name": "Vientiane, Laos",
+    "latitude": 17.966693,
+    "longitude": 102.59998,
+    "country_code": "LA",
+    "aliases": [
+      "Vientiane",
+      "Laos",
+      "LA"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159150809",
+    "name": "Vilnius, Lithuania",
+    "latitude": 54.683366,
+    "longitude": 25.316635,
+    "country_code": "LT",
+    "aliases": [
+      "Vilnius",
+      "Lithuania",
+      "LT"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151299",
+    "name": "Warsaw, Poland",
+    "latitude": 52.230872,
+    "longitude": 21.005347,
+    "country_code": "PL",
+    "aliases": [
+      "Warsaw",
+      "Poland",
+      "PL"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151573",
+    "name": "Washington, United States of America",
+    "latitude": 38.901495,
+    "longitude": -77.011364,
+    "country_code": "US",
+    "aliases": [
+      "Washington,  D.C.",
+      "Washington, D.C.",
+      "Washington D.C.",
+      "United States of America",
+      "US"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151699",
+    "name": "Wellington, New Zealand",
+    "latitude": -41.292068,
+    "longitude": 174.777201,
+    "country_code": "NZ",
+    "aliases": [
+      "Wellington",
+      "New Zealand",
+      "NZ"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159150785",
+    "name": "Windhoek, Namibia",
+    "latitude": -22.570006,
+    "longitude": 17.083546,
+    "country_code": "NA",
+    "aliases": [
+      "Windhoek",
+      "Namibia",
+      "NA"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159150999",
+    "name": "Yamoussoukro, Ivory Coast",
+    "latitude": 6.818381,
+    "longitude": -5.275503,
+    "country_code": "CI",
+    "aliases": [
+      "Yamoussoukro",
+      "Ivory Coast",
+      "CI"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151477",
+    "name": "Yangon, Myanmar",
+    "latitude": 16.7853,
+    "longitude": 96.164732,
+    "country_code": "MM",
+    "aliases": [
+      "Yangon",
+      "Rangoon",
+      "Myanmar",
+      "MM"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151115",
+    "name": "Yaoundé, Cameroon",
+    "latitude": 3.868647,
+    "longitude": 11.514705,
+    "country_code": "CM",
+    "aliases": [
+      "Yaoundé",
+      "Yaounde",
+      "Cameroon",
+      "CM"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151119",
+    "name": "Yerevan, Armenia",
+    "latitude": 40.183097,
+    "longitude": 44.511606,
+    "country_code": "AM",
+    "aliases": [
+      "Yerevan",
+      "Armenia",
+      "AM"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159150875",
+    "name": "Zagreb, Croatia",
+    "latitude": 45.800007,
+    "longitude": 15.999995,
+    "country_code": "HR",
+    "aliases": [
+      "Zagreb",
+      "Croatia",
+      "HR"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  },
+  {
+    "id": "natural-earth-1159151531",
+    "name": "Ürümqi, China",
+    "latitude": 43.806958,
+    "longitude": 87.57306,
+    "country_code": "CN",
+    "aliases": [
+      "Ürümqi",
+      "Urumqi",
+      "rumqi|Wulumqi",
+      "China",
+      "CN"
+    ],
+    "source": "Natural Earth 1:110m populated places",
+    "note": "Approximate city reference point from Natural Earth. Modern globe imagery; no street-level or current population claim."
+  }
+]

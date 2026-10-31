@@ -24,6 +24,26 @@ func run(app: Node3D, arguments: PackedStringArray) -> void:
     await RenderingServer.frame_post_draw
     root.get_texture().get_image().save_png(directory.path_join("windows-packaged-discovery.png"))
     progress("All twelve installed photographs decoded")
+    ui.open_page("Explore")
+    ui.exploration_panel.select_section("Search")
+    ui.search_query.text="Vancouver"
+    ui.search_query.text_submitted.emit("Vancouver")
+    verify(ui.atlas.size()>250 and ui.search_results.get_child_count()==1,"Installed offline city dataset resolves Vancouver")
+    if ui.search_results.get_child_count()==1:
+        ui.search_results.get_child(0).pressed.emit()
+        verify(app.exploration.location.name=="Vancouver, Canada" and app.exploration.location.note.contains("Natural Earth"),"Installed city journey preserves source identity")
+    verify(app.services.search_request.get_http_client_status()==HTTPClient.STATUS_DISCONNECTED,"Installed offline atlas did not request worldwide search")
+    ui.open_page("Explore")
+    ui.exploration_panel.select_section("Search")
+    ui.search_query.text="USA"
+    ui.search_query.text_submitted.emit("USA")
+    verify(ui.offline_next.visible,"Installed country results have another local page")
+    ui.offline_next.pressed.emit()
+    verify(ui.offline_page==1 and ui.offline_previous.visible,"Installed result paging advances correctly")
+    for frame in range(16):await get_tree().process_frame
+    await RenderingServer.frame_post_draw
+    root.get_texture().get_image().save_png(directory.path_join("windows-packaged-atlas.png"))
+    progress("Exported offline atlas, source identity and local paging passed")
     var satellite=app.satellite_snapshot
     var synthetic:=Image.create(2048,1024,false,Image.FORMAT_RGBA8)
     synthetic.fill(Color("35788e"))
