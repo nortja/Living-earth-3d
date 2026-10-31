@@ -1,0 +1,39 @@
+name: Actual packaged Windows display matrix 0.16.0
+on:
+  push:
+    branches: [validation/display-0.16.0]
+permissions:
+  contents: read
+jobs:
+  display:
+    runs-on: windows-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install pinned test-only software OpenGL
+        shell: pwsh
+        run: |
+          $archive=Join-Path $env:RUNNER_TEMP 'mesa.7z'
+          curl.exe -fL --retry 3 --output $archive 'https://github.com/pal1000/mesa-dist-win/releases/download/26.2.4/mesa3d-26.2.4-release-msvc.7z'
+          if($LASTEXITCODE -ne 0){throw 'Test OpenGL download failed'}
+          if((Get-FileHash $archive -Algorithm SHA256).Hash.ToLowerInvariant() -ne '351fc8c8b695878ffb3eaa044b3ead08672a48b1a045e3c3e3975811df0f6695'){throw 'Test OpenGL checksum mismatch'}
+          7z x $archive ('-o'+(Join-Path $env:RUNNER_TEMP 'mesa')) -y
+          if($LASTEXITCODE -ne 0){throw 'Test OpenGL extraction failed'}
+          & (Join-Path $env:RUNNER_TEMP 'mesa/systemwidedeploy.cmd') 1
+          if($LASTEXITCODE -ne 0){throw 'Test OpenGL deployment failed'}
+      - name: Install independently verified frozen 0.16.0 package
+        shell: pwsh
+        run: |
+          $installer=Join-Path $env:RUNNER_TEMP 'LivingEarth3D-Setup-0.16.0.exe'
+          curl.exe -fL --retry 3 --output $installer 'https://github.com/nortja/Living-earth-3d/raw/refs/heads/downloads/windows-0.16.0/LivingEarth3D-Setup-0.16.0.exe'
+          if($LASTEXITCODE -ne 0){throw 'Installer download failed'}
+          if((Get-FileHash $installer -Algorithm SHA256).Hash.ToLowerInvariant() -ne '4ace8fb77f39c78ffc56e68a1220a346df4759a9c4bcb04f73b47fcd384021cf'){throw 'Installer checksum mismatch'}
+          $root=Join-Path $env:RUNNER_TEMP 'Living Earth display test'
+          $p=Start-Process $installer -ArgumentList "/S /D=$root" -PassThru -Wait
+          if($p.ExitCode -ne 0){throw 'Display-test installation failed'}
+          ./tests/windows_display_test.ps1 -Application (Join-Path $root 'LivingEarth3D.exe')
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: Windows-native-display-matrix-0.16.0
+          path: build/windows-display-results/*
