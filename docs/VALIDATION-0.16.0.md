@@ -1,0 +1,9 @@
+# 0.16.0 candidate validation
+
+Prepared 2026-10-31. Adds bounded configuration segments to the existing five-active-minute local performance recording, so quality/frame-cap/viewport/interface-scale/screen/window changes retain their own measurements. After 31 segments, a clearly mixed overflow bucket preserves totals without asserting one setting. Existing report fields, privacy and native-saver isolation remain intact. See PERFORMANCE_CONTEXTS.md.
+
+All sixteen local Godot suites pass 1058 counted checks, including 51 performance checks. Tests cover unchanged grouping, cap transitions, active offsets, independent snapshots, bounded overflow, complete frame/time accounting and reset. Native graphics checks pass at six sizes from 800×600 through 5120×2880, verifying current viewport context, actual monitor inventory and configuration transitions. Screenshots reviewed. The small-window display-report sheet also keeps Record and Save visible without scrolling; final native and interface-scale checks pass.
+
+The installed Windows validator additionally requires exported configuration fields and exact frame/active-time accounting after its real five-minute recording. Fresh build/security/icon/native, Windows upgrade/rollback/settings, ten-minute preview/lifecycle and installed desktop gates remain required before public signing/promotion. A one-hour native Linux saver soak is being prepared as supplementary evidence; it is not a Windows hardware test.
+
+Production is 0.13.1 at preparation time; 0.14.0 and 0.15.0 are separate running candidates. This candidate is not released until public bytes/provenance and pinned-key signatures have been independently verified and the authenticated feed promoted atomically. Physical Dell/mixed-DPI/sleep/power and overnight observations remain separate.

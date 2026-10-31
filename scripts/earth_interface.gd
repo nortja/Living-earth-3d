@@ -21,6 +21,7 @@ var weather_layer_picker: OptionButton
 var weather_layer_legend: Label
 var performance_values: Label
 var performance_record: Button
+var performance_save: Button
 var performance_export_status: Label
 var exploration_poll := 0.0
 var app: Node3D
@@ -280,7 +281,7 @@ func relayout() -> void:
         panel.position = Vector2(size.x - width - 24, 88)
         panel.size = Vector2(width, maxf(250, size.y - 88 - dock.size.y - 44))
     else:
-        var sheet_height := minf(360,size.y-190) if (active_page == "Destination" and arrival_has_photo) or active_page in ["Weather globe", "Satellite view"] else 190.0
+        var sheet_height := minf(360,size.y-190) if (active_page == "Destination" and arrival_has_photo) or active_page in ["Weather globe", "Satellite view", "Display report"] else 190.0
         panel.position = Vector2(24, size.y - sheet_height - 92)
         panel.size = Vector2(size.x - 48, sheet_height)
     command_card.position = Vector2(24, 104)
@@ -686,14 +687,14 @@ func build_performance_controls() -> void:
     performance_record = button(box, "Record 5 active minutes", func():
         if app.performance_report.recording: app.performance_report.stop_recording()
         else: app.performance_report.start_recording())
-    button(box, "Save local display report", func():
+    performance_save = button(box, "Save local display report", func():
         var error: Error = app.performance_report.export_report()
         performance_export_status.text = "Saved display-report.json in the app data folder." if error == OK else "Could not save the display report. Try again."
         refresh_layout())
     if OS.get_name() == "Windows":
         button(box, "Open report folder", func(): OS.shell_open(ProjectSettings.globalize_path("user://")))
     performance_export_status = label(box, "Report stays on this computer. No upload, account name, file paths, saved places or camera images.", 12)
-    label(box, "Frame intervals include the FPS cap. Engine memory excludes driver/GPU allocations. Recording pauses while minimized or in screensaver mode; sleep gaps over two seconds are excluded. This is a measurement, not a hardware rating.", 12)
+    label(box, "Frame intervals include the FPS cap. Saved recordings separate quality, frame-cap, window-size and interface-scale changes. Engine memory excludes driver/GPU allocations. Recording pauses while minimized or in screensaver mode; sleep gaps over two seconds are excluded. This is a measurement, not a hardware rating.", 12)
     button(box, "Back to the globe · keep recording", close_panel)
     app.performance_report.changed.connect(_performance_changed)
 
@@ -705,6 +706,7 @@ func _performance_changed() -> void:
     var recording: Dictionary = report.get("recording", {})
     if not recording.is_empty() and recording.frames > 0:
         performance_values.text += "\nRecording: %d / 300 active seconds · %d frames over 50 ms" % [int(recording.active_seconds),recording.frames_over_50ms]
+        performance_values.text += "\n%d recorded configuration segments · details in saved report" % recording.get("contexts",[]).size()
     performance_record.text = "Stop recording" if app.performance_report.recording else "Record 5 active minutes"
     if active_page == "Display report": refresh_layout()
 

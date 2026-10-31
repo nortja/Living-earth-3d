@@ -1,3 +1,9 @@
+## 0.16.0 candidate — 2026-10-31
+
+- Keep quality, FPS cap, viewport, interface scale, screen and window changes beside their measured frame intervals in local performance recordings.
+- Bound history to 31 configuration segments plus a clearly mixed bucket, preserving every frame and active second. No upload or hardware rating.
+- Keep Record/Save visible in small windows. Source and native display checks passed; fresh full Windows gates follow.
+
 ## 0.15.0 candidate — 2026-10-31
 
 - Browse the previous seven UTC days of NOAA-20 satellite mosaics, defaulting to yesterday; requests start only on Load. Choosing a date does not relabel a retained image.

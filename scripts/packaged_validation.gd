@@ -83,11 +83,19 @@ func run(app: Node3D, arguments: PackedStringArray) -> void:
         progress("PACKAGED_PERFORMANCE "+JSON.stringify(report.build_snapshot().recording))
     verify(not report.recording and report.recorded_seconds>=300 and report.recorded_frames>0,"Installed five-active-minute recording completes")
     verify(report.export_report()==OK,"Installed application exports local display report")
+    var context_frames:=0
+    var context_seconds:=0.0
+    for segment in report.snapshot.recording.contexts:
+        context_frames+=int(segment.frames)
+        context_seconds+=float(segment.active_seconds)
+    verify(not report.snapshot.recording.contexts.is_empty() and context_frames==report.recorded_frames and is_equal_approx(context_seconds,report.recorded_seconds),"Installed context export accounts for every active frame and second")
+    verify(report.snapshot.recording.contexts[0].context.has("viewport_pixels") and report.snapshot.recording.contexts[0].context.has("frame_cap"),"Installed recording retains display configuration alongside timing")
     verify(report.snapshot.display.available and not str(report.snapshot.display.gpu).is_empty(),"Installed report contains actual Windows GPU/display fields")
     verify(not report.snapshot.has("username") and not report.snapshot.has("paths") and not report.snapshot.has("bookmarks"),"Installed report excludes personal content")
     verify(layer.request==null and not app.camera_service.active and app.observations.weather_request==null,"Desktop recording did not start public-data requests")
     ui.open_page("Display report")
     for frame in range(16):await get_tree().process_frame
+    verify(ui.page_scroll.get_global_rect().encloses(ui.performance_record.get_global_rect()) and ui.page_scroll.get_global_rect().encloses(ui.performance_save.get_global_rect()),"Installed recording/save controls are visible without scrolling")
     await RenderingServer.frame_post_draw
     root.get_texture().get_image().save_png(directory.path_join("windows-packaged-performance.png"))
     for path in [app.preferences_path,layer.cache_path]:DirAccess.remove_absolute(ProjectSettings.globalize_path(path))
