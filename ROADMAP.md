@@ -1,6 +1,6 @@
 # Living Earth 3D — current roadmap
 
-Updated 2026-10-31. Latest released baseline: 0.18.0 (chosen-file saved-place backup/merge, sourced offline atlas, recent satellite dates, 32-point weather and local reports). One Windows installer, then authenticated automatic updates; the base Earth remains useful offline.
+Updated 2026-10-31. Latest released baseline: 0.18.1 (visible first offline result, bounded recording monitor queries, and current-package Windows framebuffer gates; includes saved-place backups and the expanded exploration features). One Windows installer, then authenticated automatic updates; the base Earth remains useful offline.
 
 ## Completed
 
@@ -89,13 +89,21 @@ Updated 2026-10-31. Latest released baseline: 0.18.0 (chosen-file saved-place ba
 - [x] Fresh 757 source checks, native layouts through 5K, Windows upgrades/rollback/settings, actual installed desktop and a 605-second preview/lifecycle soak passed. Public installer downloaded and verified; exact manifest signed with the existing trust key. Production signed-feed staging/cancellation/normal-exit roundtrip also passed on Windows.
 - [x] Continued into 0.13.1; 0.13.0 was superseded before feed promotion.
 
-## This release — 0.18.0
+## This release — 0.18.1
+
+- [x] First offline search result fully visible, compact first/middle-page controls and explicit input/fixture consistency.
+- [x] Recording monitor index sampled at the report poll, with one-active-second latency stated; quality/cap/viewport/scale/window fields remain per-frame. No speedup claim is inferred from VM comparisons.
+- [x] 1117 source checks; complete Windows upgrade/rollback/settings, installed resources/recording and exact 1080p/ultrawide/4K/5K framebuffer matrix; 605.1-second preview/lifecycle passed in run 41231442929.
+- [x] Public installer/source provenance and pinned-key signature verified; authenticated source/feed promoted after successful 0.18.0 production update. 0.18.1 production roundtrip follows promotion.
+- [ ] Compact weather patch 0.18.2 is running fresh full gates for visible loaded-place filtering/selection.
+
+## Previous release — 0.18.0
 
 - [x] Explicit chosen-file JSON backup and non-replacing merge of saved places, with duplicate/capacity feedback, strict validation and 50-place bound.
 - [x] Failed imports preserve preferences; flushed temporary exports precede rename; no automatic import/upload/provider request; chooser released for preview.
 - [x] 1115 source checks, native backup layouts and full Windows upgrades/rollback/settings, compiled chosen-file callbacks/actual file merge, five-minute recording and 605-second preview/lifecycle passed in run41229309398.
-- [x] Public provenance/bytes and pinned-key signature verified; authenticated source/feed promoted after successful 0.17.0 production update. 0.18.0 production roundtrip follows promotion.
-- [ ] Follow-up 0.18.1 is running fresh gates for first-result visibility, bounded monitor sampling and a current-package Windows framebuffer matrix.
+- [x] Public provenance/bytes and pinned-key signature verified; authenticated source/feed promoted after successful 0.17.0 production update. 0.18.0 production Windows updater roundtrip passed; see release validation.
+- [x] Follow-up 0.18.1 passed fresh first-result, monitor-sampling and current-package Windows framebuffer gates.
 
 ## Previous release — 0.17.0
 

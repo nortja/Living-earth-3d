@@ -88,6 +88,7 @@ func run() -> void:
     verify(report.monitor_snapshot().is_empty(), "Headless run does not invent attached monitors")
     verify(not data.has("paths") and not data.has("bookmarks") and not data.has("username") and not data.has("camera_images"), "Report excludes personal content")
     verify(data.limits.contains("excludes driver/GPU"), "Memory measurement limits included")
+    verify(data.recording.screen_index_poll_seconds==1 and data.limits.contains("one active second"),"Screen-index polling resolution is explicit in the saved report")
     app.interface.open_page("Settings")
     app.interface.performance_record.pressed.emit()
     verify(report.recording, "Settings starts recording")

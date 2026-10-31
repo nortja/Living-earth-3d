@@ -1,3 +1,10 @@
+## 0.18.1 preview — 2026-10-31
+
+- Keep the first offline search result fully visible in small windows; use one compact row for previous/next page controls and remove the redundant heading.
+- Sample recording screen indices at the existing report poll instead of enumerating Windows monitors every frame. Keep other settings per-frame and state the screen-index latency explicitly.
+- Add the exact native Windows 1080p/ultrawide/4K/5K framebuffer matrix to the current installed desktop gate, plus a bounded diagnostic of native monitor-query cost.
+- All 1117 local source checks and final native layout regressions passed; complete current-package Windows/native/framebuffer gates passed; verified public bytes and authenticated metadata promoted.
+
 ## 0.18.0 preview — 2026-10-31
 
 - Add explicit chosen-file saved-place JSON export and merge. Existing entries win; duplicates/capacity are reported, invalid imports change nothing and the 50-place limit remains.

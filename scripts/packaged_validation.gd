@@ -42,6 +42,7 @@ func run(app: Node3D, arguments: PackedStringArray) -> void:
     verify(ui.offline_page==1 and ui.offline_previous.visible,"Installed result paging advances correctly")
     for frame in range(16):await get_tree().process_frame
     await RenderingServer.frame_post_draw
+    verify(ui.search_results.get_child_count()>0 and ui.page_scroll.get_global_rect().encloses(ui.search_results.get_child(0).get_global_rect()),"Installed first offline result is fully visible without scrolling")
     root.get_texture().get_image().save_png(directory.path_join("windows-packaged-atlas.png"))
     progress("Exported offline atlas, source identity and local paging passed")
     var backup_panel=ui.exploration_panel

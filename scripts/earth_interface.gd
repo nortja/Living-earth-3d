@@ -39,6 +39,7 @@ var offline_query := ""
 var offline_page := 0
 var offline_previous: Button
 var offline_next: Button
+var offline_pager: HBoxContainer
 var cameras: Array = []
 var search_results: VBoxContainer
 var search_query: LineEdit
@@ -316,10 +317,9 @@ func _explore(box: VBoxContainer) -> void:
     exploration_panel.build_explore(box)
 
 func _explore_search(box: VBoxContainer) -> void:
-    label(box, "A world worth exploring", 18)
     var query := LineEdit.new()
     search_query=query
-    query.placeholder_text = "Place or latitude, longitude"
+    query.placeholder_text = "City, country, or latitude, longitude"
     query.max_length = 80
     query.custom_minimum_size.y = 38
     box.add_child(query)
@@ -331,8 +331,13 @@ func _explore_search(box: VBoxContainer) -> void:
     local_search.size_flags_horizontal=Control.SIZE_EXPAND_FILL
     worldwide_search.size_flags_horizontal=Control.SIZE_EXPAND_FILL
     search_status = label(box, app.services.search_status, 12)
-    offline_previous=button(box,"Previous offline results",func(): _search_offline_page(offline_page-1))
-    offline_next=button(box,"Next offline results",func(): _search_offline_page(offline_page+1))
+    offline_pager=HBoxContainer.new()
+    box.add_child(offline_pager)
+    offline_previous=button(offline_pager,"Previous page",func(): _search_offline_page(offline_page-1))
+    offline_next=button(offline_pager,"Next page",func(): _search_offline_page(offline_page+1))
+    offline_previous.size_flags_horizontal=Control.SIZE_EXPAND_FILL
+    offline_next.size_flags_horizontal=Control.SIZE_EXPAND_FILL
+    offline_pager.hide()
     offline_previous.hide();offline_next.hide()
     search_results = VBoxContainer.new()
     box.add_child(search_results)
@@ -386,6 +391,7 @@ func _search_offline(query: String) -> void:
     query = query.strip_edges()
     offline_query=query
     offline_page=0
+    offline_pager.hide()
     offline_previous.hide();offline_next.hide()
     var matches: Array = []
     var coordinates := query.split(",")
@@ -403,12 +409,14 @@ func _search_offline(query: String) -> void:
 func _search_offline_page(page: int) -> void:
     var result:Dictionary=OfflineAtlas.search(offline_query,atlas+app.destinations,page)
     offline_page=result.page
+    offline_pager.visible=result.pages>1
     search_status.text="%d offline matches · page %d of %d" % [result.total,result.page+1,result.pages] if result.total>0 else "No offline matches · try another place or request worldwide search"
     offline_previous.visible=result.page>0
     offline_next.visible=result.page+1<result.pages
     _show_search(result.places)
 
 func _worldwide_results() -> void:
+    offline_pager.hide()
     offline_previous.hide();offline_next.hide()
     search_status.text = app.services.search_status
     _show_search(app.services.results)

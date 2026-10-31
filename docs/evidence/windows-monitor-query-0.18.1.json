@@ -1,0 +1,12 @@
+{
+    "limits":  "MonitorFromWindow plus EnumDisplayMonitors on this disposable CI desktop. API cost is not a Godot frame-time measurement or physical hardware result.",
+    "calls_per_batch":  200,
+    "milliseconds_per_call":  [
+                                  0.0052045000000000008,
+                                  0.0016155,
+                                  0.0018470000000000001,
+                                  0.001578,
+                                  0.0015790000000000001
+                              ],
+    "kind":  "Windows-monitor-query-probe"
+}
