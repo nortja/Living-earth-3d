@@ -1,6 +1,6 @@
 # Living Earth 3D — current roadmap
 
-Updated 2026-10-31. Latest released baseline: 0.17.0 (expanded sourced offline atlas and paginated local city/country search, plus recent satellite dates, 32-point weather and configuration-aware local reports). One Windows installer, then authenticated automatic updates; the base Earth remains useful offline.
+Updated 2026-10-31. Latest released baseline: 0.18.0 (chosen-file saved-place backup/merge, sourced offline atlas, recent satellite dates, 32-point weather and local reports). One Windows installer, then authenticated automatic updates; the base Earth remains useful offline.
 
 ## Completed
 
@@ -89,12 +89,20 @@ Updated 2026-10-31. Latest released baseline: 0.17.0 (expanded sourced offline a
 - [x] Fresh 757 source checks, native layouts through 5K, Windows upgrades/rollback/settings, actual installed desktop and a 605-second preview/lifecycle soak passed. Public installer downloaded and verified; exact manifest signed with the existing trust key. Production signed-feed staging/cancellation/normal-exit roundtrip also passed on Windows.
 - [x] Continued into 0.13.1; 0.13.0 was superseded before feed promotion.
 
-## This release — 0.17.0
+## This release — 0.18.0
+
+- [x] Explicit chosen-file JSON backup and non-replacing merge of saved places, with duplicate/capacity feedback, strict validation and 50-place bound.
+- [x] Failed imports preserve preferences; flushed temporary exports precede rename; no automatic import/upload/provider request; chooser released for preview.
+- [x] 1115 source checks, native backup layouts and full Windows upgrades/rollback/settings, compiled chosen-file callbacks/actual file merge, five-minute recording and 605-second preview/lifecycle passed in run41229309398.
+- [x] Public provenance/bytes and pinned-key signature verified; authenticated source/feed promoted after successful 0.17.0 production update. 0.18.0 production roundtrip follows promotion.
+- [ ] Follow-up 0.18.1 is running fresh gates for first-result visibility, bounded monitor sampling and a current-package Windows framebuffer matrix.
+
+## Previous release — 0.17.0
 
 - [x] Natural Earth 243-city reference dataset merged with original atlas; original coordinates retained, matching aliases merged and nearby landmarks kept distinct.
 - [x] Local country/code/diacritic terms, ranked results, complete eight-result paging and separate coordinate/online search. Public-domain source, pinned hash and reproducible conversion recorded.
 - [x] 1079 source checks, seven native layouts through 5K and full Windows upgrades/rollback/settings, installed resources/paging/recording and 605.1-second native preview/lifecycle passed in run 41228250585.
-- [x] Public source/bytes and pinned-key signature verified; authenticated source/feed promoted after successful 0.16.0 production roundtrip. 0.17.0 production roundtrip follows promotion.
+- [x] Public source/bytes and pinned-key signature verified; authenticated source/feed promoted after successful 0.16.0 production roundtrip. 0.17.0 production Windows updater roundtrip passed; see release validation.
 - [x] Supplementary frozen 0.16.0 actual Windows framebuffer matrix passed at 1080p, ultrawide, 4K and 5K using explicit post-start resizing on a small virtual desktop; physical monitor/DPI checks remain separate.
 
 ## Previous release — 0.16.0

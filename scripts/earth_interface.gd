@@ -287,7 +287,7 @@ func relayout() -> void:
         panel.position = Vector2(size.x - width - 24, 88)
         panel.size = Vector2(width, maxf(250, size.y - 88 - dock.size.y - 44))
     else:
-        var search_open:bool=active_page=="Explore" and exploration_panel!=null and exploration_panel.sections.Search.visible
+        var search_open:bool=active_page=="Explore" and exploration_panel!=null and (exploration_panel.sections.Search.visible or exploration_panel.sections.Saved.visible)
         var sheet_height := minf(360,size.y-190) if search_open or (active_page == "Destination" and arrival_has_photo) or active_page in ["Weather globe", "Satellite view", "Display report"] else 190.0
         panel.position = Vector2(24, size.y - sheet_height - 92)
         panel.size = Vector2(size.x - 48, sheet_height)

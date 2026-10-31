@@ -1,3 +1,10 @@
+## 0.18.0 preview — 2026-10-31
+
+- Add explicit chosen-file saved-place JSON export and merge. Existing entries win; duplicates/capacity are reported, invalid imports change nothing and the 50-place limit remains.
+- Bound file/record/text/coordinate validation, remove unsafe source links, flush temporary exports before rename and close the chooser for preview. No automatic import or upload.
+- Keep backup controls visible in small windows and reopen the packaged weather panel after testing its filtered navigation.
+- All 1115 local source checks and native backup layouts passed; complete fresh Windows/native gates passed; verified public bytes and authenticated metadata promoted.
+
 ## 0.17.0 preview — 2026-10-31
 
 - Add 243 pinned public-domain Natural Earth city reference points, merged with original places without replacing their coordinates.

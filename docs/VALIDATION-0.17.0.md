@@ -17,6 +17,6 @@ The selected offline atlas merges Natural Earth's 243 reference cities with the 
 
 Installer `LivingEarth3D-Setup-0.17.0.exe`: 51,376,198 bytes; SHA256 `8e8f73a2e82d4ddc1fc043cfc21704900c9ef71d033eb78d9fd21d493e0bc4f5`.
 
-Exact manifest signed outside git/CI and independently checked against the installed pinned public key; source and all three discovery files promoted atomically after 0.16.0's production update passed. The 0.17.0 production Windows updater roundtrip follows promotion. Publisher Authenticode remains separate; this is a publisher-unsigned preview.
+Exact manifest signed outside git/CI and independently checked against the installed pinned public key; source and all three discovery files promoted atomically after 0.16.0's production update passed. [Production Windows roundtrip41230795180](https://github.com/nortja/Living-earth-3d/actions/runs/41230795180), job124624410881, passed authenticated staging while open, cancellation without replacement, normal-exit installation, exact installed-file verification, no unwanted restart and cleanup. Publisher Authenticode remains separate; this is a publisher-unsigned preview.
 
 Maintainer-only Windows display-runner improvements/documentation are merged after their independent frozen-0.16.0 matrix passed; they are excluded from the application/installer payload. See WINDOWS_DISPLAY_MATRIX.md. Physical Dell GPU/DPI, mixed monitors, sleep/power and overnight checks remain separate; software CI does not establish them.

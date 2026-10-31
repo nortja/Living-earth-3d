@@ -44,6 +44,20 @@ func run(app: Node3D, arguments: PackedStringArray) -> void:
     await RenderingServer.frame_post_draw
     root.get_texture().get_image().save_png(directory.path_join("windows-packaged-atlas.png"))
     progress("Exported offline atlas, source identity and local paging passed")
+    var backup_panel=ui.exploration_panel
+    var backup_path:=directory.path_join("windows-saved-places-test.json")
+    app.exploration.toggle_save({"name":"Synthetic backup place A","latitude":1.0,"longitude":2.0,"note":"Windows packaged backup fixture"})
+    backup_panel.prepare_backup_dialog(true)
+    backup_panel.backup_dialog.file_selected.emit(backup_path)
+    verify(FileAccess.file_exists(backup_path),"Installed app writes chosen backup file")
+    app.exploration.toggle_save({"name":"Synthetic backup place B","latitude":3.0,"longitude":4.0,"note":"Windows packaged backup fixture"})
+    var saved_before:int=app.exploration.bookmarks.size()
+    backup_panel.prepare_backup_dialog(false)
+    backup_panel.backup_dialog.file_selected.emit(backup_path)
+    verify(app.exploration.bookmarks.size()==saved_before and backup_panel.backup_status.text.contains("duplicate"),"Installed import keeps places saved since export without duplicating coordinates")
+    backup_panel.close_backup_dialog()
+    DirAccess.remove_absolute(backup_path)
+    progress("Installed chosen-file backup export and non-replacing merge passed")
     var satellite=app.satellite_snapshot
     var synthetic:=Image.create(2048,1024,false,Image.FORMAT_RGBA8)
     synthetic.fill(Color("35788e"))
@@ -87,6 +101,7 @@ func run(app: Node3D, arguments: PackedStringArray) -> void:
     ui.weather_layer_query.text=""
     ui.weather_layer_query.text_changed.emit("")
     verify(ui.weather_layer_picker.item_count==33,"Installed cleared search restores all 32 choices")
+    ui.open_page("Weather globe")
     for frame in range(16):await get_tree().process_frame
     await RenderingServer.frame_post_draw
     root.get_texture().get_image().save_png(directory.path_join("windows-packaged-weather-fixture.png"))

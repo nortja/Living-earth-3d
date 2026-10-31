@@ -21,6 +21,11 @@ var weather_units: CheckButton
 var feature_save: Button
 var bookmark_buttons: Array = []
 var utc_day := -1
+const PlacesBackup=preload("res://scripts/saved_places_backup.gd")
+var backup_status:Label
+var backup_dialog:FileDialog
+var backup_export:Button
+var backup_import:Button
 
 func setup(interface: Control) -> void:
     ui = interface
@@ -153,10 +158,56 @@ func _saved(box: VBoxContainer) -> void:
     ui.label(box,"Places worth returning to",20)
     saved_status = ui.label(box,"",12)
     bookmark_buttons.append(action(box,"Save selected place",func(): app.exploration.toggle_save(app.exploration.location)))
+    backup_export=ui.button(box,"Export saved places backup…",func(): choose_backup(true))
+    backup_import=ui.button(box,"Import and merge saved places…",func(): choose_backup(false))
+    backup_status=ui.label(box,"Backups contain saved names, coordinates and notes. Choose a local file; nothing is uploaded. Import adds new coordinates without replacing existing places (50 maximum).",12)
     saved_list = VBoxContainer.new()
     box.add_child(saved_list)
     ui.label(box,"Existing curated favorites remain available under Search. Saved places and camera collections stay on this computer.",12)
     _bookmarks_changed()
+
+func prepare_backup_dialog(exporting:bool) -> FileDialog:
+    if is_instance_valid(backup_dialog):backup_dialog.queue_free()
+    backup_dialog=FileDialog.new()
+    backup_dialog.access=FileDialog.ACCESS_FILESYSTEM
+    backup_dialog.use_native_dialog=true
+    backup_dialog.filters=PackedStringArray(["*.json ; Saved places JSON"])
+    backup_dialog.file_mode=FileDialog.FILE_MODE_SAVE_FILE if exporting else FileDialog.FILE_MODE_OPEN_FILE
+    var documents:=OS.get_system_dir(OS.SYSTEM_DIR_DOCUMENTS)
+    backup_dialog.current_dir=documents if DirAccess.dir_exists_absolute(documents) else ProjectSettings.globalize_path("user://")
+    if exporting:backup_dialog.current_file="LivingEarth3D-saved-places.json"
+    backup_dialog.file_selected.connect(func(path:String):
+        if app.screensaver_mode:return
+        if exporting:export_backup(path)
+        else:import_backup(path))
+    ui.add_child(backup_dialog)
+    return backup_dialog
+
+func choose_backup(exporting:bool) -> void:
+    if app.screensaver_mode:return
+    prepare_backup_dialog(exporting).popup_centered_clamped(Vector2i(800,600))
+
+func close_backup_dialog() -> void:
+    if is_instance_valid(backup_dialog):
+        backup_dialog.queue_free()
+        backup_dialog=null
+
+func export_backup(path:String) -> void:
+    var error:Error=PlacesBackup.write_backup(path,app.exploration.bookmarks)
+    backup_status.text="Saved %d places to your chosen backup file. Nothing uploaded." % app.exploration.bookmarks.size() if error==OK else "Could not save the backup. Choose another writable location. Your saved places are unchanged."
+    ui.refresh_layout()
+
+func import_backup(path:String) -> void:
+    var result:Dictionary=PlacesBackup.read_backup(path)
+    if not result.ok:
+        backup_status.text="This file is not a valid saved-places backup. Existing places are unchanged."
+        ui.refresh_layout();return
+    var plan:Dictionary=PlacesBackup.merge(app.exploration.bookmarks,result.places)
+    if plan.added>0:
+        app.exploration.bookmarks=plan.places
+        app.exploration._save()
+    backup_status.text="Added %d places · %d duplicate coordinates skipped · %d over the 50-place limit skipped. Existing places kept." % [plan.added,plan.duplicates,plan.capacity_skipped]
+    ui.refresh_layout()
 
 func _bookmarks_changed() -> void:
     _update_save_buttons()
