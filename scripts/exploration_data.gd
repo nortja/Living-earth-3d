@@ -22,6 +22,8 @@ static func sanitize(place: Variant) -> Dictionary:
     if name.is_empty(): return {}
     var source := str(place.get("source", ""))
     if not source.begins_with("https://"): source = ""
+    for character in source:
+        if character.unicode_at(0)<=32 or character.unicode_at(0)==127 or character=="\\":source="";break
     return {"name":name,"latitude":float(place.latitude),"longitude":float(place.longitude),"note":str(place.get("note",place.get("fact",""))).left(1200),"source":source.left(500)}
 
 static func key(place: Dictionary) -> String:
