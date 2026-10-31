@@ -1,3 +1,10 @@
+## 0.12.4 candidate — 2026-10-31
+
+- Reuse validated camera textures when provider image bytes are unchanged; keep retrieval/source timestamps, backoff recovery and delayed-image warnings current. Changed or oversized images still follow decode/validation and retention rules.
+- Refresh monitor information and frame budgets after same-monitor refresh/DPI changes as well as monitor moves. Handle non-finite refresh values safely; fractional 60 Hz displays use the intended 60 FPS budget. Native saver 15/30 FPS limits remain intact.
+- Local display-report exports include attached-monitor geometry, DPI, scale, refresh and active screen index for field diagnosis. No report is uploaded.
+- Fresh Windows/native packaging validation is pending; the production update feed remains 0.12.3 until its gates pass.
+
 # Changelog
 
 ## 0.12.3 — Select Earth as your Windows screensaver

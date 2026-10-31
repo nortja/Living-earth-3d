@@ -61,6 +61,19 @@ func run() -> void:
     service._received(HTTPRequest.RESULT_SUCCESS, 200, PackedStringArray(), bytes, service.generation)
     verify(service.refresh_interval == 60.0 and service.consecutive_failures == 0, "Successful refresh restores normal cadence")
     verify(service.status.contains("unchanged"), "Repeated unchanged frames flagged")
+    var retained_texture: Texture2D = service.image
+    service._received(HTTPRequest.RESULT_SUCCESS, 200, PackedStringArray(["Last-Modified: newer provider time"]), bytes, service.generation)
+    verify(service.image == retained_texture, "Unchanged refresh reuses validated GPU texture")
+    verify(service.status.contains("newer provider time") and service.status.contains("unchanged"), "Reused image still updates source status and unchanged warning")
+    fixture.fill(Color("cc8432"))
+    var changed_bytes := fixture.save_jpg_to_buffer()
+    service._received(HTTPRequest.RESULT_SUCCESS, 200, PackedStringArray(), changed_bytes, service.generation)
+    verify(service.image != retained_texture and not service.status.contains("unchanged"), "Changed provider frame replaces texture and clears delay warning")
+    retained_texture = service.image
+    var oversized := Image.create(4097,1,false,Image.FORMAT_RGB8)
+    oversized.fill(Color("884422"))
+    service._received(HTTPRequest.RESULT_SUCCESS, 200, PackedStringArray(), oversized.save_jpg_to_buffer(), service.generation)
+    verify(service.last_failed and service.image == retained_texture, "Oversized changed image retains the validated image with explicit failure")
     var token: int = service.generation
     ui.close_camera()
     service._received(HTTPRequest.RESULT_SUCCESS, 200, PackedStringArray(), bytes, token)
