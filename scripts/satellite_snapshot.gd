@@ -5,6 +5,7 @@ const WIDTH := 2048
 const HEIGHT := 1024
 const MAX_BYTES := 16777216
 const COOLDOWN_MS := 60000
+const RECENT_DAYS := 7
 const LAYER := "VIIRS_NOAA20_CorrectedReflectance_TrueColor"
 var app: Node3D
 var texture: Texture2D
@@ -13,8 +14,9 @@ var suspended := false
 var loading := false
 var observed_date := ""
 var pending_date := ""
+var selected_days_ago := 1
 var retrieved := ""
-var status := "Load yesterday's NASA satellite mosaic, then explore it on Earth."
+var status := "Choose a recent UTC day, then Load its NASA mosaic. Yesterday is selected by default."
 var request: HTTPRequest
 var generation := 0
 var last_attempt := -COOLDOWN_MS
@@ -24,7 +26,16 @@ func setup(owner_app: Node3D) -> void:
     set_process(false)
 
 static func previous_utc_day(unix_time: float) -> String:
-    return Time.get_date_string_from_unix_time(int(unix_time) - 86400)
+    return recent_utc_date(unix_time,1)
+
+static func recent_utc_date(unix_time: float, days_ago: int) -> String:
+    if days_ago < 1 or days_ago > RECENT_DAYS: return ""
+    return Time.get_date_string_from_unix_time(int(unix_time) - days_ago*86400)
+
+func select_days_ago(value: int) -> void:
+    if loading or value < 1 or value > RECENT_DAYS: return
+    selected_days_ago = value
+    changed.emit()
 
 static func request_url(date: String) -> String:
     return "https://gibs.earthdata.nasa.gov/wms/epsg4326/best/wms.cgi?SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&LAYERS=%s&STYLES=&SRS=EPSG:4326&BBOX=-180,-90,180,90&WIDTH=2048&HEIGHT=1024&FORMAT=image/png&TRANSPARENT=TRUE&TIME=%s" % [LAYER,date.uri_encode()]
@@ -36,7 +47,11 @@ func refresh() -> void:
         changed.emit()
         return
     cancel()
-    pending_date = previous_utc_day(Time.get_unix_time_from_system())
+    pending_date = recent_utc_date(Time.get_unix_time_from_system(),selected_days_ago)
+    if pending_date.is_empty():
+        status = "Choose one of the previous seven UTC days. No request was sent."
+        changed.emit()
+        return
     last_attempt = Time.get_ticks_msec()
     loading = true
     status = "Requesting NASA NOAA-20 mosaic for %s UTC…" % pending_date
@@ -52,7 +67,7 @@ func refresh() -> void:
         if not "@" in host_port and host_port.count(":") == 1:
             request.set_https_proxy(host_port.get_slice(":",0),int(host_port.get_slice(":",1)))
     request.request_completed.connect(_received.bind(generation))
-    if request.request(request_url(pending_date),["User-Agent: LivingEarth3D/0.13.0 (+https://github.com/nortja/Living-earth-3d)"]) != OK:
+    if request.request(request_url(pending_date),["User-Agent: LivingEarth3D/0.15.0 (+https://github.com/nortja/Living-earth-3d)"]) != OK:
         _received(HTTPRequest.RESULT_CANT_CONNECT,0,PackedStringArray(),PackedByteArray(),generation)
 
 static func valid_png_size(bytes: PackedByteArray) -> bool:

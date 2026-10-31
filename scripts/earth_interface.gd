@@ -7,6 +7,8 @@ var arrival_status: Label
 var arrival_save: Button
 var satellite_status: Label
 var satellite_load: Button
+var satellite_date_picker: OptionButton
+var satellite_offline: Button
 var satellite_cancel: Button
 var satellite_toggle: CheckButton
 var weather_model_badge: Button
@@ -224,6 +226,7 @@ func button(parent: Node, text: String, action: Callable) -> Button:
 
 func open_page(title: String) -> void:
     if title in ["Live Earth", "Weather globe"] and app.weather_layer: _weather_layer_changed()
+    if title == "Satellite view" and app.satellite_snapshot: _satellite_changed()
     if active_page == title and panel.visible:
         close_panel()
         return
@@ -767,21 +770,31 @@ func _weather_layer_changed() -> void:
     refresh_layout()
 
 func build_satellite_controls() -> void:
-    var entry := button(pages["Live Earth"],"Yesterday from orbit · NASA",func(): open_page("Satellite view"))
+    var entry := button(pages["Live Earth"],"Recent days from orbit · NASA",func(): open_page("Satellite view"))
     pages["Live Earth"].move_child(entry,2)
     var box: VBoxContainer = pages["Satellite view"]
-    label(box,"Yesterday from orbit",18)
+    label(box,"Recent days from orbit",18)
     label(box,"NASA GIBS · NOAA-20 / VIIRS · dated satellite mosaic",12)
     satellite_status = label(box,"",12)
-    satellite_load = button(box,"Load yesterday's mosaic",app.satellite_snapshot.refresh)
+    satellite_date_picker = OptionButton.new()
+    satellite_date_picker.clip_text = true
+    satellite_date_picker.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+    satellite_date_picker.item_selected.connect(func(index: int): app.satellite_snapshot.select_days_ago(index+1))
+    box.add_child(satellite_date_picker)
+    var actions:=HBoxContainer.new()
+    box.add_child(actions)
+    satellite_load = button(actions,"Load yesterday's mosaic",app.satellite_snapshot.refresh)
+    satellite_load.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+    satellite_offline = button(actions,"Offline Earth",func(): app.satellite_snapshot.set_enabled(false))
+    satellite_offline.custom_minimum_size.x = 112
+    satellite_offline.tooltip_text = "Cancel any satellite request and return to offline Earth"
     satellite_cancel = button(box,"Cancel satellite request",app.satellite_snapshot.cancel)
     satellite_toggle = CheckButton.new()
     satellite_toggle.text = "Show satellite mosaic on Earth"
     satellite_toggle.toggled.connect(app.satellite_snapshot.set_enabled)
     box.add_child(satellite_toggle)
-    button(box,"Return to offline Earth",func(): app.satellite_snapshot.cancel(); app.satellite_snapshot.set_enabled(false))
     label(box,"Black gaps mean no imagery, including unobserved passes or seasonal darkness. This is a daily composite, not a current cloud map or continuous video. Lighting is unshaded; artistic clouds and night lights are hidden while it is shown.",12)
-    label(box,"One 2048 × 1024 image is requested from NASA GIBS only when you press Load. No device location, automatic downloads or screensaver requests. The mosaic stays in memory for this session.",12)
+    label(box,"Choose one of the previous seven UTC days, then press Load. Changing the date keeps the displayed mosaic until a new one succeeds. One 2048 × 1024 image is requested from NASA GIBS; no device location, automatic downloads or screensaver requests. One mosaic stays in memory for this session.",12)
     label(box,"Imagery: NASA GIBS, part of NASA ESDIS. NOAA-20 / VIIRS corrected reflectance. Globe atmosphere and stars remain artistic.",12)
     button(box,"NASA imagery source and acknowledgement ↗",func(): OS.shell_open("https://nasa-gibs.github.io/gibs-api-docs/"))
     app.satellite_snapshot.changed.connect(_satellite_changed)
@@ -790,6 +803,14 @@ func build_satellite_controls() -> void:
 func _satellite_changed() -> void:
     var service = app.satellite_snapshot
     satellite_status.text = service.status
+    satellite_date_picker.clear()
+    var now := Time.get_unix_time_from_system()
+    for days_ago in range(1,service.RECENT_DAYS+1):
+        var date: String = service.recent_utc_date(now,days_ago)
+        satellite_date_picker.add_item("%s UTC · %s" % [date,"yesterday" if days_ago==1 else "%d days ago" % days_ago])
+    satellite_date_picker.select(service.selected_days_ago-1)
+    satellite_date_picker.disabled = service.loading
+    satellite_load.text = "Load %s mosaic" % service.recent_utc_date(now,service.selected_days_ago)
     satellite_load.disabled = service.loading
     satellite_cancel.disabled = not service.loading
     satellite_toggle.disabled = service.texture == null
