@@ -1,6 +1,6 @@
 # Living Earth 3D — current roadmap
 
-Updated 2026-10-31. Latest released baseline: 0.14.0 (32-place requested model weather and local source-correct place/country filtering). One Windows installer, then authenticated automatic updates; the base Earth remains useful offline.
+Updated 2026-10-31. Latest released baseline: 0.15.0 (explicit recent-week NASA satellite dates and visible offline return, plus 32-place model weather). One Windows installer, then authenticated automatic updates; the base Earth remains useful offline.
 
 ## Completed
 
@@ -89,12 +89,19 @@ Updated 2026-10-31. Latest released baseline: 0.14.0 (32-place requested model w
 - [x] Fresh 757 source checks, native layouts through 5K, Windows upgrades/rollback/settings, actual installed desktop and a 605-second preview/lifecycle soak passed. Public installer downloaded and verified; exact manifest signed with the existing trust key. Production signed-feed staging/cancellation/normal-exit roundtrip also passed on Windows.
 - [x] Continued into 0.13.1; 0.13.0 was superseded before feed promotion.
 
-## This release — 0.14.0
+## This release — 0.15.0
+
+- [x] Previous seven UTC satellite days, yesterday by default, local selection until explicit Load and retained observation identity on failed/cancelled requests.
+- [x] Readable, visible Offline Earth beside Load at small sizes; one-image memory bound and no automatic/native-saver requests.
+- [x] 1049 source checks, actual October24 retrieval and four native layouts through 5K. Final Windows upgrade/rollback/settings, installed desktop and 605.1-second preview/lifecycle gates passed in run 41227218923.
+- [x] Public installer provenance/bytes verified and pinned-key signed metadata promoted atomically. Production updater roundtrip follows promotion.
+
+## Previous release — 0.14.0
 
 - [x] Expanded explicit Open-Meteo model sample to 32 sourced public places, local city/country filtering and correct navigation after filtering/omitted rows.
 - [x] Ten-minute manual cooldown, fixed dataset/cache validation, no startup/native-saver downloads and preservation of preferences/bookmarks.
 - [x] 1036 source checks, actual 32-place retrieval and seven native layouts through 5K. Final Windows upgrade/rollback/settings, installed desktop and 605.1-second native preview/lifecycle gates passed in run 41226878053.
-- [x] Verified public installer/source provenance and pinned-key signed metadata promoted atomically; production roundtrip follows promotion.
+- [x] Verified public installer/source provenance and pinned-key signed metadata promoted atomically; Production Windows updater roundtrip passed; see release validation.
 
 ## Previous release — 0.13.1
 
@@ -104,7 +111,7 @@ Updated 2026-10-31. Latest released baseline: 0.14.0 (32-place requested model w
 - [x] Native graphics preflight waits for a real frame plus a visible window, keeps its close deadline and retains failure logs. It runs only with an explicit validation flag.
 - [x] Maintainer release-provenance/download verification with ten failure-path tests; no private key or installer execution in the verifier.
 - [x] Local sixteen-suite coverage: 807 behavior/layout cases plus 200 malformed-image inputs. Actual eight-camera retrieval, conditional provider 304 and NOAA-20 retrieval/rendering passed.
-- [x] Final complete Windows/native pipeline 41224574684 passed, public installer provenance/bytes verified and authenticated metadata promoted. Production roundtrip follows promotion.
+- [x] Final complete Windows/native pipeline 41224574684 passed, public installer provenance/bytes verified and authenticated metadata promoted. Production Windows updater roundtrip passed; see release validation.
 
 ## Next priorities
 

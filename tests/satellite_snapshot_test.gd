@@ -15,6 +15,19 @@ func run() -> void:
     verify(service != null and not service.enabled and service.request == null, "Startup does not request or enable satellite imagery")
     verify(Snapshot.previous_utc_day(Time.get_unix_time_from_datetime_string("2024-03-01T00:00:00")) == "2024-02-29", "UTC date handles leap day")
     verify(Snapshot.previous_utc_day(Time.get_unix_time_from_datetime_string("2026-01-01T23:59:59")) == "2025-12-31", "UTC date handles year boundary")
+    var boundary:=Time.get_unix_time_from_datetime_string("2024-03-01T23:59:59")
+    verify(Snapshot.recent_utc_date(boundary,7)=="2024-02-23","Seven-day selector crosses leap-month boundary in UTC")
+    verify(Snapshot.recent_utc_date(boundary,0).is_empty() and Snapshot.recent_utc_date(boundary,8).is_empty(),"Date range excludes today future and older arbitrary dates")
+    verify(service.selected_days_ago==1 and app.interface.satellite_date_picker.item_count==7,"Date selector defaults to yesterday with seven explicit days")
+    app.interface.satellite_date_picker.item_selected.emit(6)
+    verify(service.selected_days_ago==7 and not service.loading and service.request==null and service.texture==null,"Selecting an older day stays local and does not fabricate an image")
+    service.select_days_ago(0);service.select_days_ago(8)
+    verify(service.selected_days_ago==7,"Invalid selections cannot escape recent-date bounds")
+    service.loading=true
+    service.select_days_ago(2)
+    verify(service.selected_days_ago==7,"Selection is stable during an in-flight request")
+    service.loading=false
+    service.select_days_ago(1)
     var url := Snapshot.request_url("2026-10-30")
     verify(url.begins_with("https://gibs.earthdata.nasa.gov/") and url.contains("SRS=EPSG:4326") and url.contains("BBOX=-180,-90,180,90") and url.ends_with("TIME=2026-10-30"), "Fixed geographic request preserves longitude/latitude ordering and exact date")
     verify(not Snapshot.valid_png_size(PackedByteArray()) and not Snapshot.valid_png_size("<ServiceException>Unavailable</ServiceException>".to_utf8_buffer()), "Empty/XML errors are rejected before image decode")
@@ -33,6 +46,8 @@ func run() -> void:
     app.set_visual_option("clouds",true)
     verify(not app.visuals.clouds.visible, "Artistic cloud preference cannot cover the observed mosaic")
     var retained: Texture2D = service.texture
+    service.select_days_ago(7)
+    verify(service.observed_date=="2026-10-30" and app.info.text.contains("2026-10-30") and service.texture==retained and service.request==null,"Choosing another day preserves displayed observation identity until successful Load")
     service.pending_date = "2026-10-31"
     service._received(0,200,PackedStringArray(),"<ServiceException/>".to_utf8_buffer(),service.generation)
     verify(service.texture == retained and service.observed_date == "2026-10-30" and service.status.contains("retained"), "Provider error retains old date and texture")
@@ -62,6 +77,8 @@ func run() -> void:
         for frame in range(12): await process_frame
         verify(Rect2(Vector2.ZERO,app.interface.size).encloses(Rect2(app.interface.panel.position,app.interface.panel.size)), "Satellite controls fit %s" % pixels)
         verify(app.interface.page_scroll.get_global_rect().encloses(app.interface.satellite_load.get_global_rect()), "Initial satellite load action is visible without scrolling at %s" % pixels)
+        verify(app.interface.page_scroll.get_global_rect().encloses(app.interface.satellite_date_picker.get_global_rect()),"Date selector is visible without scrolling at %s" % pixels)
+        verify(app.interface.satellite_offline.size.x>=112 and app.interface.page_scroll.get_global_rect().encloses(app.interface.satellite_offline.get_global_rect()),"Offline return has readable width and remains visible beside Load at %s" % pixels)
         if app.interface.panel.visible: app.interface.close_panel()
     DirAccess.remove_absolute(ProjectSettings.globalize_path(app.preferences_path))
     app.queue_free()

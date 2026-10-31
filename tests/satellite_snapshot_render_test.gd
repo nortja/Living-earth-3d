@@ -14,9 +14,11 @@ func run() -> void:
     var date := "2026-10-30"
     var label := "Synthetic satellite mosaic · render validation"
     for arg in OS.get_cmdline_user_args():
+        if arg.begins_with("--snapshot-date="): date=arg.trim_prefix("--snapshot-date=")
+    for arg in OS.get_cmdline_user_args():
         if arg.begins_with("--snapshot-image="):
             bytes = FileAccess.get_file_as_bytes(arg.trim_prefix("--snapshot-image="))
-            label = "Actual NASA GIBS mosaic · 2026-10-30 UTC · validation"
+            label = "Actual NASA GIBS mosaic · %s UTC · validation" % date
     var service = app.satellite_snapshot
     service.pending_date = date
     service._received(0,200,PackedStringArray(),bytes,service.generation)
@@ -36,6 +38,10 @@ func run() -> void:
             failures+=1;push_error("Satellite controls do not fit %s" % pixels)
         if not ui.page_scroll.get_global_rect().encloses(ui.satellite_load.get_global_rect()):
             failures+=1;push_error("Initial satellite load action requires scrolling")
+        if not ui.page_scroll.get_global_rect().encloses(ui.satellite_date_picker.get_global_rect()):
+            failures+=1;push_error("Satellite date selector requires scrolling")
+        if ui.satellite_offline.size.x<112 or not ui.page_scroll.get_global_rect().encloses(ui.satellite_offline.get_global_rect()):
+            failures+=1;push_error("Offline return requires scrolling")
         root.get_texture().get_image().save_png("res://dist/satellite-%dx%d.png" % [pixels.x,pixels.y])
     service.set_enabled(false)
     for frame in range(12): await process_frame

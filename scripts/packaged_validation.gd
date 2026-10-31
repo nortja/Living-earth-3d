@@ -35,6 +35,10 @@ func run(app: Node3D, arguments: PackedStringArray) -> void:
     for frame in range(16):await get_tree().process_frame
     await RenderingServer.frame_post_draw
     verify(ui.page_scroll.get_global_rect().encloses(ui.satellite_load.get_global_rect()),"Installed satellite load action is visible without scrolling")
+    verify(ui.satellite_date_picker.item_count==7 and ui.page_scroll.get_global_rect().encloses(ui.satellite_date_picker.get_global_rect()),"Installed recent-date selector is fully visible")
+    verify(ui.satellite_offline.size.x>=112 and ui.page_scroll.get_global_rect().encloses(ui.satellite_offline.get_global_rect()),"Installed offline return is readable and fully visible")
+    ui.satellite_date_picker.item_selected.emit(6)
+    verify(satellite.selected_days_ago==7 and satellite.observed_date=="2026-10-30" and satellite.request==null,"Installed date selection preserves displayed mosaic without downloading")
     root.get_texture().get_image().save_png(directory.path_join("windows-packaged-satellite-fixture.png"))
     app.preview_screensaver()
     verify(satellite.suspended and not app.earth_material.get_shader_parameter("satellite_view") and satellite.request==null,"Installed native-style preview excludes satellite surface and requests")

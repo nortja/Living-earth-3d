@@ -17,6 +17,6 @@ The optional Open-Meteo sample expands to 32 fixed public places, with local pla
 
 Installer `LivingEarth3D-Setup-0.14.0.exe`: 51,357,871 bytes; SHA256 `ff523640a184d938f5dd2cc9f92cae0800f1d82b42dbccc9d4e8fb04b888b4c2`.
 
-Exact metadata signed with the existing key outside git/CI and independently verified against the installed pinned public key. Source, application.json, application.sig and preview.json are promoted atomically. Publisher signing remains separate: this is a Windows publisher-unsigned preview. Production Windows updater roundtrip follows promotion.
+Exact metadata signed with the existing key outside git/CI and independently verified against the installed pinned public key. Source, application.json, application.sig and preview.json are promoted atomically. Publisher signing remains separate: this is a Windows publisher-unsigned preview. [Production Windows roundtrip 41228910023](https://github.com/nortja/Living-earth-3d/actions/runs/41228910023), job 124618773669, passed live authenticated staging while open, cancellation without replacement, installation after normal exit, exact installed-file verification, no unwanted restart and cleanup.
 
 Software-rendered CI is not physical Dell GPU/DPI, mixed-monitor, sleep/resume, power or overnight validation. Model values are dated point estimates, not continuous observations or a global cloud field.

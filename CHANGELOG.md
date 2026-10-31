@@ -1,3 +1,9 @@
+## 0.15.0 preview — 2026-10-31
+
+- Browse the previous seven UTC days of NOAA-20 satellite mosaics, defaulting to yesterday; requests start only on Load. Choosing a date does not relabel a retained image.
+- Keep Offline Earth visible beside Load and retain all bounded image, cancellation and native-saver isolation rules.
+- Actual oldest-day retrieval and native renders through 5K passed; complete fresh Windows/native gates passed; verified public bytes and authenticated metadata promoted.
+
 ## 0.14.0 preview — 2026-10-31
 
 - Expand the explicit model-weather sample from 16 to 32 public places, with local country/place search and accurate filtered-source navigation.
