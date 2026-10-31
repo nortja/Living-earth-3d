@@ -1,0 +1,23 @@
+# 0.16.0 preview validation
+
+Released 2026-10-31. Frozen source `d06e2f49dc531ed5bbf6ede400db38da7c2e57dd`, tree `888ceb0757f7354b13ef05cc2b4a3195d4ba5693`. [Full pipeline 41227593377](https://github.com/nortja/Living-earth-3d/actions/runs/41227593377) passed all four jobs.
+
+Local performance recordings now group active frames by actual configuration and preserve separate means, maxima and slow-frame counts. After 31 configuration segments, a clearly mixed bucket preserves remaining totals without assigning false settings. New recordings reset history. Prior fields/privacy and native-saver isolation remain intact. Record/Save stay visible at small sizes. See PERFORMANCE_CONTEXTS.md.
+
+## Gates and delivery
+
+- Sixteen local suites passed 1058 checks, including 51 performance cases and 200 malformed JPEG inputs; ten maintainer provenance tests remain passing. Six native sizes through 5K verified context transitions/current viewport, actual monitor inventory and visible recording/save actions.
+- Build 124614880023 passed source/security/export/icon/native checks.
+- Windows 124616233967 passed upgrades/rollback from 0.5.2 and 0.9.0, both PowerShell security/status suites, actual settings/dropdown and native preview/lifecycle. Actual preview soak lasted 605.1 seconds, final OS private bytes 208,424,960. Flushed Windows 320×200 first-frame readiness arrived at 3481 ms.
+- Installed desktop 124616233985 passed resources, 32-place weather, satellite and preview isolation. Actual recording: 300.0215 active seconds, 12,998 frames, mean 23.0821 ms, one frame above 50 ms. Exported context exactly accounts for every frame/second: balanced, cap 60, 870×612 viewport, screen 0, scale 1.0, window mode 0. Release-memory counters remain null. Synthetic imagery is labeled. The older weather-fixture screenshot captures the selected arrival; the later backup candidate corrects that evidence label.
+- Publish 124619443637 passed. Independent public-download verifier checked completed successful source/workflow, BUILD source, exact updater URL, checksum/size and four installed-file hashes. Evidence archives were digest-verified; installed performance screenshot reviewed.
+
+Installer `LivingEarth3D-Setup-0.16.0.exe`: 51,362,403 bytes; SHA256 `4ace8fb77f39c78ffc56e68a1220a346df4759a9c4bcb04f73b47fcd384021cf`.
+
+The exact manifest was signed outside git/CI, independently checked against the pinned public key and promoted atomically with source and all three discovery files after the successful 0.15.0 production update. The 0.16.0 production Windows updater roundtrip follows promotion. This remains a Windows publisher-unsigned preview.
+
+## Timing follow-up and limits
+
+The disposable Windows VM's measured mean differed from the previous release's VM; this is not a hardware performance claim. A same-host native Linux comparison at 870×612, balanced/cap60, after three-second warmup measured 12.0043 active seconds / 703 frames / 17.0758 ms for frozen 0.16.0, and 12.0106 seconds / 709 frames / 16.9402 ms for frozen 0.15.0. Five 10,000-call sampling probes measured 2.64–2.82 microseconds per frame for 0.16.0 versus 0.50–0.75 for 0.15.0. This short comparison does not establish long-run, physical Windows or causal VM behavior; no 60 FPS guarantee is inferred.
+
+A separate actual packaged Windows 1080p/ultrawide/4K/5K matrix is being exercised and will be reported independently. A one-hour native Linux saver soak against this exact frozen source is running as supplementary evidence; it is not yet counted as complete. Physical Dell GPU/DPI, mixed-monitor, sleep/power and overnight observations remain separate.

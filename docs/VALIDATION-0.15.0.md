@@ -17,6 +17,6 @@ Recent days from orbit offers the previous seven UTC dates, yesterday by default
 
 Installer `LivingEarth3D-Setup-0.15.0.exe`: 51,359,588 bytes; SHA256 `9c4f711b0e77d2d2c5bc714aec616d9d727650144eef394c36ea775ee060c6d4`.
 
-Exact manifest signed outside git/CI and independently verified against the installed pinned public key. Source and all three discovery files are promoted atomically after the 0.14.0 production updater roundtrip passed. The 0.15.0 production Windows roundtrip follows promotion. Publisher signing remains separate; this is a publisher-unsigned preview.
+Exact manifest signed outside git/CI and independently verified against the installed pinned public key. Source and all three discovery files are promoted atomically after the 0.14.0 production updater roundtrip passed. [Production Windows roundtrip 41229480105](https://github.com/nortja/Living-earth-3d/actions/runs/41229480105), job124620459639, passed authenticated staging while open, cancellation without replacement, installation after normal exit, exact installed-file verification, no unwanted restart and cleanup. Publisher signing remains separate; this is a publisher-unsigned preview.
 
 Daily mosaics have real gaps and are not a simultaneous photograph/current cloud field. Software CI does not establish physical Dell GPU/DPI, mixed monitors, sleep/power or overnight behavior.
