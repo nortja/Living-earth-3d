@@ -13,17 +13,17 @@ func run() -> void:
     var feed: Array = []
     for index in range(layer.places.size()):
         var place: Dictionary = layer.places[index]
-        feed.append({"latitude":place.latitude,"longitude":place.longitude,"location_id":index,"utc_offset_seconds":0,"current_units":{"temperature_2m":"°C","wind_speed_10m":"km/h","relative_humidity_2m":"%"},"current":{"time":Time.get_datetime_string_from_system(true),"temperature_2m":-5+index*3,"wind_speed_10m":10.0,"relative_humidity_2m":55,"weather_code":2}})
+        feed.append({"latitude":place.latitude,"longitude":place.longitude,"location_id":index,"utc_offset_seconds":0,"current_units":{"temperature_2m":"°C","wind_speed_10m":"km/h","relative_humidity_2m":"%"},"current":{"time":Time.get_datetime_string_from_system(true),"temperature_2m":-5+(index*3)%60,"wind_speed_10m":10.0,"relative_humidity_2m":55,"weather_code":2}})
     var actual := false
     for arg in OS.get_cmdline_user_args():
         if arg.begins_with("--weather-fixture="):
             feed=JSON.parse_string(FileAccess.get_file_as_string(arg.trim_prefix("--weather-fixture=")))
             actual=true
     layer._received(0,200,PackedStringArray(),JSON.stringify(feed).to_utf8_buffer(),layer.generation)
-    verify(layer.points.size()==16,"Sixteen model points render")
+    verify(layer.points.size()==32,"32 model points render")
     if not actual: layer.status="Synthetic model points · native layout test only"
     var ui = app.interface
-    for pixels in [Vector2i(800,600),Vector2i(1920,1080),Vector2i(3440,1440),Vector2i(3840,2160),Vector2i(5120,1440),Vector2i(5120,2880)]:
+    for pixels in [Vector2i(800,600),Vector2i(1920,1080),Vector2i(3440,1440),Vector2i(3840,1080),Vector2i(3840,2160),Vector2i(5120,1440),Vector2i(5120,2880)]:
         root.size=pixels
         app.reset_view()
         app.journey.custom_step(1.0);app._update_camera()
@@ -37,7 +37,7 @@ func run() -> void:
         for frame in range(12):await process_frame
         verify(ui.weather_model_badge.visible,"Closed panel leaves discoverable legend badge")
         verify(Rect2(Vector2.ZERO,ui.size).encloses(Rect2(ui.weather_model_badge.position,ui.weather_model_badge.size)),"Legend badge stays on screen")
-        if layer.points.size()==16:
+        if layer.points.size()==32:
             layer.visit(0);app.journey.custom_step(3.0);app._update_camera()
             for frame in range(8):await process_frame
             var marker: MeshInstance3D = layer.markers[0]

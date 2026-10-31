@@ -1,6 +1,6 @@
 # Living Earth 3D — current roadmap
 
-Updated 2026-10-31. Latest released baseline: 0.13.1 (dated NASA satellite view, conditional camera refresh, bounded JPEG decoding and narrow-window controls). One Windows installer, then authenticated automatic updates; the base Earth remains useful offline.
+Updated 2026-10-31. Latest released baseline: 0.14.0 (32-place requested model weather and local source-correct place/country filtering). One Windows installer, then authenticated automatic updates; the base Earth remains useful offline.
 
 ## Completed
 
@@ -89,7 +89,14 @@ Updated 2026-10-31. Latest released baseline: 0.13.1 (dated NASA satellite view,
 - [x] Fresh 757 source checks, native layouts through 5K, Windows upgrades/rollback/settings, actual installed desktop and a 605-second preview/lifecycle soak passed. Public installer downloaded and verified; exact manifest signed with the existing trust key. Production signed-feed staging/cancellation/normal-exit roundtrip also passed on Windows.
 - [x] Continued into 0.13.1; 0.13.0 was superseded before feed promotion.
 
-## This release — 0.13.1
+## This release — 0.14.0
+
+- [x] Expanded explicit Open-Meteo model sample to 32 sourced public places, local city/country filtering and correct navigation after filtering/omitted rows.
+- [x] Ten-minute manual cooldown, fixed dataset/cache validation, no startup/native-saver downloads and preservation of preferences/bookmarks.
+- [x] 1036 source checks, actual 32-place retrieval and seven native layouts through 5K. Final Windows upgrade/rollback/settings, installed desktop and 605.1-second native preview/lifecycle gates passed in run 41226878053.
+- [x] Verified public installer/source provenance and pinned-key signed metadata promoted atomically; production roundtrip follows promotion.
+
+## Previous release — 0.13.1
 
 - [x] Optional requested previous-day NASA GIBS NOAA-20 / VIIRS surface, dated header/status, true no-data gaps, unshaded rendering, immediate offline return and native-saver exclusion.
 - [x] Camera ETag/304 revalidation with original retrieval time, separate check time, retained source metadata and delay warnings; pre-decode bounded JPEG dimensions.
@@ -105,7 +112,7 @@ Updated 2026-10-31. Latest released baseline: 0.13.1 (dated NASA satellite view,
 1. **Field validation:** user confirmed the 0.7.0 automatic upgrade; next confirm new screensaver behavior, new desktop/taskbar icon, all camera states, visible-window restart, physical Dell scaling, frame times, memory, fullscreen, sleep/resume and monitor moves.
 2. **Continuous video:** add authorized in-app streaming playback. Current NPS views are periodically refreshed camera images; other streams open the provider website. No continuous embedded video is delivered yet.
 3. **Camera Wall:** eight image sources and bounded textures are implemented; prioritize authorized continuous-video playback and optimize further after actual Dell measurement.
-4. **Living planet:** UTC sunlight is released; requested point-model weather is released in 0.7.0. Sixteen-place model weather points are released in 0.12.2. A requested, dated previous-day NASA satellite mosaic is implemented in 0.13.1. Next: licensed current cloud refresh and broader weather coverage. Default clouds/Moon/stars remain cinematic; the satellite view shows observed imagery only for its stated date.
+4. **Living planet:** UTC sunlight is released; requested point-model weather is released in 0.7.0. Sixteen-place model weather points are released in 0.12.2. A requested, dated previous-day NASA satellite mosaic is implemented in 0.13.1. Expanded to 32 model points in 0.14.0. Next: licensed current cloud refresh and coverage guided by actual use. Default clouds/Moon/stars remain cinematic; the satellite view shows observed imagery only for its stated date.
 5. **Screensaver integration:** Native /p preview and per-monitor hosts are released. Next: physical /s mixed-DPI/monitor checks, lock/sleep/resume, performance and overnight hardware tests. One-hour Linux renderer and Windows preview foundation tests supplement the current-package gates; they do not establish physical hardware behavior.
 
 ## Updater resilience follow-up

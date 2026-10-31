@@ -2,81 +2,193 @@
   {
     "name": "New York, USA",
     "latitude": 40.7128,
-    "longitude": -74.006
+    "longitude": -74.006,
+    "country_code": "US"
   },
   {
     "name": "London, United Kingdom",
     "latitude": 51.5074,
-    "longitude": -0.1278
+    "longitude": -0.1278,
+    "country_code": "GB"
   },
   {
     "name": "Paris, France",
     "latitude": 48.8566,
-    "longitude": 2.3522
+    "longitude": 2.3522,
+    "country_code": "FR"
   },
   {
     "name": "Tokyo, Japan",
     "latitude": 35.6762,
-    "longitude": 139.6503
+    "longitude": 139.6503,
+    "country_code": "JP"
   },
   {
     "name": "Sydney, Australia",
     "latitude": -33.8688,
-    "longitude": 151.2093
+    "longitude": 151.2093,
+    "country_code": "AU"
   },
   {
     "name": "Cape Town, South Africa",
     "latitude": -33.9249,
-    "longitude": 18.4241
+    "longitude": 18.4241,
+    "country_code": "ZA"
   },
   {
     "name": "Rio de Janeiro, Brazil",
     "latitude": -22.9068,
-    "longitude": -43.1729
+    "longitude": -43.1729,
+    "country_code": "BR"
   },
   {
     "name": "Delhi, India",
     "latitude": 28.6139,
-    "longitude": 77.209
+    "longitude": 77.209,
+    "country_code": "IN"
   },
   {
     "name": "Singapore",
     "latitude": 1.3521,
-    "longitude": 103.8198
+    "longitude": 103.8198,
+    "country_code": "SG"
   },
   {
     "name": "Dubai, UAE",
     "latitude": 25.2048,
-    "longitude": 55.2708
+    "longitude": 55.2708,
+    "country_code": "AE"
   },
   {
     "name": "San Francisco, USA",
     "latitude": 37.7749,
-    "longitude": -122.4194
+    "longitude": -122.4194,
+    "country_code": "US"
   },
   {
     "name": "Los Angeles, USA",
     "latitude": 34.0522,
-    "longitude": -118.2437
+    "longitude": -118.2437,
+    "country_code": "US"
   },
   {
     "name": "Anchorage, United States",
     "latitude": 61.21806,
-    "longitude": -149.90028
+    "longitude": -149.90028,
+    "country_code": "US"
   },
   {
     "name": "Nairobi, Kenya",
     "latitude": -1.28333,
-    "longitude": 36.81667
+    "longitude": 36.81667,
+    "country_code": "KE"
   },
   {
     "name": "Manila, Philippines",
     "latitude": 14.6042,
-    "longitude": 120.9822
+    "longitude": 120.9822,
+    "country_code": "PH"
   },
   {
     "name": "Reykjavik, Iceland",
     "latitude": 64.13548,
-    "longitude": -21.89541
+    "longitude": -21.89541,
+    "country_code": "IS"
+  },
+  {
+    "name": "Vancouver, Canada",
+    "latitude": 49.24966,
+    "longitude": -123.11934,
+    "country_code": "CA"
+  },
+  {
+    "name": "Mexico City, Mexico",
+    "latitude": 19.42847,
+    "longitude": -99.12766,
+    "country_code": "MX"
+  },
+  {
+    "name": "Honolulu, United States",
+    "latitude": 21.30694,
+    "longitude": -157.85834,
+    "country_code": "US"
+  },
+  {
+    "name": "Buenos Aires, Argentina",
+    "latitude": -34.61315,
+    "longitude": -58.37723,
+    "country_code": "AR"
+  },
+  {
+    "name": "Santiago, Chile",
+    "latitude": -33.45694,
+    "longitude": -70.64827,
+    "country_code": "CL"
+  },
+  {
+    "name": "Lima, Peru",
+    "latitude": -12.04318,
+    "longitude": -77.02824,
+    "country_code": "PE"
+  },
+  {
+    "name": "Beijing, China",
+    "latitude": 39.9075,
+    "longitude": 116.39723,
+    "country_code": "CN"
+  },
+  {
+    "name": "Seoul, South Korea",
+    "latitude": 37.566,
+    "longitude": 126.9784,
+    "country_code": "KR"
+  },
+  {
+    "name": "Cebu City, Philippines",
+    "latitude": 10.31672,
+    "longitude": 123.89071,
+    "country_code": "PH"
+  },
+  {
+    "name": "Bangkok, Thailand",
+    "latitude": 13.75398,
+    "longitude": 100.50144,
+    "country_code": "TH"
+  },
+  {
+    "name": "Jakarta, Indonesia",
+    "latitude": -6.21462,
+    "longitude": 106.84513,
+    "country_code": "ID"
+  },
+  {
+    "name": "Auckland, New Zealand",
+    "latitude": -36.84853,
+    "longitude": 174.76349,
+    "country_code": "NZ"
+  },
+  {
+    "name": "Athens, Greece",
+    "latitude": 37.98376,
+    "longitude": 23.72784,
+    "country_code": "GR"
+  },
+  {
+    "name": "Istanbul, Republic of Türkiye",
+    "latitude": 41.01384,
+    "longitude": 28.94966,
+    "country_code": "TR"
+  },
+  {
+    "name": "Cairo, Egypt",
+    "latitude": 30.06263,
+    "longitude": 31.24967,
+    "country_code": "EG"
+  },
+  {
+    "name": "Casablanca, Morocco",
+    "latitude": 33.58831,
+    "longitude": -7.61138,
+    "country_code": "MA"
   }
 ]

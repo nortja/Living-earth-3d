@@ -47,11 +47,22 @@ func run(app: Node3D, arguments: PackedStringArray) -> void:
     var feed: Array=[]
     for index in range(layer.places.size()):
         var place: Dictionary=layer.places[index]
-        feed.append({"latitude":place.latitude,"longitude":place.longitude,"location_id":index,"utc_offset_seconds":0,"current_units":{"temperature_2m":"°C","wind_speed_10m":"km/h","relative_humidity_2m":"%"},"current":{"time":Time.get_datetime_string_from_system(true),"temperature_2m":-5+index*3,"wind_speed_10m":10.0,"relative_humidity_2m":55,"weather_code":2}})
+        feed.append({"latitude":place.latitude,"longitude":place.longitude,"location_id":index,"utc_offset_seconds":0,"current_units":{"temperature_2m":"°C","wind_speed_10m":"km/h","relative_humidity_2m":"%"},"current":{"time":Time.get_datetime_string_from_system(true),"temperature_2m":-5+(index*3)%60,"wind_speed_10m":10.0,"relative_humidity_2m":55,"weather_code":2}})
     layer._received(0,200,PackedStringArray(),JSON.stringify(feed).to_utf8_buffer(),layer.generation)
-    verify(layer.points.size()==16 and layer.markers.size()==16,"Installed model layer creates sixteen points")
+    verify(layer.points.size()==32 and layer.markers.size()==32,"Installed model layer creates 32 points")
     layer.status="Synthetic model points · packaged Windows UI test"
     ui.open_page("Weather globe")
+    ui.weather_layer_query.text="Canada"
+    ui.weather_layer_query.text_changed.emit("Canada")
+    verify(ui.weather_layer_picker.item_count==2,"Installed local country filter finds Vancouver")
+    if ui.weather_layer_picker.item_count==2:
+        var point_index:int=ui.weather_layer_picker.get_item_metadata(1)
+        verify(layer.points[point_index].name.begins_with("Vancouver"),"Installed filtered picker preserves source identity")
+        ui.weather_layer_picker.item_selected.emit(1)
+        verify(app.exploration.location.name=="Vancouver, Canada" and app.journey.is_running(),"Installed filtered place begins the correct journey")
+    ui.weather_layer_query.text=""
+    ui.weather_layer_query.text_changed.emit("")
+    verify(ui.weather_layer_picker.item_count==33,"Installed cleared search restores all 32 choices")
     for frame in range(16):await get_tree().process_frame
     await RenderingServer.frame_post_draw
     root.get_texture().get_image().save_png(directory.path_join("windows-packaged-weather-fixture.png"))

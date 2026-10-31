@@ -1,3 +1,9 @@
+## 0.14.0 preview — 2026-10-31
+
+- Expand the explicit model-weather sample from 16 to 32 public places, with local country/place search and accurate filtered-source navigation.
+- Retain source/model times and cache validation; reject old dataset caches. Use a ten-minute manual cooldown with no startup or native-saver requests.
+- Actual 32-place retrieval, native layouts through 5K, Windows upgrade/rollback, installed desktop and ten-minute native preview/lifecycle gates passed. Verified public bytes and authenticated metadata promoted.
+
 ## 0.13.1 preview — 2026-10-31
 
 - Revalidate camera frames using bounded provider ETags. An HTTP 304 retains the validated texture, original retrieval time and delayed-image warning while reporting a separate check time. Sources without usable validators keep the existing full-image path.
