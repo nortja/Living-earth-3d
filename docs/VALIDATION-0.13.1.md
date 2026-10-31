@@ -21,7 +21,7 @@ Includes the previous-day NASA GIBS NOAA-20/VIIRS dated satellite globe, immedia
 
 Installer: `LivingEarth3D-Setup-0.13.1.exe`; 51,352,474 bytes; SHA-256 `10b6c30bb686384d071595fd8127a2123d1dd608a431a3b1c7a4843e37a9cced`.
 
-The existing private key stayed outside git and CI. The exact manifest was signed and independently verified against the installed updater's pinned public key; application.json, application.sig and preview.json are promoted atomically with source. Windows publisher signing is separate; this remains a publisher-unsigned preview. Production-feed update roundtrip follows promotion and is reported separately.
+The existing private key stayed outside git and CI. The exact manifest was signed and independently verified against the installed updater's pinned public key; application.json, application.sig and preview.json are promoted atomically with source. Windows publisher signing is separate; this remains a publisher-unsigned preview. [Production-feed Windows roundtrip 41226795602](https://github.com/nortja/Living-earth-3d/actions/runs/41226795602), job 124612517505, passed: live signature/download staging while the baseline remained open, cancellation without replacement, installation after normal exit, exact installed-file verification, no unwanted restart and cleanup uninstall.
 
 ## Superseded attempts and readiness repair
 
