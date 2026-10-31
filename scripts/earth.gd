@@ -191,6 +191,14 @@ func _ready() -> void:
         start_intro()
     if "--screensaver-settings" in arguments:
         interface.open_page("Screensavers")
+    if native_saver and "--validate-native-preflight" in arguments:
+        call_deferred("_native_preflight_ready")
+
+func _native_preflight_ready() -> void:
+    if DisplayServer.get_name() == "headless": return
+    await RenderingServer.frame_post_draw
+    # Opt-in release-harness signal, after a real native graphics frame.
+    print("LIVING_EARTH_NATIVE_FRAME_READY")
 
 func _process(delta: float) -> void:
     screensaver_age += delta

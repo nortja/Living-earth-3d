@@ -126,7 +126,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: Windows-saver-settings-0.13.1
+          name: Windows-saver-settings-0.13.1-attempt-${{ github.run_attempt }}
           path: dist/windows-saver-settings.png
       - name: Actual Windows embedded preview and saver lifecycle
         shell: powershell
@@ -134,8 +134,10 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: Windows-screensaver-0.13.1-evidence
-          path: dist/windows-screensaver-*
+          name: Windows-screensaver-0.13.1-attempt-${{ github.run_attempt }}-evidence
+          path: |
+            dist/windows-screensaver-*
+            dist/windows-saver-preflight.log
   desktop:
     needs: build
     runs-on: windows-latest
@@ -163,7 +165,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: Windows-packaged-desktop-0.13.1
+          name: Windows-packaged-desktop-0.13.1-attempt-${{ github.run_attempt }}
           path: dist/packaged-desktop/*
   publish:
     needs: [build, windows, desktop]
