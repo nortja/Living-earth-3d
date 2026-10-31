@@ -61,6 +61,7 @@ func run() -> void:
         app.interface.open_page("Satellite view")
         for frame in range(12): await process_frame
         verify(Rect2(Vector2.ZERO,app.interface.size).encloses(Rect2(app.interface.panel.position,app.interface.panel.size)), "Satellite controls fit %s" % pixels)
+        verify(app.interface.page_scroll.get_global_rect().encloses(app.interface.satellite_load.get_global_rect()), "Initial satellite load action is visible without scrolling at %s" % pixels)
         if app.interface.panel.visible: app.interface.close_panel()
     DirAccess.remove_absolute(ProjectSettings.globalize_path(app.preferences_path))
     app.queue_free()

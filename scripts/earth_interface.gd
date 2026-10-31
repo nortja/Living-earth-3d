@@ -276,7 +276,7 @@ func relayout() -> void:
         panel.position = Vector2(size.x - width - 24, 88)
         panel.size = Vector2(width, maxf(250, size.y - 88 - dock.size.y - 44))
     else:
-        var sheet_height := minf(360,size.y-190) if (active_page == "Destination" and arrival_has_photo) or active_page == "Weather globe" else 190.0
+        var sheet_height := minf(360,size.y-190) if (active_page == "Destination" and arrival_has_photo) or active_page in ["Weather globe", "Satellite view"] else 190.0
         panel.position = Vector2(24, size.y - sheet_height - 92)
         panel.size = Vector2(size.x - 48, sheet_height)
     command_card.position = Vector2(24, 104)

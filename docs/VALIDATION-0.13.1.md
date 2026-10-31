@@ -7,3 +7,11 @@ Local camera revalidation tests pass 225 checks: 25 behavior/parser cases and 20
 The release/preview-0.13.1 workflow preserves all prior packaging, security, native render, Windows upgrade/rollback, settings, preview/lifecycle and installed desktop gates, and includes the new camera-revalidation suite. No signature/hash checks, pinned trust key, preference storage or Windows running-app protections change.
 
 All sixteen local headless suites pass (804 behavior/layout cases plus 200 malformed JPEG inputs, 1004 counted checks). The optional live test retrieved all eight image sources through the final JPEG preflight and performed a real Yellowstone ETag request yielding HTTP 304. The retained image check time was separate from retrieval time. Retrieval does not establish capture freshness.
+
+## Narrow-window repair before promotion
+
+Inspection of the installed 0.13.0 Windows screenshot showed the initial Load action partially below the scroll viewport. A regression assertion reproduced this at 800×600 (25 satellite checks, one failure). The final 0.13.1 candidate gives Satellite view the same taller small-window sheet as Weather globe; source/native and installed Windows validation now require the initial Load action to be fully visible without scrolling. 0.13.0 is a superseded candidate and must not be promoted to the production feed; 0.13.1 includes its feature and this correction.
+
+The maintainer-only release verifier has ten passing provenance/tampering tests and has independently verified the completed 0.12.4 run and public delivery. It is excluded from the user app and receives no signing key. Final 0.13.1 source/native/Windows gates must rerun after this repair.
+
+Final repaired local source passes all sixteen Godot suites: 807 behavior/layout cases plus 200 malformed JPEG inputs (1007 counted checks), and ten Python provenance/tampering tests. Actual NOAA-20 native renders pass at four sizes including 800×600 and 3840×1080, with the initial Load action fully visible; screenshots were visually inspected. Fresh Windows/native CI will validate the final frozen candidate.

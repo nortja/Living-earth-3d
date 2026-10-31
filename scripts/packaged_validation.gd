@@ -34,6 +34,7 @@ func run(app: Node3D, arguments: PackedStringArray) -> void:
     ui._satellite_changed();ui.open_page("Satellite view")
     for frame in range(16):await get_tree().process_frame
     await RenderingServer.frame_post_draw
+    verify(ui.page_scroll.get_global_rect().encloses(ui.satellite_load.get_global_rect()),"Installed satellite load action is visible without scrolling")
     root.get_texture().get_image().save_png(directory.path_join("windows-packaged-satellite-fixture.png"))
     app.preview_screensaver()
     verify(satellite.suspended and not app.earth_material.get_shader_parameter("satellite_view") and satellite.request==null,"Installed native-style preview excludes satellite surface and requests")

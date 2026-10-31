@@ -34,6 +34,8 @@ func run() -> void:
             failures+=1;push_error("Satellite renderer state incorrect")
         if not Rect2(Vector2.ZERO,ui.size).encloses(Rect2(ui.panel.position,ui.panel.size)) or ui.page_scroll.get_child(0).size.x > ui.page_scroll.size.x:
             failures+=1;push_error("Satellite controls do not fit %s" % pixels)
+        if not ui.page_scroll.get_global_rect().encloses(ui.satellite_load.get_global_rect()):
+            failures+=1;push_error("Initial satellite load action requires scrolling")
         root.get_texture().get_image().save_png("res://dist/satellite-%dx%d.png" % [pixels.x,pixels.y])
     service.set_enabled(false)
     for frame in range(12): await process_frame

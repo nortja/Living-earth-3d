@@ -46,6 +46,7 @@ jobs:
             if grep -Eq '^(SCRIPT ERROR|ERROR):' "/tmp/earth-$suite.log"; then exit 1; fi
             grep -Eq '[1-9][0-9]* checks, 0 failures' "/tmp/earth-$suite.log"
           done
+          python3 tests/release_download_test.py
           pwsh -NoProfile -File tests/update_status_test.ps1
           pwsh -NoProfile -File tests/update_security_test.ps1
           pwsh -NoProfile -File tests/windows_build_scripts_test.ps1

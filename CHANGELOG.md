@@ -2,6 +2,8 @@
 
 - Revalidate camera frames using bounded provider ETags. An HTTP 304 retains the validated texture, original retrieval time and delayed-image warning while reporting a separate check time. Sources without usable validators keep the existing full-image path.
 - Check JPEG marker dimensions before decoding, preserving the 4096-pixel source bound without allocating an oversized image. Validate malformed/truncated/progressive header cases and cancellation/source isolation.
+- Keep the initial satellite Load action visible in narrow windows; verify its scroll-viewport bounds in source, native and installed Windows tests.
+- Add a maintainer-only provenance/download verifier before release signing.
 - Correct the optional live-camera harness to derive its expected source count from the catalog rather than an obsolete four-camera constant.
 
 ## 0.13.0 candidate — 2026-10-31
