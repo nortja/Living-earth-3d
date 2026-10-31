@@ -1,6 +1,6 @@
 # Living Earth 3D — current roadmap
 
-Updated 2026-10-21. Latest released baseline: 0.12.3 (Windows screensaver selection/settings and updater status resilience, plus the 0.12.2 exploration features). One Windows installer, then authenticated automatic updates; the base Earth remains useful offline.
+Updated 2026-10-31. Latest released baseline: 0.12.4 (camera texture reuse and display/refresh diagnostics, with the 0.12.3 screensaver/settings fixes). One Windows installer, then authenticated automatic updates; the base Earth remains useful offline.
 
 ## Completed
 
@@ -67,7 +67,7 @@ Updated 2026-10-21. Latest released baseline: 0.12.3 (Windows screensaver select
 - [x] Interrupted-journey status and Full Earth destination cleanup. Existing destination and camera handoffs preserved.
 - [x] Fresh export/native/Windows package gates, authenticated 0.12.2 feed promotion and production staging/cancellation/normal-exit update roundtrip (successful second attempt; initial filesystem deferral retained as open evidence).
 
-## This release — 0.12.3
+## Previous release — 0.12.3
 
 - [x] Actual Windows settings action, explicit per-user Earth selection, native dropdown name, visible failure states, fullscreen handoff and Start menu shortcut.
 - [x] Ownership-aware screensaver unregister on uninstall; saved wait time/resume-password preferences retained.
@@ -78,8 +78,16 @@ Updated 2026-10-21. Latest released baseline: 0.12.3 (Windows screensaver select
 ## Development follow-up — 2026-10-31
 
 - Local display-report export now includes all attached monitors (pixel size, desktop position, DPI, scale and refresh), plus the active screen index. This is additive diagnostic evidence for mixed-DPI and monitor moves, not a hardware pass/fail result.
-- Godot 4.6.3 import and 315 headless checks passed: performance (25), interface (47), explorer (56), UI scale (187). Native monitor-inventory assertions were added to the existing render harness but have not run in this environment. Windows packaging/release validation remains required before an installer or authenticated feed is promoted. The production baseline remains 0.12.3.
+- Godot 4.6.3 import and 315 headless checks passed: performance (25), interface (47), explorer (56), UI scale (187). Native monitor-inventory assertions were added to the existing render harness but have not run in this environment. Windows/native packaging and release checks subsequently passed for 0.12.4; see its validation document.
 - A daily continuation run is configured for around 8 AM America/Los_Angeles. It must skip overlapping work and promote updates only after the existing release gates.
+
+## This release — 0.12.4
+
+- [x] Reuse validated unchanged camera textures without changing retrieval, source-time, failure recovery or delayed-image warnings.
+- [x] Refresh monitor details/frame budget after changes on the same monitor; handle non-finite and fractional refresh values safely.
+- [x] Export attached-monitor geometry, DPI, scale, refresh and active screen index in the optional local report.
+- [x] Fresh 757 source checks, native layouts through 5K, Windows upgrades/rollback/settings, actual installed desktop and a 605-second preview/lifecycle soak passed. Public installer downloaded and verified; exact manifest signed with the existing trust key. Production feed roundtrip is the next validation step.
+- [ ] Continue pending 0.13.0 satellite-view and 0.13.1 camera-revalidation candidates through their own release gates; see [sprint state](docs/SPRINT-2026-10-31.md).
 
 ## Next priorities
 

@@ -31,7 +31,6 @@ var services: Node
 var monitor_poll := 0.0
 var update_poll := 0.0
 var update_check_age := 0.0
-var last_monitor := -1
 var external_focus := false
 var saver_style := 0
 var saver_preview := false
@@ -80,7 +79,7 @@ var update_status: Label
 var update_feed: Dictionary = {}
 var update_request: HTTPRequest
 var preferences := ConfigFile.new()
-const VERSION := "0.12.3"
+const VERSION := "0.12.4"
 const UPDATE_FEED_URL := "https://raw.githubusercontent.com/nortja/Living-earth-3d/main/updates/preview.json"
 const RELEASES_URL := "https://github.com/nortja/Living-earth-3d/releases"
 
@@ -206,10 +205,9 @@ func _process(delta: float) -> void:
     monitor_poll += delta
     if monitor_poll >= 2.0 and DisplayServer.get_name() != "headless":
         monitor_poll = 0.0
-        if last_monitor != get_window().current_screen:
-            last_monitor = get_window().current_screen
-            apply_frame_limit()
-            interface.monitor_status.text = display_summary()
+        # Refresh/DPI can change without a new screen index (dock, wake, settings).
+        apply_frame_limit()
+        interface.monitor_status.text = display_summary()
     visuals.advance(delta)
     earth_material.set_shader_parameter("cloud_offset", visuals.clouds.rotation.y / TAU)
     if not dragging and angular_velocity.length() > 0.001:
@@ -660,8 +658,12 @@ func set_quality(quality: String, persist := true) -> void:
 
 func apply_frame_limit() -> void:
     var refresh := DisplayServer.screen_get_refresh_rate(get_window().current_screen) if DisplayServer.get_name() != "headless" else 60.0
-    var cap := (15 if native_saver_preview else 30) if native_saver else (30 if power_saving else 60)
-    Engine.max_fps = mini(cap, int(refresh)) if refresh >= 24 else cap
+    Engine.max_fps = frame_limit_for(refresh, power_saving, native_saver, native_saver_preview)
+
+static func frame_limit_for(refresh: float, low_power: bool, saver: bool, preview: bool) -> int:
+    var cap := (15 if preview else 30) if saver else (30 if low_power else 60)
+    # Unknown or non-finite driver values must never select unlimited rendering.
+    return mini(cap, roundi(minf(refresh, float(cap)))) if is_finite(refresh) and refresh >= 24.0 else cap
 
 func display_summary() -> String:
     if DisplayServer.get_name() == "headless":

@@ -75,7 +75,7 @@ func refresh() -> void:
         if not "@" in host_port and host_port.count(":") == 1:
             request.set_https_proxy(host_port.get_slice(":", 0), int(host_port.get_slice(":", 1)))
     request.request_completed.connect(_received.bind(generation))
-    if request.request(url, ["User-Agent: LivingEarth3D/0.10.0 (+https://github.com/nortja/Living-earth-3d)", "Cache-Control: no-cache"]) != OK:
+    if request.request(url, ["User-Agent: LivingEarth3D/0.12.4 (+https://github.com/nortja/Living-earth-3d)", "Cache-Control: no-cache"]) != OK:
         _received(HTTPRequest.RESULT_CANT_CONNECT, 0, PackedStringArray(), PackedByteArray(), generation)
 
 static func valid_image_url(url: String) -> bool:
@@ -89,22 +89,25 @@ func _received(result: int, code: int, headers: PackedStringArray, body: PackedB
     if result != HTTPRequest.RESULT_SUCCESS or code != 200 or body.is_empty() or body.size() > 8388608:
         _unavailable()
         return
-    var decoded := Image.new()
-    if decoded.load_jpg_from_buffer(body) != OK or decoded.get_width() > 4096 or decoded.get_height() > 4096 or decoded.is_empty():
-        _unavailable()
-        return
-    consecutive_failures = 0
-    refresh_interval = base_interval
-    last_failed = false
-    if maxi(decoded.get_width(),decoded.get_height()) > max_texture_edge:
-        var factor := float(max_texture_edge) / maxi(decoded.get_width(),decoded.get_height())
-        decoded.resize(maxi(1,roundi(decoded.get_width()*factor)),maxi(1,roundi(decoded.get_height()*factor)),Image.INTERPOLATE_LANCZOS)
-    image = ImageTexture.create_from_image(decoded)
-    retrieved = Time.get_datetime_string_from_system(true).replace("T", " ")
     var hashing := HashingContext.new()
     hashing.start(HashingContext.HASH_SHA256)
     hashing.update(body)
     var next_digest := hashing.finish().hex_encode()
+    # Identical provider frames need neither JPEG decoding nor a new GPU texture.
+    # Only reuse a texture after these exact bytes have passed decoding once.
+    if image == null or next_digest != digest:
+        var decoded := Image.new()
+        if decoded.load_jpg_from_buffer(body) != OK or decoded.get_width() > 4096 or decoded.get_height() > 4096 or decoded.is_empty():
+            _unavailable()
+            return
+        if maxi(decoded.get_width(),decoded.get_height()) > max_texture_edge:
+            var factor := float(max_texture_edge) / maxi(decoded.get_width(),decoded.get_height())
+            decoded.resize(maxi(1,roundi(decoded.get_width()*factor)),maxi(1,roundi(decoded.get_height()*factor)),Image.INTERPOLATE_LANCZOS)
+        image = ImageTexture.create_from_image(decoded)
+    consecutive_failures = 0
+    refresh_interval = base_interval
+    last_failed = false
+    retrieved = Time.get_datetime_string_from_system(true).replace("T", " ")
     var now := Time.get_unix_time_from_system()
     if next_digest != digest:
         unchanged_since = now
