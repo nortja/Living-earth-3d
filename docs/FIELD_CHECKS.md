@@ -1,4 +1,4 @@
-# Windows field observations after 0.12.2
+# Windows field observations after 0.12.3
 
 These observations complement automated tests; CI software rendering does not establish physical Dell GPU, DPI, power or monitor behavior. Continue using the normal installed app and screensaver. Automatic updates apply after a normal app/screensaver exit; no manual reinstall is needed for updater-enabled versions.
 
@@ -11,7 +11,9 @@ These observations complement automated tests; CI software rendering does not es
 
 ## Local display report
 
-Open Settings → Performance & support. The live display report identifies the GPU, monitor/viewport pixels, DPI, refresh rate, quality and frame cap. Optionally start a five-active-minute recording, use the app normally and export its local JSON report. Recording pauses in screensaver preview or while minimized and excludes sleep-size frame gaps. It does not upload anything. Engine memory is unavailable in exported release builds and is reported as null; the report is not a complete process/GPU-memory measurement or hardware benchmark.
+Open Settings → Performance & support. The next source build also records every attached monitor’s pixel size, desktop position, scale, DPI and refresh rate, plus the active screen index. This helps compare monitor moves and mixed-DPI setups; it does not establish physical hardware correctness. Headless validation returns no monitor inventory.
+
+The live display report identifies the GPU, monitor/viewport pixels, DPI, refresh rate, quality and frame cap. Optionally start a five-active-minute recording, use the app normally and export its local JSON report. Recording pauses in screensaver preview or while minimized and excludes sleep-size frame gaps. It does not upload anything. Engine memory is unavailable in exported release builds and is reported as null; the report is not a complete process/GPU-memory measurement or hardware benchmark.
 
 ## Feature checks
 

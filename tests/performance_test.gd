@@ -53,6 +53,7 @@ func run() -> void:
     var data = JSON.parse_string(FileAccess.get_file_as_string(report.report_path))
     verify(data.schema == 1 and data.version == app.VERSION and data.product == "LivingEarth3D", "Report identifies version and schema")
     verify(not data.display.available, "Headless run does not invent a GPU/display")
+    verify(report.monitor_snapshot().is_empty(), "Headless run does not invent attached monitors")
     verify(not data.has("paths") and not data.has("bookmarks") and not data.has("username") and not data.has("camera_images"), "Report excludes personal content")
     verify(data.limits.contains("excludes driver/GPU"), "Memory measurement limits included")
     app.interface.open_page("Settings")

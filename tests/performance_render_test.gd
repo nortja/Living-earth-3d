@@ -22,6 +22,15 @@ func run() -> void:
         if not app.performance_report.snapshot.display.available or str(app.performance_report.snapshot.display.gpu).is_empty():
             failures += 1
             push_error("Native report lacks actual GPU/display")
+        var display: Dictionary = app.performance_report.snapshot.display
+        if display.monitors.size() != DisplayServer.get_screen_count() or display.active_screen != root.current_screen:
+            failures += 1
+            push_error("Native report lacks complete monitor inventory or active screen")
+        for monitor in display.monitors:
+            var actual := DisplayServer.screen_get_size(monitor.index)
+            if monitor.pixels != [actual.x,actual.y] or monitor.scale != DisplayServer.screen_get_scale(monitor.index):
+                failures += 1
+                push_error("Monitor geometry/scale differs from display server")
         root.get_texture().get_image().save_png("res://dist/performance-%dx%d.png" % [pixels.x,pixels.y])
     app.performance_report.stop_recording()
     DirAccess.remove_absolute(ProjectSettings.globalize_path(app.preferences_path))

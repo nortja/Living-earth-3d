@@ -75,6 +75,12 @@ Updated 2026-10-21. Latest released baseline: 0.12.3 (Windows screensaver select
 - [x] Fresh source/native/build gates, actual Windows settings/dropdown and upgrade/rollback checks, installed desktop validation and ten-minute native preview/lifecycle soak.
 - [x] Verified public installer and authenticated feed promotion. Production signed-feed download/staging, cancellation and normal-exit installation also passed; see [validation](docs/VALIDATION-0.12.3.md).
 
+## Development follow-up — 2026-10-31
+
+- Local display-report export now includes all attached monitors (pixel size, desktop position, DPI, scale and refresh), plus the active screen index. This is additive diagnostic evidence for mixed-DPI and monitor moves, not a hardware pass/fail result.
+- Godot 4.6.3 import and 315 headless checks passed: performance (25), interface (47), explorer (56), UI scale (187). Native monitor-inventory assertions were added to the existing render harness but have not run in this environment. Windows packaging/release validation remains required before an installer or authenticated feed is promoted. The production baseline remains 0.12.3.
+- A daily continuation run is configured for around 8 AM America/Los_Angeles. It must skip overlapping work and promote updates only after the existing release gates.
+
 ## Next priorities
 
 
