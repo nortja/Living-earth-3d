@@ -17,7 +17,7 @@ func run() -> void:
     verify(clean.enabled and clean.pointer_inside and app.interface.visible,"Fresh clean-view policy defaults on without hiding headless controls")
     var ui = app.interface
     ui.open_page("Space studio")
-    verify(ui.live_primary.size()==5 and ui.pages["Live Earth"].get_child(0).text.begins_with("Space studio"),"Space studio is directly discoverable")
+    verify(ui.live_primary.size()==6 and ui.pages["Live Earth"].get_child(0).text.begins_with("Space studio"),"Space studio is directly discoverable")
     studio.preset(2)
     verify(studio.enabled and app.visuals.moon_enabled and studio.material.panorama.get_size()==Vector2(4096,2048),"Galactic Earth uses native 4K photographic panorama and chosen Moon")
     studio.set_brightness(NAN);studio.set_orientation(INF)

@@ -20,6 +20,7 @@ func run() -> void:
     app.space_studio.set_enabled(true,false)
     verify(app.space_studio.material.panorama.get_width()==4096 and load("res://assets/space/milkyway_2k.jpg").get_width()==2048,"Packed 4K/2K galaxy and shader resolve")
     app.space_studio.set_enabled(false,false)
+    verify(app.scene_library != null and app.scene_library.valid(app.scene_library.snapshot("Packed view")),"Packed Scene Library module and composition schema resolve")
     var viewer = app.interface.lunar_observatory
     viewer.open()
     viewer.select_date("2026-11-01")

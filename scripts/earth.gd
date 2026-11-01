@@ -17,6 +17,7 @@ var weather_cache_path := "user://weather-v2.json"
 const EarthInterface = preload("res://scripts/earth_interface.gd")
 const CameraService = preload("res://scripts/camera_service.gd")
 var clean_view: Node
+var scene_library: Node
 var space_studio: Node
 var visual_toggles: Dictionary = {}
 var camera_service: Node
@@ -86,7 +87,7 @@ var update_status: Label
 var update_feed: Dictionary = {}
 var update_request: HTTPRequest
 var preferences := ConfigFile.new()
-const VERSION := "0.23.0"
+const VERSION := "0.24.0"
 const UPDATE_FEED_URL := "https://raw.githubusercontent.com/nortja/Living-earth-3d/main/updates/preview.json"
 const RELEASES_URL := "https://github.com/nortja/Living-earth-3d/releases"
 
@@ -301,6 +302,7 @@ func _unhandled_input(event: InputEvent) -> void:
                 return
             dragging = event.pressed
             if dragging:
+                if scene_library: scene_library.pause()
                 angular_velocity = Vector2.ZERO
             if dragging and journey:
                 journey.kill()
@@ -339,6 +341,7 @@ func _update_camera() -> void:
     camera.position = Vector3(sin(yaw) * cos(pitch), sin(pitch), cos(yaw) * cos(pitch)) * distance
     var north_tangent := Vector3(-sin(yaw) * sin(pitch), cos(pitch), -cos(yaw) * sin(pitch))
     camera.look_at(Vector3.ZERO, north_tangent)
+    if visuals: visuals.update_moon_pose()
 
 func _build_explorer(layer: CanvasLayer) -> void:
     destinations = JSON.parse_string(FileAccess.get_file_as_string("res://data/destinations.json"))
@@ -395,6 +398,9 @@ func _build_explorer(layer: CanvasLayer) -> void:
         clean_view.setup(self)
         clean_view.changed.connect(space_studio.sync)
         space_studio.sync()
+        scene_library = preload("res://scripts/scene_library.gd").new()
+        add_child(scene_library)
+        scene_library.setup(self)
     if not screensaver_mode and "--validate-display" not in OS.get_cmdline_user_args() and DisplayServer.get_name() != "headless":
         call_deferred("start_auto_update")
 
@@ -406,6 +412,7 @@ func _button(parent: Node, title: String, action: Callable) -> Button:
     return button
 
 func visit(index: int) -> void:
+    if scene_library: scene_library.pause()
     if index < 0 or index >= destinations.size():
         return
     finish_intro()
@@ -579,6 +586,7 @@ func refresh_update_status() -> void:
 
 
 func _zoom(amount: float) -> void:
+    if scene_library: scene_library.pause()
     angular_velocity = Vector2.ZERO
     if journey and journey.is_running():
         journey.kill()
@@ -588,6 +596,7 @@ func _zoom(amount: float) -> void:
     zoom_target = clampf(zoom_target + amount, 1.8, 10.0)
     zoom_tween = create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
     zoom_tween.tween_property(self, "distance", zoom_target, 0.18)
+    zoom_tween.finished.connect(_update_camera)
 
 func start_intro() -> void:
     intro_running = true
@@ -623,6 +632,7 @@ func finish_intro() -> void:
         interface_layer.show()
 
 func reset_view() -> void:
+    if scene_library: scene_library.pause()
     if interface and interface.active_page == "Destination": interface.close_panel()
     finish_intro()
     angular_velocity = Vector2.ZERO
@@ -733,6 +743,7 @@ func toggle_fullscreen() -> void:
     apply_frame_limit()
 
 func fly_to_location(place: Dictionary, show_destination := true) -> bool:
+    if scene_library: scene_library.pause()
     if not EarthServices.valid_coordinates(place.get("latitude"), place.get("longitude")):
         return false
     # Restored/search camera destinations use the same viewer as camera buttons.
@@ -792,6 +803,7 @@ func apply_saver_style() -> void:
         visuals.apply_options(visuals.clouds_enabled, true, preferences.get_value("visuals","moon",false)==true)
 
 func preview_screensaver() -> void:
+    if scene_library: scene_library.pause()
     if interface.sunlight_explorer.active or interface.journey_studio.active: interface.close_panel()
     interface.lunar_observatory.close()
     interface.exploration_panel.close_backup_dialog()

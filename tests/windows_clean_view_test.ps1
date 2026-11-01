@@ -52,7 +52,7 @@ try {
  $null=Wait-EarthStage 'returned'
  $result=Wait-EarthStage 'done'
  if(!$app.WaitForExit(15000) -or $app.ExitCode -ne 0 -or !$result.passed){throw 'Installed native clean-view validation failed'}
- Write-Output ('PASS: real native pointer exit/return, preserved page, optional Moon and clean PNG '+($result.postcard_pixels -join 'x'))
+ Write-Output ('PASS: real native pointer exit/return, preserved page, Moon zoom, saved scenes, cinematic transition and clean PNG '+($result.postcard_pixels -join 'x'))
 } finally {
  if(!$app.HasExited){$app.Kill();$app.WaitForExit()}
  if(Test-Path $log){Get-Content $log|Write-Output}

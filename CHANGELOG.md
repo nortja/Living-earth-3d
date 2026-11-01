@@ -1,3 +1,10 @@
+## 0.24.0 candidate — 2026-11-01
+
+- Scale Moon size and relative spacing together with Earth throughout zoom and camera transitions; preserve optional visibility and the normal composition.
+- Save eight personal offline Earth/Moon/galaxy views with bounded clean thumbnails and restart persistence, restore with Use, and remove with one-step Undo.
+- Play a 15/30/60/120-second cinematic sequence with fades, Pause/Next and manual/navigation/minimize/saver interruption. Playback keeps visual choices temporary; no provider requests or native-saver library.
+- Source, actual rendered-thumbnail/pixel and installed Windows checks must pass before publication; production remains 0.23.0 during validation.
+
 ## 0.23.0 preview — 2026-11-01
 
 - Hide menus automatically when the pointer leaves the app, restore the same page/typed values on return, and offer H/manual clean view plus a saved opt-out. Hidden camera requests pause; map/tour/focus markers disappear from the clean scene. Native file dialogs remain usable.

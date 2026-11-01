@@ -78,8 +78,7 @@ func advance(delta: float) -> void:
     if clouds_enabled:
         clouds.rotate_y(delta * 0.012)
     if moon_enabled:
-        # A screen-facing, north-up phase illustration; placement/distance are not an orbit.
-        moon.global_transform = Transform3D(app.camera.global_basis,app.camera.global_transform*Vector3(-2.1,1.1,-5.0))
+        update_moon_pose()
         var hour := int(Time.get_unix_time_from_system()/3600.0)
         if hour!=moon_sample_hour: update_moon()
 
@@ -90,7 +89,9 @@ func apply_options(clouds_on: bool, stars_on: bool, moon_on: bool) -> void:
     clouds.visible = clouds_on
     stars.visible = stars_on
     moon.visible = moon_on
-    if moon_on: update_moon()
+    if moon_on:
+        update_moon()
+        update_moon_pose()
 
 func set_reveal(value: float) -> void:
     reveal = value
@@ -105,3 +106,15 @@ func update_moon() -> void:
     if row.available:
         moon_material.set_shader_parameter("lunar_sun",row.sun)
         moon_material.set_shader_parameter("subearth_degrees",row.subearth)
+
+static func composition_scale(camera_distance: float) -> float:
+    # A perspective sphere's projected radius is proportional to 1/sqrt(d²-r²).
+    # Lock the illustrative Moon's size AND separation to Earth's apparent disk.
+    if not is_finite(camera_distance): camera_distance = 3.6
+    var distance := clampf(camera_distance,1.8,10.0)
+    return sqrt(3.6*3.6-1.0)/sqrt(distance*distance-1.0)
+
+func update_moon_pose() -> void:
+    if not moon_enabled or not is_instance_valid(app.camera): return
+    var factor := composition_scale(app.camera.global_position.distance_to(app.earth.global_position))
+    moon.global_transform = Transform3D(app.camera.global_basis.scaled(Vector3.ONE*factor),app.camera.global_transform*Vector3(-2.1*factor,1.1*factor,-5.0))

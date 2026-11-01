@@ -22,6 +22,11 @@ var save_button: Button
 var clean_button: Button
 var status_label: Label
 
+func _exit_tree() -> void:
+    if environment: environment.sky = null
+    sky = null
+    material = null
+
 func number(key: String, fallback: float, low: float, high: float) -> float:
     var value = app.preferences.get_value("space",key,fallback)
     return clampf(float(value),low,high) if (value is float or value is int) and is_finite(float(value)) else fallback
@@ -144,7 +149,7 @@ func build_controls() -> void:
 
 func sync() -> void:
     if not moon_toggle: return
-    moon_toggle.set_pressed_no_signal(app.preferences.get_value("visuals","moon",false)==true)
+    moon_toggle.set_pressed_no_signal(app.visuals.moon_enabled)
     galaxy_toggle.set_pressed_no_signal(enabled)
     if app.clean_view: hide_toggle.set_pressed_no_signal(app.clean_view.enabled)
     brightness_slider.set_value_no_signal(brightness)
@@ -175,15 +180,28 @@ func capture_to(path: String) -> void:
     var pixels := get_viewport().get_visible_rect().size
     if pixels.x>7680 or pixels.y>4320 or pixels.x*pixels.y>33177600:
         status = "Use a viewport no larger than 7680×4320 for picture export.";sync();return
+    var image: Image = await capture_image()
+    if image==null: return
+    var result := image.save_png(path)
+    status = "Saved %d×%d · %s" % [image.get_width(),image.get_height(),path.get_file()] if result==OK else "Picture could not be saved. Choose a writable PNG location."
+    sync()
+
+func capture_image() -> Image:
+    if saving or app.screensaver_mode or DisplayServer.get_name()=="headless": return null
+    var pixels := get_viewport().get_visible_rect().size
+    if pixels.x>7680 or pixels.y>4320 or pixels.x*pixels.y>33177600: return null
+    if app.scene_library: app.scene_library.pause()
     saving = true
     var cleaner = app.clean_view
     cleaner.capture = true;cleaner.apply()
     await get_tree().process_frame
     await get_tree().process_frame
     await RenderingServer.frame_post_draw
-    var image := get_viewport().get_texture().get_image()
+    pixels = get_viewport().get_visible_rect().size
+    var image: Image
+    if not app.screensaver_mode and pixels.x<=7680 and pixels.y<=4320 and pixels.x*pixels.y<=33177600:
+        image = get_viewport().get_texture().get_image()
     cleaner.capture = false;cleaner.apply()
-    var result := ERR_INVALID_DATA if image.is_empty() else image.save_png(path)
     saving = false
-    status = "Saved %d×%d · %s" % [image.get_width(),image.get_height(),path.get_file()] if result==OK else "Picture could not be saved. Choose a writable PNG location."
     sync()
+    return null if image==null or image.is_empty() else image
