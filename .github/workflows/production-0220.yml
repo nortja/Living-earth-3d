@@ -1,0 +1,15 @@
+name: Validate production 0.22.0 update
+on:
+  push:
+    branches: [validation/live-0.22.0]
+permissions:
+  contents: read
+jobs:
+  production:
+    runs-on: windows-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Authenticated production staging cancellation and normal-exit installation
+        shell: powershell
+        run: ./tests/windows_live_update_test.ps1 -ExpectedVersion '0.22.0'
