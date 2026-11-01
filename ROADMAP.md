@@ -95,7 +95,7 @@ Updated 2026-11-01. Latest released baseline: 0.19.0 (temporary Sunlight explore
 - [x] Preserve lighting preferences and retained satellite texture/date; restore on close/navigation and clear simulated time before screensaver preview. No feature-triggered provider requests, clock changes or preference writes.
 - [x] 1168 source checks, seven strict native sunlight layouts through 5K, full Windows upgrade/rollback/settings/installed-desktop/framebuffer gates and 605.2-second native preview/lifecycle soak passed in run 41326613347.
 - [x] Independent public verification run 41328300602 passed; exact installer and four-file metadata checked locally, signature independently verified against pinned key, authenticated source/feed promoted atomically.
-- [ ] Complete final production Windows updater roundtrip after promotion; see [validation](docs/VALIDATION-0.19.0.md).
+- [x] Final production Windows updater roundtrip 41328629723 passed authenticated staging, cancellation, normal-exit installation and installed-file verification; see [validation](docs/VALIDATION-0.19.0.md).
 
 ## Previous release — 0.18.2
 
@@ -164,11 +164,11 @@ Updated 2026-11-01. Latest released baseline: 0.19.0 (temporary Sunlight explore
 
 User confirmed the download and automatic update worked and authorized further roadmap work and surprise additions. This is installed-delivery feedback; it does not establish mixed-DPI, sleep/resume or overnight behavior.
 
-The 0.19.0 candidate adds **Sunlight explorer**: a temporary offline ±12-hour UTC lighting slider, geometric Sun height and selected-place daylight/twilight context. It restores the saved lighting choice and loaded satellite identity on close/navigation and excludes simulated time from screensaver preview. All release gates and independent public verification passed; the signed 0.19.0 feed is promoted. The production updater roundtrip is the final pending check.
+Released 0.19.0 adds **Sunlight explorer**: a temporary offline ±12-hour UTC lighting slider, geometric Sun height and selected-place daylight/twilight context. It restores the saved lighting choice and loaded satellite identity on close/navigation and excludes simulated time from screensaver preview. All release gates and independent public verification passed; the signed 0.19.0 feed is promoted. Production Windows updater roundtrip 41328629723 also passed.
 
 | Stage | Deliverable | Completion condition |
 | --- | --- | --- |
-| Finishing | Sunlight explorer and clear simulation/return controls | Release gates, public bytes and signature passed; final production updater roundtrip pending |
+| Released | Sunlight explorer and clear simulation/return controls | Source/native/Windows/framebuffer/lifecycle gates, public bytes/signature and production updater passed |
 | Next | Authorized continuous in-app video prototype | One documented-permission feed, supported Windows playback, bounded resources, pause/close/saver cleanup and network failure recovery |
 | Then | Licensed current cloud imagery | Provenance and permitted redistribution, actual observation time/coverage, bounded opt-in retrieval, stale/offline fallback and GPU budget |
 | Reliability alongside features | Physical Dell and mixed-display field checks; longer screensaver observation | Record actual scaling/monitor-move/sleep evidence without inferring hardware results from VM rendering |

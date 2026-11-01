@@ -40,4 +40,4 @@ The initial 19 local source suites passed 1168 checks, including 50 new sunlight
 
 ## Production updater
 
-Final authenticated production download/cancellation/normal-exit install test is pending after feed promotion. No later release will move the feed before it passes. Windows publisher Authenticode and physical hardware observations remain separate.
+[Production Windows roundtrip 41328629723](https://github.com/nortja/Living-earth-3d/actions/runs/41328629723), job 124913793050, passed on its first attempt: authenticated public download/staging while the old app remained open, cancellation without replacement, installation after normal exit, exact installed-file verification, no unwanted restart and cleanup. All three production discovery files matched the independently signed bytes. Final published runtime audit matched all 124 frozen-source files with zero changes. Transient signing material was removed; the owner’s persistent backup was untouched. Windows publisher Authenticode and physical hardware observations remain separate.

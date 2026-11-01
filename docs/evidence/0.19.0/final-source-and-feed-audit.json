@@ -1,0 +1,23 @@
+{
+  "production_run": 41328629723,
+  "production_job": 124913793050,
+  "production_validation_source": "f0a8cf23625e58ecd24b355795f27d33d5c36f53",
+  "production_promoted_commit": "e9413ec7ffaa907c42abc694d08a1262a72561ba",
+  "frozen_application_source": "e4d37dc024c4cb9872b70feba12d8af1f695b8de",
+  "runtime_files_compared": 124,
+  "runtime_source_changed_paths": [],
+  "all_three_public_feed_files_match_signed_bytes": true,
+  "production_updater_passed": true,
+  "pass_messages": [
+    "2026-11-01T16:54:53.9370657Z PASS: production signed release downloads and waits; cancellation leaves app unchanged",
+    "2026-11-01T16:56:41.4357599Z PASS: production helper verifies live signature/download, installs after normal exit, verifies files and does not reopen an intentionally closed app"
+  ],
+  "audited_at_utc": "2026-11-01T16:58:34.727290+00:00",
+  "transient_signing_material_absent": true,
+  "feed_sha256": {
+    "application.json": "6afc760755ae735852d24923bd240784865999862d2bb1a8c97a481c4305e89c",
+    "application.sig": "10fd7f96dd3e5737b8df67802e58421a1ef0b988cf92a34a7a071861581e3b7f",
+    "preview.json": "22b660b3f83822ec2b7da0dfe295586965b4532dbb757f9fef258bae6e233ecc"
+  },
+  "limits": "Software-rendered release and production updater validation; physical Dell GPU/DPI, sleep/resume, mixed monitors and publisher Authenticode remain separate."
+}
