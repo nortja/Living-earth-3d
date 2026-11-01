@@ -9,6 +9,8 @@ var scenes: Array[Dictionary] = []
 var directory := "user://scene-library-v1"
 var interval := 30
 var playing := false
+var owns_discovery := false
+var saved_discovery := false
 var elapsed := 0.0
 var current := -1
 var busy := false
@@ -160,7 +162,9 @@ func select_scene(index: int) -> void:
 
 func play() -> void:
     if scenes.is_empty() or busy or app.screensaver_mode: return
-    pause();playing=true
+    pause()
+    saved_discovery=app.discovery_enabled;owns_discovery=true
+    app.discovery_enabled=false;playing=true
     use_scene(0 if current<0 or current>=scenes.size() else current,false)
     status="Playing saved scenes · %d seconds each. Pause keeps the current view." % interval
     refresh_state()
@@ -169,6 +173,8 @@ func pause() -> void:
     if is_instance_valid(transition): transition.kill()
     transition=null
     if app: app._set_intro_reveal(1.0)
+    if owns_discovery:
+        app.discovery_enabled=saved_discovery;app.elapsed=0.0;owns_discovery=false
     if playing: status="Scene playback paused. Current composition retained."
     playing=false;elapsed=0
     refresh_state()

@@ -30,10 +30,14 @@ func run() -> void:
     verify(app.distance==7.5 and app.visuals.moon_enabled and app.space_studio.enabled and app.utc_sunlight,"Scene applies actual camera, Moon, sky and current sunlight")
     verify(app.interface.sunlight_toggle.button_pressed and app.space_studio.moon_toggle.button_pressed,"Visible controls reflect temporary scene choices")
     verify(app.preferences.encode_to_text()==before,"Temporary playback choices do not overwrite saved defaults")
+    app.discovery_enabled=true;app.elapsed=11.0
     lib.play()
     verify(lib.playing,"Explicit playback starts without fetching a provider")
+    verify(not app.discovery_enabled,"Scene playback suspends the competing automatic discovery timer")
     lib.next_scene();lib.pause()
     verify(not lib.playing and is_equal_approx(app.intro_reveal,1.0),"Interruption cancels fade and restores scene brightness")
+    verify(app.discovery_enabled and app.elapsed==0.0,"Pause restores the previous discovery choice with a fresh timer")
+    app.discovery_enabled=false
     lib.play();app._zoom(0.2)
     verify(not lib.playing,"Manual zoom interrupts cinematic playback")
     lib.play();app.interface.open_page("Space studio")
