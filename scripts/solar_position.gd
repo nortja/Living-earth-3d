@@ -18,3 +18,18 @@ static func at_unix(unix_time: float) -> Dictionary:
     var angle := deg_to_rad(longitude) + PI
     var direction := Vector3(sin(angle) * cos(declination), sin(declination), cos(angle) * cos(declination))
     return {"latitude":rad_to_deg(declination), "longitude":longitude, "direction":direction, "utc":Time.get_datetime_string_from_unix_time(int(unix_time)).replace("T", " ")}
+
+static func elevation(latitude: float, longitude: float, unix_time: float) -> float:
+    # NOAA geometric zenith equation; no refraction, terrain or weather correction.
+    var sun := at_unix(unix_time)
+    var lat := deg_to_rad(latitude)
+    var declination := deg_to_rad(float(sun.latitude))
+    var hour_angle := deg_to_rad(wrapf(longitude - float(sun.longitude), -180.0, 180.0))
+    return rad_to_deg(asin(clampf(sin(lat) * sin(declination) + cos(lat) * cos(declination) * cos(hour_angle), -1.0, 1.0)))
+
+static func light_phase(altitude: float) -> String:
+    if altitude >= 0.0: return "Daylight"
+    if altitude >= -6.0: return "Civil twilight"
+    if altitude >= -12.0: return "Nautical twilight"
+    if altitude >= -18.0: return "Astronomical twilight"
+    return "Night"

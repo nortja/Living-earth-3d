@@ -1,0 +1,169 @@
+{
+  "run_id": 41326613347,
+  "job_id": 124909370407,
+  "artifact_id": 13091797604,
+  "artifact_sha256": "68db7e96304495182ccd189871d1917e4fb76ce5bd727ee141fcfffdc85a4f01",
+  "samples": [
+    {
+      "seconds": "30.1",
+      "private_bytes": "209883136",
+      "working_set_bytes": "253100032",
+      "cpu_seconds": "19.44",
+      "width": "320",
+      "height": "200"
+    },
+    {
+      "seconds": "60.4",
+      "private_bytes": "205746176",
+      "working_set_bytes": "248143872",
+      "cpu_seconds": "26.83",
+      "width": "320",
+      "height": "200"
+    },
+    {
+      "seconds": "90.6",
+      "private_bytes": "206807040",
+      "working_set_bytes": "249200640",
+      "cpu_seconds": "35.38",
+      "width": "580",
+      "height": "330"
+    },
+    {
+      "seconds": "120.9",
+      "private_bytes": "210939904",
+      "working_set_bytes": "207241216",
+      "cpu_seconds": "48.77",
+      "width": "580",
+      "height": "330"
+    },
+    {
+      "seconds": "151.2",
+      "private_bytes": "210890752",
+      "working_set_bytes": "159707136",
+      "cpu_seconds": "61.81",
+      "width": "320",
+      "height": "200"
+    },
+    {
+      "seconds": "181.4",
+      "private_bytes": "206626816",
+      "working_set_bytes": "134025216",
+      "cpu_seconds": "69.39",
+      "width": "320",
+      "height": "200"
+    },
+    {
+      "seconds": "211.7",
+      "private_bytes": "206626816",
+      "working_set_bytes": "107917312",
+      "cpu_seconds": "78.84",
+      "width": "580",
+      "height": "330"
+    },
+    {
+      "seconds": "242",
+      "private_bytes": "210792448",
+      "working_set_bytes": "85659648",
+      "cpu_seconds": "92.38",
+      "width": "580",
+      "height": "330"
+    },
+    {
+      "seconds": "272.2",
+      "private_bytes": "210726912",
+      "working_set_bytes": "64536576",
+      "cpu_seconds": "104.91",
+      "width": "320",
+      "height": "200"
+    },
+    {
+      "seconds": "302.5",
+      "private_bytes": "206635008",
+      "working_set_bytes": "53059584",
+      "cpu_seconds": "113.52",
+      "width": "320",
+      "height": "200"
+    },
+    {
+      "seconds": "332.7",
+      "private_bytes": "206635008",
+      "working_set_bytes": "52932608",
+      "cpu_seconds": "122.92",
+      "width": "580",
+      "height": "330"
+    },
+    {
+      "seconds": "363",
+      "private_bytes": "210944000",
+      "working_set_bytes": "58744832",
+      "cpu_seconds": "135.95",
+      "width": "580",
+      "height": "330"
+    },
+    {
+      "seconds": "393.3",
+      "private_bytes": "210870272",
+      "working_set_bytes": "58707968",
+      "cpu_seconds": "148.92",
+      "width": "320",
+      "height": "200"
+    },
+    {
+      "seconds": "423.5",
+      "private_bytes": "206643200",
+      "working_set_bytes": "53477376",
+      "cpu_seconds": "158.3",
+      "width": "320",
+      "height": "200"
+    },
+    {
+      "seconds": "453.8",
+      "private_bytes": "206643200",
+      "working_set_bytes": "53465088",
+      "cpu_seconds": "166.97",
+      "width": "580",
+      "height": "330"
+    },
+    {
+      "seconds": "484.1",
+      "private_bytes": "210735104",
+      "working_set_bytes": "58159104",
+      "cpu_seconds": "179.84",
+      "width": "580",
+      "height": "330"
+    },
+    {
+      "seconds": "514.4",
+      "private_bytes": "210735104",
+      "working_set_bytes": "55201792",
+      "cpu_seconds": "192.33",
+      "width": "320",
+      "height": "200"
+    },
+    {
+      "seconds": "544.6",
+      "private_bytes": "206503936",
+      "working_set_bytes": "50200576",
+      "cpu_seconds": "201.41",
+      "width": "320",
+      "height": "200"
+    },
+    {
+      "seconds": "574.9",
+      "private_bytes": "206503936",
+      "working_set_bytes": "50163712",
+      "cpu_seconds": "208.72",
+      "width": "580",
+      "height": "330"
+    },
+    {
+      "seconds": "605.2",
+      "private_bytes": "210931712",
+      "working_set_bytes": "56512512",
+      "cpu_seconds": "221.2",
+      "width": "580",
+      "height": "330"
+    }
+  ],
+  "limits": "Actual Windows software-rendered preview/lifecycle soak. Simulated notification handling is not physical sleep/lock/multi-monitor evidence."
+}

@@ -1,0 +1,9 @@
+{
+  "version": "0.19.0",
+  "source_sha": "e4d37dc024c4cb9872b70feba12d8af1f695b8de",
+  "run_url": "https://github.com/nortja/Living-earth-3d/actions/runs/41326613347",
+  "size": 51388338,
+  "sha256": "33f01614f1cf9bba5b0165bb234c604a287eff91aa114afb7acb09c2be1d15ca",
+  "installer": "dist/verified-public/LivingEarth3D-Setup-0.19.0.exe",
+  "payload_metadata": "dist/verified-public/payload-hashes.json"
+}

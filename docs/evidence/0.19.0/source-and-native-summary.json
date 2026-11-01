@@ -1,0 +1,42 @@
+{
+  "frozen_source": "e4d37dc024c4cb9872b70feba12d8af1f695b8de",
+  "release_run": 41326613347,
+  "local_source_suites": 19,
+  "local_source_checks": 1168,
+  "local_sunlight_checks": 50,
+  "local_native_sunlight_sizes": [
+    [
+      800,
+      600
+    ],
+    [
+      1920,
+      1080
+    ],
+    [
+      3440,
+      1440
+    ],
+    [
+      3840,
+      1080
+    ],
+    [
+      3840,
+      2160
+    ],
+    [
+      5120,
+      1440
+    ],
+    [
+      5120,
+      2880
+    ]
+  ],
+  "native_failures_after_repair": 0,
+  "linux_engine": "Godot 4.6.3 / llvmpipe LLVM20.1.2",
+  "windows_desktop_artifact": 13091837908,
+  "windows_desktop_artifact_sha256": "43d3bb9a5363c2fa4dd1ef776e594ef77a2dc5fc1fb415e988584ba7ff5108b2",
+  "limits": "Software-rendered Linux/Windows CI and local source checks. No physical Dell GPU/DPI, sleep/wake, mixed-monitor or overnight pass is established."
+}

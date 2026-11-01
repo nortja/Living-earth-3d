@@ -1,6 +1,6 @@
 # Windows field observations
 
-Current preview: 0.18.2. Automated Windows software-rendered gates cover installation/rollback, actual settings/dropdown, native preview/lifecycle, installed resources/backup callbacks, five-minute reporting and exact framebuffer sizes through 5K. They do not establish physical Dell GPU, mixed DPI/monitors, sleep/power, audible playback or overnight behavior.
+Current preview: 0.19.0. Automated Windows software-rendered gates cover installation/rollback, actual settings/dropdown, native preview/lifecycle, installed resources/backup callbacks, five-minute reporting and exact framebuffer sizes through 5K. They do not establish physical Dell GPU, mixed DPI/monitors, sleep/power, audible playback or overnight behavior.
 
 ## When using the actual Dell
 
@@ -16,6 +16,8 @@ Settings → Performance & support identifies the actual GPU, viewport/monitor p
 Nothing is uploaded. The report excludes usernames, file paths, bookmarks and camera images. Release engine-memory counters are unavailable/null and are not complete process/GPU-memory measurements. Recording pauses in saver preview/minimized state and excludes sleep-sized gaps. No hardware score is inferred.
 
 ## Feature observations
+
+- Sunlight explorer: open from Live Earth or a selected destination, scrub time and inspect UTC/phase. Finish or enter screensaver preview; the previous lighting and dated satellite view should return. This geometric simulation does not predict visible sunrise through terrain or weather.
 
 - Discover: visit a wonder, inspect its story/photo and source/license credit, then return with Escape.
 - Cameras: search/filter, open a periodic image and use a different-source Camera Wall. Retrieval/recheck time is not verified camera capture time; unchanged images can be delayed.

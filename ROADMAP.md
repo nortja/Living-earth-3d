@@ -1,6 +1,6 @@
 # Living Earth 3D — current roadmap
 
-Updated 2026-11-01. Latest released baseline: 0.18.2 (fully visible compact weather controls, search repair, bounded report polling, saved-place backups and expanded exploration). One Windows installer, then authenticated automatic updates; the base Earth remains useful offline.
+Updated 2026-11-01. Latest released baseline: 0.19.0 (temporary Sunlight explorer with UTC time scrubbing, selected-place twilight and preserved imagery/preferences, plus compact controls and expanded exploration). One Windows installer, then authenticated automatic updates; the base Earth remains useful offline.
 
 ## Completed
 
@@ -89,7 +89,15 @@ Updated 2026-11-01. Latest released baseline: 0.18.2 (fully visible compact weat
 - [x] Fresh 757 source checks, native layouts through 5K, Windows upgrades/rollback/settings, actual installed desktop and a 605-second preview/lifecycle soak passed. Public installer downloaded and verified; exact manifest signed with the existing trust key. Production signed-feed staging/cancellation/normal-exit roundtrip also passed on Windows.
 - [x] Continued into 0.13.1; 0.13.0 was superseded before feed promotion.
 
-## This release — 0.18.2
+## This release — 0.19.0
+
+- [x] Temporary offline ±12-hour UTC sunlight simulation in fifteen-minute steps, with Now/Finish, selected-place geometric Sun height and daylight/twilight labels.
+- [x] Preserve lighting preferences and retained satellite texture/date; restore on close/navigation and clear simulated time before screensaver preview. No feature-triggered provider requests, clock changes or preference writes.
+- [x] 1168 source checks, seven strict native sunlight layouts through 5K, full Windows upgrade/rollback/settings/installed-desktop/framebuffer gates and 605.2-second native preview/lifecycle soak passed in run 41326613347.
+- [x] Independent public verification run 41328300602 passed; exact installer and four-file metadata checked locally, signature independently verified against pinned key, authenticated source/feed promoted atomically.
+- [ ] Complete final production Windows updater roundtrip after promotion; see [validation](docs/VALIDATION-0.19.0.md).
+
+## Previous release — 0.18.2
 
 - [x] Loaded weather filter/picker fully visible at small sizes; compact primary actions preserve source/status, toggle, units and all request rules.
 - [x] Reproduced the old 800×600 clipping, then passed all 1118 source checks, seven native layouts and actual installed Windows visibility checks.
@@ -156,20 +164,22 @@ Updated 2026-11-01. Latest released baseline: 0.18.2 (fully visible compact weat
 
 User confirmed the download and automatic update worked and authorized further roadmap work and surprise additions. This is installed-delivery feedback; it does not establish mixed-DPI, sleep/resume or overnight behavior.
 
-The 0.19.0 candidate adds **Sunlight explorer**: a temporary offline ±12-hour UTC lighting slider, geometric Sun height and selected-place daylight/twilight context. It restores the saved lighting choice and loaded satellite identity on close/navigation and excludes simulated time from screensaver preview. It is awaiting full release gates; 0.18.2 remains the authenticated feed until independent verification and signing.
+The 0.19.0 candidate adds **Sunlight explorer**: a temporary offline ±12-hour UTC lighting slider, geometric Sun height and selected-place daylight/twilight context. It restores the saved lighting choice and loaded satellite identity on close/navigation and excludes simulated time from screensaver preview. All release gates and independent public verification passed; the signed 0.19.0 feed is promoted. The production updater roundtrip is the final pending check.
 
 | Stage | Deliverable | Completion condition |
 | --- | --- | --- |
-| Now | Sunlight explorer and clear simulation/return controls | Source/native/Windows/framebuffer/lifecycle gates, verified public bytes, signed feed and production updater |
+| Finishing | Sunlight explorer and clear simulation/return controls | Release gates, public bytes and signature passed; final production updater roundtrip pending |
 | Next | Authorized continuous in-app video prototype | One documented-permission feed, supported Windows playback, bounded resources, pause/close/saver cleanup and network failure recovery |
 | Then | Licensed current cloud imagery | Provenance and permitted redistribution, actual observation time/coverage, bounded opt-in retrieval, stale/offline fallback and GPU budget |
 | Reliability alongside features | Physical Dell and mixed-display field checks; longer screensaver observation | Record actual scaling/monitor-move/sleep evidence without inferring hardware results from VM rendering |
 | Later | Astronomical accuracy, verified higher-detail textures and distribution hardening | Documented accuracy/licenses, ordinary-PC targets, publisher signing and update-key migration plan |
 
+See the bounded [video pilot](docs/VIDEO_PILOT.md) and [cloud imagery pilot](docs/CLOUD_IMAGERY_PILOT.md) for implementation and acceptance gates.
+
 ## Next priorities
 
 
-1. **Field validation:** user confirmed the 0.7.0 automatic upgrade; next confirm new screensaver behavior, new desktop/taskbar icon, all camera states, visible-window restart, physical Dell scaling, frame times, memory, fullscreen, sleep/resume and monitor moves.
+1. **Field validation:** user confirmed the download and automatic update worked on 2026-11-01; next observe new screensaver behavior, new desktop/taskbar icon, all camera states, visible-window restart, physical Dell scaling, frame times, memory, fullscreen, sleep/resume and monitor moves.
 2. **Continuous video:** add authorized in-app streaming playback. Current NPS views are periodically refreshed camera images; other streams open the provider website. No continuous embedded video is delivered yet.
 3. **Camera Wall:** eight image sources and bounded textures are implemented; prioritize authorized continuous-video playback and optimize further after actual Dell measurement.
 4. **Living planet:** UTC sunlight is released; requested point-model weather is released in 0.7.0. Sixteen-place model weather points are released in 0.12.2. A requested, dated previous-day NASA satellite mosaic is implemented in 0.13.1. Expanded to 32 model points in 0.14.0. Next: licensed current cloud refresh and coverage guided by actual use. Default clouds/Moon/stars remain cinematic; the satellite view shows observed imagery only for its stated date.

@@ -1,0 +1,34 @@
+{
+  "active": false,
+  "active_seconds": 300.018872666664,
+  "context_limit_reached": false,
+  "contexts": [
+    {
+      "active_seconds": 300.018872666664,
+      "context": {
+        "active_screen": 0,
+        "frame_cap": 60,
+        "quality": "balanced",
+        "ui_scale": 1.0,
+        "viewport_pixels": [
+          870,
+          612
+        ],
+        "window_mode": 0
+      },
+      "frames": 13313,
+      "frames_over_50ms": 1,
+      "max_ms": 115.529666666667,
+      "mean_ms": 22.5357825183414,
+      "start_active_seconds": 0.0
+    }
+  ],
+  "end_engine_memory_bytes": null,
+  "frames": 13313,
+  "frames_over_50ms": 1,
+  "max_ms": 115.529666666667,
+  "mean_ms": 22.5357825183414,
+  "peak_engine_memory_bytes": null,
+  "screen_index_poll_seconds": 1.0,
+  "start_engine_memory_bytes": null
+}

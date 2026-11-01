@@ -61,6 +61,7 @@ var photo_viewer: ColorRect
 var wall: ColorRect
 var sunlight_toggle: CheckButton
 var solar_status: Label
+var sunlight_explorer: RefCounted
 var camera_rows: VBoxContainer
 var camera_query: LineEdit
 var camera_images_only := false
@@ -152,7 +153,7 @@ func setup(owner_app: Node3D) -> void:
     var page_stack := VBoxContainer.new()
     page_stack.size_flags_horizontal = Control.SIZE_EXPAND_FILL
     scroll.add_child(page_stack)
-    for title in NAV + ["Settings", "Destination", "Display report", "Weather globe", "Satellite view"]:
+    for title in NAV + ["Settings", "Destination", "Display report", "Weather globe", "Satellite view", "Sunlight explorer"]:
         var page := VBoxContainer.new()
         page.size_flags_horizontal = Control.SIZE_EXPAND_FILL
         page_stack.add_child(page)
@@ -164,6 +165,8 @@ func setup(owner_app: Node3D) -> void:
     _command(pages["Command Center"])
     _savers(pages.Screensavers)
     _settings(pages.Settings)
+    sunlight_explorer = preload("res://scripts/sunlight_explorer.gd").new()
+    sunlight_explorer.setup(self,pages["Sunlight explorer"])
     command_card = PanelContainer.new()
     command_card.add_theme_stylebox_override("panel", surface(Color(0.025, 0.045, 0.075, 0.95), 16, 18))
     add_child(command_card)
@@ -238,6 +241,8 @@ func open_page(title: String) -> void:
     if active_page == title and panel.visible:
         close_panel()
         return
+    if sunlight_explorer and title != "Sunlight explorer": sunlight_explorer.end()
+    if title == "Sunlight explorer": sunlight_explorer.begin()
     active_page = title
     page_scroll.scroll_vertical = 0
     page_title.text = title
@@ -254,6 +259,7 @@ func open_page(title: String) -> void:
     refresh_layout()
 
 func close_panel() -> void:
+    if sunlight_explorer: sunlight_explorer.end()
     active_page = ""
     panel.hide()
     command_card.hide()
@@ -289,7 +295,7 @@ func relayout() -> void:
         panel.size = Vector2(width, maxf(250, size.y - 88 - dock.size.y - 44))
     else:
         var search_open:bool=active_page=="Explore" and exploration_panel!=null and (exploration_panel.sections.Search.visible or exploration_panel.sections.Saved.visible)
-        var sheet_height := minf(360,size.y-190) if search_open or (active_page == "Destination" and arrival_has_photo) or active_page in ["Weather globe", "Satellite view", "Display report"] else 190.0
+        var sheet_height := minf(360,size.y-190) if search_open or (active_page == "Destination" and arrival_has_photo) or active_page in ["Weather globe", "Satellite view", "Display report", "Sunlight explorer"] else 190.0
         panel.position = Vector2(24, size.y - sheet_height - 92)
         panel.size = Vector2(size.x - 48, sheet_height)
     command_card.position = Vector2(24, 104)
@@ -430,6 +436,7 @@ func _live(box: VBoxContainer) -> void:
     sunlight.button_pressed = app.utc_sunlight
     sunlight.toggled.connect(app.set_utc_sunlight)
     box.add_child(sunlight)
+    button(box, "Sunlight explorer · offline preview", func(): open_page("Sunlight explorer"))
     solar_status = label(box, "", 12)
     label(box, "Approximate seasonal day/night boundary, calculated offline every 30 seconds. Keep your computer clock correct. Night lights screensaver uses artistic lighting.", 12)
     button(box, "Sunlight calculation source · NOAA ↗", func(): OS.shell_open("https://gml.noaa.gov/grad/solcalc/solareqns.PDF"))
@@ -518,6 +525,7 @@ func show_arrival(place: Dictionary) -> void:
         _arrival_save_state())
     _arrival_save_state()
     button(box, "Weather here", exploration_panel.request_selected_weather)
+    button(box, "Sunlight here · offline preview", func(): open_page("Sunlight explorer"))
     var source := str(place.get("source", place.get("url", "")))
     if source.begins_with("https://"):
         button(box, "Explore the official source ↗", func(): OS.shell_open(source))

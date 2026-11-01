@@ -1,3 +1,10 @@
+## 0.19.0 preview — 2026-11-01
+
+- Add an explicitly dated offline Sunlight explorer with a fifteen-minute ±12-hour slider and Now/Finish controls, available from Live Earth and destination cards.
+- Show selected-place geometric Sun height and daylight/civil/nautical/astronomical twilight; disclose UTC, simulation and atmospheric/terrain limits.
+- Restore actual lighting preferences and retained satellite texture/date on close or navigation; clear simulated time before screensaver preview. No provider requests or clock/preference writes.
+- Add analytic geometry/boundary/state checks, seven native layouts and installed-Windows simulation/isolation checks. All 1168 source checks, native layouts and fresh Windows upgrade/settings/desktop/framebuffer/605-second lifecycle gates passed; public bytes independently verified and authenticated metadata promoted. Production updater roundtrip follows.
+
 ## 0.18.2 preview — 2026-10-31
 
 - Keep loaded weather filtering and place selection fully visible in small windows by compacting primary actions and removing the redundant heading.
