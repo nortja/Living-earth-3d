@@ -1,10 +1,10 @@
-## 0.21.0 — Lunar observatory, calendar, tours and idle setup (candidate)
+## 0.21.0 — Lunar observatory, calendar, tours and idle setup (2026-11-01)
 
 - Replace the active low-resolution spinning Moon with a verified NASA 4K map and a north-up current-phase illustration; add a large dated lunar viewer.
 - Use NASA's hourly 2026 phase/libration geometry. Later disks clearly identify interpolation between USNO events; precise event dates and estimated disk appearance remain separate.
 - Add traditional fixed-Hebrew-calendar observances, Torah festival tags, previous-evening sunset dates, Israel/Diaspora choice, and sourced lunar/solar events through 2030.
 - Include Journey studio and explicit Windows idle-timer/sign-in setup from unreleased 0.20.0; allow idle screensaving while Earth is open.
-- Keep the existing update trust, preferences, explicit data requests and offline base Earth. Publication and Windows validation remain pending authorization of the public repository push.
+- Keep the existing update trust, preferences, explicit data requests and offline base Earth. Full Windows/native release gates and independent public delivery/signature checks passed before authenticated feed promotion.
 
 ## 0.20.0 — Journey studio and Windows idle setup (candidate)
 

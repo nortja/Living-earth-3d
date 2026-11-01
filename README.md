@@ -1,12 +1,10 @@
-> Pending local 0.21.0 candidate: 4K Moon/lunar calendar, Journey studio and explicit Windows idle setup. Production remains verified 0.19.0; public-repository publication is now explicitly authorized, and the complete Windows release gates are pending. See [candidate validation](docs/VALIDATION-0.21.0.md).
-
 # Living Earth 3D
 
-An offline-first interactive Windows globe and screensaver, built with Godot 4. Released **0.19.0 preview**.
+An offline-first interactive Windows globe and screensaver, built with Godot 4. Released **0.21.0 preview**.
 
 ## Windows users
 
-[Download LivingEarth3D-Setup-0.19.0.exe](https://github.com/nortja/Living-earth-3d/raw/refs/heads/downloads/windows-0.19.0/LivingEarth3D-Setup-0.19.0.exe), double-click, install, then open the desktop shortcut. No ZIP extraction, terminal, separate runtime, or Godot setup is needed. This is an unsigned preview. The user confirmed successful download and automatic updating on 2026-11-01, and working Camera Wall/cameras previously. Windows CI verifies installation and rollback; physical GPU/DPI checks remain outstanding.
+[Download LivingEarth3D-Setup-0.21.0.exe](https://github.com/nortja/Living-earth-3d/raw/refs/heads/downloads/windows-0.21.0/LivingEarth3D-Setup-0.21.0.exe), double-click, install, then open the desktop shortcut. No ZIP extraction, terminal, separate runtime, or Godot setup is needed. This is an unsigned preview. The user confirmed successful download and automatic updating on 2026-11-01, and working Camera Wall/cameras previously. Windows CI verifies installation and rollback; physical GPU/DPI checks remain outstanding.
 
 The real globe emerges from darkness with illuminated Earth branding. Drag to spin with gentle inertia, scroll or double-click to zoom, and use **Full Earth** or Home to reset. F11 toggles fullscreen. Earth stays centered and proportional at native viewport resolution, including ultrawide and 4K/5K sizes. Compact controls scale automatically with window resolution. Panels adapt to smaller windows; an optional wide Command Center overview uses spare space.
 
@@ -16,11 +14,21 @@ Explore six curated destinations, an offline atlas, or coordinates. Worldwide se
 
 Version 0.6.1 adds **Cameras → Open Camera Wall** with 1/2/4/6/9-view layouts and saved collections. Eight distinct image-camera sources are available; duplicate tiles share downloads, with at most two requests at once. Offscreen/hidden feeds pause. **Live Earth → Current UTC sunlight** enables an approximate seasonal day/night boundary, calculated offline from the device clock; it does not make clouds, Moon or stars current observations. The Windows installer passed installation/rollback checks; existing updater-enabled installs receive subsequent authenticated releases automatically.
 
-Six offline screensaver styles offer Ambient Earth, Discovery journeys, Night lights, Deep space, Daylight Earth and Orbital drift. The in-app preview uses the current display and returns on input after a short grace period; the Windows screensaver manages per-monitor hosts. Windows screensaver selection is optional. Native Screen Saver Settings preview embeds the actual Earth, and fullscreen saver hosts cover each attached monitor: up to four animated Earth views, with additional displays black. Native saver views use 2K/30 FPS; small Windows preview uses 15 FPS. Physical mixed-DPI/multi-monitor performance remains a field check. Clouds drift as offline artwork. Lighting is cinematic by default, with optional approximate current UTC sunlight. Moon and stars remain cinematic. Source detail remains 4K even on larger displays.
+Six offline screensaver styles offer Ambient Earth, Discovery journeys, Night lights, Deep space, Daylight Earth and Orbital drift. The in-app preview uses the current display and returns on input after a short grace period; the Windows screensaver manages per-monitor hosts. Windows screensaver selection is optional. Native Screen Saver Settings preview embeds the actual Earth, and fullscreen saver hosts cover each attached monitor: up to four animated Earth views, with additional displays black. Native saver views use 2K/30 FPS; small Windows preview uses 15 FPS. Physical mixed-DPI/multi-monitor performance remains a field check. Clouds drift as offline artwork. Lighting is cinematic by default, with optional approximate current UTC sunlight. Stars and Moon placement remain illustrative. The Moon uses a verified 4K NASA surface and dated phase geometry; its observatory distinguishes hourly 2026 NASA geometry from later estimated disks. Source detail remains 4K even on larger displays.
 
 **Install once, then update from the app.** Version 0.5.3 includes automatic updates enabled by default. It checks at startup and every 30 minutes while open, downloads authenticated releases, and installs silently when you close the app. **Settings → Update and restart now** applies a ready release with a graceful restart; the Automatic updates toggle pauses/resumes updates. Both minor and major releases use the same process. Favorites, interface size, sound and other preferences remain local.
 
 Releases require a valid signature from the public key pinned in the installed updater, plus matching installer and installed-file hashes. Windows publisher signing is separate: this bootstrap installer remains an unsigned preview. Versions 0.5.2 and older need this installer once to obtain the new updater. A Windows CI run verified silent installation, preservation of user data, running-app protection and restoration of previous files after a deliberately failed verification. Physical GPU/DPI and visible-app restart field tests remain separate. See [docs/AUTO_UPDATE.md](docs/AUTO_UPDATE.md).
+
+## New in 0.21.0
+
+**Live Earth → Moon & Hebrew calendar** opens a large NASA 4K lunar viewer with Now/date/event controls, dated phases, traditional Hebrew festival tags, Israel/Diaspora choice and sourced lunar/solar dates through 2030. Hebrew civil dates show the preceding sunset date. NASA hourly geometry covers 2026; later disks are explicitly estimated between published phase events. Placement is illustrative, with no local-sky/terrain/eclipse claim.
+
+**Screensavers** now offers a direct idle-time selector (ten minutes by default), optional Windows sign-in on resume, and **Apply timer · enable Living Earth 3D**. Preview alone does not activate Windows idle screensaving. The desktop app no longer inhibits idle screensaving. Organization policy and other applications/power settings can still affect activation.
+
+**Live Earth → Journey studio** builds an eight-stop offline tour with city lookup, editable stops, great-circle paths, approximate distances and Play/Pause/Next. Tours are session-only and stop for manual exploration, backgrounding, navigation or screensaver preview.
+
+All 1,689 source checks, native rendering, actual Windows upgrades/rollback/settings and timer readback, installed desktop resources, exact display sizes through 5K and a ten-minute native preview/lifecycle soak passed. Public delivery/source and the pinned-key signature were independently verified. Production updater roundtrip follows feed promotion; see [validation](docs/VALIDATION-0.21.0.md).
 
 ## New in 0.19.0
 

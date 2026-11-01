@@ -2,7 +2,7 @@
 
 ## End-user installation
 
-The current artifact is `LivingEarth3D-Setup-0.19.0.exe`: one per-user NSIS installer with desktop/Start menu shortcuts, installed-apps uninstall and no separate runtime. Install once; updater-enabled versions subsequently receive authenticated releases and apply them after normal app/screensaver exit. Preferences and bookmarks remain local. Native screensaver selection is optional.
+The current artifact is `LivingEarth3D-Setup-0.21.0.exe`: one per-user NSIS installer with desktop/Start menu shortcuts, installed-apps uninstall and no separate runtime. Install once; updater-enabled versions subsequently receive authenticated releases and apply them after normal app/screensaver exit. Preferences and bookmarks remain local. Native screensaver selection is optional.
 
 The installer remains Windows publisher-unsigned. Authenticated update metadata uses the existing pinned RSA key independently of Windows Authenticode. Silent installs defer while matching app/screensaver processes are active; they do not force a running user process closed. Handled verification failures restore known previous files and version metadata. This is not a power-loss recovery guarantee.
 
@@ -28,8 +28,8 @@ For Linux cross-builds, install the pinned tools in `packaging/windows/requireme
 python packaging/windows/set_icon.py build/windows/earth_template.exe assets/icon.ico
 godot --headless --path . --export-release 'Windows Desktop' build/windows/LivingEarth3D.exe
 python tests/windows_icon_test.py build/windows/LivingEarth3D.exe
-makensis -DVERSION=0.19.0 -DBUILD_DIR=/absolute/repo/build/windows -DOUTPUT=/absolute/repo/dist/LivingEarth3D-Setup-0.19.0.exe packaging/windows/installer.nsi
-python tests/windows_icon_test.py dist/LivingEarth3D-Setup-0.19.0.exe --installer
+makensis -DVERSION=0.19.0 -DBUILD_DIR=/absolute/repo/build/windows -DOUTPUT=/absolute/repo/dist/LivingEarth3D-Setup-0.21.0.exe packaging/windows/installer.nsi
+python tests/windows_icon_test.py dist/LivingEarth3D-Setup-0.21.0.exe --installer
 ```
 
 Version numbers in project.godot, scripts/earth.gd, export_presets.cfg and installer.nsi's fallback should agree. Windows build output names use the project version. Keep private signing material out of the checkout.
@@ -73,3 +73,7 @@ Public-data requests remain explicit: USGS earthquakes, OpenStreetMap search, Op
 ## Current-package framebuffer gate
 
 0.19.0's installed desktop job also runs the five exact framebuffer sizes under Windows PowerShell 5.1 with explicit post-start client resizing. Actual reports retain the 1024×768 virtual-desktop limitation and llvmpipe identity. See [current validation](VALIDATION-0.19.0.md); no physical Dell/5K-monitor or frame-rate claim is inferred.
+
+## 0.21.0 idle setup and lunar/tour release
+
+[Validation](VALIDATION-0.21.0.md) records the current Windows gate and independent public verification. In Screensavers, choose the idle time (ten minutes by default), choose whether Windows sign-in is required on resume, and press Apply timer. Windows confirms the values through native readback. Preview alone does not enable the timer. The desktop app permits Windows idle screensaving. Hardware sign-in/idle/sleep and organization-policy effects remain field observations.

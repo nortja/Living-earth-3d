@@ -1,6 +1,6 @@
 # Living Earth 3D — current roadmap
 
-Updated 2026-11-01. Latest released baseline: 0.19.0 (temporary Sunlight explorer with UTC time scrubbing, selected-place twilight and preserved imagery/preferences, plus compact controls and expanded exploration). One Windows installer, then authenticated automatic updates; the base Earth remains useful offline.
+Updated 2026-11-01. Latest released baseline: 0.21.0 (NASA 4K lunar observatory and Hebrew/celestial calendar, offline Journey studio and explicit Windows idle timer/secure-resume setup). One Windows installer, then authenticated automatic updates; the base Earth remains useful offline.
 
 ## Completed
 
@@ -176,12 +176,12 @@ Released 0.19.0 adds **Sunlight explorer**: a temporary offline ±12-hour UTC li
 
 See the bounded [video pilot](docs/VIDEO_PILOT.md) and [cloud imagery pilot](docs/CLOUD_IMAGERY_PILOT.md) for implementation and acceptance gates.
 
-## Pending local large build — 0.21.0
+## This release — 0.21.0
 
-- Built and locally checked: Journey studio, explicit Windows idle timer/secure-resume setup, removal of desktop keep-screen-on inhibition, NASA 4K lunar rendering and north-up Moon viewer, dated lunar cycles, traditional Hebrew festival tags with sunset-date semantics and Israel/Diaspora schemes, and sourced celestial event calendar. See [implementation/coverage](docs/LUNAR_OBSERVATORY.md) and [validation/blocker](docs/VALIDATION-0.21.0.md).
-- 1,689 current source checks and all fourteen native render suites passed. Fresh Windows-target resource-pack export/load smoke passed. These are Linux source/render/package-resource results, not a Windows installer release or physical display result.
-- Both public source pushes were rejected by automatic approval review as unverified publication. No alternate write route was used. The user subsequently explicitly authorized publication to `https://github.com/nortja/Living-earth-3d`; run the fresh 0.21.0 full Windows pipeline and unchanged public/signature/production-updater gates. Supersedes the unreleased 0.20.0 draft; production is still 0.19.0.
-- User reports the screensaver preview works but actual idle activation was unclear/not working. The desktop app's inherited keep-screen-on behavior was identified and removed; native actual-idle/sign-in validation remains pending. No physical hardware success is inferred.
+- [x] Journey studio, Windows idle timer/secure-resume setup and removal of desktop keep-screen-on inhibition, NASA 4K lunar rendering and north-up Moon viewer, dated lunar cycles, traditional Hebrew festivals with sunset-date semantics and Israel/Diaspora schemes, and sourced celestial calendar. [Coverage/limits](docs/LUNAR_OBSERVATORY.md).
+- [x] All 1,689 source checks and fourteen native render suites passed. Fresh Windows source/security/export, upgrades/rollback/settings, ten-minute/secure-resume readback, installed lunar/tour/calendar resources, five-minute recording, exact five-size framebuffer matrix and native preview/lifecycle soak passed in run 41333845054. Physical Dell/DPI/sleep/sign-in behavior remains field work.
+- [x] Independent public delivery run 41335986912 and a separate local download/provenance/helper/checksum verification passed. Exact metadata signed outside git/CI and independently checked against the pinned key before atomic source/feed promotion. Production updater roundtrip is the final rollout check. [Validation](docs/VALIDATION-0.21.0.md).
+- Initial automatic-approval publication block was explicitly resolved by the user's approval of this exact public repository and validated updater rollout. The source-only 0.20.0 draft was superseded, never feed-promoted.
 
 ## Next priorities
 

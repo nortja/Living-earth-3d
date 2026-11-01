@@ -20,3 +20,13 @@ Automatic approval review rejected both source pushes to `https://github.com/nor
 No new installer or authenticated update is published. Current production remains 0.19.0. The saved Moon preview shows the locally rendered candidate, not an installed Windows release.
 
 Astronomical event selection uses its published UTC instant, while a manually chosen civil date uses noon. Two checks distinguish event-time preview and the expected quarter-phase label. Timer UI native layout and preview/full native saver resource isolation both passed locally (four sizes per saver mode).
+
+## Completed release gates — 2026-11-01
+
+Frozen remote source `a0e8d9bca4fcc6f33d25d75dd6a2a0f80d78d76d`, tree `8261d9f783501b8ce00da6040c3b2fe2f7a79bc4`, is byte-identical to the reviewed local candidate tree including the documented explicit publication approval. Full run https://github.com/nortja/Living-earth-3d/actions/runs/41333845054 passed build 124929379062, Windows 124931929180, installed desktop 124931929201 and publication.
+
+The Windows settings gate actually read back 600-second timeout, active screensaving and secure resume, then 300-second timeout with optional direct-desktop resume. Installed lunar 4K texture/geometry, dated/future estimated distinction, Israel/Diaspora calendar behavior, tour resources/cleanup, visible compact timer and date controls passed. Reviewed actual installed Windows Moon and timer screenshots. Existing upgrades/rollback, signed updater security/status checks, five-minute recording, exact five-size framebuffer matrix through 5K, real native preview/lifecycle and ten-minute soak all passed. These are software-rendered disposable Windows results, not a physical idle/sign-in, Dell DPI or sleep/wake observation.
+
+Independent public check https://github.com/nortja/Living-earth-3d/actions/runs/41335986912 passed. A separate local verifier also downloaded the exact updater URL, checked completed gate/source/workflow/BUILD provenance, installed-file schema and unchanged helper hashes. Installer size **59,430,979 bytes**, SHA256 `513630a9c8923cfaa30e5f82320be2324bc93575088e77e9759acf6450f1fc44`. Exact update metadata was signed outside git/CI and independently verified using the unchanged installed public key. The private key never entered the checkout, CI, public artifacts or installer.
+
+All three discovery files and the tested source are being promoted atomically. Production staging/cancellation/normal-exit install is pending and must pass before any next feed promotion.
