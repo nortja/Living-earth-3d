@@ -1,4 +1,4 @@
-param([Parameter(Mandatory=$true)][string]$Installer, [Parameter(Mandatory=$true)][string]$PayloadMetadata, [ValidateSet("0.5.2","0.6.1","0.7.0","0.8.0","0.9.0","0.21.0","0.22.0","0.23.0")][string]$BaselineVersion = "0.5.2")
+param([Parameter(Mandatory=$true)][string]$Installer, [Parameter(Mandatory=$true)][string]$PayloadMetadata, [ValidateSet("0.5.2","0.6.1","0.7.0","0.8.0","0.9.0","0.21.0","0.22.0","0.23.0","0.24.0")][string]$BaselineVersion = "0.5.2")
 $ErrorActionPreference = 'Stop'
 . "$PSScriptRoot/../packaging/windows/update-core.ps1"
 $expectedVersion = (Select-String -Path "$PSScriptRoot/../project.godot" -Pattern 'config/version="([^"]+)"').Matches[0].Groups[1].Value
@@ -9,7 +9,7 @@ $fixture = Join-Path $env:RUNNER_TEMP ('earth update test ' + [guid]::NewGuid().
 $installRoot = Join-Path $fixture 'Living Earth 3D'
 New-Item -ItemType Directory -Path $fixture -Force | Out-Null
 $oldInstaller = Join-Path $fixture 'old.exe'
-$baselineHashes = @{ '0.23.0'='131d248c48440c5e9a4ba0a9b1c4f0ceeb2b028e3c9813c29653a09fcdf03217'; '0.22.0'='741a7db096aadc1bb4db8ead36287c00af3c0ec9f9c1583b6c8168efa8a2038b'; '0.21.0'='513630a9c8923cfaa30e5f82320be2324bc93575088e77e9759acf6450f1fc44'; '0.9.0'='b26c5f434d1e55f76311aeba441290f16b8971dc2b906b4dd0c2668c437fe668'; '0.8.0'='40077feb61b467f2bd540bc2f18d2fccde663760c39e10fa356fb137db13a4c0'; '0.7.0'='6353f718972d3255a46aa414a3e7df2b050d3bd6b259a8e472ade54495936595'; '0.5.2'='78a011d3d7aee0f195a2ecc2605858e3133206b67161a96103bc0870acdd530b'; '0.6.1'='5471db38bb3e8b32e00bae53a42b298a386e47b13fe7f98b22071c644b8b79bf' }
+$baselineHashes = @{ '0.24.0'='168ccdd250666fca00e653b33d6012ad72df2d1f99c62bc4ae76e61a6afec4ce'; '0.23.0'='131d248c48440c5e9a4ba0a9b1c4f0ceeb2b028e3c9813c29653a09fcdf03217'; '0.22.0'='741a7db096aadc1bb4db8ead36287c00af3c0ec9f9c1583b6c8168efa8a2038b'; '0.21.0'='513630a9c8923cfaa30e5f82320be2324bc93575088e77e9759acf6450f1fc44'; '0.9.0'='b26c5f434d1e55f76311aeba441290f16b8971dc2b906b4dd0c2668c437fe668'; '0.8.0'='40077feb61b467f2bd540bc2f18d2fccde663760c39e10fa356fb137db13a4c0'; '0.7.0'='6353f718972d3255a46aa414a3e7df2b050d3bd6b259a8e472ade54495936595'; '0.5.2'='78a011d3d7aee0f195a2ecc2605858e3133206b67161a96103bc0870acdd530b'; '0.6.1'='5471db38bb3e8b32e00bae53a42b298a386e47b13fe7f98b22071c644b8b79bf' }
 Invoke-WebRequest -UseBasicParsing -Uri "https://raw.githubusercontent.com/nortja/Living-earth-3d/downloads/windows-$BaselineVersion/LivingEarth3D-Setup-$BaselineVersion.exe" -OutFile $oldInstaller
 if ((Get-FileHash $oldInstaller -Algorithm SHA256).Hash.ToLowerInvariant() -ne $baselineHashes[$BaselineVersion]) { throw 'Old installer checksum mismatch' }
 $setup=Start-Process $oldInstaller -ArgumentList "/S /D=$installRoot" -PassThru -Wait

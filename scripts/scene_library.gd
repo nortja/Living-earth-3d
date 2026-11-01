@@ -9,6 +9,9 @@ var scenes: Array[Dictionary] = []
 var directory := "user://scene-library-v1"
 var interval := 30
 var playing := false
+var shuffled := false
+var shuffle_bag: Array[int] = []
+var shuffle_toggle: CheckButton
 var owns_discovery := false
 var saved_discovery := false
 var elapsed := 0.0
@@ -57,6 +60,7 @@ func setup(owner_app: Node3D) -> void:
                 scenes.append(row.duplicate(true));seen[row.id]=true
     var seconds = app.preferences.get_value("scene_library","interval",30)
     if seconds is int and seconds in INTERVALS: interval=seconds
+    shuffled = app.preferences.get_value("scene_library","shuffle",false)==true
     cleanup_thumbnails()
     build_controls()
 
@@ -95,6 +99,7 @@ func save_current() -> void:
     var made := DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(directory))
     if made!=OK or image.save_png(path)!=OK:
         busy=false;status="The scene thumbnail could not be saved.";refresh();return
+    shuffle_bag.clear()
     scenes.append(row)
     if not persist():
         scenes.pop_back();DirAccess.remove_absolute(path)
@@ -165,6 +170,7 @@ func play() -> void:
     pause()
     saved_discovery=app.discovery_enabled;owns_discovery=true
     app.discovery_enabled=false;playing=true
+    shuffle_bag.clear()
     use_scene(0 if current<0 or current>=scenes.size() else current,false)
     status="Playing saved scenes · %d seconds each. Pause keeps the current view." % interval
     refresh_state()
@@ -182,13 +188,32 @@ func pause() -> void:
 func next_scene() -> void:
     if scenes.is_empty() or busy or app.screensaver_mode: return
     if is_instance_valid(transition) and transition.is_running(): return
-    var target := (current+1)%scenes.size()
+    var target := next_index()
     transition=create_tween()
     transition.tween_method(app._set_intro_reveal,1.0,0.0,0.3)
     transition.tween_callback(func(): use_scene(target,false))
     transition.tween_method(app._set_intro_reveal,0.0,1.0,0.6)
     transition.finished.connect(refresh_state)
     refresh_state()
+
+func set_shuffled(value: bool) -> void:
+    if busy: return
+    pause()
+    shuffled=value;shuffle_bag.clear()
+    app.preferences.set_value("scene_library","shuffle",value)
+    app._save_preferences()
+    status="Shuffle enabled · every other view once before a new round." if value else "Saved-order playback selected."
+    refresh_state()
+
+func next_index() -> int:
+    if scenes.is_empty(): return -1
+    if not shuffled: return (current+1)%scenes.size()
+    if scenes.size()==1: return 0
+    if shuffle_bag.is_empty():
+        for index in range(scenes.size()):
+            if index!=current: shuffle_bag.append(index)
+        shuffle_bag.shuffle()
+    return shuffle_bag.pop_back()
 
 func set_interval(value: int) -> void:
     if value not in INTERVALS: return
@@ -199,6 +224,7 @@ func remove(index: int) -> void:
     if index<0 or index>=scenes.size() or busy: return
     pause()
     var row := scenes[index]
+    shuffle_bag.clear()
     scenes.remove_at(index)
     if not persist(): scenes.insert(index,row);refresh();return
     if not undo_scene.is_empty():
@@ -209,6 +235,7 @@ func remove(index: int) -> void:
 
 func undo() -> void:
     if busy or undo_scene.is_empty() or scenes.size()>=LIMIT: return
+    pause();shuffle_bag.clear()
     scenes.append(undo_scene)
     if not persist(): scenes.pop_back();refresh();return
     undo_scene={};status="Scene restored.";refresh()
@@ -237,16 +264,20 @@ func build_controls() -> void:
     interval_picker=OptionButton.new()
     for value in INTERVALS: interval_picker.add_item("%d seconds per scene" % value,value)
     interval_picker.select(INTERVALS.find(interval));interval_picker.item_selected.connect(func(index: int): set_interval(INTERVALS[index]));box.add_child(interval_picker)
+    shuffle_toggle=CheckButton.new();shuffle_toggle.text="Shuffle scenes · no immediate repeats"
+    shuffle_toggle.toggled.connect(set_shuffled);box.add_child(shuffle_toggle)
     status_label=ui.label(box,status,12)
     undo_button=ui.button(box,"Undo last removal",undo)
     rows=VBoxContainer.new();box.add_child(rows)
-    ui.label(box,"Personal offline compositions · retained on this PC. Scenes store camera, lighting and sky choices; the Moon phase stays current. Play uses temporary visual choices and does not overwrite your saved defaults. Pause keeps the frame; Use applies a scene's saved settings. Drag/zoom, other pages, minimization or screensaver entry stop playback. Closing this panel lets playback continue. No provider requests.",12)
+    ui.label(box,"Personal offline compositions · retained on this PC. Scenes store camera, lighting and sky choices; the Moon phase stays current. Play uses temporary visual choices and does not overwrite your saved defaults. Pause keeps the frame; Use applies a scene's saved settings. Drag/zoom, other pages, minimization or screensaver entry stop playback. Closing this panel lets playback continue. Shuffle visits each other view once before starting a fresh round and never immediately repeats a view when two or more exist. Changing order pauses playback. No provider requests.",12)
     ui.label(box,"Milky Way thumbnails: ESO/S. Brunier · CC BY 4.0. Sources and license are in Space Studio. Camera distance and Earth/Moon composition are illustrative, not orbital scale.",12)
     refresh()
 
 func refresh_state() -> void:
     if not status_label: return
     status_label.text=status
+    shuffle_toggle.set_pressed_no_signal(shuffled)
+    shuffle_toggle.disabled=busy
     save_button.disabled=busy or scenes.size()>=LIMIT
     play_button.disabled=busy or scenes.is_empty() or playing
     pause_button.disabled=not playing and not (is_instance_valid(transition) and transition.is_running())

@@ -70,9 +70,14 @@ func run(app: Node3D, args: PackedStringArray) -> void:
     verify(lib.scenes.size()==2,"Installed scene stores independent Moon/galaxy choices")
     lib.select_scene(0)
     verify(app.visuals.moon.visible and studio.enabled and absf(app.distance-3.6)<.00001,"Installed Use restores camera, Moon and galaxy together")
+    lib.shuffle_toggle.button_pressed=true
+    verify(lib.shuffled and app.preferences.get_value("scene_library","shuffle",false)==true,"Installed Shuffle toggle persists the chosen playback order")
     lib.play();lib.next_scene()
     await get_tree().create_timer(1.2).timeout
     verify(lib.playing and lib.current==1 and not app.visuals.moon.visible and not studio.enabled and is_equal_approx(app.intro_reveal,1),"Installed cinematic transition reaches second scene")
+    lib.next_scene()
+    await get_tree().create_timer(1.2).timeout
+    verify(lib.current==0,"Installed shuffle crosses a round boundary without repeating the current view")
     lib.pause();lib.select_scene(0)
     await RenderingServer.frame_post_draw
     get_viewport().get_texture().get_image().save_png(directory.path_join("scene-library.png"))

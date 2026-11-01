@@ -55,10 +55,30 @@ func run() -> void:
     lib.undo();verify(lib.scenes.size()==2 and lib.undo_scene.is_empty(),"Undo restores profile")
     lib.use_scene(0)
     verify(app.preferences.get_value("visuals","moon")==lib.scenes[0].moon,"Explicit Use persists chosen visual defaults")
+    lib.set_shuffled(true)
+    verify(lib.shuffled and not lib.playing,"Shuffle selection persists and pauses playback")
+    for count in range(2,9):
+        while lib.scenes.size()<count:
+            var extra=lib.snapshot("Extra view");lib.scenes.append(extra)
+        lib.current=0;lib.shuffle_bag.clear()
+        for cycle in range(10):
+            var visited={}
+            var previous=lib.current
+            for step in range(count-1):
+                var index=lib.next_index()
+                verify(index>=0 and index<count and index!=lib.current,"Shuffle index stays bounded without adjacent repeats")
+                verify(not visited.has(index),"Every other scene is visited once per round")
+                visited[index]=true;lib.current=index
+            verify(not visited.has(previous),"Round excludes its starting view")
+    lib.shuffle_bag.clear();lib.scenes=lib.scenes.slice(0,2)
+    lib.current=0;lib.set_shuffled(false)
+    verify(lib.next_index()==1,"Saved-order Next remains sequential")
+    lib.set_shuffled(true)
     var path: String=app.preferences_path
     app.queue_free();await process_frame
     var again=load("res://scenes/earth.tscn").instantiate();again.play_intro=false;again.preferences_path=path;root.add_child(again)
     verify(again.scene_library.scenes.size()==2 and again.scene_library.interval==15,"Scene data and interval survive restart without requiring thumbnails")
+    verify(again.scene_library.shuffled,"Shuffle choice survives restart")
     verify(again.services.search_request.get_http_client_status()==HTTPClient.STATUS_DISCONNECTED and again.observed_weather.request==null,"Library requires no provider requests")
     DirAccess.remove_absolute(ProjectSettings.globalize_path(path));again.queue_free();await process_frame
     print("Scene library: %d checks, %d failures" % [checks,failures])

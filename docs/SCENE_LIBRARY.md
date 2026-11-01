@@ -15,3 +15,7 @@ The Moon is a camera-facing, NASA-textured illustrative companion. Previously it
 The optional Moon switch remains authoritative. Very close framing can crop the Moon along with Earth. This is proportional cinematic composition, not physical Earth–Moon distance, an orbital simulator or an actual local sky.
 
 See [validation](VALIDATION-0.24.0.md) for native pixels, source geometry and installed Windows evidence. Milky Way source and rights remain in [Space Studio](SPACE_STUDIO.md).
+
+## Shuffle scenes (0.25.0)
+
+Enable **Shuffle scenes** before Play for a fresh order of saved compositions. Each round visits every other view once, excluding its starting view; the next round never repeats the last view immediately. A single saved scene remains usable. The choice stays on this PC, defaults off, and changing it pauses playback. Save/Remove/Undo rebuild the bounded sequence safely. No imagery downloads or uploads.

@@ -49,7 +49,7 @@ func run() -> void:
             app.interface.refresh_layout()
         app.interface.open_page("Scene library")
         await settle()
-        for control in [lib.name_field,lib.save_button,lib.play_button,lib.pause_button,lib.next_button,lib.interval_picker]:
+        for control in [lib.name_field,lib.save_button,lib.play_button,lib.pause_button,lib.next_button,lib.interval_picker,lib.shuffle_toggle]:
             check(app.interface.page_scroll.get_global_rect().encloses(control.get_global_rect()),"Scene primary control %s fits %s: %s within %s" % [control.name,pixels,control.get_global_rect(),app.interface.page_scroll.get_global_rect()])
         root.get_texture().get_image().save_png("res://dist/scene-library-%dx%d.png" % [pixels.x,pixels.y])
     root.size=Vector2i(1920,1080)
