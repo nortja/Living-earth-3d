@@ -220,3 +220,7 @@ Build/test first, publish installer, verify its download, sign the exact release
 - [x] Separate production Windows updater roundtrip 41340742001 passed: authenticated staging, cancellation without replacement, normal-exit install and four installed-file hashes; no unwanted restart.
 
 Global/Asia clouds, continuous video, Authenticode publisher signing and physical Dell/mixed-DPI/sleep tests remain open. [Validation](docs/VALIDATION-0.22.0.md) and [product scope](docs/CLOUD_IMAGERY_PILOT.md).
+
+## Active 0.23.0 candidate
+
+Pointer-out clean scene and preserved UI state; optional Moon respected in all styles; offline 4K Milky Way Space Studio with visible ESO/S. Brunier credit; chosen-file PNG postcards at native viewport size. Source state/native pixel/layout/export checks precede a full Windows build, actual OS cursor test, installed application and seven framebuffer checks, ten-minute saver lifecycle, independent public delivery, signed feed promotion and production updater roundtrip. Production stays on 0.22.0 until these gates pass.

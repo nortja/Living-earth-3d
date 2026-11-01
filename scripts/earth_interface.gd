@@ -169,7 +169,7 @@ func setup(owner_app: Node3D) -> void:
     var page_stack := VBoxContainer.new()
     page_stack.size_flags_horizontal = Control.SIZE_EXPAND_FILL
     scroll.add_child(page_stack)
-    for title in NAV + ["Settings", "Destination", "Display report", "Weather globe", "Satellite view", "Sunlight explorer", "Journey studio", "Satellite weather"]:
+    for title in NAV + ["Settings", "Destination", "Display report", "Weather globe", "Satellite view", "Sunlight explorer", "Journey studio", "Satellite weather", "Space studio"]:
         var page := VBoxContainer.new()
         page.size_flags_horizontal = Control.SIZE_EXPAND_FILL
         page_stack.add_child(page)
@@ -324,7 +324,7 @@ func relayout() -> void:
         panel.size = Vector2(width, maxf(250, size.y - 88 - dock.size.y - 44))
     else:
         var search_open:bool=active_page=="Explore" and exploration_panel!=null and (exploration_panel.sections.Search.visible or exploration_panel.sections.Saved.visible)
-        var sheet_height := minf(360,size.y-190) if search_open or (active_page == "Destination" and arrival_has_photo) or active_page in ["Live Earth", "Weather globe", "Satellite view", "Display report", "Sunlight explorer", "Journey studio", "Screensavers", "Satellite weather"] else 190.0
+        var sheet_height := minf(360,size.y-190) if search_open or (active_page == "Destination" and arrival_has_photo) or active_page in ["Live Earth", "Weather globe", "Satellite view", "Display report", "Sunlight explorer", "Journey studio", "Screensavers", "Satellite weather", "Space studio"] else 190.0
         panel.position = Vector2(24, size.y - sheet_height - 92)
         panel.size = Vector2(size.x - 48, sheet_height)
     command_card.position = Vector2(24, 104)

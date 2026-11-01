@@ -25,6 +25,7 @@ try {
  $text=Get-Content $log -Raw
  if($text -match '(?m)^(SCRIPT ERROR|ERROR):' -or $text -notmatch 'Packaged Windows desktop: 0 failures'){throw 'Packaged desktop output did not pass'}
  Write-Output 'PASS: installed photographs, model layer, preview isolation and five-minute local performance recording'
+ & "$PSScriptRoot/windows_clean_view_test.ps1" -Application (Join-Path $root 'LivingEarth3D.exe') -OutputDirectory (Join-Path $evidence 'clean-view')
  if($FullDisplayMatrix){
   & "$PSScriptRoot/windows_display_test.ps1" -Application (Join-Path $root 'LivingEarth3D.exe') -OutputDirectory (Join-Path $evidence 'native-display') -ResizeAfterStartup
  }

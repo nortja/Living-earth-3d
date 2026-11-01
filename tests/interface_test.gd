@@ -67,7 +67,11 @@ func run() -> void:
     verify(app.discovery_enabled and app.external_focus and app.exploration.catalog.places.any(func(place): return place.name == app.exploration.location.name), "Discovery screensaver visits the expanded wonder catalog")
     app.saver_style = 3
     app.apply_saver_style()
-    verify(not app.discovery_enabled and app.visuals.moon.visible, "Deep space includes Moon and free rotation")
+    verify(not app.discovery_enabled and not app.visuals.moon.visible, "Deep space respects optional Moon preference")
+    app.set_visual_option("moon",true)
+    app.apply_saver_style()
+    verify(app.visuals.moon.visible,"Deep space includes Moon only when chosen")
+    app.set_visual_option("moon",false)
     app.stop_screensaver_preview()
     verify(not app.screensaver_mode and app.interface_layer.visible and not app.visuals.moon_enabled, "Preview restores visual preferences")
     for style in [0, 1, 2, 3]:

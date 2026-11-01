@@ -1,0 +1,35 @@
+{
+  "source": "https://www.eso.org/public/images/eso0932a/",
+  "download": "https://cdn.eso.org/images/original/eso0932a.tif",
+  "source_pixels": [
+    6000,
+    3000
+  ],
+  "source_sha256": "10f209ab83e1fd89e7fa1ed70277ffc6ed19c43549f04ec637c6806d98aff035",
+  "credit": "ESO/S. Brunier",
+  "license": "CC BY 4.0",
+  "license_url": "https://creativecommons.org/licenses/by/4.0/",
+  "terms": "https://www.eso.org/public/copyright/",
+  "processing": "Lanczos downsample from published 6000x3000 optical panorama; RGB JPEG quality 95 without chroma subsampling. No upscaling, generative edits, invented objects or extra sharpening. Brightness and orientation may be adjusted in the app. The unreleased 800-million-pixel original is not used.",
+  "limits": "Photographic multi-month all-sky composite published 2009; not a current local sky, not an external photograph of the Galaxy. Earth/Moon placement, relative sizes and sky orientation are composed.",
+  "files": [
+    {
+      "file": "milkyway_4k.jpg",
+      "pixels": [
+        4096,
+        2048
+      ],
+      "sha256": "e8f98982b7b87e4b96d432b7fd1f172a0b50471ea925fba464acb73df20a0019",
+      "bytes": 4489025
+    },
+    {
+      "file": "milkyway_2k.jpg",
+      "pixels": [
+        2048,
+        1024
+      ],
+      "sha256": "a42f95146e03a81871de4d7c311290e8e415139d416e3406129a4c0f00f7b20a",
+      "bytes": 931237
+    }
+  ]
+}

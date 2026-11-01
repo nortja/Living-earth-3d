@@ -1,3 +1,5 @@
+> 0.23.0 candidate: pointer-out clean view, optional Moon in every style, offline 4K Milky Way Space Studio and native-resolution PNG postcards. Production remains verified 0.22.0 until fresh Windows/public-delivery gates pass. [Validation](docs/VALIDATION-0.23.0.md).
+
 # Living Earth 3D
 
 An offline-first interactive Windows globe and screensaver, built with Godot 4. Released **0.22.0 preview**.

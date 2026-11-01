@@ -4,6 +4,7 @@ signal changed
 var selected: Dictionary = {}
 var image: Texture2D
 var status := "Choose a camera."
+var view_suspended := false
 var active := false
 var automatic := true
 var last_failed := false
@@ -24,7 +25,7 @@ var unchanged_since := 0.0
 const IMAGE_ORIGIN := "https://www.nps.gov/webcams-yell/"
 
 func _process(delta: float) -> void:
-    if not active or not automatic or loading or get_window().mode == Window.MODE_MINIMIZED: return
+    if view_suspended or not active or not automatic or loading or get_window().mode == Window.MODE_MINIMIZED: return
     elapsed += delta
     if elapsed >= refresh_interval: refresh()
 
@@ -56,7 +57,7 @@ func stop() -> void:
     request = null
 
 func refresh() -> void:
-    if not active or loading or Time.get_ticks_msec() - last_attempt < 2000: return
+    if view_suspended or not active or loading or Time.get_ticks_msec() - last_attempt < 2000: return
     var url: String = selected.get("image_url", "")
     if not valid_image_url(url):
         status = "This source opens on its official website."
@@ -203,3 +204,16 @@ func _describe_unavailable() -> void:
     if image != null:
         status += "\nLast successful image retained (retrieved %s UTC)." % retrieved
     changed.emit()
+
+func set_view_suspended(value: bool) -> void:
+    view_suspended = value
+    if not value: return
+    var was_loading := loading
+    generation += 1
+    if is_instance_valid(request): request.cancel_request();request.queue_free()
+    request = null
+    loading = false
+    elapsed = 0.0
+    if was_loading:
+        status = "Request canceled while menus were hidden. Refresh, or wait for automatic refresh."
+        changed.emit()

@@ -16,6 +16,9 @@ var weather_cache_path := "user://weather-v2.json"
 
 const EarthInterface = preload("res://scripts/earth_interface.gd")
 const CameraService = preload("res://scripts/camera_service.gd")
+var clean_view: Node
+var space_studio: Node
+var visual_toggles: Dictionary = {}
 var camera_service: Node
 var performance_report: Node
 var observed_weather: Node
@@ -83,7 +86,7 @@ var update_status: Label
 var update_feed: Dictionary = {}
 var update_request: HTTPRequest
 var preferences := ConfigFile.new()
-const VERSION := "0.22.0"
+const VERSION := "0.23.0"
 const UPDATE_FEED_URL := "https://raw.githubusercontent.com/nortja/Living-earth-3d/main/updates/preview.json"
 const RELEASES_URL := "https://github.com/nortja/Living-earth-3d/releases"
 
@@ -106,7 +109,7 @@ func _ready() -> void:
             return
         if argument.to_lower() == "/s":
             screensaver_mode = true
-    if "--validate-packaged-desktop" in arguments and not screensaver_mode:
+    if ("--validate-packaged-desktop" in arguments or "--validate-clean-view" in arguments) and not screensaver_mode:
         play_intro = false
         preferences_path = "user://packaged-ui-%d.cfg" % Time.get_ticks_usec()
         weather_layer_cache_path = "user://packaged-ui-weather-%d.json" % Time.get_ticks_usec()
@@ -183,7 +186,11 @@ func _ready() -> void:
         if not native_saver_preview:
             Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
         apply_saver_style()
-    if "--validate-packaged-desktop" in arguments and not screensaver_mode:
+    if "--validate-clean-view" in arguments and not screensaver_mode:
+        var validation = load("res://scripts/clean_view_validation.gd").new()
+        add_child(validation)
+        validation.call_deferred("run",self,arguments)
+    elif "--validate-packaged-desktop" in arguments and not screensaver_mode:
         var validation = load("res://scripts/packaged_validation.gd").new()
         add_child(validation)
         validation.call_deferred("run", self, arguments)
@@ -379,6 +386,15 @@ func _build_explorer(layer: CanvasLayer) -> void:
         add_child(observed_weather)
         observed_weather.setup(self)
         interface.build_observed_weather_controls()
+    space_studio = preload("res://scripts/space_studio.gd").new()
+    add_child(space_studio)
+    space_studio.setup(self)
+    if not screensaver_mode:
+        clean_view = preload("res://scripts/clean_view.gd").new()
+        add_child(clean_view)
+        clean_view.setup(self)
+        clean_view.changed.connect(space_studio.sync)
+        space_studio.sync()
     if not screensaver_mode and "--validate-display" not in OS.get_cmdline_user_args() and DisplayServer.get_name() != "headless":
         call_deferred("start_auto_update")
 
@@ -651,6 +667,7 @@ func _build_visual_options(box: VBoxContainer) -> void:
         toggle.tooltip_text = "Offline cloud artwork drifts independently; this is not live weather." if option == "clouds" else "Artistic backdrop, not live astronomical positions."
         toggle.toggled.connect(func(enabled: bool): set_visual_option(option, enabled))
         row.add_child(toggle)
+        visual_toggles[option] = toggle
     var quality := OptionButton.new()
     quality.add_item("Balanced · 2K")
     quality.add_item("Detailed · 4K")
@@ -679,6 +696,9 @@ func set_visual_option(option: String, enabled: bool) -> void:
     visuals.apply_options(preferences.get_value("visuals", "clouds", true), preferences.get_value("visuals", "stars", true), preferences.get_value("visuals", "moon", false))
     earth_material.set_shader_parameter("cloud_strength", 0.12 if visuals.clouds_enabled else 0.0)
     if satellite_snapshot: satellite_snapshot.apply_view()
+    for key in visual_toggles:
+        visual_toggles[key].set_pressed_no_signal(preferences.get_value("visuals",key,key!="moon")==true)
+    if space_studio: space_studio.sync()
     _save_preferences()
 
 func set_quality(quality: String, persist := true) -> void:
@@ -769,7 +789,7 @@ func apply_saver_style() -> void:
         utc_sunlight = true
         update_sunlight()
     if saver_style == 3:
-        visuals.apply_options(visuals.clouds_enabled, true, true)
+        visuals.apply_options(visuals.clouds_enabled, true, preferences.get_value("visuals","moon",false)==true)
 
 func preview_screensaver() -> void:
     if interface.sunlight_explorer.active or interface.journey_studio.active: interface.close_panel()
