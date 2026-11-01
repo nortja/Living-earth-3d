@@ -1,10 +1,10 @@
 # Living Earth 3D
 
-An offline-first interactive Windows globe and screensaver, built with Godot 4. Released **0.23.0 preview**.
+An offline-first interactive Windows globe and screensaver, built with Godot 4. Released **0.24.0 preview**.
 
 ## Windows users
 
-[Download LivingEarth3D-Setup-0.23.0.exe](https://github.com/nortja/Living-earth-3d/raw/refs/heads/downloads/windows-0.23.0/LivingEarth3D-Setup-0.23.0.exe), double-click, install, then open the desktop shortcut. No ZIP extraction, terminal, separate runtime, or Godot setup is needed. This is an unsigned preview. The user confirmed successful download and automatic updating on 2026-11-01, and working Camera Wall/cameras previously. Windows CI verifies installation and rollback; physical GPU/DPI checks remain outstanding.
+[Download LivingEarth3D-Setup-0.24.0.exe](https://github.com/nortja/Living-earth-3d/raw/refs/heads/downloads/windows-0.24.0/LivingEarth3D-Setup-0.24.0.exe), double-click, install, then open the desktop shortcut. No ZIP extraction, terminal, separate runtime, or Godot setup is needed. This is an unsigned preview. The user confirmed successful download and automatic updating on 2026-11-01, and working Camera Wall/cameras previously. Windows CI verifies installation and rollback; physical GPU/DPI checks remain outstanding.
 
 The real globe emerges from darkness with illuminated Earth branding. Drag to spin with gentle inertia, scroll or double-click to zoom, and use **Full Earth** or Home to reset. F11 toggles fullscreen. Earth stays centered and proportional at native viewport resolution, including ultrawide and 4K/5K sizes. Compact controls scale automatically with window resolution. Panels adapt to smaller windows; an optional wide Command Center overview uses spare space.
 
@@ -19,6 +19,14 @@ Six offline screensaver styles offer Ambient Earth, Discovery journeys, Night li
 **Install once, then update from the app.** Version 0.5.3 includes automatic updates enabled by default. It checks at startup and every 30 minutes while open, downloads authenticated releases, and installs silently when you close the app. **Settings → Update and restart now** applies a ready release with a graceful restart; the Automatic updates toggle pauses/resumes updates. Both minor and major releases use the same process. Favorites, interface size, sound and other preferences remain local.
 
 Releases require a valid signature from the public key pinned in the installed updater, plus matching installer and installed-file hashes. Windows publisher signing is separate: this bootstrap installer remains an unsigned preview. Versions 0.5.2 and older need this installer once to obtain the new updater. A Windows CI run verified silent installation, preservation of user data, running-app protection and restoration of previous files after a deliberately failed verification. Physical GPU/DPI and visible-app restart field tests remain separate. See [docs/AUTO_UPDATE.md](docs/AUTO_UPDATE.md).
+
+## New in 0.24.0
+
+**The Moon now zooms with Earth.** Its apparent size and relative spacing follow the globe throughout wheel/double-click zoom, camera transitions, resizing and restored scenes. The normal composition stays familiar; optional Moon-off remains respected. Close framing can crop either body. This is cinematic composition, not physical orbital distance.
+
+**Live Earth → Scene library** saves up to eight personal offline Earth/Moon/galaxy compositions with clean thumbnails, names, Use view, Remove and Undo. Play cycles through them at 15/30/60/120 seconds with fades; Pause/Next give immediate control. Closing the panel or moving the pointer out lets the sequence continue. Drag/zoom, other pages, minimization, file dialogs and in-app screensaver preview stop playback. Play temporarily suspends the older discovery timer and restores its choice on pause. Saved views remain on this PC; no provider requests or uploads. [Feature details](docs/SCENE_LIBRARY.md).
+
+All 1,885 source checks across 26 suites, seventeen native rendering suites, packed resources and fresh Windows gates passed. The installed EXE saves two real scenes, restores Moon/galaxy/camera choices, plays a transition and measures synchronized Moon zoom. Seven exact framebuffers, upgrades from 0.5.2/0.23.0, rollback, timer/settings and the ten-minute saver lifecycle also passed. Independent public delivery and pinned-key signature checks passed before atomic source/discovery promotion. The separate production updater roundtrip is the final rollout gate. [Validation](docs/VALIDATION-0.24.0.md).
 
 ## New in 0.23.0
 

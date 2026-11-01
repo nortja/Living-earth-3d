@@ -1,0 +1,230 @@
+{
+  "source": "df4f928edbcee2e488ef48926a7830afdc3d0858",
+  "tree": "6fb1bc707d00c715fd4bf4aa31dc1070751e950b",
+  "source_total": 1885,
+  "source_suites": [
+    {
+      "suite": "explorer_test",
+      "checks": 56
+    },
+    {
+      "suite": "interface_test",
+      "checks": 48
+    },
+    {
+      "suite": "ambient_test",
+      "checks": 6
+    },
+    {
+      "suite": "ui_scale_test",
+      "checks": 187
+    },
+    {
+      "suite": "automatic_updates_test",
+      "checks": 6
+    },
+    {
+      "suite": "camera_test",
+      "checks": 41
+    },
+    {
+      "suite": "camera_wall_test",
+      "checks": 59
+    },
+    {
+      "suite": "solar_test",
+      "checks": 20
+    },
+    {
+      "suite": "exploration_test",
+      "checks": 61
+    },
+    {
+      "suite": "arrival_test",
+      "checks": 26
+    },
+    {
+      "suite": "performance_test",
+      "checks": 52
+    },
+    {
+      "suite": "camera_expansion_test",
+      "checks": 26
+    },
+    {
+      "suite": "discovery_photos_test",
+      "checks": 126
+    },
+    {
+      "suite": "weather_layer_test",
+      "checks": 84
+    },
+    {
+      "suite": "satellite_snapshot_test",
+      "checks": 38
+    },
+    {
+      "suite": "camera_revalidation_test",
+      "checks": 225
+    },
+    {
+      "suite": "offline_atlas_test",
+      "checks": 22
+    },
+    {
+      "suite": "saved_places_backup_test",
+      "checks": 36
+    },
+    {
+      "suite": "sunlight_explorer_test",
+      "checks": 50
+    },
+    {
+      "suite": "journey_studio_test",
+      "checks": 56
+    },
+    {
+      "suite": "lunar_observatory_test",
+      "checks": 447
+    },
+    {
+      "suite": "screensaver_setup_test",
+      "checks": 18
+    },
+    {
+      "suite": "observed_weather_test",
+      "checks": 46
+    },
+    {
+      "suite": "space_studio_test",
+      "checks": 37
+    },
+    {
+      "suite": "moon_zoom_test",
+      "checks": 75
+    },
+    {
+      "suite": "scene_library_test",
+      "checks": 37
+    }
+  ],
+  "native_suites": [
+    {
+      "suite": "scene_library_render_test",
+      "passed": true
+    },
+    {
+      "suite": "space_studio_render_test",
+      "passed": true
+    },
+    {
+      "suite": "observed_weather_render_test",
+      "passed": true
+    },
+    {
+      "suite": "lunar_observatory_render_test",
+      "passed": true
+    },
+    {
+      "suite": "journey_studio_render_test",
+      "passed": true
+    },
+    {
+      "suite": "sunlight_explorer_render_test",
+      "passed": true
+    },
+    {
+      "suite": "saved_places_backup_render_test",
+      "passed": true
+    },
+    {
+      "suite": "offline_atlas_render_test",
+      "passed": true
+    },
+    {
+      "suite": "satellite_snapshot_render_test",
+      "passed": true
+    },
+    {
+      "suite": "weather_layer_render_test",
+      "passed": true
+    },
+    {
+      "suite": "discovery_photos_render_test",
+      "passed": true
+    },
+    {
+      "suite": "performance_render_test",
+      "passed": true
+    },
+    {
+      "suite": "arrival_render_test",
+      "passed": true
+    },
+    {
+      "suite": "exploration_render_test",
+      "passed": true
+    },
+    {
+      "suite": "wall_render_test",
+      "passed": true
+    },
+    {
+      "suite": "render_test",
+      "passed": true
+    },
+    {
+      "suite": "intro_render_test",
+      "passed": true
+    }
+  ],
+  "packed_resource_smoke": true,
+  "new_scene_layouts": [
+    [
+      800,
+      600
+    ],
+    [
+      870,
+      612
+    ],
+    [
+      1920,
+      1080
+    ],
+    [
+      2496,
+      1664
+    ],
+    [
+      3440,
+      1440
+    ],
+    [
+      3840,
+      1080
+    ],
+    [
+      3840,
+      2160
+    ],
+    [
+      5120,
+      1440
+    ],
+    [
+      5120,
+      2880
+    ]
+  ],
+  "scope": "Local headless behavior/geometry and native software-rendered framebuffers; no physical monitor or Windows installation claim.",
+  "native_moon_galaxy_isolation_checks": 16,
+  "larger_font_regression": {
+    "viewport": [
+      870,
+      612
+    ],
+    "theme_font_pixels": 16,
+    "all_six_primary_actions_visible": true
+  }
+}

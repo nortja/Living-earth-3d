@@ -1,0 +1,46 @@
+{
+  "schema": 1,
+  "source": "df4f928edbcee2e488ef48926a7830afdc3d0858",
+  "run_id": 41356762602,
+  "job_id": 125001158028,
+  "input": "Actual Windows SetCursorPos inside over header control, outside native window, and back; no synthetic Window signal",
+  "stages": {
+    "ready": {
+      "failures": [],
+      "validation_pin": false,
+      "version": "0.24.0"
+    },
+    "inside": {
+      "failures": [],
+      "menus_visible": true
+    },
+    "outside": {
+      "failures": [],
+      "galaxy": true,
+      "menus_visible": false,
+      "moon": true
+    },
+    "returned": {
+      "failures": [],
+      "menus_visible": true
+    },
+    "done": {
+      "cinematic_transition": true,
+      "failures": [],
+      "moon_zoom_radii": [
+        53.8099517822266,
+        25.0358276367188
+      ],
+      "passed": true,
+      "postcard_pixels": [
+        870,
+        612
+      ],
+      "saved_scenes": 2,
+      "scope": "Real Windows cursor movements and installed scene capture/playback on isolated virtual desktop; no physical monitor/DPI claim",
+      "version": "0.24.0"
+    }
+  },
+  "human_review": "Actual Windows clean/returned/gallery images and all-six-action navigation capture reviewed. Chosen Moon and photographic sky retain credit; pointer exit hides menus and return restores the page. Scene thumbnails are real captures.",
+  "limits": "Isolated Windows virtual desktop; no physical GPU/multi-monitor/DPI claim."
+}

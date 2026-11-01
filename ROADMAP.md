@@ -1,6 +1,6 @@
 # Living Earth 3D — current roadmap
 
-Updated 2026-11-01. Latest released baseline: 0.23.0 (pointer-out clean view, optional Moon in all styles, offline 4K Milky Way Space Studio and native PNG postcards, including the lunar calendar, tours, regional infrared and explicit Windows idle setup). One Windows installer, then authenticated automatic updates; the base Earth remains useful offline.
+Updated 2026-11-01. Latest released baseline: 0.24.0 (synchronized Moon zoom and personal cinematic Scene Library, with pointer-out clean view, optional Moon, offline 4K Milky Way, lunar calendar, tours, regional infrared and explicit Windows idle setup). One Windows installer, then authenticated automatic updates; the base Earth remains useful offline.
 
 ## Completed
 
@@ -231,3 +231,11 @@ Global/Asia clouds, continuous video, Authenticode publisher signing and physica
 - [x] Separate production Windows updater roundtrip 41349982349 passed on its first attempt: signed staging, cancellation without replacement, normal-exit install, four file hashes and no unwanted restart.
 
 Physical Dell/DPI/mixed-monitor/sleep tests, continuous video, global/Asia cloud coverage and Authenticode publisher signing remain separate work. [Validation](docs/VALIDATION-0.23.0.md).
+
+## This release — 0.24.0
+
+- [x] Moon apparent size and relative spacing follow Earth's actual camera zoom, including the final tween frame; optional visibility and default composition retained.
+- [x] Eight persisted offline compositions, bounded clean thumbnails, Use/Remove/Undo and timed fading playback. Temporary visual defaults and competing-discovery ownership are tested; desktop only, no new native saver style or provider service.
+- [x] All 1,885 source checks, seventeen native suites, actual installed Windows scene capture/transition/Moon zoom, seven exact framebuffers, upgrades/rollback/settings and ten-minute saver lifecycle passed in 41356762602.
+- [x] Independent public provenance/download check 41358905420, separate local verifier and pinned-key signature verification passed before atomic source/feed promotion.
+- [ ] Final production Windows staging/cancellation/normal-exit updater roundtrip. See [validation](docs/VALIDATION-0.24.0.md).

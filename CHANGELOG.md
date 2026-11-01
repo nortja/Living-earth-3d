@@ -1,9 +1,9 @@
-## 0.24.0 candidate — 2026-11-01
+## 0.24.0 preview — 2026-11-01
 
 - Scale Moon size and relative spacing together with Earth throughout zoom and camera transitions; preserve optional visibility and the normal composition.
 - Save eight personal offline Earth/Moon/galaxy views with bounded clean thumbnails and restart persistence, restore with Use, and remove with one-step Undo.
 - Play a 15/30/60/120-second cinematic sequence with fades, Pause/Next and manual/navigation/minimize/saver interruption. Playback keeps visual choices temporary; no provider requests or native-saver library.
-- Source, actual rendered-thumbnail/pixel and installed Windows checks must pass before publication; production remains 0.23.0 during validation.
+- All 1,885 source checks, seventeen native suites and fresh Windows upgrade/rollback/settings, installed scene capture/transition/zoom, seven framebuffer and ten-minute saver gates passed in 41356762602. Independent public verification 41358905420 and pinned-key signature checks passed before atomic source/discovery promotion. Final production updater roundtrip follows.
 
 ## 0.23.0 preview — 2026-11-01
 

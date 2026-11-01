@@ -1,0 +1,181 @@
+{
+  "schema": 1,
+  "source": "df4f928edbcee2e488ef48926a7830afdc3d0858",
+  "run_id": 41356762602,
+  "job_id": 125001158028,
+  "matrix_context": {
+    "desktop_pixels": [
+      1024,
+      768
+    ],
+    "resize_after_startup": true,
+    "limits": "Explicit post-start native client resize may extend outside the virtual desktop. Actual framebuffer dimensions still must match. This is not a physical monitor/DPI test."
+  },
+  "framebuffers": [
+    {
+      "display": "Windows",
+      "failures": [],
+      "gpu": "llvmpipe (LLVM 23.1.2, 256 bits)",
+      "passed": true,
+      "platform": "Windows",
+      "quality": "detailed",
+      "ui_scale": 1.0,
+      "version": "0.24.0",
+      "viewport": [
+        1920,
+        1080
+      ]
+    },
+    {
+      "display": "Windows",
+      "failures": [],
+      "gpu": "llvmpipe (LLVM 23.1.2, 256 bits)",
+      "passed": true,
+      "platform": "Windows",
+      "quality": "detailed",
+      "ui_scale": 1.54074074074074,
+      "version": "0.24.0",
+      "viewport": [
+        2496,
+        1664
+      ]
+    },
+    {
+      "display": "Windows",
+      "failures": [],
+      "gpu": "llvmpipe (LLVM 23.1.2, 256 bits)",
+      "passed": true,
+      "platform": "Windows",
+      "quality": "detailed",
+      "ui_scale": 1.33333333333333,
+      "version": "0.24.0",
+      "viewport": [
+        3440,
+        1440
+      ]
+    },
+    {
+      "display": "Windows",
+      "failures": [],
+      "gpu": "llvmpipe (LLVM 23.1.2, 256 bits)",
+      "passed": true,
+      "platform": "Windows",
+      "quality": "detailed",
+      "ui_scale": 1.0,
+      "version": "0.24.0",
+      "viewport": [
+        3840,
+        1080
+      ]
+    },
+    {
+      "display": "Windows",
+      "failures": [],
+      "gpu": "llvmpipe (LLVM 23.1.2, 256 bits)",
+      "passed": true,
+      "platform": "Windows",
+      "quality": "detailed",
+      "ui_scale": 1.75,
+      "version": "0.24.0",
+      "viewport": [
+        3840,
+        2160
+      ]
+    },
+    {
+      "display": "Windows",
+      "failures": [],
+      "gpu": "llvmpipe (LLVM 23.1.2, 256 bits)",
+      "passed": true,
+      "platform": "Windows",
+      "quality": "detailed",
+      "ui_scale": 1.33333333333333,
+      "version": "0.24.0",
+      "viewport": [
+        5120,
+        1440
+      ]
+    },
+    {
+      "display": "Windows",
+      "failures": [],
+      "gpu": "llvmpipe (LLVM 23.1.2, 256 bits)",
+      "passed": true,
+      "platform": "Windows",
+      "quality": "detailed",
+      "ui_scale": 1.75,
+      "version": "0.24.0",
+      "viewport": [
+        5120,
+        2880
+      ]
+    }
+  ],
+  "recording": {
+    "active": false,
+    "active_seconds": 300.019629878793,
+    "context_limit_reached": false,
+    "contexts": [
+      {
+        "active_seconds": 300.019629878793,
+        "context": {
+          "active_screen": 0,
+          "frame_cap": 60,
+          "quality": "balanced",
+          "ui_scale": 1.0,
+          "viewport_pixels": [
+            870,
+            612
+          ],
+          "window_mode": 0
+        },
+        "frames": 13037,
+        "frames_over_50ms": 1,
+        "max_ms": 114.663333333334,
+        "mean_ms": 23.0129347149495,
+        "start_active_seconds": 0.0
+      }
+    ],
+    "end_engine_memory_bytes": null,
+    "frames": 13037,
+    "frames_over_50ms": 1,
+    "max_ms": 114.663333333334,
+    "mean_ms": 23.0129347149495,
+    "peak_engine_memory_bytes": null,
+    "screen_index_poll_seconds": 1.0,
+    "start_engine_memory_bytes": null
+  },
+  "display": {
+    "active_screen": 0,
+    "available": true,
+    "dpi": 96,
+    "gpu": "llvmpipe (LLVM 23.1.2, 256 bits)",
+    "monitor_pixels": [
+      1024,
+      768
+    ],
+    "monitors": [
+      {
+        "dpi": 96,
+        "index": 0,
+        "pixels": [
+          1024,
+          768
+        ],
+        "position_pixels": [
+          0,
+          0
+        ],
+        "refresh_hz": 64.0,
+        "scale": 1.0
+      }
+    ],
+    "refresh_hz": 64.0,
+    "renderer": "gl_compatibility",
+    "viewport_pixels": [
+      870,
+      612
+    ],
+    "window_mode": 0
+  }
+}

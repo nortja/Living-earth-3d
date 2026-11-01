@@ -1,0 +1,37 @@
+{
+  "version": "0.24.0",
+  "source_sha": "df4f928edbcee2e488ef48926a7830afdc3d0858",
+  "run_url": "https://github.com/nortja/Living-earth-3d/actions/runs/41356762602",
+  "size": 73319078,
+  "sha256": "168ccdd250666fca00e653b33d6012ad72df2d1f99c62bc4ae76e61a6afec4ce",
+  "independent_public_run": 41358905420,
+  "independent_source": "2e9f49bd0156c929339f3feaae6adab3e3f5fb49",
+  "release_jobs": [
+    {
+      "name": "build",
+      "id": 124998373890,
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "windows",
+      "id": 125001158020,
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "desktop",
+      "id": 125001158028,
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "publish",
+      "id": 125004511076,
+      "status": "completed",
+      "conclusion": "success"
+    }
+  ],
+  "installer_url": "https://github.com/nortja/Living-earth-3d/raw/refs/heads/downloads/windows-0.24.0/LivingEarth3D-Setup-0.24.0.exe",
+  "separate_local_exact_url_verifier_passed": true
+}
