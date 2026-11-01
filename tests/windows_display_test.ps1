@@ -1,7 +1,7 @@
 param(
     [Parameter(Mandatory=$true)][string]$Application,
     [string]$OutputDirectory = "$PSScriptRoot/../build/windows-display-results",
-    [string[]]$Resolutions = @('1920x1080', '3440x1440', '3840x2160', '5120x1440', '5120x2880'),
+    [string[]]$Resolutions = @('1920x1080', '2496x1664', '3440x1440', '3840x1080', '3840x2160', '5120x1440', '5120x2880'),
     [switch]$ResizeAfterStartup
 )
 # Run on Windows with an interactive desktop. Tests the actual packaged EXE,
