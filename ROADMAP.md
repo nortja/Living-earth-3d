@@ -228,6 +228,6 @@ Global/Asia clouds, continuous video, Authenticode publisher signing and physica
 - [x] Native-resolution chosen-file PNG postcards with clean controls and state restoration.
 - [x] Source/native/packed-resource checks and full Windows pipeline 41347708600 passed: current 0.22.0 and legacy 0.5.2 upgrades, rollback, timer/settings, actual OS pointer exit/return, PNG, seven exact framebuffers and 605-second saver soak.
 - [x] Independent public verifier 41349696038 and separate local exact-URL/source/helper/hash verification passed; pinned-key detached signature verified before atomic source/discovery promotion.
-- [ ] Separate production Windows updater roundtrip after promotion.
+- [x] Separate production Windows updater roundtrip 41349982349 passed on its first attempt: signed staging, cancellation without replacement, normal-exit install, four file hashes and no unwanted restart.
 
 Physical Dell/DPI/mixed-monitor/sleep tests, continuous video, global/Asia cloud coverage and Authenticode publisher signing remain separate work. [Validation](docs/VALIDATION-0.23.0.md).

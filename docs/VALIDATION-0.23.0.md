@@ -1,8 +1,8 @@
 # 0.23.0 validation — clean view and Space Studio
 
-Published 0.23.0 after all new build, Windows and independent-delivery gates passed. User authorized continued public builds and authenticated updates. Separate production updater roundtrip is pending. [Feature scope and image rights](SPACE_STUDIO.md).
+Published 0.23.0 after all new build, Windows and independent-delivery gates passed. User authorized continued public builds and authenticated updates. Separate production updater roundtrip 41349982349 passed. [Feature scope and image rights](SPACE_STUDIO.md).
 
-Local source/native pixel/layout/PNG and exported-resource checks passed. Fresh Windows gates passed upgrades from 0.5.2 and 0.22.0 with pinned hashes, rollback, signatures, timer/settings, ten-minute native saver lifecycle, installed desktop, seven exact framebuffers and real native cursor exit/return plus PNG export. Independent public delivery and pinned-key signature verification passed before atomic source/discovery promotion. The final production updater roundtrip follows.
+Local source/native pixel/layout/PNG and exported-resource checks passed. Fresh Windows gates passed upgrades from 0.5.2 and 0.22.0 with pinned hashes, rollback, signatures, timer/settings, ten-minute native saver lifecycle, installed desktop, seven exact framebuffers and real native cursor exit/return plus PNG export. Independent public delivery and pinned-key signature verification passed before atomic source/discovery promotion. The final production updater roundtrip 41349982349 also passed.
 
 The Milky Way is an offline historical photographic composite with visible ESO/S. Brunier credit, not a current local sky or an exterior photo. Native framebuffer and virtual OS-cursor tests do not establish physical Dell GPU/DPI, mixed-monitor, lock/sleep or overnight behavior.
 
@@ -24,4 +24,4 @@ All four release jobs completed successfully on the first attempt. Installer and
 - Independent public workflow https://github.com/nortja/Living-earth-3d/actions/runs/41349696038 passed. A separate local verifier downloaded the exact public installer URL and checked full source/workflow/job provenance, BUILD source, helper hashes, payload schema, size and SHA-256.
 - Installer `LivingEarth3D-Setup-0.23.0.exe`: 73,303,552 bytes; SHA-256 `131d248c48440c5e9a4ba0a9b1c4f0ceeb2b028e3c9813c29653a09fcdf03217`.
 - Exact UTF-8 manifest signature independently verified with the updater's pinned public key before atomic source/all-three-discovery promotion. Authenticode publisher signing remains separate/unavailable.
-- Production Windows authenticated staging/cancellation/normal-exit installation: pending after promotion.
+- Production Windows authenticated staging/cancellation/normal-exit installation: [41349982349](https://github.com/nortja/Living-earth-3d/actions/runs/41349982349) passed on its first attempt, from source `9919757c95a209f436bbcee6748e1a519312cbd5`. The live pinned signature/download was verified, cancellation left installed bytes unchanged, installation waited for normal exit, all four installed-file hashes matched, and the intentionally closed app was not reopened. The exact public manifest/signature/legacy discovery bytes also matched the signed local bytes after promotion.

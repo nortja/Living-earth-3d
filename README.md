@@ -28,7 +28,7 @@ Releases require a valid signature from the public key pinned in the installed u
 
 **Save picture** exports a chosen-file PNG of the clean scene at the actual viewport resolution. Menus/dialogs are excluded; any galaxy credit remains. No upscaling, startup image downloads, location tracking or automatic wallpaper change.
 
-All 1,773 source checks, sixteen native rendering suites, packed resources and fresh Windows release gates passed. Actual OS cursor exit/return, preserved page/typed values, optional Moon and clean PNG export passed in the installed EXE; seven exact framebuffers, upgrades from 0.5.2/0.22.0, rollback, timer/settings and the 605-second native saver soak also passed. Independent public delivery/signature checks passed before promotion. Separate production updater roundtrip is pending. [Validation](docs/VALIDATION-0.23.0.md).
+All 1,773 source checks, sixteen native rendering suites, packed resources and fresh Windows release gates passed. Actual OS cursor exit/return, preserved page/typed values, optional Moon and clean PNG export passed in the installed EXE; seven exact framebuffers, upgrades from 0.5.2/0.22.0, rollback, timer/settings and the 605-second native saver soak also passed. Independent public delivery/signature checks passed before promotion. The separate production updater roundtrip also passed ([41349982349](https://github.com/nortja/Living-earth-3d/actions/runs/41349982349)). [Validation](docs/VALIDATION-0.23.0.md).
 
 ## New in 0.22.0
 

@@ -1,0 +1,23 @@
+{
+  "schema": 1,
+  "version": "0.23.0",
+  "run_id": 41349982349,
+  "job_id": 124977866723,
+  "source": "9919757c95a209f436bbcee6748e1a519312cbd5",
+  "result": "success",
+  "first_attempt": true,
+  "public_discovery_sha256": {
+    "application.json": "cfe4b9a0012f9dc27ed3e2602bd14eb7687b14276c9a12b4bcd39361039344a6",
+    "application.sig": "6e5749afe9e69f23e86978b78f2e7a98e894516ea8032f9964c298daf8cc5207",
+    "preview.json": "d92d025deada6ffe3d17e8e6af43119d1a82f75ca29e42ed2b82c859c5d192c3"
+  },
+  "checks": [
+    "Live pinned signature and installer verified",
+    "Staged while old application stayed open",
+    "Cancellation left installed bytes unchanged",
+    "Installed after normal application exit",
+    "All four installed-file hashes verified",
+    "Did not reopen intentionally closed application"
+  ],
+  "limits": "Isolated Windows fixture, not physical Dell/DPI/mixed-monitor/sleep validation."
+}
