@@ -28,7 +28,7 @@ Releases require a valid signature from the public key pinned in the installed u
 
 **Live Earth → Journey studio** builds an eight-stop offline tour with city lookup, editable stops, great-circle paths, approximate distances and Play/Pause/Next. Tours are session-only and stop for manual exploration, backgrounding, navigation or screensaver preview.
 
-All 1,689 source checks, native rendering, actual Windows upgrades/rollback/settings and timer readback, installed desktop resources, exact display sizes through 5K and a ten-minute native preview/lifecycle soak passed. Public delivery/source and the pinned-key signature were independently verified. Production updater roundtrip follows feed promotion; see [validation](docs/VALIDATION-0.21.0.md).
+All 1,689 source checks, native rendering, actual Windows upgrades/rollback/settings and timer readback, installed desktop resources, exact display sizes through 5K and a ten-minute native preview/lifecycle soak passed. Public delivery/source and the pinned-key signature were independently verified. Production Windows updater roundtrip 41336561468 passed authenticated staging, cancellation and normal-exit installation; see [validation](docs/VALIDATION-0.21.0.md).
 
 ## New in 0.19.0
 

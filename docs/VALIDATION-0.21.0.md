@@ -1,6 +1,6 @@
-# 0.21.0 candidate validation
+# 0.21.0 release validation
 
-Not published. User requested continued large builds plus an HD Moon/lunar calendar and working timed Windows screensaving. Includes unreleased 0.20.0's Journey studio and idle-timer repair; supersedes that draft as the intended rollout.
+Released 2026-11-01. User requested continued large builds plus an HD Moon/lunar calendar and working timed Windows screensaving. Includes unreleased 0.20.0's Journey studio and idle-timer repair; supersedes that draft as the intended rollout.
 
 - Journey studio source suite: 55 checks; native primary controls and geometry at seven render sizes through 5K passed.
 - Lunar/calendar suite: 442 checks; native seven-size layouts and five phase/date screenshots passed initially. Screenshot review caught a clipped View date button; explicit width/readability guard added, then the complete native/source suites rerun.
@@ -30,3 +30,7 @@ The Windows settings gate actually read back 600-second timeout, active screensa
 Independent public check https://github.com/nortja/Living-earth-3d/actions/runs/41335986912 passed. A separate local verifier also downloaded the exact updater URL, checked completed gate/source/workflow/BUILD provenance, installed-file schema and unchanged helper hashes. Installer size **59,430,979 bytes**, SHA256 `513630a9c8923cfaa30e5f82320be2324bc93575088e77e9759acf6450f1fc44`. Exact update metadata was signed outside git/CI and independently verified using the unchanged installed public key. The private key never entered the checkout, CI, public artifacts or installer.
 
 All three discovery files and the tested source are being promoted atomically. Production staging/cancellation/normal-exit install is pending and must pass before any next feed promotion.
+
+## Production updater completed
+
+https://github.com/nortja/Living-earth-3d/actions/runs/41336561468 passed on its first attempt: authenticated public staging while the old application remained open, cancellation without replacing it, normal-exit installation, all four installed-file hashes, no unwanted restart and cleanup. All three public discovery files matched the independently signed bytes. The tested runtime source is unchanged.
