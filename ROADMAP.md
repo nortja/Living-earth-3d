@@ -1,6 +1,6 @@
 # Living Earth 3D — current roadmap
 
-Updated 2026-11-01. Latest released baseline: 0.21.0 (NASA 4K lunar observatory and Hebrew/celestial calendar, offline Journey studio and explicit Windows idle timer/secure-resume setup). One Windows installer, then authenticated automatic updates; the base Earth remains useful offline.
+Updated 2026-11-01. Latest released baseline: 0.22.0 (requested regional NOAA infrared weather and easier Live Earth controls, including the 4K lunar calendar, Journey studio and explicit Windows idle setup). One Windows installer, then authenticated automatic updates; the base Earth remains useful offline.
 
 ## Completed
 
@@ -170,13 +170,13 @@ Released 0.19.0 adds **Sunlight explorer**: a temporary offline ±12-hour UTC li
 | --- | --- | --- |
 | Released | Sunlight explorer and clear simulation/return controls | Source/native/Windows/framebuffer/lifecycle gates, public bytes/signature and production updater passed |
 | Next | Authorized continuous in-app video prototype | One documented-permission feed, supported Windows playback, bounded resources, pause/close/saver cleanup and network failure recovery |
-| Candidate 0.22.0 | Requested regional NOAA infrared | Provenance and permitted redistribution, actual observation time/coverage, bounded opt-in retrieval, stale/offline fallback and GPU budget |
+| Released 0.22.0 | Requested regional NOAA infrared | Provenance and permitted redistribution, actual observation time/coverage, bounded opt-in retrieval, stale/offline fallback and GPU budget |
 | Reliability alongside features | Physical Dell and mixed-display field checks; longer screensaver observation | Record actual scaling/monitor-move/sleep evidence without inferring hardware results from VM rendering |
 | Later | Astronomical accuracy, verified higher-detail textures and distribution hardening | Documented accuracy/licenses, ordinary-PC targets, publisher signing and update-key migration plan |
 
 See the bounded [video pilot](docs/VIDEO_PILOT.md) and [cloud imagery pilot](docs/CLOUD_IMAGERY_PILOT.md) for implementation and acceptance gates.
 
-## This release — 0.21.0
+## Previous release — 0.21.0
 
 - [x] Journey studio, Windows idle timer/secure-resume setup and removal of desktop keep-screen-on inhibition, NASA 4K lunar rendering and north-up Moon viewer, dated lunar cycles, traditional Hebrew festivals with sunset-date semantics and Israel/Diaspora schemes, and sourced celestial calendar. [Coverage/limits](docs/LUNAR_OBSERVATORY.md).
 - [x] All 1,689 source checks and fourteen native render suites passed. Fresh Windows source/security/export, upgrades/rollback/settings, ten-minute/secure-resume readback, installed lunar/tour/calendar resources, five-minute recording, exact five-size framebuffer matrix and native preview/lifecycle soak passed in run 41333845054. Physical Dell/DPI/sleep/sign-in behavior remains field work.
@@ -211,6 +211,12 @@ See the bounded [video pilot](docs/VIDEO_PILOT.md) and [cloud imagery pilot](doc
 
 Build/test first, publish installer, verify its download, sign the exact release metadata, then atomically promote discovery feed and signature. Preserve preferences and the pinned trust key. Keep the old failing automatic Windows workflow disabled. Separate source/headless/native renders, Windows installation tests, and real hardware observations; never label periodic imagery as continuous live video or a retrieval timestamp as capture time.
 
-## Next candidate — 0.22.0
+## This release — 0.22.0
 
-Regional GOES-West/GOES-East infrared imagery, exact scan identity and age, source temperature legend, explicit bounded Load/Return, no-data transparency and preview isolation. Main Live Earth actions now appear first. Actual provider retrieval and native/source checks passed; fresh Windows/public-delivery gates remain pending. Global/Asia clouds, continuous video, Authenticode publisher signing and physical Dell/mixed-DPI/sleep tests remain open. See [validation](docs/VALIDATION-0.22.0.md) and [product scope](docs/CLOUD_IMAGERY_PILOT.md).
+- [x] Two explicitly requested NOAA/NASA regional infrared products with exact scan/age/source identity, native-text temperature legend, retained observation on failure, immediate Return and preview isolation.
+- [x] Main Live Earth actions appear first and fit small/laptop windows.
+- [x] Fresh source/native/packed-resource checks and full Windows pipeline 41338329092 passed. Upgrades from 0.5.2 and 0.21.0, rollback, timer/settings, installed controls, seven exact framebuffers and the 605-second lifecycle soak passed.
+- [x] Public delivery verifier 41340562973 and a separate local public download/provenance/helper/hash check passed. Exact signed discovery files verified against the pinned key before atomic source/feed promotion.
+- [ ] Separate production Windows updater roundtrip after promotion.
+
+Global/Asia clouds, continuous video, Authenticode publisher signing and physical Dell/mixed-DPI/sleep tests remain open. [Validation](docs/VALIDATION-0.22.0.md) and [product scope](docs/CLOUD_IMAGERY_PILOT.md).

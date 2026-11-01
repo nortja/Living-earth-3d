@@ -1,10 +1,10 @@
-## 0.22.0 — Regional infrared weather (candidate)
+## 0.22.0 preview — 2026-11-01
 
 - Request recent NOAA GOES-West/GOES-East ABI infrared scenes through NASA GIBS; select recent, one/three/twelve-hour earlier advertised scan choices and focus the supported region.
 - Show exact nominal UTC scan, retrieval, age/old-scene warning, reduced-resolution false-color temperature legend, transparent no-data and provider credit. No global/Philippines coverage, rainfall, forecast or surface-air-temperature claim.
 - Validate every tile before atomic scene replacement, retain the prior image/source/time on failure, cancel hidden work, bound retrieval and provide immediate Return. Separate observed imagery from artistic clouds, simulated sunlight and native screensavers.
 - Put Moon, infrared, Journey studio and Sunlight explorer together at the top of Live Earth; expose all primary actions at small/laptop resolutions.
-- Keep production on 0.21.0 while fresh installer, installed Windows UI/display, upgrade/rollback, timer/settings, lifecycle and independent-delivery gates run.
+- All fresh source/native/Windows gates passed, including exact laptop/Dell framebuffer sizes, current-release upgrade and the 605-second native preview soak. Public bytes/provenance and the pinned-key signature were verified before atomic source/feed promotion. Separate production updater roundtrip follows.
 
 ## 0.21.0 — Lunar observatory, calendar, tours and idle setup (2026-11-01)
 

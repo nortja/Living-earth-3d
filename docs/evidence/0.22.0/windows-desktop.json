@@ -1,0 +1,150 @@
+{
+  "schema": 1,
+  "candidate_source": "ac0d298d070d62f3782340c5c001f0c0ca101b67",
+  "run_id": 41338329092,
+  "job_id": 124945807628,
+  "source": "Actual installed Windows EXE, test-only software OpenGL",
+  "matrix_context": {
+    "desktop_pixels": [
+      1024,
+      768
+    ],
+    "resize_after_startup": true,
+    "limits": "Explicit post-start native client resize may extend outside the virtual desktop. Actual framebuffer dimensions still must match. This is not a physical monitor/DPI test."
+  },
+  "framebuffers": [
+    {
+      "display": "Windows",
+      "failures": [],
+      "gpu": "llvmpipe (LLVM 23.1.2, 256 bits)",
+      "passed": true,
+      "platform": "Windows",
+      "quality": "detailed",
+      "ui_scale": 1.0,
+      "version": "0.22.0",
+      "viewport": [
+        1920,
+        1080
+      ]
+    },
+    {
+      "display": "Windows",
+      "failures": [],
+      "gpu": "llvmpipe (LLVM 23.1.2, 256 bits)",
+      "passed": true,
+      "platform": "Windows",
+      "quality": "detailed",
+      "ui_scale": 1.54074074074074,
+      "version": "0.22.0",
+      "viewport": [
+        2496,
+        1664
+      ]
+    },
+    {
+      "display": "Windows",
+      "failures": [],
+      "gpu": "llvmpipe (LLVM 23.1.2, 256 bits)",
+      "passed": true,
+      "platform": "Windows",
+      "quality": "detailed",
+      "ui_scale": 1.33333333333333,
+      "version": "0.22.0",
+      "viewport": [
+        3440,
+        1440
+      ]
+    },
+    {
+      "display": "Windows",
+      "failures": [],
+      "gpu": "llvmpipe (LLVM 23.1.2, 256 bits)",
+      "passed": true,
+      "platform": "Windows",
+      "quality": "detailed",
+      "ui_scale": 1.0,
+      "version": "0.22.0",
+      "viewport": [
+        3840,
+        1080
+      ]
+    },
+    {
+      "display": "Windows",
+      "failures": [],
+      "gpu": "llvmpipe (LLVM 23.1.2, 256 bits)",
+      "passed": true,
+      "platform": "Windows",
+      "quality": "detailed",
+      "ui_scale": 1.75,
+      "version": "0.22.0",
+      "viewport": [
+        3840,
+        2160
+      ]
+    },
+    {
+      "display": "Windows",
+      "failures": [],
+      "gpu": "llvmpipe (LLVM 23.1.2, 256 bits)",
+      "passed": true,
+      "platform": "Windows",
+      "quality": "detailed",
+      "ui_scale": 1.33333333333333,
+      "version": "0.22.0",
+      "viewport": [
+        5120,
+        1440
+      ]
+    },
+    {
+      "display": "Windows",
+      "failures": [],
+      "gpu": "llvmpipe (LLVM 23.1.2, 256 bits)",
+      "passed": true,
+      "platform": "Windows",
+      "quality": "detailed",
+      "ui_scale": 1.75,
+      "version": "0.22.0",
+      "viewport": [
+        5120,
+        2880
+      ]
+    }
+  ],
+  "five_active_minute_recording": {
+    "active": false,
+    "active_seconds": 300.005245158265,
+    "context_limit_reached": false,
+    "contexts": [
+      {
+        "active_seconds": 300.005245158265,
+        "context": {
+          "active_screen": 0,
+          "frame_cap": 60,
+          "quality": "balanced",
+          "ui_scale": 1.0,
+          "viewport_pixels": [
+            870,
+            612
+          ],
+          "window_mode": 0
+        },
+        "frames": 12963,
+        "frames_over_50ms": 1,
+        "max_ms": 109.059037037037,
+        "mean_ms": 23.1431956459325,
+        "start_active_seconds": 0.0
+      }
+    ],
+    "end_engine_memory_bytes": null,
+    "frames": 12963,
+    "frames_over_50ms": 1,
+    "max_ms": 109.059037037037,
+    "mean_ms": 23.1431956459325,
+    "peak_engine_memory_bytes": null,
+    "screen_index_poll_seconds": 1.0,
+    "start_engine_memory_bytes": null
+  },
+  "review": "Actual Moon, infrared fixture, ten-minute secure-resume setup, and Dell Live Earth captures visually reviewed. Infrared fixture is synthetic and explicitly labelled; actual provider retrieval evidence is recorded separately. Software rendering and a resized virtual desktop do not validate physical Dell GPU/DPI or mixed-monitor sleep."
+}

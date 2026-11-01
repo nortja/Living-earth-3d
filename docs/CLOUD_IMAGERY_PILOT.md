@@ -1,6 +1,6 @@
-# Regional infrared pilot — 0.22.0 candidate
+# Regional infrared pilot — 0.22.0 preview
 
-Implemented 2026-11-01; Windows release gates pending. Default drifting clouds remain offline artwork. The previous-day VIIRS mosaic is separate. This pilot adds explicitly requested NOAA GOES-West/GOES-East ABI Clean Infrared (10.3 µm, Band 13, ten-minute) visualization via NASA GIBS. It shows cloud tops and land/ocean brightness temperatures in false color, with a readable retained NASA color scale. It does not cover the Philippines or all Earth.
+Released 2026-11-01 after the fresh source/native/Windows and independent public-delivery gates passed. Default drifting clouds remain offline artwork. The previous-day VIIRS mosaic is separate. This pilot adds explicitly requested NOAA GOES-West/GOES-East ABI Clean Infrared (10.3 µm, Band 13, ten-minute) visualization via NASA GIBS. It shows cloud tops and land/ocean brightness temperatures in false color, with a readable retained NASA color scale. It does not cover the Philippines or all Earth.
 
 ## Identity and permission
 
@@ -16,4 +16,4 @@ Exact products: `GOES-West_ABI_Band13_Clean_Infrared` and `GOES-East_ABI_Band13_
 
 ## Evidence and remaining scope
 
-Actual in-app HTTP retrieval of both regions passed on 2026-11-01; metadata records exact scan/retrieval times and maximum two requests. Source state/geometry/failure tests and native layouts include 800×600, laptop 2496×1664, Dell 3840×1080 and 5K. Installed Windows controls, upgrade/rollback, settings, lifecycle and display matrix remain required before feed promotion. Continuous playback, animation, Asia/global cloud coverage and physical hardware validation remain future work.
+Actual in-app HTTP retrieval of both regions passed on 2026-11-01; metadata records exact scan/retrieval times and maximum two requests. Source state/geometry/failure tests and native layouts include 800×600, laptop 2496×1664, Dell 3840×1080 and 5K. Installed Windows controls, upgrade/rollback, settings, 605-second native preview lifecycle and seven-size framebuffer matrix passed before feed promotion; see [validation](VALIDATION-0.22.0.md). Continuous playback, animation, Asia/global cloud coverage and physical hardware validation remain future work.

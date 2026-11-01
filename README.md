@@ -1,12 +1,10 @@
-> 0.22.0 candidate: requested regional infrared weather and easier Live Earth navigation. Production remains verified 0.21.0 until the new Windows release gates pass. [Candidate evidence](docs/VALIDATION-0.22.0.md).
-
 # Living Earth 3D
 
-An offline-first interactive Windows globe and screensaver, built with Godot 4. Released **0.21.0 preview**.
+An offline-first interactive Windows globe and screensaver, built with Godot 4. Released **0.22.0 preview**.
 
 ## Windows users
 
-[Download LivingEarth3D-Setup-0.21.0.exe](https://github.com/nortja/Living-earth-3d/raw/refs/heads/downloads/windows-0.21.0/LivingEarth3D-Setup-0.21.0.exe), double-click, install, then open the desktop shortcut. No ZIP extraction, terminal, separate runtime, or Godot setup is needed. This is an unsigned preview. The user confirmed successful download and automatic updating on 2026-11-01, and working Camera Wall/cameras previously. Windows CI verifies installation and rollback; physical GPU/DPI checks remain outstanding.
+[Download LivingEarth3D-Setup-0.22.0.exe](https://github.com/nortja/Living-earth-3d/raw/refs/heads/downloads/windows-0.22.0/LivingEarth3D-Setup-0.22.0.exe), double-click, install, then open the desktop shortcut. No ZIP extraction, terminal, separate runtime, or Godot setup is needed. This is an unsigned preview. The user confirmed successful download and automatic updating on 2026-11-01, and working Camera Wall/cameras previously. Windows CI verifies installation and rollback; physical GPU/DPI checks remain outstanding.
 
 The real globe emerges from darkness with illuminated Earth branding. Drag to spin with gentle inertia, scroll or double-click to zoom, and use **Full Earth** or Home to reset. F11 toggles fullscreen. Earth stays centered and proportional at native viewport resolution, including ultrawide and 4K/5K sizes. Compact controls scale automatically with window resolution. Panels adapt to smaller windows; an optional wide Command Center overview uses spare space.
 
@@ -21,6 +19,16 @@ Six offline screensaver styles offer Ambient Earth, Discovery journeys, Night li
 **Install once, then update from the app.** Version 0.5.3 includes automatic updates enabled by default. It checks at startup and every 30 minutes while open, downloads authenticated releases, and installs silently when you close the app. **Settings → Update and restart now** applies a ready release with a graceful restart; the Automatic updates toggle pauses/resumes updates. Both minor and major releases use the same process. Favorites, interface size, sound and other preferences remain local.
 
 Releases require a valid signature from the public key pinned in the installed updater, plus matching installer and installed-file hashes. Windows publisher signing is separate: this bootstrap installer remains an unsigned preview. Versions 0.5.2 and older need this installer once to obtain the new updater. A Windows CI run verified silent installation, preservation of user data, running-app protection and restoration of previous files after a deliberately failed verification. Physical GPU/DPI and visible-app restart field tests remain separate. See [docs/AUTO_UPDATE.md](docs/AUTO_UPDATE.md).
+
+## New in 0.22.0
+
+**Live Earth → Satellite weather · regional infrared → Load** requests a supported NOAA GOES-West or GOES-East scene through NASA GIBS. **Region** centers the selected/retained coverage; **Return** restores your previous offline Earth or dated NASA mosaic. Recent and one/three/twelve-hour earlier choices use actual advertised scans, with an explicit thirty-minute arrival buffer for the recent choice.
+
+The view shows the nominal scan UTC date/time, retrieval time, age/old-scene warning and NASA false-color brightness-temperature legend. It shows cloud tops and land/ocean temperature patterns, not natural-color clouds, rainfall, forecasts or surface air temperature. Coverage is regional: Pacific/Americas/western Atlantic, not the Philippines or all Earth. Transparent areas remain outside-coverage/unavailable. Failed or cancelled loads retain the old image with its original identity. No automatic imagery downloads or location tracking.
+
+Moon, infrared, Journey studio and Sunlight explorer now appear together at the top of Live Earth and stay visible in small/laptop windows. The 4K Moon/calendar and direct ten-minute/optional-sign-in screensaver setup from 0.21.0 remain included.
+
+All 1,735 source checks, fifteen native rendering suites, packed resources, fresh Windows upgrades from 0.5.2/0.21.0, rollback, timer/settings, installed controls, seven exact framebuffer sizes and the 605-second native preview soak passed. Independent public delivery and release-signature verification passed before promotion. The separate production updater roundtrip is pending. [Validation and limits](docs/VALIDATION-0.22.0.md).
 
 ## New in 0.21.0
 

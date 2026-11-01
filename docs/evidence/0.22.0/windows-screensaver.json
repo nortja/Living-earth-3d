@@ -1,0 +1,38 @@
+{
+  "schema": 1,
+  "candidate_source": "ac0d298d070d62f3782340c5c001f0c0ca101b67",
+  "run_id": 41338329092,
+  "job_id": 124945807574,
+  "native_ready": {
+    "display_server": "Windows",
+    "frame_rendered": true,
+    "kind": "LivingEarth3D-native-frame",
+    "platform": "Windows",
+    "uptime_ms": 3139,
+    "version": "0.22.0",
+    "viewport_pixels": [
+      320,
+      200
+    ]
+  },
+  "soak": {
+    "samples": 20,
+    "first_sample_seconds": 30.0,
+    "last_sample_seconds": 605.2,
+    "minimum_private_bytes": 243666944.0,
+    "maximum_private_bytes": 249962496.0,
+    "first_private_bytes": 249962496.0,
+    "last_private_bytes": 249593856.0,
+    "viewports": [
+      [
+        320,
+        200
+      ],
+      [
+        580,
+        330
+      ]
+    ]
+  },
+  "limits": "Isolated Windows CI software OpenGL, one attached virtual monitor. The preview process, parent, resizing, input isolation and memory bounds passed. Fullscreen input plus simulated display-change, suspend, and lock cleanup passed. This is not a physical Dell/mixed-DPI/sleep or universal leak-free guarantee."
+}
