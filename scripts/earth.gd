@@ -4,6 +4,8 @@ const SolarPosition = preload("res://scripts/solar_position.gd")
 var utc_sunlight := false
 var solar_sample: Dictionary = {}
 var solar_sample_ticks := -60000
+var sunlight_preview_active := false
+var sunlight_preview_time := 0.0
 
 const ExplorationData = preload("res://scripts/exploration_data.gd")
 const WeatherService = preload("res://scripts/weather_service.gd")
@@ -80,7 +82,7 @@ var update_status: Label
 var update_feed: Dictionary = {}
 var update_request: HTTPRequest
 var preferences := ConfigFile.new()
-const VERSION := "0.18.2"
+const VERSION := "0.19.0"
 const UPDATE_FEED_URL := "https://raw.githubusercontent.com/nortja/Living-earth-3d/main/updates/preview.json"
 const RELEASES_URL := "https://github.com/nortja/Living-earth-3d/releases"
 
@@ -239,7 +241,7 @@ func _process(delta: float) -> void:
         _update_camera()
     if selected < 0 and not external_focus:
         earth.rotate_y(delta * (0.025 if screensaver_mode else 0.08))
-    if utc_sunlight and not (screensaver_mode and saver_style == 2):
+    if (utc_sunlight or sunlight_preview_active) and not (screensaver_mode and saver_style == 2):
         update_sunlight()
     if screensaver_mode and saver_style == 2:
         sun.look_at(camera.position.normalized(), camera.global_basis.y)
@@ -762,6 +764,7 @@ func apply_saver_style() -> void:
         visuals.apply_options(visuals.clouds_enabled, true, true)
 
 func preview_screensaver() -> void:
+    if interface.sunlight_explorer.active: interface.close_panel()
     interface.exploration_panel.close_backup_dialog()
     interface.photo_viewer.close()
     finish_intro()
@@ -814,13 +817,15 @@ func set_utc_sunlight(enabled: bool) -> void:
     update_sunlight()
 
 func update_sunlight() -> void:
-    if utc_sunlight:
+    if utc_sunlight or (sunlight_preview_active and not screensaver_mode):
         var ticks := Time.get_ticks_msec()
         if solar_sample.is_empty() or ticks - solar_sample_ticks >= 30000:
-            solar_sample = SolarPosition.at_unix(Time.get_unix_time_from_system())
+            var stamp := sunlight_preview_time if sunlight_preview_active and not screensaver_mode else Time.get_unix_time_from_system()
+            solar_sample = SolarPosition.at_unix(stamp)
             solar_sample_ticks = ticks
             if interface and interface.solar_status:
                 interface.solar_status.text = "Calculated for %s UTC\nSubsolar point: %.1f°, %.1f°\nApproximate sunlight from your device clock; not a live observation." % [solar_sample.utc, solar_sample.latitude, solar_sample.longitude]
+                if sunlight_preview_active: interface.solar_status.text = "SIMULATION · " + interface.solar_status.text
         # Earth's cinematic spin must not move the terminator across geographic locations.
         var direction: Vector3 = earth.global_basis * solar_sample.direction
         sun.look_at(-direction, Vector3.UP)

@@ -59,6 +59,19 @@ func run(app: Node3D, arguments: PackedStringArray) -> void:
     backup_panel.close_backup_dialog()
     DirAccess.remove_absolute(backup_path)
     progress("Installed chosen-file backup export and non-replacing merge passed")
+    var original_sunlight: bool = app.utc_sunlight
+    ui.open_page("Sunlight explorer")
+    ui.sunlight_explorer.slider.value = 6.0
+    for frame in range(16): await get_tree().process_frame
+    await RenderingServer.frame_post_draw
+    verify(app.sunlight_preview_active and ui.sunlight_explorer.clock.text.contains("SIMULATION"),"Installed sunlight simulation is explicitly dated")
+    verify(ui.page_scroll.get_global_rect().encloses(ui.sunlight_explorer.finish_button.get_global_rect()),"Installed sunlight return control is visible")
+    root.get_texture().get_image().save_png(directory.path_join("windows-packaged-sunlight.png"))
+    app.preview_screensaver()
+    verify(not app.sunlight_preview_active and not ui.sunlight_explorer.active,"Installed screensaver excludes simulated time")
+    app.stop_screensaver_preview()
+    verify(app.utc_sunlight==original_sunlight,"Installed preview leaves saved sunlight unchanged")
+    progress("Installed sunlight explorer, visible return and screensaver isolation passed")
     var satellite=app.satellite_snapshot
     var synthetic:=Image.create(2048,1024,false,Image.FORMAT_RGBA8)
     synthetic.fill(Color("35788e"))
