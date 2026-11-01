@@ -17,7 +17,7 @@ func run() -> void:
         await RenderingServer.frame_post_draw
         for control in [ui.sunlight_explorer.slider,ui.sunlight_explorer.finish_button,ui.sunlight_explorer.clock]:
             if not ui.page_scroll.get_global_rect().encloses(control.get_global_rect()):
-                failures += 1; push_error("Sunlight primary control clipped at %s" % pixels)
+                failures += 1; push_error("Sunlight primary control %s (%s) clipped in %s at %s" % [control.get_class(),control.get_global_rect(),ui.page_scroll.get_global_rect(),pixels])
         if not Rect2(Vector2.ZERO,ui.size).encloses(ui.panel.get_rect()) or ui.page_scroll.get_child(0).size.x>ui.page_scroll.size.x:
             failures += 1; push_error("Sunlight panel does not fit viewport")
         root.get_texture().get_image().save_png("res://dist/sunlight-%dx%d.png" % [pixels.x,pixels.y])

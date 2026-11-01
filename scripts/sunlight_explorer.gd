@@ -16,6 +16,10 @@ var finish_button: Button
 func setup(interface: Control, box: VBoxContainer) -> void:
     ui = interface
     app = ui.app
+    # Keep the timestamp within the scroll clip after native pixel snapping.
+    var inset := Control.new()
+    inset.custom_minimum_size.y = 2
+    box.add_child(inset)
     clock = ui.label(box,"",14)
     slider = HSlider.new()
     slider.min_value = -12.0

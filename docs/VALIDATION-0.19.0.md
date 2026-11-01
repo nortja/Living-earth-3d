@@ -18,3 +18,9 @@ Calculation source: [NOAA General Solar Position Calculations](https://gml.noaa.
 - Public installer provenance/checksum, pinned-key signature, atomic source/feed promotion and production Windows updater roundtrip.
 
 Pending results are not passes. Physical Dell DPI/mixed-monitor, audible playback and sleep/overnight observations remain field checks.
+
+## Candidate history
+
+Initial source caf3c9cebd31f8581eb72dba937d2e34c04ea7e3 / run 41326150602 passed all source/security/export checks but failed the native timestamp clip assertion at all seven sizes. Its first Label extended one logical pixel above the scroll clip after native snapping. This candidate was not published or signed. The repaired panel adds a small top inset; strict bounds assertions remain unchanged. The native failure was also reproduced locally.
+
+The initial 19 local source suites passed 1168 checks, including 50 new sunlight cases. Ten Python release-verifier tests and workflow YAML parsing passed. These are source checks, not Windows or release passes.

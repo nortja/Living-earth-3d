@@ -1,6 +1,6 @@
 # Living Earth 3D — current roadmap
 
-Updated 2026-10-31. Latest released baseline: 0.18.2 (fully visible compact weather controls, search repair, bounded report polling, saved-place backups and expanded exploration). One Windows installer, then authenticated automatic updates; the base Earth remains useful offline.
+Updated 2026-11-01. Latest released baseline: 0.18.2 (fully visible compact weather controls, search repair, bounded report polling, saved-place backups and expanded exploration). One Windows installer, then authenticated automatic updates; the base Earth remains useful offline.
 
 ## Completed
 
@@ -151,6 +151,20 @@ Updated 2026-10-31. Latest released baseline: 0.18.2 (fully visible compact weat
 - [x] Maintainer release-provenance/download verification with ten failure-path tests; no private key or installer execution in the verifier.
 - [x] Local sixteen-suite coverage: 807 behavior/layout cases plus 200 malformed-image inputs. Actual eight-camera retrieval, conditional provider 304 and NOAA-20 retrieval/rendering passed.
 - [x] Final complete Windows/native pipeline 41224574684 passed, public installer provenance/bytes verified and authenticated metadata promoted. Production Windows updater roundtrip passed; see release validation.
+
+## Current continuation — 2026-11-01
+
+User confirmed the download and automatic update worked and authorized further roadmap work and surprise additions. This is installed-delivery feedback; it does not establish mixed-DPI, sleep/resume or overnight behavior.
+
+The 0.19.0 candidate adds **Sunlight explorer**: a temporary offline ±12-hour UTC lighting slider, geometric Sun height and selected-place daylight/twilight context. It restores the saved lighting choice and loaded satellite identity on close/navigation and excludes simulated time from screensaver preview. It is awaiting full release gates; 0.18.2 remains the authenticated feed until independent verification and signing.
+
+| Stage | Deliverable | Completion condition |
+| --- | --- | --- |
+| Now | Sunlight explorer and clear simulation/return controls | Source/native/Windows/framebuffer/lifecycle gates, verified public bytes, signed feed and production updater |
+| Next | Authorized continuous in-app video prototype | One documented-permission feed, supported Windows playback, bounded resources, pause/close/saver cleanup and network failure recovery |
+| Then | Licensed current cloud imagery | Provenance and permitted redistribution, actual observation time/coverage, bounded opt-in retrieval, stale/offline fallback and GPU budget |
+| Reliability alongside features | Physical Dell and mixed-display field checks; longer screensaver observation | Record actual scaling/monitor-move/sleep evidence without inferring hardware results from VM rendering |
+| Later | Astronomical accuracy, verified higher-detail textures and distribution hardening | Documented accuracy/licenses, ordinary-PC targets, publisher signing and update-key migration plan |
 
 ## Next priorities
 
