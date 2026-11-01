@@ -217,6 +217,6 @@ Build/test first, publish installer, verify its download, sign the exact release
 - [x] Main Live Earth actions appear first and fit small/laptop windows.
 - [x] Fresh source/native/packed-resource checks and full Windows pipeline 41338329092 passed. Upgrades from 0.5.2 and 0.21.0, rollback, timer/settings, installed controls, seven exact framebuffers and the 605-second lifecycle soak passed.
 - [x] Public delivery verifier 41340562973 and a separate local public download/provenance/helper/hash check passed. Exact signed discovery files verified against the pinned key before atomic source/feed promotion.
-- [ ] Separate production Windows updater roundtrip after promotion.
+- [x] Separate production Windows updater roundtrip 41340742001 passed: authenticated staging, cancellation without replacement, normal-exit install and four installed-file hashes; no unwanted restart.
 
 Global/Asia clouds, continuous video, Authenticode publisher signing and physical Dell/mixed-DPI/sleep tests remain open. [Validation](docs/VALIDATION-0.22.0.md) and [product scope](docs/CLOUD_IMAGERY_PILOT.md).

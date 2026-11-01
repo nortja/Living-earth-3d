@@ -1,0 +1,21 @@
+{
+  "schema": 1,
+  "version": "0.22.0",
+  "run_id": 41340742001,
+  "job_id": 124950000835,
+  "source": "705486f7bd24216503eb23bf3e6f5e18dc5ea489",
+  "result": "success",
+  "first_attempt": true,
+  "public_manifest_sha256": "e4e0a416f9372ac42b0d63d1228001ee400585776e93cdd719b041ebe11d9cba",
+  "public_signature_sha256": "40b490aba2d10e4f7d7cfd8774feda98e4e5584691ea0c2994ca92ff036333b2",
+  "public_legacy_discovery_sha256": "c0d03173003b81b0924c27db7ccea37022f593527eea832105a274107031f8ac",
+  "checks": [
+    "Pinned live release signature and exact installer verified",
+    "Release staged while installed old app remained open",
+    "Cancellation left installed bytes unchanged",
+    "Normal exit permitted installation",
+    "All four installed-file hashes verified",
+    "An intentionally closed app was not reopened"
+  ],
+  "limits": "Isolated Windows updater fixture. Physical Dell/mixed-DPI/sleep, Authenticode publisher signing, continuous video and global/Asia cloud coverage remain separate work."
+}

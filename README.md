@@ -28,7 +28,7 @@ The view shows the nominal scan UTC date/time, retrieval time, age/old-scene war
 
 Moon, infrared, Journey studio and Sunlight explorer now appear together at the top of Live Earth and stay visible in small/laptop windows. The 4K Moon/calendar and direct ten-minute/optional-sign-in screensaver setup from 0.21.0 remain included.
 
-All 1,735 source checks, fifteen native rendering suites, packed resources, fresh Windows upgrades from 0.5.2/0.21.0, rollback, timer/settings, installed controls, seven exact framebuffer sizes and the 605-second native preview soak passed. Independent public delivery and release-signature verification passed before promotion. The separate production updater roundtrip is pending. [Validation and limits](docs/VALIDATION-0.22.0.md).
+All 1,735 source checks, fifteen native rendering suites, packed resources, fresh Windows upgrades from 0.5.2/0.21.0, rollback, timer/settings, installed controls, seven exact framebuffer sizes and the 605-second native preview soak passed. Independent public delivery and release-signature verification passed before promotion. The separate production updater roundtrip also passed ([run 41340742001](https://github.com/nortja/Living-earth-3d/actions/runs/41340742001)). [Validation and limits](docs/VALIDATION-0.22.0.md).
 
 ## New in 0.21.0
 
