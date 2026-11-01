@@ -1,3 +1,18 @@
+## 0.21.0 — Lunar observatory, calendar, tours and idle setup (candidate)
+
+- Replace the active low-resolution spinning Moon with a verified NASA 4K map and a north-up current-phase illustration; add a large dated lunar viewer.
+- Use NASA's hourly 2026 phase/libration geometry. Later disks clearly identify interpolation between USNO events; precise event dates and estimated disk appearance remain separate.
+- Add traditional fixed-Hebrew-calendar observances, Torah festival tags, previous-evening sunset dates, Israel/Diaspora choice, and sourced lunar/solar events through 2030.
+- Include Journey studio and explicit Windows idle-timer/sign-in setup from unreleased 0.20.0; allow idle screensaving while Earth is open.
+- Keep the existing update trust, preferences, explicit data requests and offline base Earth. Publication and Windows validation remain pending authorization of the public repository push.
+
+## 0.20.0 — Journey studio and Windows idle setup (candidate)
+
+- Build and play an offline eight-stop tour, reorder/remove cities, see great-circle paths and approximate km/miles, or start with a Pacific/world/saved-place route.
+- Pause/Next/Clear controls, manual-interaction interruption, background pause, preview cleanup and no route/network preference writes.
+- Explicit Windows idle-timer setup, ten-minute default, optional sign-in on resume, native readback and policy-aware failure handling.
+- Allow Windows idle screensaving while the desktop Earth app is open; Settings now links to timer setup.
+
 ## 0.19.0 preview — 2026-11-01
 
 - Add an explicitly dated offline Sunlight explorer with a fifteen-minute ±12-hour slider and Now/Finish controls, available from Live Earth and destination cards.

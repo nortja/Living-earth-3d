@@ -1,0 +1,116 @@
+{
+  "retrieved": "2026-11-01",
+  "hebrew_source_pattern": "https://www.hebcal.com/hebcal?v=1&cfg=json&year=YEAR&maj=on&min=on&nx=on&i=MODE",
+  "hebrew_credit": "Hebcal.com",
+  "hebrew_license": "https://creativecommons.org/licenses/by/4.0/",
+  "phase_source_pattern": "https://aa.usno.navy.mil/api/moon/phases/year?year=YEAR",
+  "solar_2026_2028": "https://aa.usno.navy.mil/api/seasons?year=YEAR",
+  "solar_2029_2030": "USNO table reproduced by NOAA/NWS: https://www.weather.gov/dvn/Climate_Astronomical_Seasons",
+  "files": [
+    {
+      "file": "data/calendar/hebrew-2026-diaspora.json",
+      "sha256": "e646e686ae73da821537f0a22afe59b29e5bf5ebd8a9ae70e4a8aec854a5d73a",
+      "records": 66
+    },
+    {
+      "file": "data/calendar/hebrew-2026-israel.json",
+      "sha256": "c831679e6c2786409f1b84b948c07edd37a30d7a54aacaee30a25dcf87d6fcc9",
+      "records": 63
+    },
+    {
+      "file": "data/calendar/hebrew-2027-diaspora.json",
+      "sha256": "d97a119006638002f1d567059911d94f867d51f200fd7cb62298d5047f365deb",
+      "records": 69
+    },
+    {
+      "file": "data/calendar/hebrew-2027-israel.json",
+      "sha256": "11d411bcfacc566586e87081ed9f6d5f89d7c71936d20799d809510735a18bc4",
+      "records": 66
+    },
+    {
+      "file": "data/calendar/hebrew-2028-diaspora.json",
+      "sha256": "4fe4ce1e167a28675cdc5d273ea17cba4052cb8272477cb87fab4c403bbf8893",
+      "records": 66
+    },
+    {
+      "file": "data/calendar/hebrew-2028-israel.json",
+      "sha256": "b0456258c1dab18f3b57bc3b55e185387ceefe83647576bda9773676e2ddc964",
+      "records": 63
+    },
+    {
+      "file": "data/calendar/hebrew-2029-diaspora.json",
+      "sha256": "b791a00272d5ddfc49de538fbdd284bb741585362c612e5e447b763390a3e51c",
+      "records": 64
+    },
+    {
+      "file": "data/calendar/hebrew-2029-israel.json",
+      "sha256": "0b7808ce840551a2f200572cf1697841fca1bbbc391aed5c6a935bbca9fdc2c4",
+      "records": 61
+    },
+    {
+      "file": "data/calendar/hebrew-2030-diaspora.json",
+      "sha256": "873a63e14e0b1a7e79903287c038148e49440df083e4bc0c7ddeb8646e117233",
+      "records": 70
+    },
+    {
+      "file": "data/calendar/hebrew-2030-israel.json",
+      "sha256": "3d2f1738a1d1756d62ba045a364d01a5f7c76d011fd81e264ffe2fc69494bc09",
+      "records": 67
+    },
+    {
+      "file": "data/calendar/usno-phase-boundary2031.json",
+      "sha256": "a7567983414fac31b276c707ce93c6f460869b737f7b20f3e44cdc9d426cec6a",
+      "records": 1
+    },
+    {
+      "file": "data/calendar/usno-phases2026.json",
+      "sha256": "fdbe4ad19ef260f10d58173f45e4ebf53c98b060d3d3d69b2abde39ef1aa582a",
+      "records": 50
+    },
+    {
+      "file": "data/calendar/usno-phases2027.json",
+      "sha256": "a7709ad5b2f298a96860128caf5f0fe8d66da7ee686845dd38c3acdd04d17777",
+      "records": 49
+    },
+    {
+      "file": "data/calendar/usno-phases2028.json",
+      "sha256": "3e51c32b028d71cb168e78ab7678374134b8d75c4a2f01cf3e9076eaf0d1067e",
+      "records": 50
+    },
+    {
+      "file": "data/calendar/usno-phases2029.json",
+      "sha256": "268bc4841a3c843a7f637e2623dc353949499709572e25cd3db40c78b8daf78a",
+      "records": 49
+    },
+    {
+      "file": "data/calendar/usno-phases2030.json",
+      "sha256": "b648a3ac2e4e9549d6d03a263716744ca972c2b3dcd7392692ffe6a723a24a37",
+      "records": 50
+    },
+    {
+      "file": "data/calendar/usno-seasons2026.json",
+      "sha256": "9454c01371ffa9ac003fbdbc9f5fa52acaa56fe5d0509ab9428e2fc825284538",
+      "records": 6
+    },
+    {
+      "file": "data/calendar/usno-seasons2027.json",
+      "sha256": "dee343d9d897b5ad26bb56a604f6ede37b723dfc222137566b37498c612e1ba6",
+      "records": 6
+    },
+    {
+      "file": "data/calendar/usno-seasons2028.json",
+      "sha256": "9a6b34f2d338eedcda68f191d4716c4dade174a6aa3e56f7ce4f8f0edd954df8",
+      "records": 6
+    },
+    {
+      "file": "data/calendar/usno-seasons2029.json",
+      "sha256": "b97bba7ec07e20309e9c44f36541654f5e529e722bec6d364d28969e79dbe69b",
+      "records": 4
+    },
+    {
+      "file": "data/calendar/usno-seasons2030.json",
+      "sha256": "b31af24874e794bd17f02465ec4036a95c37e50b9dd81944b45f69ff26c98441",
+      "records": 4
+    }
+  ]
+}

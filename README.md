@@ -1,3 +1,5 @@
+> Pending local 0.21.0 candidate: 4K Moon/lunar calendar, Journey studio and explicit Windows idle setup. Production remains verified 0.19.0; public-repository publication is now explicitly authorized, and the complete Windows release gates are pending. See [candidate validation](docs/VALIDATION-0.21.0.md).
+
 # Living Earth 3D
 
 An offline-first interactive Windows globe and screensaver, built with Godot 4. Released **0.19.0 preview**.

@@ -59,6 +59,38 @@ func run(app: Node3D, arguments: PackedStringArray) -> void:
     backup_panel.close_backup_dialog()
     DirAccess.remove_absolute(backup_path)
     progress("Installed chosen-file backup export and non-replacing merge passed")
+    verify(not DisplayServer.screen_is_kept_on(),"Installed Earth does not inhibit Windows idle screensaving")
+    ui.open_page("Screensavers")
+    for frame in range(16):await get_tree().process_frame
+    verify(ui.saver_timer.get_selected_id()==10 and ui.saver_secure.button_pressed,"Installed idle setup defaults to ten minutes and secure resume without applying changes")
+    verify(ui.page_scroll.get_global_rect().encloses(ui.saver_apply.get_global_rect()),"Installed timer Apply action is immediately visible")
+    root.get_texture().get_image().save_png(directory.path_join("windows-packaged-saver-timer.png"))
+    ui.open_page("Journey studio")
+    ui.journey_studio.preset(1)
+    verify(ui.journey_studio.stops.size()==4 and ui.journey_studio.marker_root.visible,"Installed tour resources and Pacific route resolve")
+    ui.journey_studio.play()
+    for frame in range(16):await get_tree().process_frame
+    verify(ui.journey_studio.playing and ui.page_scroll.get_global_rect().encloses(ui.journey_studio.pause_button.get_global_rect()),"Installed journey playback exposes Pause")
+    root.get_texture().get_image().save_png(directory.path_join("windows-packaged-journey.png"))
+    app.preview_screensaver()
+    verify(not ui.journey_studio.playing and not ui.journey_studio.marker_root.visible,"Installed screensaver excludes tour motion and paths")
+    app.stop_screensaver_preview()
+    progress("Installed idle-timer controls, no idle inhibition and journey isolation passed")
+    var lunar=ui.lunar_observatory
+    lunar.open()
+    lunar.select_date("2026-11-01")
+    for frame in range(16):await get_tree().process_frame
+    verify(lunar.disc.visible and lunar.details.text.contains("NASA SVS") and lunar.material_lunar.get_shader_parameter("lunar_map").get_width()==4096,"Installed lunar map and hourly 2026 geometry resolve")
+    verify(lunar.scroll.get_global_rect().encloses(lunar.now_button.get_global_rect()) and lunar.view_button.size.x>=88,"Installed Moon date controls are readable")
+    root.get_texture().get_image().save_png(directory.path_join("windows-packaged-lunar.png"))
+    lunar.select_date("2027-06-11")
+    verify(lunar.details.text.contains("Estimated disk") and lunar.events.filter(func(x):return x.title=="Shavuot II").size()==1,"Installed later geometry is labelled and Diaspora data resolves")
+    lunar.israel_picker.select(1);lunar.refresh_events()
+    verify(lunar.events.filter(func(x):return x.title=="Shavuot II").is_empty(),"Installed Israel calendar switches actual observance days")
+    app.preview_screensaver()
+    verify(not lunar.visible and not lunar.follow_now,"Installed screensaver excludes Moon overlay and date preview")
+    app.stop_screensaver_preview()
+    progress("Installed 4K Moon, NASA/USNO coverage, Hebrew schemes and preview isolation passed")
     var original_sunlight: bool = app.utc_sunlight
     ui.open_page("Sunlight explorer")
     ui.sunlight_explorer.slider.value = 6.0

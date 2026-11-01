@@ -5,13 +5,17 @@ var moon: MeshInstance3D
 var stars: MultiMeshInstance3D
 var cloud_material: ShaderMaterial
 var star_material: StandardMaterial3D
-var moon_material: StandardMaterial3D
+var moon_material: ShaderMaterial
+const Lunar = preload("res://scripts/lunar_data.gd")
+var moon_sample_hour := -1
+var app: Node3D
 var clouds_enabled := true
 var stars_enabled := true
 var moon_enabled := false
 var reveal := 1.0
 
 func setup(planet: MeshInstance3D) -> void:
+    app = get_parent()
     clouds = MeshInstance3D.new()
     var cloud_mesh := SphereMesh.new()
     cloud_mesh.radius = 1.012
@@ -27,17 +31,14 @@ func setup(planet: MeshInstance3D) -> void:
     planet.add_child(clouds)
 
     moon = MeshInstance3D.new()
-    var moon_mesh := SphereMesh.new()
-    moon_mesh.radius = 0.273
-    moon_mesh.height = 0.546
-    moon_mesh.radial_segments = 48
-    moon_mesh.rings = 24
+    var moon_mesh := QuadMesh.new()
+    moon_mesh.size = Vector2(0.82,0.82)
     moon.mesh = moon_mesh
-    moon.position = Vector3(-3.0, 1.3, 3.0)
-    moon_material = StandardMaterial3D.new()
-    moon_material.albedo_texture = load("res://assets/earth/moon.jpg")
-    moon_material.roughness = 1.0
+    moon_material = ShaderMaterial.new()
+    moon_material.shader = load("res://shaders/lunar_backdrop.gdshader")
+    moon_material.set_shader_parameter("lunar_map",load("res://assets/earth/moon_4k.jpg"))
     moon.material_override = moon_material
+    moon.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
     add_child(moon)
     moon.visible = false
     _build_stars()
@@ -77,7 +78,10 @@ func advance(delta: float) -> void:
     if clouds_enabled:
         clouds.rotate_y(delta * 0.012)
     if moon_enabled:
-        moon.rotate_y(delta * 0.01)
+        # A screen-facing, north-up phase illustration; placement/distance are not an orbit.
+        moon.global_transform = Transform3D(app.camera.global_basis,app.camera.global_transform*Vector3(-2.1,1.1,-5.0))
+        var hour := int(Time.get_unix_time_from_system()/3600.0)
+        if hour!=moon_sample_hour: update_moon()
 
 func apply_options(clouds_on: bool, stars_on: bool, moon_on: bool) -> void:
     clouds_enabled = clouds_on
@@ -86,9 +90,18 @@ func apply_options(clouds_on: bool, stars_on: bool, moon_on: bool) -> void:
     clouds.visible = clouds_on
     stars.visible = stars_on
     moon.visible = moon_on
+    if moon_on: update_moon()
 
 func set_reveal(value: float) -> void:
     reveal = value
     cloud_material.set_shader_parameter("visibility", value)
     star_material.albedo_color = Color(value, value, value)
-    moon_material.albedo_color = Color(value, value, value)
+    moon_material.set_shader_parameter("visibility",value)
+
+func update_moon() -> void:
+    moon_sample_hour = int(Time.get_unix_time_from_system()/3600.0)
+    var row := Lunar.sample(Time.get_unix_time_from_system())
+    moon.visible = moon_enabled and row.available
+    if row.available:
+        moon_material.set_shader_parameter("lunar_sun",row.sun)
+        moon_material.set_shader_parameter("subearth_degrees",row.subearth)

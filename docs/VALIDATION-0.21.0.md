@@ -1,0 +1,22 @@
+# 0.21.0 candidate validation
+
+Not published. User requested continued large builds plus an HD Moon/lunar calendar and working timed Windows screensaving. Includes unreleased 0.20.0's Journey studio and idle-timer repair; supersedes that draft as the intended rollout.
+
+- Journey studio source suite: 55 checks; native primary controls and geometry at seven render sizes through 5K passed.
+- Lunar/calendar suite: 442 checks; native seven-size layouts and five phase/date screenshots passed initially. Screenshot review caught a clipped View date button; explicit width/readability guard added, then the complete native/source suites rerun.
+- Native helper argument contract: 39 checks; release-download/provenance negative tests: ten passed.
+- Current full source/native run results will be appended after completion.
+
+Automatic approval review rejected both source pushes to `https://github.com/nortja/Living-earth-3d` as unverified publication, including the retry after connected GitHub confirmed repository identity, push access and the matching prior build/release note. No GitHub write workaround, CI publication or signed-feed promotion was attempted after the second rejection. The user explicitly approved that exact public destination and rollout in the next turn on 2026-11-01; the prior block is resolved. Production remains 0.19.0. Windows release gates have not run on these changes. Never treat Linux source/native results as Windows or physical Dell validation.
+
+## Completed local evidence
+
+- Twenty-two Godot behavior/layout suites: **1,689 checks, zero failures** (includes 56 Journey studio, 447 lunar/calendar and 18 screensaver setup checks). Revised calendar boundary includes the first 2031 phase event solely to bracket the final supported 2030 date. Explicit sub-meter/date-line duplicate rejection prevents empty tour mesh surfaces.
+- All fourteen native render suites passed: lunar/tour/sunlight/backup/atlas/satellite/weather/photo/performance/arrival/exploration/wall/standard Earth/intro. New lunar and tour panels passed seven exact sizes from 800×600 through 5120×2880; date button readabilty is guarded. Five extra waxing/waning/new/full/future-date Moon images reviewed. The timer UI builder separately passed native visibility checks at four sizes without applying any Windows settings.
+- Thirty-nine native launcher argument cases and ten release-provenance tests passed; both candidate workflow YAML files parse and retain all four release jobs.
+- Windows-target Godot resource-pack export succeeded locally. A separate engine invocation loaded the exported PCK and resolved all calendar years/schemes, NASA raw geometry, actual 4K texture/shader, final supported future date and offline tour atlas with zero failures. This proves packaged resource inclusion; it is not a Windows EXE/NSIS, upgrade/rollback, secure-resume or hardware idle test.
+- Actual Windows timer active/timeout/secure readback, installed lunar/tour control assertions and the existing complete Windows release gates are added to the proposed 0.21.0 pipeline. They await the newly authorized fresh CI run. The private update key was not retrieved.
+
+No new installer or authenticated update is published. Current production remains 0.19.0. The saved Moon preview shows the locally rendered candidate, not an installed Windows release.
+
+Astronomical event selection uses its published UTC instant, while a manually chosen civil date uses noon. Two checks distinguish event-time preview and the expected quarter-phase label. Timer UI native layout and preview/full native saver resource isolation both passed locally (four sizes per saver mode).

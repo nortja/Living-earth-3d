@@ -67,14 +67,16 @@ static bool saver_policy() {
         HKEY key=nullptr;
         if (RegOpenKeyExW(root,L"Software\\Policies\\Microsoft\\Windows\\Control Panel\\Desktop",0,KEY_QUERY_VALUE,&key)==ERROR_SUCCESS) {
             DWORD size=0;
-            bool forced=RegQueryValueExW(key,L"SCRNSAVE.EXE",nullptr,nullptr,nullptr,&size)==ERROR_SUCCESS;
+            bool forced=false;
+            for (const auto name : {L"SCRNSAVE.EXE",L"ScreenSaveActive",L"ScreenSaveTimeOut",L"ScreenSaverIsSecure"})
+                if (RegQueryValueExW(key,name,nullptr,nullptr,nullptr,&size)==ERROR_SUCCESS) forced=true;
             RegCloseKey(key);
             if (forced) return true;
         }
     }
     return false;
 }
-static int select_saver() {
+static int select_saver(bool show_settings=true) {
     if (saver_policy()) return 5;
     const std::wstring path=saver_path();
     if (path.empty() || GetFileAttributesW(app_path().c_str())==INVALID_FILE_ATTRIBUTES) return 3;
@@ -84,7 +86,38 @@ static int select_saver() {
     RegCloseKey(key);
     if (result!=ERROR_SUCCESS) return 6;
     if (!SystemParametersInfoW(SPI_SETSCREENSAVEACTIVE,TRUE,nullptr,SPIF_UPDATEINIFILE|SPIF_SENDCHANGE)) return 6;
-    return open_settings();
+    return show_settings ? open_settings() : 0;
+}
+static int configure_timer(unsigned minutes, bool secure) {
+    if (saver_policy()) return 5;
+    BOOL active_before=FALSE,secure_before=FALSE; int timeout_before=0;
+    if (!SystemParametersInfoW(SPI_GETSCREENSAVEACTIVE,0,&active_before,0) ||
+        !SystemParametersInfoW(SPI_GETSCREENSAVESECURE,0,&secure_before,0) ||
+        !SystemParametersInfoW(SPI_GETSCREENSAVETIMEOUT,0,&timeout_before,0)) return 6;
+    HKEY key=nullptr;
+    if (RegOpenKeyExW(HKEY_CURRENT_USER,L"Control Panel\\Desktop",0,KEY_QUERY_VALUE|KEY_SET_VALUE,&key)!=ERROR_SUCCESS) return 6;
+    wchar_t prior[32768]{}; DWORD bytes=sizeof(prior),type=0;
+    LONG query=RegQueryValueExW(key,L"SCRNSAVE.EXE",nullptr,&type,reinterpret_cast<BYTE*>(prior),&bytes);
+    bool absent=query==ERROR_FILE_NOT_FOUND;
+    if (!absent && (query!=ERROR_SUCCESS || type!=REG_SZ || bytes>=sizeof(prior))) {RegCloseKey(key);return 6;}
+    int result=select_saver(false);
+    BOOL actual_secure=FALSE,actual_active=FALSE; int actual_timeout=0;
+    if (result==0 && SystemParametersInfoW(SPI_SETSCREENSAVETIMEOUT,minutes*60,nullptr,3) &&
+        SystemParametersInfoW(SPI_SETSCREENSAVESECURE,secure?TRUE:FALSE,nullptr,3) &&
+        SystemParametersInfoW(SPI_GETSCREENSAVETIMEOUT,0,&actual_timeout,0) &&
+        SystemParametersInfoW(SPI_GETSCREENSAVESECURE,0,&actual_secure,0) &&
+        SystemParametersInfoW(SPI_GETSCREENSAVEACTIVE,0,&actual_active,0) &&
+        actual_timeout==int(minutes*60) && (actual_secure!=FALSE)==secure && actual_active) {
+        RegCloseKey(key);return 0;
+    }
+    // Restore the previous account settings on a handled partial failure.
+    if (absent) RegDeleteValueW(key,L"SCRNSAVE.EXE");
+    else RegSetValueExW(key,L"SCRNSAVE.EXE",0,REG_SZ,reinterpret_cast<const BYTE*>(prior),bytes);
+    RegCloseKey(key);
+    SystemParametersInfoW(SPI_SETSCREENSAVETIMEOUT,UINT(timeout_before),nullptr,3);
+    SystemParametersInfoW(SPI_SETSCREENSAVESECURE,secure_before,nullptr,3);
+    SystemParametersInfoW(SPI_SETSCREENSAVEACTIVE,active_before,nullptr,3);
+    return result ? result : 6;
 }
 static int unregister_saver() {
     HKEY key=nullptr;
@@ -192,6 +225,7 @@ int WINAPI wWinMain(HINSTANCE instance,HINSTANCE,LPWSTR,int) {
     if (options.mode == earth_saver::Mode::Invalid) return 2;
     if (options.mode == earth_saver::Mode::Settings) return open_settings();
     if (options.mode == earth_saver::Mode::Select) return select_saver();
+    if (options.mode == earth_saver::Mode::Timer) return configure_timer(options.minutes,options.secure);
     if (options.mode == earth_saver::Mode::Unregister) return unregister_saver();
     std::wstring app=app_path();
     if (app.empty() || GetFileAttributesW(app.c_str()) == INVALID_FILE_ATTRIBUTES) return 3;

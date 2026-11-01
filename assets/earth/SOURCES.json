@@ -41,6 +41,19 @@
         512
       ],
       "license": "three.js repository MIT; see THREE-LICENSE.txt"
+    },
+    "moon_4k.jpg": {
+      "source": "https://svs.gsfc.nasa.gov/vis/a000000/a004700/a004720/lroc_color_16bit_srgb_4k.tif",
+      "source_sha256": "9731fa8af425b6c2f88f277ecca82bf8c603f3743894f64ed7b25c5bfefa22ff",
+      "sha256": "aa3ff7bb7ca7a83005b64d1754d0c3d53e906a267ed80724f607374021e74954",
+      "pixels": [
+        4096,
+        2048
+      ],
+      "processing": "2025 NASA 16-bit sRGB TIFF converted to 8-bit RGB JPEG quality 96, no chroma subsampling, no resizing or upscaling.",
+      "credit": "NASA Scientific Visualization Studio / LRO (LROC and LOLA); visualization Ernie Wright, science Noah Petro",
+      "source_page": "https://svs.gsfc.nasa.gov/4720/",
+      "usage": "https://www.nasa.gov/nasa-brand-center/images-and-media/"
     }
   },
   "derivatives": {

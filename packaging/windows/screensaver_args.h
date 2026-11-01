@@ -5,8 +5,8 @@
 #include <cstdint>
 #include <limits>
 namespace earth_saver {
-enum class Mode { Configure, Full, Preview, Settings, Select, Unregister, Invalid };
-struct Options { Mode mode = Mode::Invalid; uintptr_t parent = 0; };
+enum class Mode { Configure, Full, Preview, Settings, Select, Timer, Unregister, Invalid };
+struct Options { Mode mode = Mode::Invalid; uintptr_t parent = 0; unsigned minutes = 10; bool secure = true; };
 inline Options parse(const std::vector<std::wstring>& args) {
     if (args.empty()) return {Mode::Configure, 0};
     std::wstring flag = args[0];
@@ -14,6 +14,13 @@ inline Options parse(const std::vector<std::wstring>& args) {
     if (flag == L"/s" && args.size() == 1) return {Mode::Full, 0};
     if (flag == L"/settings" && args.size() == 1) return {Mode::Settings, 0};
     if (flag == L"/select" && args.size() == 1) return {Mode::Select, 0};
+    if (flag == L"/timer" && args.size() == 3) {
+        unsigned minutes=0;
+        for (const auto& item : std::vector<std::pair<std::wstring,unsigned>>{{L"1",1},{L"5",5},{L"10",10},{L"15",15},{L"30",30},{L"60",60}})
+            if (args[1]==item.first) minutes=item.second;
+        if (!minutes || (args[2]!=L"0" && args[2]!=L"1")) return {};
+        return {Mode::Timer,0,minutes,args[2]==L"1"};
+    }
     if (flag == L"/unregister" && args.size() == 1) return {Mode::Unregister, 0};
     if ((flag == L"/c" && args.size() == 1) || (flag.rfind(L"/c:",0) == 0 && args.size() == 1)) return {Mode::Configure, 0};
     std::wstring handle;

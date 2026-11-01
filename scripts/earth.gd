@@ -82,12 +82,13 @@ var update_status: Label
 var update_feed: Dictionary = {}
 var update_request: HTTPRequest
 var preferences := ConfigFile.new()
-const VERSION := "0.19.0"
+const VERSION := "0.21.0"
 const UPDATE_FEED_URL := "https://raw.githubusercontent.com/nortja/Living-earth-3d/main/updates/preview.json"
 const RELEASES_URL := "https://github.com/nortja/Living-earth-3d/releases"
 
 
 func _ready() -> void:
+    if DisplayServer.get_name() != "headless": DisplayServer.screen_set_keep_on(false)
     var arguments := OS.get_cmdline_args() + OS.get_cmdline_user_args()
     native_saver = "--saver-hosted" in arguments
     native_saver_preview = native_saver and "--saver-preview" in arguments
@@ -311,7 +312,9 @@ func _unhandled_input(event: InputEvent) -> void:
         elif event.keycode == KEY_F11:
             toggle_fullscreen()
         elif event.keycode == KEY_ESCAPE:
-            if interface.photo_viewer.visible:
+            if interface.lunar_observatory.visible:
+                interface.lunar_observatory.close()
+            elif interface.photo_viewer.visible:
                 interface.photo_viewer.close()
             elif interface.camera_overlay.visible:
                 interface.close_camera()
@@ -638,7 +641,7 @@ func _build_visual_options(box: VBoxContainer) -> void:
     visuals.apply_options(preferences.get_value("visuals", "clouds", true), preferences.get_value("visuals", "stars", true), preferences.get_value("visuals", "moon", false))
     for option in ["clouds", "stars", "moon"]:
         var toggle := CheckButton.new()
-        toggle.text = {"clouds": "Clouds · offline", "stars": "Stars", "moon": "Moon · artistic"}[option]
+        toggle.text = {"clouds": "Clouds · offline", "stars": "Stars", "moon": "Moon · dated phase illustration"}[option]
         toggle.button_pressed = preferences.get_value("visuals", option, option != "moon")
         toggle.tooltip_text = "Offline cloud artwork drifts independently; this is not live weather." if option == "clouds" else "Artistic backdrop, not live astronomical positions."
         toggle.toggled.connect(func(enabled: bool): set_visual_option(option, enabled))
@@ -764,7 +767,8 @@ func apply_saver_style() -> void:
         visuals.apply_options(visuals.clouds_enabled, true, true)
 
 func preview_screensaver() -> void:
-    if interface.sunlight_explorer.active: interface.close_panel()
+    if interface.sunlight_explorer.active or interface.journey_studio.active: interface.close_panel()
+    interface.lunar_observatory.close()
     interface.exploration_panel.close_backup_dialog()
     interface.photo_viewer.close()
     finish_intro()

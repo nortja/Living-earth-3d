@@ -18,6 +18,10 @@ int main(int argc, char** argv) {
     check(parse({L"/SELECT"}).mode==Mode::Select);
     check(parse({L"/unregister"}).mode==Mode::Unregister);
     check(parse({L"/select",L"extra"}).mode==Mode::Invalid);
+    check(parse({L"/timer",L"10",L"1"}).mode==Mode::Timer);
+    check(parse({L"/timer",L"10",L"1"}).minutes==10);
+    check(parse({L"/timer",L"60",L"0"}).secure==false);
+    for (auto args : std::vector<std::vector<std::wstring>>{{L"/timer"},{L"/timer",L"10"},{L"/timer",L"0",L"1"},{L"/timer",L"999999",L"1"},{L"/timer",L"10",L"true"},{L"/timer",L"10",L"1",L"extra"},{L"/timer",L"-1",L"0"}}) check(parse(args).mode==Mode::Invalid);
     check(parse({L"/p",L"1234"}).mode==Mode::Preview);
     check(parse({L"/P:1234"}).parent==1234);
     check(parse({L"/p",L"00012"}).parent==12);

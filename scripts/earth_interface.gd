@@ -61,7 +61,13 @@ var photo_viewer: ColorRect
 var wall: ColorRect
 var sunlight_toggle: CheckButton
 var solar_status: Label
+var saver_timer: OptionButton
+var saver_secure: CheckButton
+var saver_apply: Button
+var saver_status: Label
 var sunlight_explorer: RefCounted
+var lunar_observatory: ColorRect
+var journey_studio: RefCounted
 var camera_rows: VBoxContainer
 var camera_query: LineEdit
 var camera_images_only := false
@@ -153,7 +159,7 @@ func setup(owner_app: Node3D) -> void:
     var page_stack := VBoxContainer.new()
     page_stack.size_flags_horizontal = Control.SIZE_EXPAND_FILL
     scroll.add_child(page_stack)
-    for title in NAV + ["Settings", "Destination", "Display report", "Weather globe", "Satellite view", "Sunlight explorer"]:
+    for title in NAV + ["Settings", "Destination", "Display report", "Weather globe", "Satellite view", "Sunlight explorer", "Journey studio"]:
         var page := VBoxContainer.new()
         page.size_flags_horizontal = Control.SIZE_EXPAND_FILL
         page_stack.add_child(page)
@@ -167,13 +173,15 @@ func setup(owner_app: Node3D) -> void:
     _settings(pages.Settings)
     sunlight_explorer = preload("res://scripts/sunlight_explorer.gd").new()
     sunlight_explorer.setup(self,pages["Sunlight explorer"])
+    journey_studio = preload("res://scripts/journey_studio.gd").new()
+    journey_studio.setup(self,pages["Journey studio"])
     command_card = PanelContainer.new()
     command_card.add_theme_stylebox_override("panel", surface(Color(0.025, 0.045, 0.075, 0.95), 16, 18))
     add_child(command_card)
     var card_box := VBoxContainer.new()
     command_card.add_child(card_box)
     label(card_box, "MISSION OVERVIEW", 16)
-    label(card_box, "Earth imagery · selected view\nCloud layer · artistic drift\nCamera pages · external providers\nEarthquakes · refresh on request\nMoon & stars · artistic backdrop")
+    label(card_box, "Earth imagery · selected view\nCloud layer · artistic drift\nCamera pages · external providers\nEarthquakes · refresh on request\nMoon · dated phase illustration\nStars · artistic backdrop")
     button(card_box, "Return to full Earth", func(): close_panel(); app.reset_view())
     wall = preload("res://scripts/camera_wall.gd").new()
     add_child(wall)
@@ -182,6 +190,9 @@ func setup(owner_app: Node3D) -> void:
     photo_viewer = preload("res://scripts/photo_viewer.gd").new()
     add_child(photo_viewer)
     photo_viewer.setup(app)
+    lunar_observatory = preload("res://scripts/lunar_observatory.gd").new()
+    add_child(lunar_observatory)
+    lunar_observatory.setup(self)
     panel.hide()
     command_card.hide()
     app.services.earthquakes_changed.connect(_refresh_quake_list)
@@ -190,6 +201,7 @@ func setup(owner_app: Node3D) -> void:
     relayout()
 
 func _process(_delta: float) -> void:
+    if journey_studio: journey_studio.tick(_delta)
     if weather_model_badge:
         weather_model_badge.visible = app.weather_layer != null and app.weather_layer.marker_root.visible and not panel.visible and not wall.visible and not camera_overlay.visible and not photo_viewer.visible
     if is_instance_valid(arrival_status) and arrival_status.text.begins_with("Travelling") and app.journey and not app.journey.is_running():
@@ -241,6 +253,8 @@ func open_page(title: String) -> void:
     if active_page == title and panel.visible:
         close_panel()
         return
+    if journey_studio and title != "Journey studio": journey_studio.end()
+    if title == "Journey studio": journey_studio.begin()
     if sunlight_explorer and title != "Sunlight explorer": sunlight_explorer.end()
     if title == "Sunlight explorer": sunlight_explorer.begin()
     active_page = title
@@ -259,6 +273,7 @@ func open_page(title: String) -> void:
     refresh_layout()
 
 func close_panel() -> void:
+    if journey_studio: journey_studio.end()
     if sunlight_explorer: sunlight_explorer.end()
     active_page = ""
     panel.hide()
@@ -295,7 +310,7 @@ func relayout() -> void:
         panel.size = Vector2(width, maxf(250, size.y - 88 - dock.size.y - 44))
     else:
         var search_open:bool=active_page=="Explore" and exploration_panel!=null and (exploration_panel.sections.Search.visible or exploration_panel.sections.Saved.visible)
-        var sheet_height := minf(360,size.y-190) if search_open or (active_page == "Destination" and arrival_has_photo) or active_page in ["Weather globe", "Satellite view", "Display report", "Sunlight explorer"] else 190.0
+        var sheet_height := minf(360,size.y-190) if search_open or (active_page == "Destination" and arrival_has_photo) or active_page in ["Weather globe", "Satellite view", "Display report", "Sunlight explorer", "Journey studio", "Screensavers"] else 190.0
         panel.position = Vector2(24, size.y - sheet_height - 92)
         panel.size = Vector2(size.x - 48, sheet_height)
     command_card.position = Vector2(24, 104)
@@ -303,6 +318,7 @@ func relayout() -> void:
     if weather_model_badge: weather_model_badge.position = Vector2(24,size.y-136)
     if wall: wall.relayout()
     if photo_viewer: photo_viewer.relayout()
+    if lunar_observatory: lunar_observatory.relayout()
     if camera_overlay:
         camera_overlay.size = size
         camera_viewer.size = Vector2(minf(960, size.x - 48), minf(680, size.y - 100))
@@ -429,13 +445,15 @@ func _worldwide_results() -> void:
 
 func _live(box: VBoxContainer) -> void:
     label(box, "Know what you're seeing", 18)
-    label(box, "The base globe uses offline satellite textures and night-light imagery. An optional dated NASA mosaic can replace its surface. Clouds, Moon and stars are artistic.")
+    label(box, "The base globe uses offline satellite textures and night-light imagery. An optional dated NASA mosaic can replace its surface. Clouds and stars are artistic. Moon placement is illustrative; its phase uses dated geometry.")
     var sunlight := CheckButton.new()
     sunlight_toggle = sunlight
     sunlight.text = "Current UTC sunlight"
     sunlight.button_pressed = app.utc_sunlight
     sunlight.toggled.connect(app.set_utc_sunlight)
     box.add_child(sunlight)
+    button(box,"Moon & Hebrew calendar · lunar observatory",func(): lunar_observatory.open())
+    button(box,"Journey studio · build an Earth tour",func(): open_page("Journey studio"))
     button(box, "Sunlight explorer · offline preview", func(): open_page("Sunlight explorer"))
     solar_status = label(box, "", 12)
     label(box, "Approximate seasonal day/night boundary, calculated offline every 30 seconds. Keep your computer clock correct. Night lights screensaver uses artistic lighting.", 12)
@@ -631,8 +649,11 @@ func _refresh_quake_list() -> void:
         label(quake_results, "No observations loaded. Refresh to request the public USGS feed.", 12)
 
 func _savers(box: VBoxContainer) -> void:
-    label(box, "Your own quiet planet", 18)
-    label(box, "Offline · saved sunlight setting · no network requests", 12)
+    if OS.get_name() == "Windows":
+        _windows_saver_controls(box)
+    else:
+        label(box,"Windows idle timer and sign-in controls appear in the installed Windows app. This preview only demonstrates the animation.",12)
+    label(box,"Screensaver style",16)
     var choices := OptionButton.new()
     for title in ["Ambient Earth", "Discovery journeys", "Night lights", "Deep space", "Daylight Earth", "Orbital drift"]:
         choices.add_item(title)
@@ -645,10 +666,33 @@ func _savers(box: VBoxContainer) -> void:
     button(box, "Preview · move mouse or press key to return", app.preview_screensaver)
     label(box, "Slow rotation, independent clouds and ocean glints. Discovery visits a new destination every two minutes. Night lights uses artistic night-side lighting.", 12)
     label(box, "Windows preview stays inside Screen Saver Settings. Fullscreen saver covers every monitor: up to four animated Earth views, with additional displays kept black. Saver views use 2K textures and up to 30 FPS; the small Windows preview uses 15 FPS. Keyboard, mouse or a display change exits the fullscreen saver.", 12)
-    if OS.get_name() == "Windows":
-        var windows_status := label(box, "Choose Use Living Earth 3D to select it for your Windows account. In Windows settings, choose the wait time and click Apply.", 12)
-        button(box, "Use Living Earth 3D · open Windows settings", func(): _windows_saver_action(true, windows_status))
-        button(box, "Windows screensaver settings", func(): _windows_saver_action(false, windows_status))
+
+func _windows_saver_controls(box: VBoxContainer) -> void:
+    saver_status = label(box,"Choose an idle time and Apply to activate Windows screensaving. Preview alone does not enable a timer.",12)
+    saver_timer = OptionButton.new()
+    for minutes in [1,5,10,15,30,60]: saver_timer.add_item("After %d idle minutes" % minutes,minutes)
+    saver_timer.select(2)
+    box.add_child(saver_timer)
+    saver_secure = CheckButton.new()
+    saver_secure.text = "Require Windows sign-in on resume"
+    saver_secure.button_pressed = true
+    box.add_child(saver_secure)
+    saver_apply = button(box,"Apply timer · enable Living Earth 3D",_apply_saver_timer)
+    button(box,"Open Windows screensaver settings",func(): _windows_saver_action(false,saver_status))
+    label(box,"Windows handles the idle timer and sign-in. Display sleep, organization policy, video playback or other apps can prevent screensaving. Set display sleep later than the saver timer in Windows power settings.",12)
+
+func _apply_saver_timer() -> void:
+    var saver := OS.get_executable_path().get_base_dir().path_join("LivingEarth3D.scr")
+    if not FileAccess.file_exists(saver):
+        saver_status.text = "The Windows screensaver file is missing. Reinstall Living Earth 3D to repair it."
+        return
+    var minutes := saver_timer.get_selected_id()
+    var result := OS.execute(saver,["/timer",str(minutes),"1" if saver_secure.button_pressed else "0"],[],false,false)
+    match result:
+        0: saver_status.text = "Windows confirmed: Living Earth 3D after %d idle minutes. Resume: %s." % [minutes,"Windows sign-in required" if saver_secure.button_pressed else "return directly to desktop"]
+        5: saver_status.text = "Your organization controls screensaver settings; no timer was changed."
+        _: saver_status.text = "Windows could not confirm the timer. Open Windows screensaver settings to check the selection, wait time and sign-in option."
+    refresh_layout()
 
 func _windows_saver_action(select_earth: bool, status: Label) -> void:
     # Let the Windows dialog be visible when Earth was fullscreen.
@@ -672,6 +716,7 @@ func _windows_saver_action(select_earth: bool, status: Label) -> void:
         _: status.text = "Windows settings could not open. Press Win+R and enter: control desk.cpl,screensaver,@screensaver"
 
 func _settings(box: VBoxContainer) -> void:
+    button(box,"Screensaver · idle timer & sign-in",func(): open_page("Screensavers"))
     label(box, "Display & graphics", 18)
     monitor_status = label(box, app.display_summary(), 12)
     button(box, "Performance & support", func(): open_page("Display report"))
@@ -722,7 +767,7 @@ func _settings(box: VBoxContainer) -> void:
     app.update_status = label(box, "Version " + app.VERSION + " · Verified updates install when you close the app.", 12)
     label(box, "Automatic checks run at startup and every 30 minutes while open. Small and large releases use the same verified update process. Turn this off to defer pending updates. Offline exploration always works.", 12)
     button(box, "Version history ↗", func(): OS.shell_open("https://github.com/nortja/Living-earth-3d/blob/main/CHANGELOG.md"))
-    label(box, "Earth maps: Solar System Scope / INOVE · CC BY 4.0. Moon: three.js · MIT. Cloud and space layers are offline artwork.", 12)
+    label(box, "Earth maps: Solar System Scope / INOVE · CC BY 4.0. Moon: NASA SVS / LRO · 4K surface and dated phase illustration. Clouds and stars are offline artwork.", 12)
 
 func build_performance_controls() -> void:
     var box: VBoxContainer = pages["Display report"]

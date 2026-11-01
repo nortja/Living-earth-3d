@@ -18,6 +18,7 @@ public static class EarthSaverSettings {
  [DllImport("user32.dll")] public static extern bool SystemParametersInfo(uint a,uint b,IntPtr c,uint d);
  [DllImport("user32.dll")] public static extern bool GetWindowRect(IntPtr w,out Rect r);
  [StructLayout(LayoutKind.Sequential)] public struct Rect {public int Left,Top,Right,Bottom;}
+ [DllImport("user32.dll",EntryPoint="SystemParametersInfoW")] public static extern bool ReadParameter(uint a,uint b,out int c,uint d);
  public static IntPtr[] Dialogs() {
   var result=new List<IntPtr>(); EnumWindows((w,p)=>{var c=new StringBuilder(256);var t=new StringBuilder(256);GetClassName(w,c,256);GetWindowText(w,t,256);
    if(c.ToString()=="#32770" && t.ToString().Contains("Screen Saver"))result.Add(w);return true;},IntPtr.Zero);return result.ToArray();
@@ -34,7 +35,7 @@ function Read-DesktopValue([string]$Name) {
  try {return $key.GetValue($Name,$null)} finally {$key.Dispose()}
 }
 $snapshot=@{}
-foreach($name in @('SCRNSAVE.EXE','ScreenSaveActive')) {
+foreach($name in @('SCRNSAVE.EXE','ScreenSaveActive','ScreenSaveTimeOut','ScreenSaverIsSecure')) {
  $value=Read-DesktopValue $name
  $snapshot[$name]=$value
 }
@@ -98,6 +99,15 @@ try {
   $image.Save((Join-Path $pwd 'dist/windows-saver-settings.png'))
  } finally {$graphics.Dispose();$image.Dispose()}
  Close-TestDialogs
+ Run-Helper '/timer 10 1'
+ $timeout=0;$secure=0;$active=0
+ if(![EarthSaverSettings]::ReadParameter(0x0E,0,[ref]$timeout,0) -or $timeout -ne 600){throw 'Ten-minute idle timer was not confirmed by Windows'}
+ if(![EarthSaverSettings]::ReadParameter(0x76,0,[ref]$secure,0) -or $secure -ne 1){throw 'Secure resume was not confirmed by Windows'}
+ if(![EarthSaverSettings]::ReadParameter(0x10,0,[ref]$active,0) -or $active -ne 1){throw 'Timer did not activate Windows screensaving'}
+ if((Read-DesktopValue 'SCRNSAVE.EXE') -ine "$root\LivingEarth3D.scr"){throw 'Timer did not select this installation'}
+ Run-Helper '/timer 5 0'
+ if(![EarthSaverSettings]::ReadParameter(0x0E,0,[ref]$timeout,0) -or $timeout -ne 300){throw 'Five-minute timer was not applied'}
+ if(![EarthSaverSettings]::ReadParameter(0x76,0,[ref]$secure,0) -or $secure -ne 0){throw 'Optional direct desktop resume was not applied'}
  # Removing this installation must never clear another chosen screensaver.
  Set-ItemProperty $desktop -Name 'SCRNSAVE.EXE' -Value 'C:\Windows\System32\scrnsave.scr'
  Run-Helper '/unregister'
@@ -115,6 +125,8 @@ try {
   if($null -eq $snapshot[$name]){Remove-ItemProperty $desktop -Name $name -ErrorAction SilentlyContinue}
   else {Set-ItemProperty $desktop -Name $name -Value $snapshot[$name]}
  }
+ if($null -ne $snapshot['ScreenSaveTimeOut']){[EarthSaverSettings]::SystemParametersInfo(0x0F,[uint32]$snapshot['ScreenSaveTimeOut'],[IntPtr]::Zero,3)|Out-Null}
+ if($null -ne $snapshot['ScreenSaverIsSecure']){[EarthSaverSettings]::SystemParametersInfo(0x77,[uint32]($snapshot['ScreenSaverIsSecure'] -eq '1'),[IntPtr]::Zero,3)|Out-Null}
  [EarthSaverSettings]::SystemParametersInfo(0x11,[uint32]($snapshot['ScreenSaveActive'] -eq '1'),[IntPtr]::Zero,3)|Out-Null
  if(Test-Path "$root/Uninstall.exe"){Start-Process "$root/Uninstall.exe" -ArgumentList "/S _?=$root" -Wait|Out-Null}
  Remove-Item -LiteralPath $fixture -Recurse -Force -ErrorAction SilentlyContinue
