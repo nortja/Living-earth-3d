@@ -1,0 +1,21 @@
+name: Independently verify public 0.19.0 installer
+on:
+  push:
+    branches: [validation/public-0.19.0]
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify completed release and exact public updater bytes
+        run: |
+          mkdir -p dist/verified-public
+          python3 packaging/windows/verify_release_download.py --version 0.19.0 --source-sha e4d37dc024c4cb9872b70feba12d8af1f695b8de --run-id 41326613347 --output-directory dist/verified-public > dist/verified-public/verification.json
+          cat dist/verified-public/verification.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: LivingEarth3D-0.19.0-independently-verified-public
+          path: dist/verified-public/*
