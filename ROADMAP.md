@@ -1,6 +1,6 @@
 # Living Earth 3D — current roadmap
 
-Updated 2026-11-01. Latest released baseline: 0.22.0 (requested regional NOAA infrared weather and easier Live Earth controls, including the 4K lunar calendar, Journey studio and explicit Windows idle setup). One Windows installer, then authenticated automatic updates; the base Earth remains useful offline.
+Updated 2026-11-01. Latest released baseline: 0.23.0 (pointer-out clean view, optional Moon in all styles, offline 4K Milky Way Space Studio and native PNG postcards, including the lunar calendar, tours, regional infrared and explicit Windows idle setup). One Windows installer, then authenticated automatic updates; the base Earth remains useful offline.
 
 ## Completed
 
@@ -211,7 +211,7 @@ See the bounded [video pilot](docs/VIDEO_PILOT.md) and [cloud imagery pilot](doc
 
 Build/test first, publish installer, verify its download, sign the exact release metadata, then atomically promote discovery feed and signature. Preserve preferences and the pinned trust key. Keep the old failing automatic Windows workflow disabled. Separate source/headless/native renders, Windows installation tests, and real hardware observations; never label periodic imagery as continuous live video or a retrieval timestamp as capture time.
 
-## This release — 0.22.0
+## Previous release — 0.22.0
 
 - [x] Two explicitly requested NOAA/NASA regional infrared products with exact scan/age/source identity, native-text temperature legend, retained observation on failure, immediate Return and preview isolation.
 - [x] Main Live Earth actions appear first and fit small/laptop windows.
@@ -221,6 +221,13 @@ Build/test first, publish installer, verify its download, sign the exact release
 
 Global/Asia clouds, continuous video, Authenticode publisher signing and physical Dell/mixed-DPI/sleep tests remain open. [Validation](docs/VALIDATION-0.22.0.md) and [product scope](docs/CLOUD_IMAGERY_PILOT.md).
 
-## Active 0.23.0 candidate
+## This release — 0.23.0
 
-Pointer-out clean scene and preserved UI state; optional Moon respected in all styles; offline 4K Milky Way Space Studio with visible ESO/S. Brunier credit; chosen-file PNG postcards at native viewport size. Source state/native pixel/layout/export checks precede a full Windows build, actual OS cursor test, installed application and seven framebuffer checks, ten-minute saver lifecycle, independent public delivery, signed feed promotion and production updater roundtrip. Production stays on 0.22.0 until these gates pass.
+- [x] Pointer-out clean scene, preserved UI values, manual H recovery, saved opt-out, modal handling and paused hidden camera work.
+- [x] Optional Moon respected in all six styles; real licensed 4K/2K Milky Way, brightness/orientation, scene presets and visible credit.
+- [x] Native-resolution chosen-file PNG postcards with clean controls and state restoration.
+- [x] Source/native/packed-resource checks and full Windows pipeline 41347708600 passed: current 0.22.0 and legacy 0.5.2 upgrades, rollback, timer/settings, actual OS pointer exit/return, PNG, seven exact framebuffers and 605-second saver soak.
+- [x] Independent public verifier 41349696038 and separate local exact-URL/source/helper/hash verification passed; pinned-key detached signature verified before atomic source/discovery promotion.
+- [ ] Separate production Windows updater roundtrip after promotion.
+
+Physical Dell/DPI/mixed-monitor/sleep tests, continuous video, global/Asia cloud coverage and Authenticode publisher signing remain separate work. [Validation](docs/VALIDATION-0.23.0.md).

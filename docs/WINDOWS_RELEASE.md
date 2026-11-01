@@ -72,8 +72,12 @@ Public-data requests remain explicit: USGS earthquakes, OpenStreetMap search, Op
 
 ## Current-package framebuffer gate
 
-0.22.0's installed desktop job runs seven exact framebuffer sizes under Windows PowerShell 5.1 with explicit post-start client resizing, including the requested laptop and Dell dimensions. Actual reports retain the 1024×768 virtual-desktop limitation and llvmpipe identity. See [current validation](VALIDATION-0.22.0.md); no physical Dell/5K-monitor or frame-rate claim is inferred.
+0.23.0's installed desktop job runs seven exact framebuffer sizes under Windows PowerShell 5.1 with explicit post-start client resizing, including the requested laptop and Dell dimensions. Actual reports retain the 1024×768 virtual-desktop limitation and llvmpipe identity. See [current validation](VALIDATION-0.23.0.md); no physical Dell/5K-monitor or frame-rate claim is inferred.
 
 ## 0.21.0 idle setup and lunar/tour release
 
 [Validation](VALIDATION-0.21.0.md) records the current Windows gate and independent public verification. In Screensavers, choose the idle time (ten minutes by default), choose whether Windows sign-in is required on resume, and press Apply timer. Windows confirms the values through native readback. Preview alone does not enable the timer. The desktop app permits Windows idle screensaving. Hardware sign-in/idle/sleep and organization-policy effects remain field observations.
+
+## 0.23.0 clean view and Space Studio
+
+Pointer-out menus, optional Moon in every style, offline photographic Milky Way and chosen-file clean PNG export are released. The separate Windows native cursor harness moves the real system cursor over a header control, outside the installed window, and back, then verifies preserved UI state, Moon-off and an actual decoded native-resolution PNG. All tests run on an isolated CI desktop with software OpenGL; physical GPU/DPI/monitor/sleep testing remains separate. [Validation](VALIDATION-0.23.0.md).

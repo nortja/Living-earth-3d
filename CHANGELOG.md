@@ -1,10 +1,10 @@
-## 0.23.0 — Space Studio and clean view (candidate)
+## 0.23.0 preview — 2026-11-01
 
 - Hide menus automatically when the pointer leaves the app, restore the same page/typed values on return, and offer H/manual clean view plus a saved opt-out. Hidden camera requests pause; map/tour/focus markers disappear from the clean scene. Native file dialogs remain usable.
 - Respect the saved optional Moon choice in all six screensaver styles, including Deep Space. Keep the NASA 4K lunar phases and Hebrew/celestial calendar.
 - Add offline photographic Milky Way via ESO/S. Brunier (CC BY 4.0), genuine 4K desktop/2K native-saver derivatives, brightness/orientation controls, three scene presets, and retained visible credit. This is a historical all-sky composite, not a current local sky or exterior galaxy photograph.
 - Add chosen-file native-resolution PNG postcards with clean controls, rendered scene/credit, no upscaling, explicit bounds and state restoration on error. No new network service or startup downloads.
-- Require fresh installed Windows actual cursor exit/return, preserved page, Moon-off and PNG checks in addition to all existing upgrade/rollback, timer/settings, display/lifecycle/security gates before publication.
+- All fresh source/native/Windows release gates passed, including real OS cursor exit/return, preserved page, Moon-off, native PNG export, seven exact framebuffers, current-release upgrade/rollback and the 605-second saver lifecycle. Public bytes/provenance and pinned-key signature verified before atomic source/discovery promotion; separate production updater roundtrip follows.
 
 ## 0.22.0 preview — 2026-11-01
 

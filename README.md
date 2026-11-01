@@ -1,12 +1,10 @@
-> 0.23.0 candidate: pointer-out clean view, optional Moon in every style, offline 4K Milky Way Space Studio and native-resolution PNG postcards. Production remains verified 0.22.0 until fresh Windows/public-delivery gates pass. [Validation](docs/VALIDATION-0.23.0.md).
-
 # Living Earth 3D
 
-An offline-first interactive Windows globe and screensaver, built with Godot 4. Released **0.22.0 preview**.
+An offline-first interactive Windows globe and screensaver, built with Godot 4. Released **0.23.0 preview**.
 
 ## Windows users
 
-[Download LivingEarth3D-Setup-0.22.0.exe](https://github.com/nortja/Living-earth-3d/raw/refs/heads/downloads/windows-0.22.0/LivingEarth3D-Setup-0.22.0.exe), double-click, install, then open the desktop shortcut. No ZIP extraction, terminal, separate runtime, or Godot setup is needed. This is an unsigned preview. The user confirmed successful download and automatic updating on 2026-11-01, and working Camera Wall/cameras previously. Windows CI verifies installation and rollback; physical GPU/DPI checks remain outstanding.
+[Download LivingEarth3D-Setup-0.23.0.exe](https://github.com/nortja/Living-earth-3d/raw/refs/heads/downloads/windows-0.23.0/LivingEarth3D-Setup-0.23.0.exe), double-click, install, then open the desktop shortcut. No ZIP extraction, terminal, separate runtime, or Godot setup is needed. This is an unsigned preview. The user confirmed successful download and automatic updating on 2026-11-01, and working Camera Wall/cameras previously. Windows CI verifies installation and rollback; physical GPU/DPI checks remain outstanding.
 
 The real globe emerges from darkness with illuminated Earth branding. Drag to spin with gentle inertia, scroll or double-click to zoom, and use **Full Earth** or Home to reset. F11 toggles fullscreen. Earth stays centered and proportional at native viewport resolution, including ultrawide and 4K/5K sizes. Compact controls scale automatically with window resolution. Panels adapt to smaller windows; an optional wide Command Center overview uses spare space.
 
@@ -21,6 +19,16 @@ Six offline screensaver styles offer Ambient Earth, Discovery journeys, Night li
 **Install once, then update from the app.** Version 0.5.3 includes automatic updates enabled by default. It checks at startup and every 30 minutes while open, downloads authenticated releases, and installs silently when you close the app. **Settings → Update and restart now** applies a ready release with a graceful restart; the Automatic updates toggle pauses/resumes updates. Both minor and major releases use the same process. Favorites, interface size, sound and other preferences remain local.
 
 Releases require a valid signature from the public key pinned in the installed updater, plus matching installer and installed-file hashes. Windows publisher signing is separate: this bootstrap installer remains an unsigned preview. Versions 0.5.2 and older need this installer once to obtain the new updater. A Windows CI run verified silent installation, preservation of user data, running-app protection and restoration of previous files after a deliberately failed verification. Physical GPU/DPI and visible-app restart field tests remain separate. See [docs/AUTO_UPDATE.md](docs/AUTO_UPDATE.md).
+
+## New in 0.23.0
+
+**Move the pointer outside the app for an unobstructed scene.** Menus and map/tour markers disappear; returning restores the same page and typed values. Automatic hiding is on by default, with an opt-out in Space Studio. H or **Clean view** also hides controls while inside; pointer movement or H/Esc returns. Text entry and native save/backup dialogs remain usable. Hidden camera requests pause.
+
+**Live Earth → Space studio** makes Moon and galaxy independently optional, with scene presets and galaxy brightness/orientation controls. The Moon choice now applies to all six screensaver styles, including Deep Space. The bundled Milky Way uses ESO/S. Brunier's photographic panorama: native 4K on desktop, 2K in native savers, with visible CC BY 4.0 credit. It is a historical all-sky composite, not an exterior photo or a current/local-sky map. [Source/rights and feature details](docs/SPACE_STUDIO.md).
+
+**Save picture** exports a chosen-file PNG of the clean scene at the actual viewport resolution. Menus/dialogs are excluded; any galaxy credit remains. No upscaling, startup image downloads, location tracking or automatic wallpaper change.
+
+All 1,773 source checks, sixteen native rendering suites, packed resources and fresh Windows release gates passed. Actual OS cursor exit/return, preserved page/typed values, optional Moon and clean PNG export passed in the installed EXE; seven exact framebuffers, upgrades from 0.5.2/0.22.0, rollback, timer/settings and the 605-second native saver soak also passed. Independent public delivery/signature checks passed before promotion. Separate production updater roundtrip is pending. [Validation](docs/VALIDATION-0.23.0.md).
 
 ## New in 0.22.0
 

@@ -1,0 +1,40 @@
+{
+  "schema": 1,
+  "source": "dfb5e70bb7deb06e0b3a48fd56bad19badb7f730",
+  "run_id": 41347708600,
+  "job_id": 124973261253,
+  "input": "Actual Windows SetCursorPos inside over header control, outside native window, and back; no synthetic Window signal",
+  "stages": {
+    "ready": {
+      "failures": [],
+      "validation_pin": false,
+      "version": "0.23.0"
+    },
+    "inside": {
+      "failures": [],
+      "menus_visible": true
+    },
+    "outside": {
+      "failures": [],
+      "galaxy": true,
+      "menus_visible": false,
+      "moon": true
+    },
+    "returned": {
+      "failures": [],
+      "menus_visible": true
+    },
+    "done": {
+      "failures": [],
+      "passed": true,
+      "postcard_pixels": [
+        870,
+        612
+      ],
+      "scope": "Real Windows cursor movements on isolated virtual desktop; no physical monitor/DPI claim",
+      "version": "0.23.0"
+    }
+  },
+  "human_review": "Outside and postcard PNGs show Earth, chosen Moon and photographic sky with credit and no menus; returned PNG restores Space Studio. Seven framebuffers passed. PNG decoded at exact 870x612 native test viewport; no upscaling.",
+  "limits": "Isolated Windows virtual desktop; no physical multi-monitor/DPI claim."
+}

@@ -1,0 +1,46 @@
+{
+  "schema": 1,
+  "version": "0.23.0",
+  "source": "dfb5e70bb7deb06e0b3a48fd56bad19badb7f730",
+  "run_id": 41347708600,
+  "job_id": 124973261369,
+  "native_ready": {
+    "display_server": "Windows",
+    "frame_rendered": true,
+    "kind": "LivingEarth3D-native-frame",
+    "platform": "Windows",
+    "uptime_ms": 4401,
+    "version": "0.23.0",
+    "viewport_pixels": [
+      320,
+      200
+    ]
+  },
+  "soak": {
+    "samples": 20,
+    "last_sample_seconds": 605.2,
+    "min_private_bytes": 244846592.0,
+    "max_private_bytes": 250318848.0,
+    "last_private_bytes": 250073088.0,
+    "viewports": [
+      [
+        320,
+        200
+      ],
+      [
+        580,
+        330
+      ]
+    ]
+  },
+  "checks": [
+    "Native preview parenting and resize",
+    "Invalid HWND inputs rejected",
+    "Independent previews and controller-death cleanup",
+    "Fullscreen keyboard exit on one attached virtual monitor",
+    "Simulated display-change, suspend and session-lock cleanup",
+    "Current 0.22.0 and legacy 0.5.2 installer upgrades and failed-hash rollback",
+    "Native Windows idle timer/secure-resume readback"
+  ],
+  "limits": "Isolated Windows software-rendered virtual desktop; no physical Dell/mixed-DPI/sleep or universal memory-leak claim."
+}
