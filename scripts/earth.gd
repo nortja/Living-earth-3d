@@ -18,6 +18,7 @@ const EarthInterface = preload("res://scripts/earth_interface.gd")
 const CameraService = preload("res://scripts/camera_service.gd")
 var camera_service: Node
 var performance_report: Node
+var observed_weather: Node
 var satellite_snapshot: Node
 var weather_layer: Node
 var weather_layer_cache_path := "user://weather-points-v1.json"
@@ -82,7 +83,7 @@ var update_status: Label
 var update_feed: Dictionary = {}
 var update_request: HTTPRequest
 var preferences := ConfigFile.new()
-const VERSION := "0.21.0"
+const VERSION := "0.22.0"
 const UPDATE_FEED_URL := "https://raw.githubusercontent.com/nortja/Living-earth-3d/main/updates/preview.json"
 const RELEASES_URL := "https://github.com/nortja/Living-earth-3d/releases"
 
@@ -374,6 +375,10 @@ func _build_explorer(layer: CanvasLayer) -> void:
         add_child(satellite_snapshot)
         satellite_snapshot.setup(self)
         interface.build_satellite_controls()
+        observed_weather = preload("res://scripts/observed_weather.gd").new()
+        add_child(observed_weather)
+        observed_weather.setup(self)
+        interface.build_observed_weather_controls()
     if not screensaver_mode and "--validate-display" not in OS.get_cmdline_user_args() and DisplayServer.get_name() != "headless":
         call_deferred("start_auto_update")
 
@@ -780,6 +785,7 @@ func preview_screensaver() -> void:
     saved_solar = utc_sunlight
     observations.cancel_weather()
     if weather_layer: weather_layer.set_suspended(true)
+    if observed_weather: observed_weather.set_suspended(true)
     if satellite_snapshot: satellite_snapshot.set_suspended(true)
     update_request.cancel_request()
     services.quake_request.cancel_request()
@@ -805,6 +811,7 @@ func stop_screensaver_preview() -> void:
     update_sunlight()
     visuals.apply_options(preferences.get_value("visuals", "clouds", true), preferences.get_value("visuals", "stars", true), preferences.get_value("visuals", "moon", false))
     if satellite_snapshot: satellite_snapshot.set_suspended(false)
+    if observed_weather: observed_weather.set_suspended(false)
     get_window().mode = previous_window_mode
     Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
     interface_layer.show()

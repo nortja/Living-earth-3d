@@ -16,6 +16,7 @@ func run() -> void:
     app.play_intro = false
     app.preferences_path = "user://pack-validation-%d.cfg" % Time.get_ticks_usec()
     root.add_child(app)
+    verify(app.observed_weather != null and load("res://assets/weather/infrared-legend.svg").get_width()>0 and FileAccess.file_exists("res://assets/weather/infrared-colormap.xml"),"Pack contains regional infrared service, readable legend and original numeric color map")
     var viewer = app.interface.lunar_observatory
     viewer.open()
     viewer.select_date("2026-11-01")

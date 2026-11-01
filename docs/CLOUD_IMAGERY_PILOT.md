@@ -1,20 +1,19 @@
-# Current-cloud pilot: source and truthfulness gates
+# Regional infrared pilot — 0.22.0 candidate
 
-Planning note, 2026-11-01. The default drifting clouds remain offline artwork. The dated NOAA-20/VIIRS surface already released is a daily true-color mosaic; it is not a current global cloud layer.
+Implemented 2026-11-01; Windows release gates pending. Default drifting clouds remain offline artwork. The previous-day VIIRS mosaic is separate. This pilot adds explicitly requested NOAA GOES-West/GOES-East ABI Clean Infrared (10.3 µm, Band 13, ten-minute) visualization via NASA GIBS. It shows cloud tops and land/ocean brightness temperatures in false color, with a readable retained NASA color scale. It does not cover the Philippines or all Earth.
 
-## Source selection
+## Identity and permission
 
-NASA GIBS documents each visualization's temporal period, platform/instrument, spatial reference and underlying product. Its near-real-time availability statement applies to many products, not every layer or pixel. A newly downloaded daily image does not establish a new capture time. [Official GIBS visualization catalog documentation](https://nasa-gibs.github.io/gibs-api-docs/available-visualizations/).
+Exact products: `GOES-West_ABI_Band13_Clean_Infrared` and `GOES-East_ABI_Band13_Clean_Infrared`. [NASA metadata](https://gibs.earthdata.nasa.gov/layer-metadata/v1.0/GOES-West_ABI_Band13_Clean_Infrared.json) identifies the band and subdaily period; [NASA access documentation](https://nasa-gibs.github.io/gibs-api-docs/access-basics/) supplies DescribeDomains and exact timestamp WMTS retrieval. [NOAA imagery guidance](https://www.nesdis.noaa.gov/imagery/interactive-maps/how-use-the-interactive-satellite-maps) permits informational/educational graphical use with NOAA credit. [NASA guidance](https://www.nasa.gov/nasa-brand-center/images-and-media/) applies to its color-map/visualization assets. No third-party Himawari product is assumed cleared. Product IDs, links, original numeric XML and derivative hashes are retained under `assets/weather/` and credit appears in the app.
 
-Before implementation, resolve one exact cloud product and its underlying metadata, distribution permission, attribution, validity/no-data mask, timestamp semantics, footprint, projection and actual request cadence. Check the particular product's credit rather than treating a NASA-hosted URL as proof of ownership or permission. [NASA media guidance](https://www.nasa.gov/nasa-brand-center/images-and-media/). The catalog's dynamic product table did not load during this review, so no exact cloud layer is selected or permission-cleared by this note.
+## Retrieval and display
 
-## First bounded release
+- Explicit Load only. Metadata lists supported nominal scan instants. The recent choice applies a thirty-minute distribution buffer; older choices select supported scans about one/three/twelve hours earlier than the metadata's latest scan. Metadata gaps choose an earlier advertised instant. No silent nearest-image HTTP substitution is requested.
+- Fifteen exact 512px WMTS tiles, EPSG:4326 `2km` matrix level 2, at most two concurrent requests, cropped to 2560×1280. The source matrix name is not a claim of native 2km output detail. Each tile is bounded to 4MiB and exact dimensions before decode; metadata to 256KiB. No redirects, 25-second per-request timeout, ten-minute cooldown per source/time choice.
+- Commit only after all tiles validate and the assembled scene contains observations. Missing/invalid/empty/cancelled/late responses keep the old pixels, source and time together. Transparent no-data remains transparent over the offline globe; it cannot establish cloud-free sky.
+- Full nominal UTC scan/date, retrieval time, age and OLD SCENE after two hours. Nominal scan time is not the same acquisition time for every pixel. The compact visible badge retains the full date. No forecast/alert/rainfall or surface-air-temperature claim.
+- Return cancels requests and restores the previous offline Earth or retained dated NASA mosaic without another download. Artistic cloud drift/shadow is suppressed. Simulated sunlight and screensaver preview suspend the layer; native saver hosts never construct the service. No startup/background downloads, tracking or stored image preferences.
 
-- One supported product/region with its true coverage visible; do not fill missing regions or claim global coverage before it exists.
-- Visible observation time or observation interval, source, retrieval time and age. Distinguish mask/false-color science imagery from a natural-color cloud photograph.
-- Explicit opt-in retrieval, provider-appropriate cooldown, compressed/pixel/decode bounds and one retained valid texture. Do not animate observed clouds with artistic drift.
-- Transparent no-data and retained-date warnings on failure; immediate offline return. Keep requested surface mosaics and the sunlight simulation separate.
-- No startup/native-saver downloads. Prove cancellation and late-response rejection on view/source change, plus ordinary offline use and bounded CPU/GPU memory.
-- Native render/source checks, actual Windows package/upgrade/rollback/lifecycle/display gates, verified public bytes and authenticated feed promotion remain required.
+## Evidence and remaining scope
 
-No provider integration, fresh cloud observation or global freshness guarantee is delivered by this planning work.
+Actual in-app HTTP retrieval of both regions passed on 2026-11-01; metadata records exact scan/retrieval times and maximum two requests. Source state/geometry/failure tests and native layouts include 800×600, laptop 2496×1664, Dell 3840×1080 and 5K. Installed Windows controls, upgrade/rollback, settings, lifecycle and display matrix remain required before feed promotion. Continuous playback, animation, Asia/global cloud coverage and physical hardware validation remain future work.

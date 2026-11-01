@@ -1,3 +1,5 @@
+> 0.22.0 candidate: requested regional infrared weather and easier Live Earth navigation. Production remains verified 0.21.0 until the new Windows release gates pass. [Candidate evidence](docs/VALIDATION-0.22.0.md).
+
 # Living Earth 3D
 
 An offline-first interactive Windows globe and screensaver, built with Godot 4. Released **0.21.0 preview**.

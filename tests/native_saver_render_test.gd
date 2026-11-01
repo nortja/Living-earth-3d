@@ -6,7 +6,7 @@ func run() -> void:
     app.preferences_path = "user://native-render-isolated.cfg"
     app.weather_cache_path = "user://native-render-weather.json"
     root.add_child(app)
-    if app.get("satellite_snapshot") != null or app.get("weather_layer") != null or not app.native_saver or not app.ambient.suspended or Engine.max_fps != (15 if app.native_saver_preview else 30):
+    if app.get("observed_weather") != null or app.get("satellite_snapshot") != null or app.get("weather_layer") != null or not app.native_saver or not app.ambient.suspended or Engine.max_fps != (15 if app.native_saver_preview else 30):
         push_error("Native saver budget, silence or weather isolation failed")
         quit(1)
         return

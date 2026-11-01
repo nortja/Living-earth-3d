@@ -170,7 +170,7 @@ Released 0.19.0 adds **Sunlight explorer**: a temporary offline ±12-hour UTC li
 | --- | --- | --- |
 | Released | Sunlight explorer and clear simulation/return controls | Source/native/Windows/framebuffer/lifecycle gates, public bytes/signature and production updater passed |
 | Next | Authorized continuous in-app video prototype | One documented-permission feed, supported Windows playback, bounded resources, pause/close/saver cleanup and network failure recovery |
-| Then | Licensed current cloud imagery | Provenance and permitted redistribution, actual observation time/coverage, bounded opt-in retrieval, stale/offline fallback and GPU budget |
+| Candidate 0.22.0 | Requested regional NOAA infrared | Provenance and permitted redistribution, actual observation time/coverage, bounded opt-in retrieval, stale/offline fallback and GPU budget |
 | Reliability alongside features | Physical Dell and mixed-display field checks; longer screensaver observation | Record actual scaling/monitor-move/sleep evidence without inferring hardware results from VM rendering |
 | Later | Astronomical accuracy, verified higher-detail textures and distribution hardening | Documented accuracy/licenses, ordinary-PC targets, publisher signing and update-key migration plan |
 
@@ -210,3 +210,7 @@ See the bounded [video pilot](docs/VIDEO_PILOT.md) and [cloud imagery pilot](doc
 ## Release rules
 
 Build/test first, publish installer, verify its download, sign the exact release metadata, then atomically promote discovery feed and signature. Preserve preferences and the pinned trust key. Keep the old failing automatic Windows workflow disabled. Separate source/headless/native renders, Windows installation tests, and real hardware observations; never label periodic imagery as continuous live video or a retrieval timestamp as capture time.
+
+## Next candidate — 0.22.0
+
+Regional GOES-West/GOES-East infrared imagery, exact scan identity and age, source temperature legend, explicit bounded Load/Return, no-data transparency and preview isolation. Main Live Earth actions now appear first. Actual provider retrieval and native/source checks passed; fresh Windows/public-delivery gates remain pending. Global/Asia clouds, continuous video, Authenticode publisher signing and physical Dell/mixed-DPI/sleep tests remain open. See [validation](docs/VALIDATION-0.22.0.md) and [product scope](docs/CLOUD_IMAGERY_PILOT.md).

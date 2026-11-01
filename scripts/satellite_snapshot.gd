@@ -46,6 +46,7 @@ func refresh() -> void:
         status = "Wait one minute between satellite requests. Previous mosaic stays dated."
         changed.emit()
         return
+    if app.observed_weather: app.observed_weather.set_enabled(false)
     cancel()
     pending_date = recent_utc_date(Time.get_unix_time_from_system(),selected_days_ago)
     if pending_date.is_empty():
@@ -123,6 +124,7 @@ func cancel() -> void:
         changed.emit()
 
 func set_enabled(value: bool) -> void:
+    if value and app.observed_weather and app.observed_weather.enabled: app.observed_weather.set_enabled(false)
     if not value: cancel()
     enabled = value and texture != null
     apply_view()
@@ -140,3 +142,4 @@ func apply_view() -> void:
     if texture != null: app.earth_material.set_shader_parameter("satellite_map",texture)
     app.visuals.clouds.visible = app.visuals.clouds_enabled and not showing
     app.info.text = "NASA mosaic · %s" % observed_date if showing else "Drag to orbit · Scroll to zoom"
+    if app.observed_weather: app.observed_weather.apply_view()

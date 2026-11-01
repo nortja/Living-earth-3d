@@ -38,6 +38,19 @@ func run(app: Node3D, arguments: PackedStringArray) -> void:
     await RenderingServer.frame_post_draw
     if viewport.get_texture().get_image().save_png(output.path_join("command-center.png")) != OK:
         failures.append("Command screenshot save failed")
+    ui.open_page("Live Earth")
+    for frame in range(12): await get_tree().process_frame
+    for control in ui.live_primary:
+        if not ui.page_scroll.get_global_rect().encloses(control.get_global_rect()): failures.append("Live Earth action clipped: "+control.text)
+    await RenderingServer.frame_post_draw
+    if viewport.get_texture().get_image().save_png(output.path_join("live-earth.png"))!=OK: failures.append("Live Earth screenshot save failed")
+    ui.open_page("Satellite weather")
+    for frame in range(12): await get_tree().process_frame
+    for control in [ui.observed_load,ui.observed_return,ui.observed_region,ui.observed_source_picker,ui.observed_offset_picker]:
+        if not ui.page_scroll.get_global_rect().encloses(control.get_global_rect()): failures.append("Infrared primary control clipped")
+    if app.observed_weather.request!=null or not app.observed_weather.workers.is_empty(): failures.append("Display validation must not start imagery requests")
+    await RenderingServer.frame_post_draw
+    if viewport.get_texture().get_image().save_png(output.path_join("infrared-controls.png"))!=OK: failures.append("Infrared screenshot save failed")
     var report := {"version": app.VERSION, "platform": OS.get_name(), "display": DisplayServer.get_name(), "viewport": [int(viewport_size.x), int(viewport_size.y)], "ui_scale": ui.display_scale, "gpu": RenderingServer.get_video_adapter_name(), "quality": app.visual_quality, "failures": failures, "passed": failures.is_empty()}
     var file := FileAccess.open(output.path_join("result.json"), FileAccess.WRITE)
     if not file:

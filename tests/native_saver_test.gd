@@ -20,6 +20,7 @@ func run() -> void:
     root.add_child(app)
     await process_frame
     check(app.get("satellite_snapshot") == null, "Native saver does not construct a satellite service")
+    check(app.get("observed_weather") == null, "Native saver constructs no regional infrared service")
     check(app.native_saver, "Host flag enters native saver mode")
     check(app.screensaver_mode, "Hosted renderers are screensavers")
     check(not app.play_intro and not app.intro_running, "Hosted renderer skips intro")

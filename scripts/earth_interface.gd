@@ -5,6 +5,16 @@ var arrival_place: Dictionary = {}
 var arrival_has_photo := false
 var arrival_status: Label
 var arrival_save: Button
+var live_primary: Array[Button] = []
+var observed_load: Button
+var observed_return: Button
+var observed_region: Button
+var observed_source_picker: OptionButton
+var observed_offset_picker: OptionButton
+var observed_toggle: CheckButton
+var observed_status: Label
+var observed_context: Label
+var observed_badge: Button
 var satellite_status: Label
 var satellite_load: Button
 var satellite_date_picker: OptionButton
@@ -159,7 +169,7 @@ func setup(owner_app: Node3D) -> void:
     var page_stack := VBoxContainer.new()
     page_stack.size_flags_horizontal = Control.SIZE_EXPAND_FILL
     scroll.add_child(page_stack)
-    for title in NAV + ["Settings", "Destination", "Display report", "Weather globe", "Satellite view", "Sunlight explorer", "Journey studio"]:
+    for title in NAV + ["Settings", "Destination", "Display report", "Weather globe", "Satellite view", "Sunlight explorer", "Journey studio", "Satellite weather"]:
         var page := VBoxContainer.new()
         page.size_flags_horizontal = Control.SIZE_EXPAND_FILL
         page_stack.add_child(page)
@@ -201,9 +211,11 @@ func setup(owner_app: Node3D) -> void:
     relayout()
 
 func _process(_delta: float) -> void:
+    if observed_badge:
+        observed_badge.visible = app.observed_weather.enabled and not app.observed_weather.suspended and not panel.visible and not wall.visible and not camera_overlay.visible and not photo_viewer.visible and not lunar_observatory.visible
     if journey_studio: journey_studio.tick(_delta)
     if weather_model_badge:
-        weather_model_badge.visible = app.weather_layer != null and app.weather_layer.marker_root.visible and not panel.visible and not wall.visible and not camera_overlay.visible and not photo_viewer.visible
+        weather_model_badge.visible = app.weather_layer != null and app.weather_layer.marker_root.visible and not panel.visible and not wall.visible and not camera_overlay.visible and not photo_viewer.visible and not lunar_observatory.visible
     if is_instance_valid(arrival_status) and arrival_status.text.begins_with("Travelling") and app.journey and not app.journey.is_running():
         arrival_status.text = "Journey paused · " + str(arrival_place.get("name", "Earth"))
     exploration_poll += _delta
@@ -248,6 +260,7 @@ func button(parent: Node, text: String, action: Callable) -> Button:
     return item
 
 func open_page(title: String) -> void:
+    if app.observed_weather and active_page=="Satellite weather" and title!=active_page: app.observed_weather.cancel()
     if title in ["Live Earth", "Weather globe"] and app.weather_layer: _weather_layer_changed()
     if title == "Satellite view" and app.satellite_snapshot: _satellite_changed()
     if active_page == title and panel.visible:
@@ -273,6 +286,7 @@ func open_page(title: String) -> void:
     refresh_layout()
 
 func close_panel() -> void:
+    if app.observed_weather and active_page=="Satellite weather": app.observed_weather.cancel()
     if journey_studio: journey_studio.end()
     if sunlight_explorer: sunlight_explorer.end()
     active_page = ""
@@ -310,11 +324,12 @@ func relayout() -> void:
         panel.size = Vector2(width, maxf(250, size.y - 88 - dock.size.y - 44))
     else:
         var search_open:bool=active_page=="Explore" and exploration_panel!=null and (exploration_panel.sections.Search.visible or exploration_panel.sections.Saved.visible)
-        var sheet_height := minf(360,size.y-190) if search_open or (active_page == "Destination" and arrival_has_photo) or active_page in ["Weather globe", "Satellite view", "Display report", "Sunlight explorer", "Journey studio", "Screensavers"] else 190.0
+        var sheet_height := minf(360,size.y-190) if search_open or (active_page == "Destination" and arrival_has_photo) or active_page in ["Live Earth", "Weather globe", "Satellite view", "Display report", "Sunlight explorer", "Journey studio", "Screensavers", "Satellite weather"] else 190.0
         panel.position = Vector2(24, size.y - sheet_height - 92)
         panel.size = Vector2(size.x - 48, sheet_height)
     command_card.position = Vector2(24, 104)
     command_card.size = Vector2(280, 230)
+    if observed_badge: observed_badge.position = Vector2(24,size.y-180)
     if weather_model_badge: weather_model_badge.position = Vector2(24,size.y-136)
     if wall: wall.relayout()
     if photo_viewer: photo_viewer.relayout()
@@ -444,17 +459,17 @@ func _worldwide_results() -> void:
     _show_search(app.services.results)
 
 func _live(box: VBoxContainer) -> void:
+    live_primary.append(button(box,"Moon & Hebrew calendar · lunar observatory",func(): lunar_observatory.open()))
+    live_primary.append(button(box,"Journey studio · build an Earth tour",func(): open_page("Journey studio")))
+    live_primary.append(button(box,"Sunlight explorer · offline preview",func(): open_page("Sunlight explorer")))
     label(box, "Know what you're seeing", 18)
-    label(box, "The base globe uses offline satellite textures and night-light imagery. An optional dated NASA mosaic can replace its surface. Clouds and stars are artistic. Moon placement is illustrative; its phase uses dated geometry.")
+    label(box, "The base globe uses offline satellite textures and night-light imagery. Optional dated NASA imagery can replace its surface. Clouds and stars are artistic. Moon placement is illustrative; its phase uses dated geometry.")
     var sunlight := CheckButton.new()
     sunlight_toggle = sunlight
     sunlight.text = "Current UTC sunlight"
     sunlight.button_pressed = app.utc_sunlight
     sunlight.toggled.connect(app.set_utc_sunlight)
     box.add_child(sunlight)
-    button(box,"Moon & Hebrew calendar · lunar observatory",func(): lunar_observatory.open())
-    button(box,"Journey studio · build an Earth tour",func(): open_page("Journey studio"))
-    button(box, "Sunlight explorer · offline preview", func(): open_page("Sunlight explorer"))
     solar_status = label(box, "", 12)
     label(box, "Approximate seasonal day/night boundary, calculated offline every 30 seconds. Keep your computer clock correct. Night lights screensaver uses artistic lighting.", 12)
     button(box, "Sunlight calculation source · NOAA ↗", func(): OS.shell_open("https://gml.noaa.gov/grad/solcalc/solareqns.PDF"))
@@ -801,7 +816,7 @@ func _performance_changed() -> void:
 
 func build_weather_layer_controls() -> void:
     var entry := button(pages["Live Earth"],"Weather around Earth",func(): open_page("Weather globe"))
-    pages["Live Earth"].move_child(entry,2)
+    pages["Live Earth"].move_child(entry,3)
     var box: VBoxContainer = pages["Weather globe"]
     label(box,"32 public model points · loaded only when requested",12)
     weather_layer_status = label(box,"",12)
@@ -865,7 +880,7 @@ func _weather_layer_changed() -> void:
 
 func build_satellite_controls() -> void:
     var entry := button(pages["Live Earth"],"Recent days from orbit · NASA",func(): open_page("Satellite view"))
-    pages["Live Earth"].move_child(entry,2)
+    pages["Live Earth"].move_child(entry,3)
     var box: VBoxContainer = pages["Satellite view"]
     label(box,"Recent days from orbit",18)
     label(box,"NASA GIBS · NOAA-20 / VIIRS · dated satellite mosaic",12)
@@ -910,3 +925,92 @@ func _satellite_changed() -> void:
     satellite_toggle.disabled = service.texture == null
     satellite_toggle.set_pressed_no_signal(service.enabled)
     if active_page == "Satellite view": refresh_layout()
+
+func build_observed_weather_controls() -> void:
+    var entry := button(pages["Live Earth"],"Satellite weather · regional infrared",func(): open_page("Satellite weather"))
+    pages["Live Earth"].move_child(entry,1)
+    live_primary.append(entry)
+    var margin := MarginContainer.new()
+    margin.add_theme_constant_override("margin_left",2)
+    margin.add_theme_constant_override("margin_right",2)
+    pages["Satellite weather"].add_child(margin)
+    var box := VBoxContainer.new()
+    margin.add_child(box)
+    var inset := Control.new()
+    inset.custom_minimum_size.y = 2
+    box.add_child(inset)
+    observed_source_picker = OptionButton.new()
+    observed_source_picker.clip_text = true
+    for source in app.observed_weather.SOURCES: observed_source_picker.add_item(str(source.name)+" · "+str(source.region))
+    observed_source_picker.item_selected.connect(app.observed_weather.select_source)
+    box.add_child(observed_source_picker)
+    var row := HBoxContainer.new()
+    box.add_child(row)
+    observed_load = button(row,"Load",func():
+        if app.observed_weather.loading: app.observed_weather.cancel()
+        else: app.observed_weather.refresh())
+    observed_region = button(row,"Region",app.observed_weather.focus_coverage)
+    observed_region.tooltip_text = "Move the globe to this satellite's approximate coverage center"
+    observed_return = button(row,"Return",func(): app.observed_weather.set_enabled(false))
+    observed_return.tooltip_text = "Cancel any request and restore your prior offline Earth or dated satellite view"
+    for control in row.get_children():
+        control.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+        control.custom_minimum_size.x = 64
+        control.clip_text = false
+    observed_offset_picker = OptionButton.new()
+    for title in ["Recent scan · 30-minute buffer", "About 1 hour earlier", "About 3 hours earlier", "About 12 hours earlier"]: observed_offset_picker.add_item(title)
+    observed_offset_picker.item_selected.connect(app.observed_weather.select_offset)
+    box.add_child(observed_offset_picker)
+    observed_toggle = CheckButton.new()
+    observed_toggle.text = "Show regional infrared on Earth"
+    observed_toggle.toggled.connect(app.observed_weather.set_enabled)
+    box.add_child(observed_toggle)
+    observed_status = label(box,"",12)
+    observed_context = label(box,"",12)
+    label(box,"False-color infrared · brightness temperature (°C)",14)
+    var legend := TextureRect.new()
+    legend.texture = load("res://assets/weather/infrared-legend.svg")
+    legend.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+    legend.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+    legend.custom_minimum_size = Vector2(260,36)
+    box.add_child(legend)
+    var axis := Control.new()
+    axis.custom_minimum_size.y = 20
+    box.add_child(axis)
+    for degrees in [-90,-60,-30,0,30,57]:
+        var tick := Label.new()
+        tick.text = ">57" if degrees==57 else str(degrees)
+        tick.add_theme_font_size_override("font_size",12)
+        tick.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+        axis.add_child(tick)
+        var value: float = degrees
+        var place_tick := func():
+            var x: float = axis.size.x*(12.0+(value+92.1)/150.1*336.0)/360.0
+            tick.position = Vector2(clampf(x-17.0,0.0,maxf(0.0,axis.size.x-34.0)),0)
+            tick.size = Vector2(34,20)
+        axis.resized.connect(place_tick)
+        place_tick.call()
+    label(box,"Infrared shows cloud tops AND land/ocean temperatures, not natural color, rainfall or surface air temperature. The nominal scan time identifies the image, not an identical capture time for every pixel. Transparent areas are outside coverage or unavailable; they do not prove clear skies. Outside the scene, the base Earth remains offline artwork.",12)
+    label(box,"Load downloads only when you request it. The recent choice allows thirty minutes for newly advertised imagery to arrive. Older choices use advertised scans. Wait ten minutes before requesting the same source/time choice again. Return restores your prior view. Sunlight simulation and screensavers temporarily hide infrared. No location tracking or background imagery downloads.",12)
+    label(box,"Data: NOAA GOES / ABI. Imagery service and color legend: NASA GIBS / ESDIS. This is an educational view, not an alert or forecast service.",12)
+    button(box,"Infrared interpretation · NOAA ↗",func(): OS.shell_open("https://www.nesdis.noaa.gov/imagery/interactive-maps/colorized-infrared"))
+    button(box,"Image times & access · NASA ↗",func(): OS.shell_open("https://nasa-gibs.github.io/gibs-api-docs/access-basics/"))
+    observed_badge = button(self,"",func(): open_page("Satellite weather"))
+    observed_badge.clip_text = false
+    observed_badge.hide()
+    app.observed_weather.changed.connect(_observed_weather_changed)
+    _observed_weather_changed()
+
+func _observed_weather_changed() -> void:
+    var service = app.observed_weather
+    observed_load.text = "Cancel" if service.loading else "Load"
+    observed_return.disabled = not service.enabled and not service.loading
+    observed_source_picker.select(service.selected_source)
+    observed_offset_picker.select(service.selected_offset)
+    observed_toggle.disabled = service.texture==null
+    observed_toggle.set_pressed_no_signal(service.enabled)
+    observed_status.text = service.status
+    observed_context.text = service.context()
+    observed_badge.text = ("OLD scene · " if service.is_stale() else "Regional IR · ")+service.observed_time.replace("T"," ").trim_suffix("Z").substr(0,16)+" UTC"
+    observed_badge.tooltip_text = service.context()
+    if active_page=="Satellite weather": refresh_layout()

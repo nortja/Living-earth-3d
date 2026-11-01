@@ -1,0 +1,7 @@
+# Regional infrared imagery
+
+Credit NOAA GOES / ABI; NASA GIBS / ESDIS imagery service and color legend. This educational visualization uses the GOES-West and GOES-East Clean Infrared (10.3 µm, Band 13, ten-minute) products, selected explicitly by the user. No current weather scene is bundled in the installer. SOURCES.json records exact product IDs, primary documentation, numeric color-map provenance, derivative hashes and sampling limits.
+
+NOAA permits educational/informational graphical use with NOAA credit: https://www.nesdis.noaa.gov/imagery/interactive-maps/how-use-the-interactive-satellite-maps . NASA media guidance applies to its visualization and color-map material: https://www.nasa.gov/nasa-brand-center/images-and-media/ . No agency logo or endorsement is used. Only the two identified NOAA-origin products are enabled; NASA hosting alone is not treated as a license for third-party products.
+
+The original NASA color-map XML is retained without alteration. The compact SVG is an adaptation of its ordered RGB intervals and Celsius temperature axis for legibility in Godot; it is not a new scientific scale. Retrieval assembles EPSG:4326 visualization tiles into a 2560×1280 global canvas, with transparency outside the selected region. This is a reduced-resolution regional visualization, not a global natural-color cloud photograph, native 2km data download, air-temperature map, rainfall product, forecast or emergency alert.

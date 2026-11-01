@@ -6,6 +6,8 @@ uniform sampler2D ocean_mask : filter_linear_mipmap_anisotropic, repeat_enable;
 uniform sampler2D cloud_map : filter_linear_mipmap_anisotropic, repeat_enable;
 uniform sampler2D satellite_map : source_color, filter_linear_mipmap_anisotropic, repeat_enable;
 uniform bool satellite_view = false;
+uniform sampler2D observed_weather_map : source_color, filter_linear_mipmap_anisotropic, repeat_enable;
+uniform bool observed_weather_view = false;
 uniform float visibility : hint_range(0.0, 1.0) = 1.0;
 uniform float cloud_offset = 0.0;
 uniform float cloud_strength = 0.12;
@@ -21,7 +23,7 @@ void fragment() {
     float day = smoothstep(-0.14, 0.18, daylight);
     // Subtle artistic cloud shade, not a physical weather simulation.
     float cloud = texture(cloud_map, vec2(UV.x - cloud_offset + 0.001, UV.y)).r;
-    surface *= 1.0 - cloud * cloud_strength * day;
+    surface *= 1.0 - cloud * cloud_strength * day * (observed_weather_view ? 0.0 : 1.0);
     surface *= mix(1.0, 0.72, ocean);
     ALBEDO = surface * visibility;
     ROUGHNESS = mix(0.95, 0.58, ocean);
@@ -34,5 +36,14 @@ void fragment() {
         EMISSION = texture(satellite_map, UV).rgb * visibility;
         ROUGHNESS = 1.0;
         SPECULAR = 0.0;
+    }    if (observed_weather_view) {
+        // Only observed regional pixels replace the offline surface; no invented global clouds.
+        vec4 scene = texture(observed_weather_map, UV);
+        float valid = scene.a;
+        ALBEDO *= 1.0-valid;
+        EMISSION = mix(EMISSION,scene.rgb*visibility,valid);
+        ROUGHNESS = mix(ROUGHNESS,1.0,valid);
+        SPECULAR *= 1.0-valid;
     }
+
 }

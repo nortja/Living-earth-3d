@@ -44,6 +44,7 @@ func begin() -> void:
     if active: end()
     place = app.exploration.location.duplicate(true)
     if place.is_empty(): place = {"name":"Equator / Greenwich reference","latitude":0.0,"longitude":0.0}
+    if app.observed_weather: app.observed_weather.set_suspended(true)
     restore_satellite = app.satellite_snapshot.enabled
     app.satellite_snapshot.set_enabled(false)
     active = true
@@ -75,3 +76,4 @@ func end() -> void:
     app.update_sunlight()
     if restore_satellite: app.satellite_snapshot.set_enabled(true)
     restore_satellite = false
+    if app.observed_weather: app.observed_weather.set_suspended(false)

@@ -1,0 +1,41 @@
+{
+  "reviewed_utc_date": "2026-11-01",
+  "credit": "NOAA GOES / ABI; NASA GIBS / ESDIS imagery service and color legend",
+  "products": [
+    "GOES-West_ABI_Band13_Clean_Infrared",
+    "GOES-East_ABI_Band13_Clean_Infrared"
+  ],
+  "metadata_template": "https://gibs.earthdata.nasa.gov/layer-metadata/v1.0/{product}.json",
+  "access": "https://nasa-gibs.github.io/gibs-api-docs/access-basics/",
+  "interpretation": "https://www.nesdis.noaa.gov/imagery/interactive-maps/colorized-infrared",
+  "noaa_usage": "https://www.nesdis.noaa.gov/imagery/interactive-maps/how-use-the-interactive-satellite-maps",
+  "nasa_usage": "https://www.nasa.gov/nasa-brand-center/images-and-media/",
+  "colormap": {
+    "source": "https://gibs.earthdata.nasa.gov/colormaps/v1.3/Clean_Longwave_Infrared_Window_Band.xml",
+    "file": "infrared-colormap.xml",
+    "sha256": "4d071784e05c9e0c51e235798402fdce57abe0eb03094b449b323b0d691e98f3"
+  },
+  "legend": {
+    "reference": "https://gibs.earthdata.nasa.gov/legends/Clean_Longwave_Infrared_Window_Band_H.svg",
+    "file": "infrared-legend.svg",
+    "sha256": "fd33fbbb5d8a5a7e98cdd96fe10c41e231285f43a96216be0c27d4db092f8a43",
+    "processing": "New compact SVG drawn from the retained numeric source ColorMap entries. Same ordered RGB intervals, original Celsius temperature axis preserved, no invented thresholds; no-data remains transparent. Temperature labels are native Godot UI text because SVG text is not imported by Godot."
+  },
+  "retrieval": {
+    "matrix": "2km",
+    "level": 2,
+    "tile_pixels": 512,
+    "tile_columns": 5,
+    "tile_rows": 3,
+    "output_pixels": [
+      2560,
+      1280
+    ],
+    "projection": "EPSG:4326, north-up, longitude -180 to 180, latitude 90 to -90",
+    "nominal_grid_degrees": 0.140625,
+    "recent_dissemination_buffer_seconds": 1800,
+    "max_simultaneous_tiles": 2,
+    "automatic_downloads": false
+  },
+  "limits": "Downsampled science visualization, not native 2km at every output pixel. Nominal scan time is not identical acquisition time per pixel. Region only; transparent pixels are unavailable/outside coverage, not proof of clear sky. No forecast, alert, rainfall or surface-air-temperature inference. No bundled current weather scene."
+}

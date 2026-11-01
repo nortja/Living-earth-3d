@@ -127,6 +127,39 @@ func run(app: Node3D, arguments: PackedStringArray) -> void:
     satellite.set_enabled(false)
     verify(not app.earth_material.get_shader_parameter("satellite_view") and app.visuals.clouds.visible,"Installed offline return restores artistic view")
     progress("Satellite surface, source date, preview isolation and offline return passed")
+    var regional=app.observed_weather
+    verify(regional.request==null and regional.workers.is_empty(),"Installed infrared service starts without networking")
+    var infrared:=Image.create(2560,1280,false,Image.FORMAT_RGBA8)
+    infrared.fill(Color.TRANSPARENT)
+    infrared.fill_rect(Rect2i(60,300,960,680),Color(0.5,0.5,0.5,1))
+    regional.texture=ImageTexture.create_from_image(infrared)
+    regional.observed_source=0
+    regional.observed_time="2026-11-01T17:40:00Z"
+    regional.retrieved="Synthetic layout fixture · not an observation"
+    regional.status="Synthetic infrared fixture · installed layout test only"
+    regional.set_enabled(true)
+    ui.open_page("Satellite weather")
+    for frame in range(16):await get_tree().process_frame
+    await RenderingServer.frame_post_draw
+    verify(app.earth_material.get_shader_parameter("observed_weather_view") and not app.visuals.clouds.visible,"Installed regional infrared renders without artistic cloud interference")
+    for control in [ui.observed_load,ui.observed_return,ui.observed_region,ui.observed_source_picker,ui.observed_offset_picker]:
+        verify(ui.page_scroll.get_global_rect().encloses(control.get_global_rect()),"Installed infrared primary controls fit without scrolling")
+    verify(ui.observed_context.text.contains("GOES-West") and ui.observed_context.text.contains("2026-11-01T17:40:00Z") and ui.observed_context.text.contains("Synthetic"),"Installed infrared scene keeps explicit source, scan and fixture identity")
+    root.get_texture().get_image().save_png(directory.path_join("windows-packaged-infrared-fixture.png"))
+    ui.observed_source_picker.item_selected.emit(1)
+    verify(regional.observed_source==0 and regional.selected_source==1 and regional.request==null,"Installed provider selection preserves prior scene identity without a request")
+    app.preview_screensaver()
+    verify(regional.suspended and not app.earth_material.get_shader_parameter("observed_weather_view"),"Installed saver excludes infrared and resumes original retained scene")
+    app.stop_screensaver_preview()
+    verify(regional.enabled and not regional.suspended,"Installed preview return restores infrared state")
+    ui.open_page("Satellite weather")
+    ui.observed_return.pressed.emit()
+    verify(not regional.enabled and not app.earth_material.get_shader_parameter("observed_weather_view"),"Installed Return restores the base Earth")
+    ui.open_page("Live Earth")
+    for frame in range(16):await get_tree().process_frame
+    for control in ui.live_primary:
+        verify(ui.page_scroll.get_global_rect().encloses(control.get_global_rect()),"Installed main Live Earth actions are visible: "+control.text)
+    progress("Installed regional infrared, time identity, Return, saver isolation and primary navigation passed")
     var layer=app.weather_layer
     var feed: Array=[]
     for index in range(layer.places.size()):
