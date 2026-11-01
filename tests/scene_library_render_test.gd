@@ -30,7 +30,7 @@ func run() -> void:
     lib.name_field.text="Quiet orbit · Earth only"
     await lib.save_current()
     check(lib.scenes.size()==2 and not lib.scenes[1].moon and not lib.scenes[1].galaxy,"Independent visual choices captured")
-    var sizes := [Vector2i(800,600),Vector2i(1920,1080),Vector2i(2496,1664),Vector2i(3440,1440),Vector2i(3840,1080),Vector2i(3840,2160),Vector2i(5120,1440),Vector2i(5120,2880)]
+    var sizes := [Vector2i(800,600),Vector2i(870,612),Vector2i(1920,1080),Vector2i(2496,1664),Vector2i(3440,1440),Vector2i(3840,1080),Vector2i(3840,2160),Vector2i(5120,1440),Vector2i(5120,2880)]
     if "--single-preview" in OS.get_cmdline_user_args(): sizes=[Vector2i(1920,1080)]
     for pixels in sizes:
         root.size=pixels
@@ -38,7 +38,15 @@ func run() -> void:
         app.interface.open_page("Live Earth")
         await settle()
         for control in app.interface.live_primary:
-            check(app.interface.page_scroll.get_global_rect().encloses(control.get_global_rect()),"Six primary navigation entries fit "+str(pixels))
+            check(app.interface.page_scroll.get_global_rect().encloses(control.get_global_rect()),"Primary navigation %s fits %s: %s within %s" % [control.text,pixels,control.get_global_rect(),app.interface.page_scroll.get_global_rect()])
+        if pixels==Vector2i(870,612):
+            app.interface.theme.default_font_size=16
+            app.interface.refresh_layout()
+            await settle()
+            for control in app.interface.live_primary:
+                check(app.interface.page_scroll.get_global_rect().encloses(control.get_global_rect()),"Larger system-font metrics retain all six primary actions")
+            app.interface.theme.default_font_size=14
+            app.interface.refresh_layout()
         app.interface.open_page("Scene library")
         await settle()
         for control in [lib.name_field,lib.save_button,lib.play_button,lib.pause_button,lib.next_button,lib.interval_picker]:

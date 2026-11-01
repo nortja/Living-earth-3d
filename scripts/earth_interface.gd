@@ -460,6 +460,8 @@ func _worldwide_results() -> void:
     _show_search(app.services.results)
 
 func _live(box: VBoxContainer) -> void:
+    # Six primary actions fit the compact sheet with Windows Segoe UI metrics.
+    box.add_theme_constant_override("separation",6)
     live_primary.append(button(box,"Moon & Hebrew calendar · lunar observatory",func(): lunar_observatory.open()))
     live_primary.append(button(box,"Journey studio · build an Earth tour",func(): open_page("Journey studio")))
     live_primary.append(button(box,"Sunlight explorer · offline preview",func(): open_page("Sunlight explorer")))

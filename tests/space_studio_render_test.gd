@@ -11,7 +11,7 @@ func run() -> void:
     clean.validation_pin=true
     app.space_studio.preset(2)
     app.set_quality("detailed",false)
-    var sizes := [Vector2i(800,600),Vector2i(1920,1080),Vector2i(2496,1664),Vector2i(3440,1440),Vector2i(3840,1080),Vector2i(3840,2160),Vector2i(5120,1440),Vector2i(5120,2880)]
+    var sizes := [Vector2i(800,600),Vector2i(870,612),Vector2i(1920,1080),Vector2i(2496,1664),Vector2i(3440,1440),Vector2i(3840,1080),Vector2i(3840,2160),Vector2i(5120,1440),Vector2i(5120,2880)]
     if "--single-preview" in OS.get_cmdline_user_args(): sizes=[Vector2i(1920,1080)]
     for pixels in sizes:
         root.size=pixels

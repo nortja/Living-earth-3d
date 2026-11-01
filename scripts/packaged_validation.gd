@@ -157,8 +157,10 @@ func run(app: Node3D, arguments: PackedStringArray) -> void:
     verify(not regional.enabled and not app.earth_material.get_shader_parameter("observed_weather_view"),"Installed Return restores the base Earth")
     ui.open_page("Live Earth")
     for frame in range(16):await get_tree().process_frame
+    await RenderingServer.frame_post_draw
+    root.get_texture().get_image().save_png(directory.path_join("windows-packaged-live-earth.png"))
     for control in ui.live_primary:
-        verify(ui.page_scroll.get_global_rect().encloses(control.get_global_rect()),"Installed main Live Earth actions are visible: "+control.text)
+        verify(ui.page_scroll.get_global_rect().encloses(control.get_global_rect()),"Installed main Live Earth actions are visible: %s %s within %s" % [control.text,control.get_global_rect(),ui.page_scroll.get_global_rect()])
     progress("Installed regional infrared, time identity, Return, saver isolation and primary navigation passed")
     var layer=app.weather_layer
     var feed: Array=[]
