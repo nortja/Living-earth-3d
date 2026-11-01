@@ -163,7 +163,7 @@ func use_scene(index: int, persist_visuals := true) -> void:
 
 func select_scene(index: int) -> void:
     if busy: return
-    pause();use_scene(index)
+    pause();shuffle_bag.clear();use_scene(index)
 
 func play() -> void:
     if scenes.is_empty() or busy or app.screensaver_mode: return

@@ -70,6 +70,9 @@ func run() -> void:
                 verify(not visited.has(index),"Every other scene is visited once per round")
                 visited[index]=true;lib.current=index
             verify(not visited.has(previous),"Round excludes its starting view")
+    lib.shuffle_bag.assign([1])
+    lib.select_scene(1)
+    verify(lib.shuffle_bag.is_empty(),"Manual scene selection discards a stale shuffle queue")
     lib.shuffle_bag.clear();lib.scenes=lib.scenes.slice(0,2)
     lib.current=0;lib.set_shuffled(false)
     verify(lib.next_index()==1,"Saved-order Next remains sequential")
