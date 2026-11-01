@@ -1,0 +1,25 @@
+{
+  "schema": 1,
+  "version": "0.24.0",
+  "run_id": 41359112627,
+  "job_id": 125005443552,
+  "source": "f9f732e57e6bf4f2eacd9fb3d910bc82888701e3",
+  "application_source": "df4f928edbcee2e488ef48926a7830afdc3d0858",
+  "source_feed_promotion": "8406228e18fab63ed6805e358dea1a00abc16f78",
+  "result": "success",
+  "checks": [
+    "Live pinned signature and exact installer hash verified",
+    "New release stages while baseline application remains open",
+    "Cancellation leaves old installed bytes unchanged",
+    "Normal-exit installation waits for the application",
+    "All four installed-file hashes verified",
+    "Intentionally closed app is not reopened"
+  ],
+  "installed_files": {
+    "LivingEarth3D.exe": "b53d455f321b0eaa98da4a756e44b594b6483db67f7e1cc2cffc7b6176991a64",
+    "LivingEarth3D.scr": "a8e2b3ab37a58ae0467652b917a4d64d3ec015b464ba7cde7feeb5acf06438f9",
+    "update-core.ps1": "311f11003a720af948bae265e8fc4037576883df763da914a16a16c1fbcef6bd",
+    "update.ps1": "639caa93b1ca379ae4558dfad708ec950d2e1346b6211ae01dca0000d1c2cb3c"
+  },
+  "limits": "Isolated Windows updater test; physical monitor/DPI, visible restart and idle/sleep remain field checks."
+}

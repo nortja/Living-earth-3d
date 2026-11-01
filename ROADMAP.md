@@ -238,4 +238,4 @@ Physical Dell/DPI/mixed-monitor/sleep tests, continuous video, global/Asia cloud
 - [x] Eight persisted offline compositions, bounded clean thumbnails, Use/Remove/Undo and timed fading playback. Temporary visual defaults and competing-discovery ownership are tested; desktop only, no new native saver style or provider service.
 - [x] All 1,885 source checks, seventeen native suites, actual installed Windows scene capture/transition/Moon zoom, seven exact framebuffers, upgrades/rollback/settings and ten-minute saver lifecycle passed in 41356762602.
 - [x] Independent public provenance/download check 41358905420, separate local verifier and pinned-key signature verification passed before atomic source/feed promotion.
-- [ ] Final production Windows staging/cancellation/normal-exit updater roundtrip. See [validation](docs/VALIDATION-0.24.0.md).
+- [x] Final production Windows staging/cancellation/normal-exit updater roundtrip 41359112627 passed. See [validation](docs/VALIDATION-0.24.0.md).

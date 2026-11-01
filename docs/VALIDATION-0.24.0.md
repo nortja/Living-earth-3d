@@ -1,6 +1,6 @@
 # 0.24.0 validation — synchronized Moon and Scene Library
 
-All candidate, Windows and independent-delivery gates passed. [Feature details](SCENE_LIBRARY.md). Exact signed discovery bytes and validated source are promoted atomically; the separate production updater roundtrip is the final rollout gate.
+All candidate, Windows and independent-delivery gates passed. [Feature details](SCENE_LIBRARY.md). Exact signed discovery bytes and validated source were promoted atomically. Separate production Windows updater roundtrip 41359112627 also passed, completing this rollout.
 
 ## Frozen source and completed checks
 
@@ -17,6 +17,6 @@ An integration check caught the old discovery timer competing with playback. Sup
 - [Native saver evidence](evidence/0.24.0/windows-screensaver.json): 20 samples through 605.1 seconds, native preview parenting/resizing/input/cleanup and simulated display/suspend/session-lock lifecycle. Windows timer/secure-resume readback, current 0.23.0/legacy 0.5.2 upgrades and handled-failure rollback passed.
 - Independent public workflow [41358905420](https://github.com/nortja/Living-earth-3d/actions/runs/41358905420) passed. Separate local verifier checks completed source/workflow/job provenance, exact public installer/checksum/BUILD, four-file metadata and unchanged trust/helper hashes. [Receipt](evidence/0.24.0/public-delivery.json).
 - Installer `LivingEarth3D-Setup-0.24.0.exe`: 73,319,078 bytes, SHA-256 `168ccdd250666fca00e653b33d6012ad72df2d1f99c62bc4ae76e61a6afec4ce`. The exact manifest signature is independently verified using the updater's pinned public key before atomic promotion. Windows publisher Authenticode remains separate/unavailable.
-- Final production authenticated staging/cancellation/normal-exit install and four-file verification is pending its separate run.
+- Production Windows run [41359112627](https://github.com/nortja/Living-earth-3d/actions/runs/41359112627) passed on its first attempt from `f9f732e57e6bf4f2eacd9fb3d910bc82888701e3`. Live signature/download verification, staging while the app stays open, cancellation without changing installed bytes, normal-exit installation, all four file hashes and no unwanted reopening passed. [Receipt](evidence/0.24.0/production-update.json). All three public discovery files matched the independently verified signed bytes after promotion; [live receipt](evidence/0.24.0/live-discovery.json). Transient key material was removed immediately after signing/verification.
 
 Software-rendered Windows/Linux framebuffers do not establish physical Dell GPU/DPI, mixed-monitor, idle/sign-in, sleep or overnight reliability. Scene Library remains desktop only; six native saver styles are retained. The historical Milky Way photograph, illustrative placement and current lunar/UTC/calendar source-date limits are unchanged. Continuous video is still separate roadmap work.
