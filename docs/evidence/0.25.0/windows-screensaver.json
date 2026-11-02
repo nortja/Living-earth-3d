@@ -1,0 +1,17 @@
+{
+  "version": "0.25.0",
+  "run_id": 41364004217,
+  "job_id": 125023706608,
+  "result": "success",
+  "soak_seconds": 605.1,
+  "samples": 20,
+  "checks": [
+    "Native preview rendering/parenting/resizing/input",
+    "Current 0.24.0 and legacy 0.5.2 upgrades, handled-failure rollback",
+    "Timer/settings and secure-resume readback",
+    "Controller death and independent preview cleanup",
+    "Fullscreen coverage and keyboard exit",
+    "Simulated display, suspend and session-lock cleanup"
+  ],
+  "limits": "Isolated Windows software rendering; no physical Dell/DPI/sleep claim."
+}

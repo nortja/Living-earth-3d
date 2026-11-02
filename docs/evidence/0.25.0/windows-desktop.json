@@ -1,0 +1,84 @@
+{
+  "display": {
+    "active_screen": 0,
+    "available": true,
+    "dpi": 96,
+    "gpu": "llvmpipe (LLVM 23.1.2, 256 bits)",
+    "monitor_pixels": [
+      1024,
+      768
+    ],
+    "monitors": [
+      {
+        "dpi": 96,
+        "index": 0,
+        "pixels": [
+          1024,
+          768
+        ],
+        "position_pixels": [
+          0,
+          0
+        ],
+        "refresh_hz": 64.0,
+        "scale": 1.0
+      }
+    ],
+    "refresh_hz": 64.0,
+    "renderer": "gl_compatibility",
+    "viewport_pixels": [
+      870,
+      612
+    ],
+    "window_mode": 0
+  },
+  "engine": "4.6.3-stable (official)",
+  "engine_tracked_memory_bytes": null,
+  "frame_cap": 60,
+  "limits": "Frame intervals include the FPS cap and scheduling. Engine tracked memory is unavailable in release builds; when available it excludes driver/GPU/process allocations. Unavailable memory values are null. Minimized or sleep intervals over two seconds are excluded. Recording contexts group active frames by quality, frame cap, viewport, interface scale, screen index and window mode; after 31 configuration segments, remaining frames use an explicitly mixed bucket. Screen index is sampled with the display report and can lag by about one active second; other context settings are sampled each frame. Monitor inventory is a current snapshot, not a historical DPI trace. No hardware pass/fail score.",
+  "memory_counter_available": false,
+  "os": "Windows",
+  "product": "LivingEarth3D",
+  "quality": "balanced",
+  "recent_frames": {
+
+  },
+  "recording": {
+    "active": false,
+    "active_seconds": 300.003626050509,
+    "context_limit_reached": false,
+    "contexts": [
+      {
+        "active_seconds": 300.003626050509,
+        "context": {
+          "active_screen": 0,
+          "frame_cap": 60,
+          "quality": "balanced",
+          "ui_scale": 1.0,
+          "viewport_pixels": [
+            870,
+            612
+          ],
+          "window_mode": 0
+        },
+        "frames": 13023,
+        "frames_over_50ms": 1,
+        "max_ms": 131.111111111111,
+        "mean_ms": 23.0364452161951,
+        "start_active_seconds": 0.0
+      }
+    ],
+    "end_engine_memory_bytes": null,
+    "frames": 13023,
+    "frames_over_50ms": 1,
+    "max_ms": 131.111111111111,
+    "mean_ms": 23.0364452161951,
+    "peak_engine_memory_bytes": null,
+    "screen_index_poll_seconds": 1.0,
+    "start_engine_memory_bytes": null
+  },
+  "retrieved_utc": "2026-11-02T00:10:18Z",
+  "schema": 1,
+  "ui_scale": 1.0,
+  "version": "0.25.0"
+}

@@ -1,10 +1,10 @@
 # Living Earth 3D
 
-An offline-first interactive Windows globe and screensaver, built with Godot 4. Released **0.24.0 preview**.
+An offline-first interactive Windows globe and screensaver, built with Godot 4. Released **0.25.0 preview**.
 
 ## Windows users
 
-[Download LivingEarth3D-Setup-0.24.0.exe](https://github.com/nortja/Living-earth-3d/raw/refs/heads/downloads/windows-0.24.0/LivingEarth3D-Setup-0.24.0.exe), double-click, install, then open the desktop shortcut. No ZIP extraction, terminal, separate runtime, or Godot setup is needed. This is an unsigned preview. The user confirmed successful download and automatic updating on 2026-11-01, and working Camera Wall/cameras previously. Windows CI verifies installation and rollback; physical GPU/DPI checks remain outstanding.
+[Download LivingEarth3D-Setup-0.25.0.exe](https://github.com/nortja/Living-earth-3d/raw/refs/heads/downloads/windows-0.25.0/LivingEarth3D-Setup-0.25.0.exe), double-click, install, then open the desktop shortcut. No ZIP extraction, terminal, separate runtime, or Godot setup is needed. This is an unsigned preview. The user confirmed successful download and automatic updating on 2026-11-01, and working Camera Wall/cameras previously. Windows CI verifies installation and rollback; physical GPU/DPI checks remain outstanding.
 
 The real globe emerges from darkness with illuminated Earth branding. Drag to spin with gentle inertia, scroll or double-click to zoom, and use **Full Earth** or Home to reset. F11 toggles fullscreen. Earth stays centered and proportional at native viewport resolution, including ultrawide and 4K/5K sizes. Compact controls scale automatically with window resolution. Panels adapt to smaller windows; an optional wide Command Center overview uses spare space.
 
@@ -19,6 +19,12 @@ Six offline screensaver styles offer Ambient Earth, Discovery journeys, Night li
 **Install once, then update from the app.** Version 0.5.3 includes automatic updates enabled by default. It checks at startup and every 30 minutes while open, downloads authenticated releases, and installs silently when you close the app. **Settings → Update and restart now** applies a ready release with a graceful restart; the Automatic updates toggle pauses/resumes updates. Both minor and major releases use the same process. Favorites, interface size, sound and other preferences remain local.
 
 Releases require a valid signature from the public key pinned in the installed updater, plus matching installer and installed-file hashes. Windows publisher signing is separate: this bootstrap installer remains an unsigned preview. Versions 0.5.2 and older need this installer once to obtain the new updater. A Windows CI run verified silent installation, preservation of user data, running-app protection and restoration of previous files after a deliberately failed verification. Physical GPU/DPI and visible-app restart field tests remain separate. See [docs/AUTO_UPDATE.md](docs/AUTO_UPDATE.md).
+
+## New in 0.25.0
+
+**Surprise: shuffled cinematic scenes.** In **Live Earth → Scene library**, enable **Shuffle scenes** and press Play. Each round visits every other saved view once; rounds never immediately repeat the current view. Three or more scenes make the sequence varied; two alternate and one remains usable. The saved order stays intact, the choice persists locally and defaults off. Changing the order pauses playback. Manual selection and Save/Remove/Undo reset the bounded queue safely.
+
+The Moon zoom fix, optional galaxy and pointer-out clean scene remain included. Existing authenticated updater installations receive this release without another manual installer. [Validation](docs/VALIDATION-0.25.0.md).
 
 ## New in 0.24.0
 

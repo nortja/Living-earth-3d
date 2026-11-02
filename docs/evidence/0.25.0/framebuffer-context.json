@@ -1,0 +1,8 @@
+﻿{
+    "desktop_pixels":  [
+                           1024,
+                           768
+                       ],
+    "resize_after_startup":  true,
+    "limits":  "Explicit post-start native client resize may extend outside the virtual desktop. Actual framebuffer dimensions still must match. This is not a physical monitor/DPI test."
+}

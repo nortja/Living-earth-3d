@@ -1,0 +1,20 @@
+{
+  "version": "0.25.0",
+  "source": "b1d32aae5c81ffa80182be9d820ce20857a14d61",
+  "release_run": 41364004217,
+  "public_run": 41366552874,
+  "size": 73321570,
+  "sha256": "1f0320b198a8fd3a8819e02725bb2af9a14b8c6a3e36063538bb0f002d85d841",
+  "pinned_key_signature_verified": true,
+  "discovery_file_sha256": {
+    "application.json": "831840124b2d58d5b4a93426283231aad8fa9fc6d6214100486b76f69bb45364",
+    "application.sig": "5b105b1d33756bee8be7c4b7ee02771e2812248a39266c02119535336fbde985",
+    "preview.json": "4d3bd02abd5024955ead15e9a79ac9a7b95e9fe8f19f11b0a74420415b7fc260"
+  },
+  "installed_files": {
+    "LivingEarth3D.exe": "536006c659acaaf34cbecca8af774374a7a3f3aee49e707f21a0ac777796efd0",
+    "LivingEarth3D.scr": "b00fda463f7a5a70dacd5e7c3bc4b89f6f77e8a841ecdc2de14353bbc39ed5e5",
+    "update-core.ps1": "311f11003a720af948bae265e8fc4037576883df763da914a16a16c1fbcef6bd",
+    "update.ps1": "639caa93b1ca379ae4558dfad708ec950d2e1346b6211ae01dca0000d1c2cb3c"
+  }
+}

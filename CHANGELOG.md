@@ -1,3 +1,9 @@
+## 0.25.0 preview — 2026-11-01
+
+- Add optional Shuffle scenes to the cinematic Scene Library: visit every other view once per round, never immediately repeat the last view, retain original saved order and persist the local choice.
+- Pause when changing order; reset a stale queue on manual selection and list mutation. Existing temporary playback defaults, discovery ownership and saver interruption remain intact.
+- 2,519 source assertions, seventeen native suites and full installed Windows/upgrade/rollback/framebuffer/605-second saver gates passed. Independent delivery/signature checks gate updater promotion. See [validation](docs/VALIDATION-0.25.0.md).
+
 ## 0.24.0 preview — 2026-11-01
 
 - Scale Moon size and relative spacing together with Earth throughout zoom and camera transitions; preserve optional visibility and the normal composition.

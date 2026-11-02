@@ -1,0 +1,27 @@
+{
+  "version": "0.25.0",
+  "source_suites": 26,
+  "source_assertions": 2519,
+  "scene_library_checks": 671,
+  "scene_library_failures": 0,
+  "scope": "Local Godot 4.6.3 behavior and native Linux software rendering; Windows release gates separate.",
+  "native_render_suites": [
+    "scene_library_render_test 0 Native scene library: 0 failures",
+    "space_studio_render_test 0 Native space studio: 0 failures",
+    "observed_weather_render_test 0 Native observed weather: 0 failures",
+    "lunar_observatory_render_test 0 Native lunar observatory: 0 failures",
+    "journey_studio_render_test 0 Native journey studio: 0 failures",
+    "sunlight_explorer_render_test 0 Native sunlight explorer: 0 failures",
+    "saved_places_backup_render_test 0 Native saved-place backups: 0 failures",
+    "offline_atlas_render_test 0 Native offline atlas: 0 failures",
+    "satellite_snapshot_render_test 0 Native satellite snapshot: 0 failures",
+    "weather_layer_render_test 0 Native weather globe layer: 0 failures",
+    "discovery_photos_render_test 0 Native discovery photographs/history: 0 failures",
+    "performance_render_test 0 Native performance report: 0 failures",
+    "arrival_render_test 0 Native destination arrivals: 0 failures",
+    "exploration_render_test 0 Exploration native layouts and screensavers: 0 failures",
+    "wall_render_test 0 Wall native renders: 0 failures",
+    "render_test 0 Render tests: 2 quality modes \u00d7 6 sizes, 0 failures",
+    "intro_render_test 0 Intro render: dark \u2192 reveal \u2192 Explorer [0.0, 0.26154983043671, 0.6245145201683]; 0 failures"
+  ]
+}

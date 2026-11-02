@@ -1,6 +1,6 @@
 # Living Earth 3D — current roadmap
 
-Updated 2026-11-01. Latest released baseline: 0.24.0 (synchronized Moon zoom and personal cinematic Scene Library, with pointer-out clean view, optional Moon, offline 4K Milky Way, lunar calendar, tours, regional infrared and explicit Windows idle setup). One Windows installer, then authenticated automatic updates; the base Earth remains useful offline.
+Updated 2026-11-01. Latest released baseline: 0.25.0 (synchronized Moon zoom and personal cinematic Scene Library, with pointer-out clean view, optional Moon, offline 4K Milky Way, lunar calendar, tours, regional infrared and explicit Windows idle setup). One Windows installer, then authenticated automatic updates; the base Earth remains useful offline.
 
 ## Completed
 
@@ -239,3 +239,10 @@ Physical Dell/DPI/mixed-monitor/sleep tests, continuous video, global/Asia cloud
 - [x] All 1,885 source checks, seventeen native suites, actual installed Windows scene capture/transition/Moon zoom, seven exact framebuffers, upgrades/rollback/settings and ten-minute saver lifecycle passed in 41356762602.
 - [x] Independent public provenance/download check 41358905420, separate local verifier and pinned-key signature verification passed before atomic source/feed promotion.
 - [x] Final production Windows staging/cancellation/normal-exit updater roundtrip 41359112627 passed. See [validation](docs/VALIDATION-0.24.0.md).
+
+
+## Release 0.25.0 — shuffled cinematic scenes
+
+- Opt-in persisted shuffle with a bounded no-adjacent-repeat queue; original saved-order playback remains the default. Manual selection and list changes reset the queue safely; changing order pauses playback.
+- 2,519 source assertions across 26 suites, seventeen native suites, actual installed Windows toggle/transitions, seven framebuffers, current/legacy upgrades, rollback/settings and 605-second saver lifecycle passed in 41364004217.
+- Public download/provenance and pinned-key signature checks precede automatic-update promotion; the separate production updater roundtrip completes the rollout. [Validation](docs/VALIDATION-0.25.0.md).
