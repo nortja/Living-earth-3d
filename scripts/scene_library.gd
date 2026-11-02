@@ -241,8 +241,10 @@ func undo() -> void:
     undo_scene={};status="Scene restored.";refresh()
 
 func _process(delta: float) -> void:
-    if not playing: return
+    var fading := is_instance_valid(transition) and transition.is_running()
+    if not playing and not fading: return
     if app.screensaver_mode or get_window().mode==Window.MODE_MINIMIZED or app.clean_view.modal_open(): pause();return
+    if not playing: return
     if app.space_studio.saving or busy: return
     elapsed+=minf(delta,0.5)
     if elapsed>=interval:

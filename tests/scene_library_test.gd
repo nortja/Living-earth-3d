@@ -38,6 +38,16 @@ func run() -> void:
     verify(not lib.playing and is_equal_approx(app.intro_reveal,1.0),"Interruption cancels fade and restores scene brightness")
     verify(app.discovery_enabled and app.elapsed==0.0,"Pause restores the previous discovery choice with a fresh timer")
     app.discovery_enabled=false
+    var retained_scene: int=lib.current
+    lib.next_scene()
+    app.space_studio.dialog=FileDialog.new()
+    app.add_child(app.space_studio.dialog)
+    app.space_studio.dialog.show()
+    lib._process(0.1)
+    verify(not is_instance_valid(lib.transition) and is_equal_approx(app.intro_reveal,1.0),"A modal cancels manual Next even when timed playback is stopped")
+    await create_timer(1.0).timeout
+    verify(lib.current==retained_scene,"Cancelled manual transition never applies its delayed scene callback")
+    app.space_studio.dialog.hide()
     lib.play();app._zoom(0.2)
     verify(not lib.playing,"Manual zoom interrupts cinematic playback")
     lib.play();app.interface.open_page("Space studio")

@@ -62,6 +62,22 @@ func run() -> void:
     app.interface.close_panel()
     check(lib.playing,"Closing menu preserves explicit playback")
     lib.pause()
+    # Next is also a live transition when timed playback is stopped.
+    var retained_scene: int=lib.current
+    var defaults: String=app.preferences.encode_to_text()
+    lib.next_scene()
+    app.space_studio.dialog=FileDialog.new()
+    app.space_studio.dialog.use_native_dialog=false
+    app.add_child(app.space_studio.dialog)
+    app.space_studio.dialog.popup_centered(Vector2i(500,300))
+    await create_timer(1.1).timeout
+    check(lib.current==retained_scene and is_equal_approx(app.intro_reveal,1.0),"A file dialog cancels a manual Next before changing the composition")
+    check(app.preferences.encode_to_text()==defaults,"Interrupted manual Next preserves visual defaults")
+    app.space_studio.dialog.hide()
+    await settle()
+    lib.next_scene()
+    await create_timer(1.1).timeout
+    check(lib.current!=retained_scene and is_equal_approx(app.intro_reveal,1.0),"Manual Next still completes after the dialog closes")
     app.clean_view.validation_pin=false;app.clean_view.set_pointer(false)
     var radii: Array[float]=[]
     for distance in [3.6,7.5]:
