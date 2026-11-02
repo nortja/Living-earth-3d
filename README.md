@@ -24,7 +24,7 @@ Releases require a valid signature from the public key pinned in the installed u
 
 **Surprise: shuffled cinematic scenes.** In **Live Earth → Scene library**, enable **Shuffle scenes** and press Play. Each round visits every other saved view once; rounds never immediately repeat the current view. Three or more scenes make the sequence varied; two alternate and one remains usable. The saved order stays intact, the choice persists locally and defaults off. Changing the order pauses playback. Manual selection and Save/Remove/Undo reset the bounded queue safely.
 
-The Moon zoom fix, optional galaxy and pointer-out clean scene remain included. Existing authenticated updater installations receive this release without another manual installer. [Validation](docs/VALIDATION-0.25.0.md).
+The Moon zoom fix, optional galaxy and pointer-out clean scene remain included. Existing authenticated updater installations receive this release without another manual installer. All release gates, independent public/signature checks and production Windows updater roundtrip [41366725051](https://github.com/nortja/Living-earth-3d/actions/runs/41366725051) passed. [Validation](docs/VALIDATION-0.25.0.md).
 
 ## New in 0.24.0
 

@@ -1,6 +1,6 @@
 # 0.25.0 validation — shuffled cinematic scenes
 
-All candidate, native, Windows and independent public-delivery gates passed. Exact signed discovery bytes are promoted with the validated source; the separate production updater roundtrip is the final rollout gate.
+All candidate, native, Windows and independent public-delivery gates passed. Exact signed discovery bytes and validated source were promoted atomically. Separate production Windows updater roundtrip 41366725051 also passed, completing this rollout.
 
 ## Frozen source and completed checks
 
@@ -15,6 +15,6 @@ Shuffle tests cover two through eight views over repeated rounds, finite bounded
 - Legacy 0.5.2 and current 0.24.0 upgrades, handled-failure rollback, running-app deferral, actual Windows settings/timer readback, 605.1-second preview soak and native lifecycle checks passed. [Screensaver](evidence/0.25.0/windows-screensaver.json).
 - Independent public verifier [41366552874](https://github.com/nortja/Living-earth-3d/actions/runs/41366552874) passed. Downloaded public bytes were separately hashed locally; helper hashes and the exact detached signature were independently checked against the updater's existing pinned key. [Public delivery](evidence/0.25.0/public-delivery.json) and [signature](evidence/0.25.0/signature.json).
 - Installer: 73,321,570 bytes, SHA-256 `1f0320b198a8fd3a8819e02725bb2af9a14b8c6a3e36063538bb0f002d85d841`. Temporary signing key was removed immediately after verification.
-- Final production authenticated staging/cancellation/normal-exit installation and four-file verification follows promotion.
+- Production Windows updater roundtrip [41366725051](https://github.com/nortja/Living-earth-3d/actions/runs/41366725051) passed on its first attempt: authenticated staging, cancellation without replacement, normal-exit installation, all four installed-file hashes and no unwanted reopening. [Receipt](evidence/0.25.0/production-update.json). All three live discovery files matched the independently verified signed bytes; [live receipt](evidence/0.25.0/live-discovery.json).
 
 Software-rendered Windows/Linux results do not establish physical Dell/DPI, mixed-monitor, idle/sleep or overnight behavior. Scene Library remains desktop only. Continuous video, global/Asia clouds and publisher Authenticode remain separate roadmap work.

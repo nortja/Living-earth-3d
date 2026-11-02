@@ -2,13 +2,13 @@
 
 ## End-user installation
 
-The current artifact is `LivingEarth3D-Setup-0.24.0.exe`: one per-user NSIS installer with desktop/Start menu shortcuts, installed-apps uninstall and no separate runtime. Install once; updater-enabled versions subsequently receive authenticated releases and apply them after normal app/screensaver exit. Preferences and bookmarks remain local. Native screensaver selection is optional.
+The current artifact is `LivingEarth3D-Setup-0.25.0.exe`: one per-user NSIS installer with desktop/Start menu shortcuts, installed-apps uninstall and no separate runtime. Install once; updater-enabled versions subsequently receive authenticated releases and apply them after normal app/screensaver exit. Preferences and bookmarks remain local. Native screensaver selection is optional.
 
 The installer remains Windows publisher-unsigned. Authenticated update metadata uses the existing pinned RSA key independently of Windows Authenticode. Silent installs defer while matching app/screensaver processes are active; they do not force a running user process closed. Handled verification failures restore known previous files and version metadata. This is not a power-loss recovery guarantee.
 
 ## Current evidence
 
-[0.24.0 validation](VALIDATION-0.24.0.md) records the exact frozen source and fresh source/native/Windows, scene capture/playback/Moon zoom, update/rollback, settings and saver lifecycle gates. Physical hardware checks remain separate.
+[0.25.0 validation](VALIDATION-0.25.0.md) records the exact frozen source and fresh source/native/Windows, scene capture/playback/Moon zoom, update/rollback, settings and saver lifecycle gates. Physical hardware checks remain separate.
 
 Software-rendered disposable Windows/Linux CI does not establish physical Dell GPU/DPI, multiple-monitor, sleep/wake, fan/power or audible playback results. See [field observations](FIELD_CHECKS.md). The old general Windows installer workflow stays disabled, with no automatic push/tag triggers. Release-specific branch workflows validate one candidate without receiving the private release key or promoting the production feed themselves. Promotion follows verified published bytes and a detached signature over exact metadata.
 
@@ -28,8 +28,8 @@ For Linux cross-builds, install the pinned tools in `packaging/windows/requireme
 python packaging/windows/set_icon.py build/windows/earth_template.exe assets/icon.ico
 godot --headless --path . --export-release 'Windows Desktop' build/windows/LivingEarth3D.exe
 python tests/windows_icon_test.py build/windows/LivingEarth3D.exe
-makensis -DVERSION=0.24.0 -DBUILD_DIR=/absolute/repo/build/windows -DOUTPUT=/absolute/repo/dist/LivingEarth3D-Setup-0.24.0.exe packaging/windows/installer.nsi
-python tests/windows_icon_test.py dist/LivingEarth3D-Setup-0.24.0.exe --installer
+makensis -DVERSION=0.25.0 -DBUILD_DIR=/absolute/repo/build/windows -DOUTPUT=/absolute/repo/dist/LivingEarth3D-Setup-0.25.0.exe packaging/windows/installer.nsi
+python tests/windows_icon_test.py dist/LivingEarth3D-Setup-0.25.0.exe --installer
 ```
 
 Version numbers in project.godot, scripts/earth.gd, export_presets.cfg and installer.nsi's fallback should agree. Windows build output names use the project version. Keep private signing material out of the checkout.
@@ -72,7 +72,7 @@ Public-data requests remain explicit: USGS earthquakes, OpenStreetMap search, Op
 
 ## Current-package framebuffer gate
 
-0.24.0's installed desktop job runs seven exact framebuffer sizes under Windows PowerShell 5.1 with explicit post-start client resizing, including the requested laptop and Dell dimensions. Actual reports retain the 1024×768 virtual-desktop limitation and llvmpipe identity. See [current validation](VALIDATION-0.24.0.md); no physical Dell/5K-monitor or frame-rate claim is inferred.
+0.25.0's installed desktop job runs seven exact framebuffer sizes under Windows PowerShell 5.1 with explicit post-start client resizing, including the requested laptop and Dell dimensions. Actual reports retain the 1024×768 virtual-desktop limitation and llvmpipe identity. See [current validation](VALIDATION-0.25.0.md); no physical Dell/5K-monitor or frame-rate claim is inferred.
 
 ## 0.21.0 idle setup and lunar/tour release
 
@@ -85,3 +85,7 @@ Pointer-out menus, optional Moon in every style, offline photographic Milky Way 
 ## 0.24.0 Moon zoom and Scene Library
 
 The installed EXE now proves Moon scale changes with Earth zoom, saves two real local scenes, restores camera/Moon/galaxy choices and completes an actual cinematic transition. Cursor/PNG, upgrade/rollback, timer/settings, seven framebuffer and ten-minute native saver gates remain required. [Validation](VALIDATION-0.24.0.md).
+
+## 0.25.0 shuffled cinematic scenes
+
+The installed EXE also toggles persisted Shuffle through the real UI and crosses a round boundary without an immediate repeat. The original saved-order playback stays the default. [Validation](VALIDATION-0.25.0.md).

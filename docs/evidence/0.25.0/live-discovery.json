@@ -1,0 +1,10 @@
+{
+  "version": "0.25.0",
+  "source_promotion": "2d559cf6ecc9705cd64a911d0d78ce75f9fa27dd",
+  "exact_live_bytes_match_signed_files": true,
+  "sha256": {
+    "application.json": "831840124b2d58d5b4a93426283231aad8fa9fc6d6214100486b76f69bb45364",
+    "application.sig": "5b105b1d33756bee8be7c4b7ee02771e2812248a39266c02119535336fbde985",
+    "preview.json": "4d3bd02abd5024955ead15e9a79ac9a7b95e9fe8f19f11b0a74420415b7fc260"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "schema": 1,
+  "version": "0.25.0",
+  "run_id": 41366725051,
+  "job_id": 125028324458,
+  "source_feed_promotion": "2d559cf6ecc9705cd64a911d0d78ce75f9fa27dd",
+  "application_source": "b1d32aae5c81ffa80182be9d820ce20857a14d61",
+  "result": "success",
+  "checks": [
+    "Live pinned signature and exact installer hash verified",
+    "New release stages while baseline application remains open",
+    "Cancellation leaves old installed bytes unchanged",
+    "Normal-exit installation waits for the application",
+    "All four installed-file hashes verified",
+    "Intentionally closed app is not reopened"
+  ],
+  "installed_files": {
+    "LivingEarth3D.exe": "536006c659acaaf34cbecca8af774374a7a3f3aee49e707f21a0ac777796efd0",
+    "LivingEarth3D.scr": "b00fda463f7a5a70dacd5e7c3bc4b89f6f77e8a841ecdc2de14353bbc39ed5e5",
+    "update-core.ps1": "311f11003a720af948bae265e8fc4037576883df763da914a16a16c1fbcef6bd",
+    "update.ps1": "639caa93b1ca379ae4558dfad708ec950d2e1346b6211ae01dca0000d1c2cb3c"
+  },
+  "limits": "Isolated Windows updater test; physical monitor/DPI and idle/sleep remain field checks."
+}

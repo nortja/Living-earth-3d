@@ -245,4 +245,4 @@ Physical Dell/DPI/mixed-monitor/sleep tests, continuous video, global/Asia cloud
 
 - Opt-in persisted shuffle with a bounded no-adjacent-repeat queue; original saved-order playback remains the default. Manual selection and list changes reset the queue safely; changing order pauses playback.
 - 2,519 source assertions across 26 suites, seventeen native suites, actual installed Windows toggle/transitions, seven framebuffers, current/legacy upgrades, rollback/settings and 605-second saver lifecycle passed in 41364004217.
-- Public download/provenance and pinned-key signature checks precede automatic-update promotion; the separate production updater roundtrip completes the rollout. [Validation](docs/VALIDATION-0.25.0.md).
+- Independent public download/provenance run 41366552874 and pinned-key signature checks passed before automatic-update promotion. Production Windows updater roundtrip 41366725051 passed staging/cancellation/normal-exit installation and four-file verification. [Validation](docs/VALIDATION-0.25.0.md).
