@@ -1,0 +1,165 @@
+{
+  "reviewed": "2026-11-03",
+  "test_date": "2026-11-02",
+  "tested_source": "8a98cea6cf6adfaa05e5b27471de683054dd3962",
+  "run": "https://github.com/nortja/Living-earth-3d/actions/runs/41485285747",
+  "jobs": [
+    {
+      "name": "build",
+      "id": 125413895429,
+      "conclusion": "success"
+    },
+    {
+      "name": "windows",
+      "id": 125421468681,
+      "conclusion": "success"
+    },
+    {
+      "name": "desktop",
+      "id": 125421468964,
+      "conclusion": "success"
+    }
+  ],
+  "assertions": [
+    {
+      "suite": "Explorer",
+      "checks": 56
+    },
+    {
+      "suite": "Interface/data",
+      "checks": 48
+    },
+    {
+      "suite": "Ambient audio",
+      "checks": 6
+    },
+    {
+      "suite": "Interface scale",
+      "checks": 187
+    },
+    {
+      "suite": "Automatic updates",
+      "checks": 6
+    },
+    {
+      "suite": "Camera viewer",
+      "checks": 41
+    },
+    {
+      "suite": "Camera wall",
+      "checks": 59
+    },
+    {
+      "suite": "Sunlight",
+      "checks": 20
+    },
+    {
+      "suite": "Exploration/weather/history",
+      "checks": 61
+    },
+    {
+      "suite": "Arrival experience",
+      "checks": 26
+    },
+    {
+      "suite": "Local performance",
+      "checks": 52
+    },
+    {
+      "suite": "Camera expansion",
+      "checks": 26
+    },
+    {
+      "suite": "Discovery photographs/history",
+      "checks": 126
+    },
+    {
+      "suite": "Weather globe layer",
+      "checks": 84
+    },
+    {
+      "suite": "Satellite snapshot",
+      "checks": 38
+    },
+    {
+      "suite": "Camera revalidation",
+      "checks": 225
+    },
+    {
+      "suite": "Offline atlas",
+      "checks": 22
+    },
+    {
+      "suite": "Saved places backup",
+      "checks": 36
+    },
+    {
+      "suite": "Sunlight explorer",
+      "checks": 50
+    },
+    {
+      "suite": "Journey studio",
+      "checks": 56
+    },
+    {
+      "suite": "Lunar observatory",
+      "checks": 447
+    },
+    {
+      "suite": "Screensaver setup",
+      "checks": 18
+    },
+    {
+      "suite": "Observed satellite weather",
+      "checks": 46
+    },
+    {
+      "suite": "Space studio",
+      "checks": 37
+    },
+    {
+      "suite": "Moon zoom",
+      "checks": 75
+    },
+    {
+      "suite": "Scene library",
+      "checks": 673
+    },
+    {
+      "suite": "Screensaver arguments",
+      "checks": 39
+    }
+  ],
+  "application_assertions": 2521,
+  "native_render_suites": 17,
+  "native_scene_library_pass": true,
+  "windows": {
+    "update_install_passes": 2,
+    "status_checks_per_runtime": 211,
+    "security_checks_per_runtime": 16,
+    "screen_settings_pass": true,
+    "soak_seconds": 605.1,
+    "frames": [
+      "PASS: Windows native EXE at 1920x1080 on llvmpipe (LLVM 23.1.2, 256 bits)",
+      "PASS: Windows native EXE at 2496x1664 on llvmpipe (LLVM 23.1.2, 256 bits)",
+      "PASS: Windows native EXE at 3440x1440 on llvmpipe (LLVM 23.1.2, 256 bits)",
+      "PASS: Windows native EXE at 3840x1080 on llvmpipe (LLVM 23.1.2, 256 bits)",
+      "PASS: Windows native EXE at 3840x2160 on llvmpipe (LLVM 23.1.2, 256 bits)",
+      "PASS: Windows native EXE at 5120x1440 on llvmpipe (LLVM 23.1.2, 256 bits)",
+      "PASS: Windows native EXE at 5120x2880 on llvmpipe (LLVM 23.1.2, 256 bits)"
+    ],
+    "recording_active_seconds": 300.014809444467,
+    "clean_view_pass": true
+  },
+  "release": {
+    "published": false,
+    "feed_changed": false,
+    "existing_feed_version": "0.25.0",
+    "reason": "Source-only validation candidate retains test version 0.25.0; not a replacement public release. Public artifact provenance/download verification, signature gates and production updater roundtrip were not performed for this patch."
+  },
+  "limits": [
+    "Software-rendered hosted Windows/Linux only.",
+    "No physical Dell GPU/DPI/mixed-monitor/sleep or overnight hardware test.",
+    "New modal interruption regression runs in source/native Linux; installed Windows suite is regression coverage, not a new modal-specific Windows interaction test."
+  ]
+}

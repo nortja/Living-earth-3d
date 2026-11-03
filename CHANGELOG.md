@@ -1,3 +1,8 @@
+## Unreleased — source validated 2026-11-03
+
+- Cancel manual Scene Library Next fades on modal/minimize/screensaver interruption while timed playback is paused; retain the composition and restore brightness without rewriting defaults.
+- Source/native/export/installed Windows, seven framebuffer sizes and 605.1-second saver gates passed. Merged source only; updates remain on 0.25.0. [Validation](docs/VALIDATION-SCENE-INTERRUPTION.md).
+
 ## 0.25.0 preview — 2026-11-01
 
 - Add optional Shuffle scenes to the cinematic Scene Library: visit every other view once per round, never immediately repeat the last view, retain original saved order and persist the local choice.
