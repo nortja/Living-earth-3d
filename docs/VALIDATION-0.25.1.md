@@ -21,4 +21,6 @@ Discovery JSON, detached signature and legacy preview metadata are promoted atom
 
 ## Production updater
 
-Production signed-feed staging, cancellation and normal-exit installation roundtrip is pending. No success claim is made until that separate Windows run completes. Camera/data source scope and freshness limitations are unchanged.
+[Production Windows run 42062505671](https://github.com/nortja/Living-earth-3d/actions/runs/42062505671) passed on November 5. It verified the live signature and installer, staged while the app was open, cancelled without replacement, installed on normal exit, confirmed all four installed hashes and did not reopen the app. The three public discovery files matched the exact verified bytes. [Receipt](evidence/0.25.1/production-update.json).
+
+Reviewed the installed Scene Library and 3840×1080 Live Earth captures: primary controls visible and Earth centered. Camera/data source scope and freshness limitations are unchanged.

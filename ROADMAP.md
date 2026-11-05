@@ -5,7 +5,7 @@ Updated 2026-11-05. Latest released baseline: 0.25.1 (synchronized Moon zoom and
 ## Release 0.25.1 — interruption reliability
 
 - Manual Scene Library Next now obeys modal/minimize/screensaver interruption while playback is paused. The separately versioned candidate passed fresh 2,521 source assertions, seventeen native suites, legacy/current 0.25.0 upgrades, preservation after rollback, seven Windows framebuffers and a 605-second saver soak in run 41870662412.
-- Exact public installer and pinned-key signed metadata verified before authenticated feed promotion. Production updater roundtrip pending. [Validation](docs/VALIDATION-0.25.1.md).
+- Exact public installer and pinned-key signed metadata verified before authenticated feed promotion. Production Windows updater roundtrip [42062505671](https://github.com/nortja/Living-earth-3d/actions/runs/42062505671) passed. [Validation](docs/VALIDATION-0.25.1.md).
 
 ## Completed
 

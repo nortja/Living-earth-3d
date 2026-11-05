@@ -1,0 +1,21 @@
+{
+  "version": "0.25.1",
+  "completed": "2026-11-05",
+  "promotion_commit": "5a6ed137f81a1fd8ae1b1d14a4172ec70752a2e9",
+  "workflow": "https://github.com/nortja/Living-earth-3d/actions/runs/42062505671",
+  "job": 127367746859,
+  "result": "success",
+  "checks": [
+    "PASS: production signed release downloads and waits; cancellation leaves app unchanged",
+    "PASS: production helper verifies live signature/download, installs after normal exit, verifies files and does not reopen an intentionally closed app"
+  ],
+  "public_discovery_exact_sha256": {
+    "application.json": "a705fe2561a1f6fad1a85c201c8435ef44163b06f5a28fcada0686d5a75447dc",
+    "application.sig": "27b89e7305caa8e6bb8c336a650421f21d8b1365d8331a103964d80eee50b311",
+    "preview.json": "e27c3b143bc348db85050faf88f3270b9582ebc5c12118c8b400f8aa61e966fe"
+  },
+  "reviewed_captures": [
+    "Windows installed Scene Library",
+    "Windows 3840x1080 Live Earth framebuffer"
+  ]
+}
