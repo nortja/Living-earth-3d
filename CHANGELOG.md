@@ -1,7 +1,7 @@
-## Unreleased — source validated 2026-11-03
+## 0.25.1 preview — 2026-11-05
 
 - Cancel manual Scene Library Next fades on modal/minimize/screensaver interruption while timed playback is paused; retain the composition and restore brightness without rewriting defaults.
-- Source/native/export/installed Windows, seven framebuffer sizes and 605.1-second saver gates passed. Merged source only; updates remain on 0.25.0. [Validation](docs/VALIDATION-SCENE-INTERRUPTION.md).
+- Add verified 0.25.0 upgrade baseline and preservation checks after rollback. All source/native/installed Windows and public delivery/signature gates passed; production updater roundtrip pending. [Validation](docs/VALIDATION-0.25.1.md).
 
 ## 0.25.0 preview — 2026-11-01
 

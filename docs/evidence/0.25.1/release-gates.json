@@ -1,0 +1,313 @@
+{
+  "version": "0.25.1",
+  "reviewed": "2026-11-05",
+  "source": "e76bac4497faab381b0819c155e4080507008a82",
+  "source_tree": "f03106c2968c723a55e1abf957396751cfabe779",
+  "run": "https://github.com/nortja/Living-earth-3d/actions/runs/41870662412",
+  "source_suites": [
+    {
+      "suite": "Explorer",
+      "checks": 56
+    },
+    {
+      "suite": "Interface/data",
+      "checks": 48
+    },
+    {
+      "suite": "Ambient audio",
+      "checks": 6
+    },
+    {
+      "suite": "Interface scale",
+      "checks": 187
+    },
+    {
+      "suite": "Automatic updates",
+      "checks": 6
+    },
+    {
+      "suite": "Camera viewer",
+      "checks": 41
+    },
+    {
+      "suite": "Camera wall",
+      "checks": 59
+    },
+    {
+      "suite": "Sunlight",
+      "checks": 20
+    },
+    {
+      "suite": "Exploration/weather/history",
+      "checks": 61
+    },
+    {
+      "suite": "Arrival experience",
+      "checks": 26
+    },
+    {
+      "suite": "Local performance",
+      "checks": 52
+    },
+    {
+      "suite": "Camera expansion",
+      "checks": 26
+    },
+    {
+      "suite": "Discovery photographs/history",
+      "checks": 126
+    },
+    {
+      "suite": "Weather globe layer",
+      "checks": 84
+    },
+    {
+      "suite": "Satellite snapshot",
+      "checks": 38
+    },
+    {
+      "suite": "Camera revalidation",
+      "checks": 225
+    },
+    {
+      "suite": "Offline atlas",
+      "checks": 22
+    },
+    {
+      "suite": "Saved places backup",
+      "checks": 36
+    },
+    {
+      "suite": "Sunlight explorer",
+      "checks": 50
+    },
+    {
+      "suite": "Journey studio",
+      "checks": 56
+    },
+    {
+      "suite": "Lunar observatory",
+      "checks": 447
+    },
+    {
+      "suite": "Screensaver setup",
+      "checks": 18
+    },
+    {
+      "suite": "Observed satellite weather",
+      "checks": 46
+    },
+    {
+      "suite": "Space studio",
+      "checks": 37
+    },
+    {
+      "suite": "Moon zoom",
+      "checks": 75
+    },
+    {
+      "suite": "Scene library",
+      "checks": 673
+    },
+    {
+      "suite": "Screensaver arguments",
+      "checks": 39
+    }
+  ],
+  "application_checks": 2521,
+  "native_render_suites": 17,
+  "windows_baselines": [
+    "0.5.2",
+    "0.25.0"
+  ],
+  "windows_soak_samples": [
+    {
+      "seconds": 30,
+      "private_bytes": 250531840,
+      "working_set_bytes": 293470208,
+      "cpu_seconds": 23.16,
+      "width": 320,
+      "height": 200
+    },
+    {
+      "seconds": 60.3,
+      "private_bytes": 246743040,
+      "working_set_bytes": 288980992,
+      "cpu_seconds": 33.09,
+      "width": 320,
+      "height": 200
+    },
+    {
+      "seconds": 90.6,
+      "private_bytes": 247803904,
+      "working_set_bytes": 290017280,
+      "cpu_seconds": 42.61,
+      "width": 580,
+      "height": 330
+    },
+    {
+      "seconds": 120.8,
+      "private_bytes": 251322368,
+      "working_set_bytes": 253542400,
+      "cpu_seconds": 57.58,
+      "width": 580,
+      "height": 330
+    },
+    {
+      "seconds": 151.1,
+      "private_bytes": 251256832,
+      "working_set_bytes": 197287936,
+      "cpu_seconds": 73,
+      "width": 320,
+      "height": 200
+    },
+    {
+      "seconds": 181.3,
+      "private_bytes": 247500800,
+      "working_set_bytes": 160669696,
+      "cpu_seconds": 82.17,
+      "width": 320,
+      "height": 200
+    },
+    {
+      "seconds": 211.6,
+      "private_bytes": 247500800,
+      "working_set_bytes": 127778816,
+      "cpu_seconds": 92.03,
+      "width": 580,
+      "height": 330
+    },
+    {
+      "seconds": 241.9,
+      "private_bytes": 251166720,
+      "working_set_bytes": 100290560,
+      "cpu_seconds": 107.55,
+      "width": 580,
+      "height": 330
+    },
+    {
+      "seconds": 272.1,
+      "private_bytes": 251101184,
+      "working_set_bytes": 75653120,
+      "cpu_seconds": 123.59,
+      "width": 320,
+      "height": 200
+    },
+    {
+      "seconds": 302.4,
+      "private_bytes": 247500800,
+      "working_set_bytes": 55939072,
+      "cpu_seconds": 133.28,
+      "width": 320,
+      "height": 200
+    },
+    {
+      "seconds": 332.6,
+      "private_bytes": 247500800,
+      "working_set_bytes": 53743616,
+      "cpu_seconds": 143.06,
+      "width": 580,
+      "height": 330
+    },
+    {
+      "seconds": 362.9,
+      "private_bytes": 251371520,
+      "working_set_bytes": 59281408,
+      "cpu_seconds": 158.66,
+      "width": 580,
+      "height": 330
+    },
+    {
+      "seconds": 393.2,
+      "private_bytes": 251301888,
+      "working_set_bytes": 59252736,
+      "cpu_seconds": 174.2,
+      "width": 320,
+      "height": 200
+    },
+    {
+      "seconds": 423.4,
+      "private_bytes": 247574528,
+      "working_set_bytes": 53805056,
+      "cpu_seconds": 184.19,
+      "width": 320,
+      "height": 200
+    },
+    {
+      "seconds": 453.7,
+      "private_bytes": 247574528,
+      "working_set_bytes": 53710848,
+      "cpu_seconds": 193.86,
+      "width": 580,
+      "height": 330
+    },
+    {
+      "seconds": 484,
+      "private_bytes": 251138048,
+      "working_set_bytes": 58122240,
+      "cpu_seconds": 207.97,
+      "width": 580,
+      "height": 330
+    },
+    {
+      "seconds": 514.2,
+      "private_bytes": 251138048,
+      "working_set_bytes": 55779328,
+      "cpu_seconds": 222.25,
+      "width": 320,
+      "height": 200
+    },
+    {
+      "seconds": 544.5,
+      "private_bytes": 247361536,
+      "working_set_bytes": 51200000,
+      "cpu_seconds": 232.23,
+      "width": 320,
+      "height": 200
+    },
+    {
+      "seconds": 574.8,
+      "private_bytes": 247361536,
+      "working_set_bytes": 51142656,
+      "cpu_seconds": 241.88,
+      "width": 580,
+      "height": 330
+    },
+    {
+      "seconds": 605,
+      "private_bytes": 251158528,
+      "working_set_bytes": 56950784,
+      "cpu_seconds": 256.42,
+      "width": 580,
+      "height": 330
+    }
+  ],
+  "windows_exact_framebuffers": [
+    "PASS: Windows native EXE at 1920x1080 on llvmpipe (LLVM 23.1.2, 256 bits)",
+    "PASS: Windows native EXE at 2496x1664 on llvmpipe (LLVM 23.1.2, 256 bits)",
+    "PASS: Windows native EXE at 3440x1440 on llvmpipe (LLVM 23.1.2, 256 bits)",
+    "PASS: Windows native EXE at 3840x1080 on llvmpipe (LLVM 23.1.2, 256 bits)",
+    "PASS: Windows native EXE at 3840x2160 on llvmpipe (LLVM 23.1.2, 256 bits)",
+    "PASS: Windows native EXE at 5120x1440 on llvmpipe (LLVM 23.1.2, 256 bits)",
+    "PASS: Windows native EXE at 5120x2880 on llvmpipe (LLVM 23.1.2, 256 bits)"
+  ],
+  "recording_active_seconds": 300.005993462665,
+  "public_verification": {
+    "method": "Unmodified verify_release_download.py against exact public URL and GitHub run/job inventory",
+    "size": 73322045,
+    "sha256": "10aeac49cd31a23453a4c8d96aee04221e20313e5d3fb351e7f5bb572bedff60"
+  },
+  "signature_verification": {
+    "local": "Independent cryptography verification using only pinned updater public key; temporary private key deleted",
+    "windows_run": 42062270994,
+    "superseded_runs": [
+      42061904976,
+      42062045684
+    ],
+    "passed": true
+  },
+  "limits": [
+    "Hosted software rendering, not physical Dell/DPI/mixed-monitor/sleep evidence.",
+    "No continuous video or stable Windows publisher-signature claim."
+  ]
+}

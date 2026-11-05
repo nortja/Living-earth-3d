@@ -1,11 +1,11 @@
 # Living Earth 3D — current roadmap
 
-Updated 2026-11-03. Latest released baseline: 0.25.0 (synchronized Moon zoom and personal cinematic Scene Library, with pointer-out clean view, optional Moon, offline 4K Milky Way, lunar calendar, tours, regional infrared and explicit Windows idle setup). One Windows installer, then authenticated automatic updates; the base Earth remains useful offline.
+Updated 2026-11-05. Latest released baseline: 0.25.1 (synchronized Moon zoom and personal cinematic Scene Library, with pointer-out clean view, optional Moon, offline 4K Milky Way, lunar calendar, tours, regional infrared and explicit Windows idle setup). One Windows installer, then authenticated automatic updates; the base Earth remains useful offline.
 
-## Validated source awaiting the next release
+## Release 0.25.1 — interruption reliability
 
-- Manual Scene Library Next obeys modal/minimize/screensaver interruption while timed playback is paused. PR #2 is merged after all three source/native/Windows jobs passed in run 41485285747: 2,521 source assertions, seventeen native suites, seven Windows framebuffers and a 605.1-second saver soak. [Validation and limits](docs/VALIDATION-SCENE-INTERRUPTION.md).
-- This patch is not on the update feed. A newly versioned installer, public verification and exact metadata signature are required before distribution; do not replace published 0.25.0 bytes with the same-version CI artifact.
+- Manual Scene Library Next now obeys modal/minimize/screensaver interruption while playback is paused. The separately versioned candidate passed fresh 2,521 source assertions, seventeen native suites, legacy/current 0.25.0 upgrades, preservation after rollback, seven Windows framebuffers and a 605-second saver soak in run 41870662412.
+- Exact public installer and pinned-key signed metadata verified before authenticated feed promotion. Production updater roundtrip pending. [Validation](docs/VALIDATION-0.25.1.md).
 
 ## Completed
 

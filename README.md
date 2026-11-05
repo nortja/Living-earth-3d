@@ -1,10 +1,10 @@
 # Living Earth 3D
 
-An offline-first interactive Windows globe and screensaver, built with Godot 4. Released **0.25.0 preview**.
+An offline-first interactive Windows globe and screensaver, built with Godot 4. Released **0.25.1 preview**.
 
 ## Windows users
 
-[Download LivingEarth3D-Setup-0.25.0.exe](https://github.com/nortja/Living-earth-3d/raw/refs/heads/downloads/windows-0.25.0/LivingEarth3D-Setup-0.25.0.exe), double-click, install, then open the desktop shortcut. No ZIP extraction, terminal, separate runtime, or Godot setup is needed. This is an unsigned preview. The user confirmed successful download and automatic updating on 2026-11-01, and working Camera Wall/cameras previously. Windows CI verifies installation and rollback; physical GPU/DPI checks remain outstanding.
+[Download LivingEarth3D-Setup-0.25.1.exe](https://github.com/nortja/Living-earth-3d/raw/refs/heads/downloads/windows-0.25.1/LivingEarth3D-Setup-0.25.1.exe), double-click, install, then open the desktop shortcut. No ZIP extraction, terminal, separate runtime, or Godot setup is needed. This is an unsigned preview. The user confirmed successful download and automatic updating on 2026-11-01, and working Camera Wall/cameras previously. Windows CI verifies installation and rollback; physical GPU/DPI checks remain outstanding.
 
 The real globe emerges from darkness with illuminated Earth branding. Drag to spin with gentle inertia, scroll or double-click to zoom, and use **Full Earth** or Home to reset. F11 toggles fullscreen. Earth stays centered and proportional at native viewport resolution, including ultrawide and 4K/5K sizes. Compact controls scale automatically with window resolution. Panels adapt to smaller windows; an optional wide Command Center overview uses spare space.
 

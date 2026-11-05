@@ -2,13 +2,13 @@
 
 ## End-user installation
 
-The current artifact is `LivingEarth3D-Setup-0.25.0.exe`: one per-user NSIS installer with desktop/Start menu shortcuts, installed-apps uninstall and no separate runtime. Install once; updater-enabled versions subsequently receive authenticated releases and apply them after normal app/screensaver exit. Preferences and bookmarks remain local. Native screensaver selection is optional.
+The current artifact is `LivingEarth3D-Setup-0.25.1.exe`: one per-user NSIS installer with desktop/Start menu shortcuts, installed-apps uninstall and no separate runtime. Install once; updater-enabled versions subsequently receive authenticated releases and apply them after normal app/screensaver exit. Preferences and bookmarks remain local. Native screensaver selection is optional.
 
 The installer remains Windows publisher-unsigned. Authenticated update metadata uses the existing pinned RSA key independently of Windows Authenticode. Silent installs defer while matching app/screensaver processes are active; they do not force a running user process closed. Handled verification failures restore known previous files and version metadata. This is not a power-loss recovery guarantee.
 
 ## Current evidence
 
-[0.25.0 validation](VALIDATION-0.25.0.md) records the exact frozen source and fresh source/native/Windows, scene capture/playback/Moon zoom, update/rollback, settings and saver lifecycle gates. Physical hardware checks remain separate.
+[0.25.1 validation](VALIDATION-0.25.1.md) records the exact frozen source and fresh source/native/Windows, scene capture/playback/Moon zoom, update/rollback, settings and saver lifecycle gates. Physical hardware checks remain separate.
 
 Software-rendered disposable Windows/Linux CI does not establish physical Dell GPU/DPI, multiple-monitor, sleep/wake, fan/power or audible playback results. See [field observations](FIELD_CHECKS.md). The old general Windows installer workflow stays disabled, with no automatic push/tag triggers. Release-specific branch workflows validate one candidate without receiving the private release key or promoting the production feed themselves. Promotion follows verified published bytes and a detached signature over exact metadata.
 

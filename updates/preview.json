@@ -1,8 +1,8 @@
 {
-  "version": "0.25.0",
+  "version": "0.25.1",
   "channel": "preview",
-  "installer_url": "https://github.com/nortja/Living-earth-3d/raw/refs/heads/downloads/windows-0.25.0/LivingEarth3D-Setup-0.25.0.exe",
-  "sha256": "1f0320b198a8fd3a8819e02725bb2af9a14b8c6a3e36063538bb0f002d85d841",
+  "installer_url": "https://github.com/nortja/Living-earth-3d/raw/refs/heads/downloads/windows-0.25.1/LivingEarth3D-Setup-0.25.1.exe",
+  "sha256": "10aeac49cd31a23453a4c8d96aee04221e20313e5d3fb351e7f5bb572bedff60",
   "installer_signed": false,
   "update_protocol": 1
 }
