@@ -1,0 +1,26 @@
+name: Verify 0.25.1 public delivery and pinned signature
+on:
+  push:
+    branches: [validation/signed-0.25.1]
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: windows-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify exact metadata using the installed updater trust implementation
+        shell: powershell
+        run: |
+          . ./packaging/windows/update-core.ps1
+          $raw=[IO.File]::ReadAllBytes((Join-Path $pwd 'updates/application.json'))
+          $sig=[Convert]::FromBase64String([IO.File]::ReadAllText((Join-Path $pwd 'updates/application.sig')).Trim())
+          $feed=Read-EarthManifest $raw $sig
+          if($feed.version -cne '0.25.1' -or $feed.sha256 -cne '10aeac49cd31a23453a4c8d96aee04221e20313e5d3fb351e7f5bb572bedff60'){throw 'Release identity mismatch'}
+          Write-Output 'PASS: exact 0.25.1 signature and schema verified with the installed pinned trust key'
+      - name: Independently verify public bytes and source provenance
+        shell: powershell
+        run: |
+          python packaging/windows/verify_release_download.py --version 0.25.1 --source-sha e76bac4497faab381b0819c155e4080507008a82 --run-id 41870662412 --output-directory verified
+          if($LASTEXITCODE -ne 0){throw 'Public delivery verification failed'}
