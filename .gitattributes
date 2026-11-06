@@ -1,0 +1,6 @@
+# Exact bytes are authenticated or hashed; do not convert them on Windows checkout.
+/updates/application.json -text
+/updates/application.sig -text
+/updates/preview.json -text
+/packaging/windows/update.ps1 -text
+/packaging/windows/update-core.ps1 -text
