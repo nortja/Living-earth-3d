@@ -5,11 +5,46 @@ import importlib.util
 import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
+from urllib.request import HTTPRedirectHandler
 
 ROOT = Path(__file__).resolve().parents[1]
 SPEC = importlib.util.spec_from_file_location('release_download', ROOT / 'packaging/windows/verify_release_download.py')
 VERIFY = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(VERIFY)
+
+
+class TransportTests(unittest.TestCase):
+    def test_token_is_scoped_and_not_forwarded(self):
+        run = VERIFY.RUN_API + '123'
+        jobs = run + '/jobs?filter=latest&per_page=100'
+        cases = [(run, True), (jobs, True),
+                 (run + '/artifacts', False),
+                 (run.replace('api.github.com', 'api.github.com.example.org'), False),
+                 ('https://github.com/nortja/Living-earth-3d/raw/installer.exe', False),
+                 ('https://raw.githubusercontent.com/nortja/Living-earth-3d/main/BUILD.txt', False)]
+        with patch.dict('os.environ', {'EARTH_RELEASE_API_TOKEN': 'test-token'}):
+            for url, allowed in cases:
+                with self.subTest(url=url), patch.object(VERIFY.urllib.request, 'urlopen') as open_url:
+                    response = open_url.return_value.__enter__.return_value
+                    response.status = 200
+                    response.read.return_value = b'{}'
+                    self.assertEqual(VERIFY.receive(url, 2), b'{}')
+                    response.read.assert_called_once_with(3)
+                    request = open_url.call_args.args[0]
+                    self.assertEqual(request.get_header('Authorization'), 'Bearer test-token' if allowed else None)
+                    redirected = HTTPRedirectHandler().redirect_request(
+                        request, None, 302, 'Found', {}, 'https://example.org/redirect')
+                    self.assertIsNone(redirected.get_header('Authorization'))
+
+    def test_anonymous_request_still_rejects_oversized_response(self):
+        with patch.dict('os.environ', clear=True), patch.object(VERIFY.urllib.request, 'urlopen') as open_url:
+            response = open_url.return_value.__enter__.return_value
+            response.status = 200
+            response.read.return_value = b'123'
+            with self.assertRaisesRegex(ValueError, 'size limit'):
+                VERIFY.receive(VERIFY.RUN_API + '123', 2)
+            self.assertIsNone(open_url.call_args.args[0].get_header('Authorization'))
 
 
 class ProvenanceTests(unittest.TestCase):

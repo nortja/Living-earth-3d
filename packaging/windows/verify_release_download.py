@@ -5,11 +5,13 @@ Read-only GitHub access; never executes the installer or receives a signing key.
 import argparse
 import hashlib
 import json
+import os
 import re
 import urllib.request
 from pathlib import Path
 
 REPOSITORY = 'nortja/Living-earth-3d'
+RUN_API = f'https://api.github.com/repos/{REPOSITORY}/actions/runs/'
 FILE_NAMES = {'LivingEarth3D.exe', 'LivingEarth3D.scr', 'update.ps1', 'update-core.ps1'}
 
 
@@ -54,6 +56,11 @@ def validate_delivery(installer, checksum, build, metadata, version, source_sha,
 
 def receive(url, maximum):
     request = urllib.request.Request(url, headers={'User-Agent': 'LivingEarth3D-release-verifier'})
+    # Only the two run inventory requests need API authentication. In particular,
+    # never forward the token to a redirect or attach it to the public installer.
+    token = os.environ.get('EARTH_RELEASE_API_TOKEN')
+    if token and re.fullmatch(re.escape(RUN_API) + r'[1-9]\d*(?:/jobs\?filter=latest&per_page=100)?', url):
+        request.add_unredirected_header('Authorization', 'Bearer ' + token)
     with urllib.request.urlopen(request, timeout=90) as response:
         if response.status != 200:
             raise ValueError('Public resource returned an unexpected HTTP status')
@@ -74,7 +81,7 @@ def main():
         raise ValueError('Invalid version')
     if not re.fullmatch('[0-9a-f]{40}', args.source_sha) or args.run_id <= 0:
         raise ValueError('Invalid source SHA or run ID')
-    api = f'https://api.github.com/repos/{REPOSITORY}/actions/runs/{args.run_id}'
+    api = RUN_API + str(args.run_id)
     run = json.loads(receive(api, 262144))
     jobs = json.loads(receive(api + '/jobs?filter=latest&per_page=100', 1048576))
     validate_run(run, jobs, args.version, args.source_sha)

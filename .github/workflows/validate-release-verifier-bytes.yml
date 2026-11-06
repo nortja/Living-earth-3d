@@ -1,0 +1,38 @@
+name: Validate release verifier hardening on Windows
+on:
+  push:
+    branches: [validation/release-verifier-bytes]
+permissions:
+  contents: read
+  actions: read
+jobs:
+  verifier:
+    runs-on: windows-latest
+    timeout-minutes: 8
+    steps:
+      - name: Exercise Windows checkout conversion
+        shell: powershell
+        run: git config --global core.autocrlf true
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Verify exact signed bytes and updater security
+        shell: powershell
+        run: |
+          $ErrorActionPreference='Stop'
+          . ./packaging/windows/update-core.ps1
+          $raw=[IO.File]::ReadAllBytes((Join-Path $pwd 'updates/application.json'))
+          $sig=[Convert]::FromBase64String([IO.File]::ReadAllText((Join-Path $pwd 'updates/application.sig')).Trim())
+          $feed=Read-EarthManifest $raw $sig
+          if($feed.version -cne '0.25.1'){throw 'Unexpected signed release'}
+          Write-Output 'PASS: exact production signature verifies with Windows checkout conversion enabled'
+          ./tests/update_security_test.ps1
+      - name: Check transport regressions and actual published installer
+        shell: powershell
+        env:
+          EARTH_RELEASE_API_TOKEN: ${{ github.token }}
+        run: |
+          python tests/release_download_test.py
+          if($LASTEXITCODE -ne 0){throw 'Verifier tests failed'}
+          python packaging/windows/verify_release_download.py --version 0.25.1 --source-sha e76bac4497faab381b0819c155e4080507008a82 --run-id 41870662412 --output-directory verified
+          if($LASTEXITCODE -ne 0){throw 'Public verification failed'}
