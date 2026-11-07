@@ -57,7 +57,7 @@ func run() -> void:
     service.set_automatic(false)
     verify(not service.status.contains("Automatic retry"), "Pausing polling removes retry promise immediately")
     service.set_automatic(true)
-    service.unchanged_since = Time.get_unix_time_from_system() - 301
+    service.unchanged_since_ticks = Time.get_ticks_msec() - 301000
     service._received(HTTPRequest.RESULT_SUCCESS, 200, PackedStringArray(), bytes, service.generation)
     verify(service.refresh_interval == 60.0 and service.consecutive_failures == 0, "Successful refresh restores normal cadence")
     verify(service.status.contains("unchanged"), "Repeated unchanged frames flagged")

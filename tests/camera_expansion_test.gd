@@ -29,10 +29,10 @@ func run() -> void:
     service.max_texture_edge = 1024
     service._received(0,200,PackedStringArray(),bytes,service.generation)
     verify(service.image.get_width() == 1024 and service.image.get_height() == 512, "Wall downsampling preserves aspect ratio and bounds GPU texture")
-    service.unchanged_since = Time.get_unix_time_from_system() - 301
+    service.unchanged_since_ticks = Time.get_ticks_msec() - 301000
     service._received(0,200,PackedStringArray(),bytes,service.generation)
     verify(not service.status.contains("unchanged"), "Expected 15-minute image does not trigger five-minute delay warning")
-    service.unchanged_since = Time.get_unix_time_from_system() - 1801
+    service.unchanged_since_ticks = Time.get_ticks_msec() - 1801000
     service._received(0,200,PackedStringArray(),bytes,service.generation)
     verify(service.status.contains("30+ minutes"), "Slow image delay threshold reflects provider cadence")
     service._unavailable()

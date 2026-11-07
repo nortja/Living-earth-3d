@@ -1,0 +1,93 @@
+name: Validate monotonic camera age
+on:
+  push:
+    branches: [validation/camera-monotonic-age]
+permissions:
+  contents: read
+jobs:
+  linux:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - name: Pinned Godot and virtual desktop
+        run: |
+          set -euo pipefail
+          sudo apt-get update -qq
+          sudo apt-get install -y xvfb libgl1-mesa-dri
+          base=https://github.com/godotengine/godot-builds/releases/download/4.6.3-stable
+          curl -fsSL "$base/Godot_v4.6.3-stable_linux.x86_64.zip" -o godot.zip
+          curl -fsSL "$base/SHA512-SUMS.txt" -o sums.txt
+          awk '$2=="Godot_v4.6.3-stable_linux.x86_64.zip" {print $1 "  godot.zip"}' sums.txt > selected.sha512
+          test -s selected.sha512
+          sha512sum -c selected.sha512
+          unzip -q godot.zip
+          chmod +x Godot_v4.6.3-stable_linux.x86_64
+      - name: Camera behavior and native layouts
+        run: |
+          set -euo pipefail
+          godot=./Godot_v4.6.3-stable_linux.x86_64
+          "$godot" --headless --path . --editor --import --quit
+          for suite in camera_test camera_revalidation_test camera_expansion_test camera_wall_test; do
+            "$godot" --headless --path . --script res://tests/$suite.gd 2>&1 | tee "$suite.log"
+            if grep -Eq '^(SCRIPT ERROR|ERROR):' "$suite.log"; then exit 1; fi
+            grep -E '[1-9][0-9]* checks, 0 failures' "$suite.log"
+          done
+          xvfb-run -a -s '-screen 0 5120x2880x24' "$godot" --path . --audio-driver Dummy --script res://tests/camera_age_render_test.gd -- --keep-controls-visible 2>&1 | tee native.log
+          if grep -Eq '^(SCRIPT ERROR|ERROR):' native.log; then exit 1; fi
+          grep -F 'Native camera age: 0 failures' native.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: Linux-camera-age
+          path: |
+            dist/camera-age-*.png
+            *.log
+  windows:
+    runs-on: windows-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - name: Pinned Windows Godot
+        shell: powershell
+        run: |
+          $ErrorActionPreference='Stop'
+          $base='https://github.com/godotengine/godot-builds/releases/download/4.6.3-stable'
+          $name='Godot_v4.6.3-stable_win64.exe.zip'
+          Invoke-WebRequest -UseBasicParsing "$base/$name" -OutFile godot.zip
+          $sums=(Invoke-WebRequest -UseBasicParsing "$base/SHA512-SUMS.txt").Content
+          $line=@($sums -split "`n" | Where-Object {($_ -split '\s+')[-1] -eq $name})
+          if($line.Count -ne 1){throw 'Missing Godot checksum'}
+          if((Get-FileHash godot.zip -Algorithm SHA512).Hash.ToLowerInvariant() -cne (($line[0] -split '\s+')[0])){throw 'Godot checksum mismatch'}
+          Expand-Archive godot.zip tools
+      - name: Install pinned test-only software OpenGL
+        shell: powershell
+        run: |
+          $archive=Join-Path $env:RUNNER_TEMP 'mesa.7z'
+          curl.exe -fL --retry 3 --output $archive 'https://github.com/pal1000/mesa-dist-win/releases/download/26.2.4/mesa3d-26.2.4-release-msvc.7z'
+          if($LASTEXITCODE -ne 0){throw 'Test OpenGL download failed'}
+          if((Get-FileHash $archive -Algorithm SHA256).Hash.ToLowerInvariant() -ne '351fc8c8b695878ffb3eaa044b3ead08672a48b1a045e3c3e3975811df0f6695'){throw 'Test OpenGL checksum mismatch'}
+          7z x $archive ('-o'+(Join-Path $env:RUNNER_TEMP 'mesa')) -y
+          if($LASTEXITCODE -ne 0){throw 'Test OpenGL extraction failed'}
+          & (Join-Path $env:RUNNER_TEMP 'mesa/systemwidedeploy.cmd') 1
+          if($LASTEXITCODE -ne 0){throw 'Test OpenGL ICD deployment failed'}
+      - name: Camera source and native Windows regressions
+        shell: powershell
+        run: |
+          $ErrorActionPreference='Stop'
+          $godot=Join-Path $pwd 'tools/Godot_v4.6.3-stable_win64_console.exe'
+          & $godot --headless --path . --editor --import --quit
+          if($LASTEXITCODE -ne 0){throw 'Godot import failed'}
+          foreach($suite in @('camera_test','camera_revalidation_test','camera_expansion_test','camera_wall_test')){
+            & $godot --headless --path . --script "res://tests/$suite.gd" 2>&1 | Tee-Object "$suite.log"
+            if($LASTEXITCODE -ne 0 -or (Select-String -Path "$suite.log" -Pattern '^(SCRIPT ERROR|ERROR):') -or !(Select-String -Path "$suite.log" -Pattern '[1-9][0-9]* checks, 0 failures')){throw 'Camera source suite failed'}
+          }
+          & $godot --path . --audio-driver Dummy --script res://tests/camera_age_render_test.gd -- --keep-controls-visible --compact 2>&1 | Tee-Object native.log
+          if($LASTEXITCODE -ne 0 -or (Select-String -Path native.log -Pattern '^(SCRIPT ERROR|ERROR):') -or !(Select-String -Path native.log -SimpleMatch 'Native camera age: 0 failures')){throw 'Native camera regression failed'}
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: Windows-camera-age
+          path: |
+            dist/camera-age-*.png
+            *.log

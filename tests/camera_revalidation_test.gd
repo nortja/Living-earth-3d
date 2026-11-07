@@ -44,15 +44,25 @@ func run() -> void:
     verify(camera.request_headers().has('If-None-Match: W/"frame-1"'), "Validated frame enables provider revalidation")
     var texture:Texture2D=camera.image
     camera.retrieved="2026-10-30 12:00:00"
-    camera.unchanged_since=Time.get_unix_time_from_system()-301
+    camera.unchanged_since_ticks=Time.get_ticks_msec()-301000
+    var frame_ticks: int=camera.unchanged_since_ticks
+    camera._received(0,200,PackedStringArray(['ETag: W/"frame-1"','Last-Modified: fixture time']),bytes,camera.generation)
+    verify(camera.unchanged_since_ticks==frame_ticks and camera.status.contains("5+ minutes"), "Repeated HTTP 200 bytes retain monotonic image age")
+    camera.retrieved="2099-01-01 00:00:00"
+    camera._describe_success(true)
+    verify(camera.status.contains("5+ minutes"), "A future UTC display timestamp does not suppress the elapsed-age warning")
+    camera.retrieved="2026-10-30 12:00:00"
     camera._unavailable()
+    verify(camera.unchanged_since_ticks==frame_ticks, "Failed refresh does not reset image age")
     camera._received(0,304,PackedStringArray(),PackedByteArray(),camera.generation)
     verify(camera.image==texture and camera.retrieved=="2026-10-30 12:00:00", "304 retains the original texture and image retrieval time")
     verify(camera.status.contains("Checked") and camera.status.contains("fixture time") and camera.status.contains("5+ minutes"), "304 separates verification time, source metadata and delay warning")
+    verify(camera.unchanged_since_ticks==frame_ticks, "HTTP 304 preserves monotonic age")
     verify(not camera.last_failed and camera.consecutive_failures==0 and camera.refresh_interval==camera.base_interval, "304 recovers failure backoff")
     fixture.fill(Color("cc8844"))
     camera._received(0,200,PackedStringArray(['ETag: "frame-2"']),fixture.save_jpg_to_buffer(),camera.generation)
     verify(camera.image!=texture and camera.etag=='"frame-2"' and camera.last_modified.is_empty(), "New image replaces both texture and source validators")
+    verify(camera.unchanged_since_ticks>=frame_ticks+300000 and not camera.status.contains("5+ minutes"), "Changed image resets the monotonic delay timer")
     var token:int=camera.generation
     camera.open(venues[1],false)
     camera._received(0,304,PackedStringArray(['ETag: "old-source"']),PackedByteArray(),token)

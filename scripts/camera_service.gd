@@ -21,7 +21,7 @@ var retrieved := ""
 var digest := ""
 var etag := ""
 var last_modified := ""
-var unchanged_since := 0.0
+var unchanged_since_ticks := 0 # Monotonic milliseconds; UTC remains display metadata.
 const IMAGE_ORIGIN := "https://www.nps.gov/webcams-yell/"
 
 func _process(delta: float) -> void:
@@ -167,7 +167,7 @@ func _received(result: int, code: int, headers: PackedStringArray, body: PackedB
         image = ImageTexture.create_from_image(decoded)
     retrieved = Time.get_datetime_string_from_system(true).replace("T", " ")
     if next_digest != digest:
-        unchanged_since = Time.get_unix_time_from_system()
+        unchanged_since_ticks = Time.get_ticks_msec()
         digest = next_digest
     _source_metadata(headers,true)
     _describe_success(false)
@@ -182,7 +182,7 @@ func _describe_success(revalidated: bool) -> void:
         status = "Retrieved %s UTC · periodic image, not continuous video.\nCamera capture time is not verified." % retrieved
     if not last_modified.is_empty(): status += "\nSource Last-Modified (last reported): " + last_modified
     var stale_after := maxf(300.0,base_interval * 2.0)
-    if Time.get_unix_time_from_system() - unchanged_since >= stale_after:
+    if Time.get_ticks_msec() - unchanged_since_ticks >= stale_after * 1000.0:
         status += "\nImage unchanged for %d+ minutes; the provider may be delayed." % int(stale_after / 60.0)
     changed.emit()
 
