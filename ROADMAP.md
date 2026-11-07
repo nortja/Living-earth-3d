@@ -2,6 +2,10 @@
 
 Updated 2026-11-05. Latest released baseline: 0.25.1 (synchronized Moon zoom and personal cinematic Scene Library, with pointer-out clean view, optional Moon, offline 4K Milky Way, lunar calendar, tours, regional infrared and explicit Windows idle setup). One Windows installer, then authenticated automatic updates; the base Earth remains useful offline.
 
+## Validated source awaiting release
+
+Unreleased validated follow-up: camera unchanged-image age now uses monotonic elapsed time so UTC clock corrections do not alter delay warnings. Targeted Linux/Windows source and native checks passed; a fresh versioned release and full delivery gates are still required. [Validation](docs/VALIDATION-CAMERA-AGE.md).
+
 ## Release 0.25.1 — interruption reliability
 
 - Manual Scene Library Next now obeys modal/minimize/screensaver interruption while playback is paused. The separately versioned candidate passed fresh 2,521 source assertions, seventeen native suites, legacy/current 0.25.0 upgrades, preservation after rollback, seven Windows framebuffers and a 605-second saver soak in run 41870662412.
