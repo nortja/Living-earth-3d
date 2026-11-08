@@ -181,10 +181,15 @@ func _describe_success(revalidated: bool) -> void:
     else:
         status = "Retrieved %s UTC · periodic image, not continuous video.\nCamera capture time is not verified." % retrieved
     if not last_modified.is_empty(): status += "\nSource Last-Modified (last reported): " + last_modified
-    var stale_after := maxf(300.0,base_interval * 2.0)
-    if Time.get_ticks_msec() - unchanged_since_ticks >= stale_after * 1000.0:
-        status += "\nImage unchanged for %d+ minutes; the provider may be delayed." % int(stale_after / 60.0)
+    _append_unchanged_warning()
     changed.emit()
+
+func _append_unchanged_warning() -> void:
+    if image == null: return
+    var stale_after := maxf(300.0,base_interval * 2.0)
+    var unchanged_ms := maxi(0,Time.get_ticks_msec()-unchanged_since_ticks)
+    if unchanged_ms >= stale_after * 1000.0:
+        status += "\nImage unchanged for %d+ minutes; the provider may be delayed." % int(stale_after / 60.0)
 
 func _unavailable() -> void:
     consecutive_failures = mini(consecutive_failures + 1, 4)
@@ -203,6 +208,7 @@ func _describe_unavailable() -> void:
         status += "\nAutomatic retry in %d minutes while this viewer is open." % int(refresh_interval / 60.0)
     if image != null:
         status += "\nLast successful image retained (retrieved %s UTC)." % retrieved
+        _append_unchanged_warning()
     changed.emit()
 
 func set_view_suspended(value: bool) -> void:

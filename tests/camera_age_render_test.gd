@@ -21,6 +21,9 @@ func run() -> void:
     service.unchanged_since_ticks=Time.get_ticks_msec()-301000
     service.retrieved="2099-01-01 00:00:00"
     service._received(0,304,PackedStringArray(),PackedByteArray(),service.generation)
+    verify(ui.camera_detail.text.contains("Checked") and ui.camera_detail.text.contains("5+ minutes"),"Successful 304 revalidation keeps the elapsed-age warning")
+    service._unavailable()
+    verify(ui.camera_detail.text.contains("Camera unavailable.") and ui.camera_detail.text.contains("Last successful image retained") and ui.camera_detail.text.contains("5+ minutes"),"Failed refresh keeps the retained-image age warning visible in the actual viewer")
     DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path("res://dist"))
     var sizes: Array[Vector2i]=[Vector2i(870,612),Vector2i(2496,1664),Vector2i(3840,1080)]
     if "--compact" in OS.get_cmdline_user_args(): sizes=[Vector2i(870,612)]
@@ -28,7 +31,7 @@ func run() -> void:
         root.size=pixels
         for frame in range(12): await process_frame
         await RenderingServer.frame_post_draw
-        verify(ui.camera_detail.text.contains("5+ minutes") and ui.camera_detail.text.contains("2099-01-01"),"Elapsed warning remains alongside distinct UTC retrieval metadata")
+        verify(ui.camera_detail.text.contains("5+ minutes") and ui.camera_detail.text.contains("2099-01-01"),"Failed refresh retains elapsed warning alongside distinct UTC retrieval metadata")
         verify(ui.camera_image.texture!=null and ui.camera_overlay.visible,"Retained fixture image remains visible")
         verify(Rect2(Vector2.ZERO,ui.size).encloses(Rect2(ui.camera_viewer.position,ui.camera_viewer.size)),"Camera viewer fits the rendered window")
         verify(root.get_texture().get_image().save_png("res://dist/camera-age-%dx%d.png" % [pixels.x,pixels.y])==OK,"Native capture saved")

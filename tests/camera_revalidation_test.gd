@@ -54,6 +54,7 @@ func run() -> void:
     camera.retrieved="2026-10-30 12:00:00"
     camera._unavailable()
     verify(camera.unchanged_since_ticks==frame_ticks, "Failed refresh does not reset image age")
+    verify(camera.status.contains("Last successful image retained") and camera.status.contains("5+ minutes"), "Failed refresh preserves the unchanged-image warning beside the retained image")
     camera._received(0,304,PackedStringArray(),PackedByteArray(),camera.generation)
     verify(camera.image==texture and camera.retrieved=="2026-10-30 12:00:00", "304 retains the original texture and image retrieval time")
     verify(camera.status.contains("Checked") and camera.status.contains("fixture time") and camera.status.contains("5+ minutes"), "304 separates verification time, source metadata and delay warning")
