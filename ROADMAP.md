@@ -1,10 +1,10 @@
 # Living Earth 3D — current roadmap
 
-Updated 2026-11-05. Latest released baseline: 0.25.1 (synchronized Moon zoom and personal cinematic Scene Library, with pointer-out clean view, optional Moon, offline 4K Milky Way, lunar calendar, tours, regional infrared and explicit Windows idle setup). One Windows installer, then authenticated automatic updates; the base Earth remains useful offline.
+Updated 2026-11-08. Latest released baseline: 0.25.1 (synchronized Moon zoom and personal cinematic Scene Library, with pointer-out clean view, optional Moon, offline 4K Milky Way, lunar calendar, tours, regional infrared and explicit Windows idle setup). One Windows installer, then authenticated automatic updates; the base Earth remains useful offline.
 
 ## Validated source awaiting release
 
-Unreleased validated follow-up: camera unchanged-image age now uses monotonic elapsed time so UTC clock corrections do not alter delay warnings. Targeted Linux/Windows source and native checks passed; a fresh versioned release and full delivery gates are still required. [Validation](docs/VALIDATION-CAMERA-AGE.md).
+Unreleased validated follow-up: camera unchanged-image age uses monotonic elapsed time, so UTC clock corrections do not alter delay warnings; the warning also remains visible when a refresh fails and the last good image is retained. Targeted Linux/Windows source and native viewer checks passed in [run 42497968977](https://github.com/nortja/Living-earth-3d/actions/runs/42497968977). A fresh versioned installer and full delivery gates are still required. [Validation](docs/VALIDATION-CAMERA-AGE.md).
 
 ## Release 0.25.1 — interruption reliability
 
