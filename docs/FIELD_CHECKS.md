@@ -11,7 +11,7 @@ Current preview: 0.19.0. Automated Windows software-rendered gates cover install
 
 ## Local performance report
 
-Settings → Performance & support identifies the actual GPU, viewport/monitor pixels, DPI, refresh, active screen and all attached monitor geometry/scale. Optionally record five active minutes while using the app normally and save its local JSON. Configuration segments retain quality/cap/viewport/scale/window changes; screen index comes from the latest display poll and can lag by about one active second. Monitor inventory is a current snapshot, not a historical DPI trace.
+Settings → Performance & support identifies the actual GPU, viewport/monitor pixels, DPI, refresh, active screen and all attached monitor geometry/scale. Optionally record five active minutes while using the app normally and save its local JSON. Configuration segments retain quality/cap/viewport/scale/window changes; screen index comes from the latest display poll and can lag by about one active second. During an opt-in recording, `recording.topology_events` also captures a baseline and monitor changes (active screen, pixel geometry, position, DPI, scale and refresh) about once per active second, up to 32 events; brief changes between polls may be missed. The current `display.monitors` inventory remains a snapshot.
 
 Nothing is uploaded. The report excludes usernames, file paths, bookmarks and camera images. Release engine-memory counters are unavailable/null and are not complete process/GPU-memory measurements. Recording pauses in saver preview/minimized state and excludes sleep-sized gaps. No hardware score is inferred.
 

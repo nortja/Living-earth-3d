@@ -2,6 +2,9 @@ name: Validate monitor topology history
 on:
   push:
     branches: [validation/monitor-topology-history]
+concurrency:
+  group: monitor-topology-history-${{ github.ref }}
+  cancel-in-progress: false
 permissions:
   contents: read
 jobs:
