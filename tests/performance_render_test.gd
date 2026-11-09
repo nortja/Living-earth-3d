@@ -8,6 +8,7 @@ func run() -> void:
     root.add_child(app)
     var ui = app.interface
     app.performance_report.start_recording()
+    DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path("res://dist"))
     var sizes: Array[Vector2i]=[Vector2i(800,600),Vector2i(1920,1080),Vector2i(3440,1440),Vector2i(3840,2160),Vector2i(5120,1440),Vector2i(5120,2880)]
     if "--compact" in OS.get_cmdline_user_args(): sizes=[Vector2i(870,612)]
     for pixels in sizes:
