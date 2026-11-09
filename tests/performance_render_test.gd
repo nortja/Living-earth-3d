@@ -8,7 +8,9 @@ func run() -> void:
     root.add_child(app)
     var ui = app.interface
     app.performance_report.start_recording()
-    for pixels in [Vector2i(800,600),Vector2i(1920,1080),Vector2i(3440,1440),Vector2i(3840,2160),Vector2i(5120,1440),Vector2i(5120,2880)]:
+    var sizes: Array[Vector2i]=[Vector2i(800,600),Vector2i(1920,1080),Vector2i(3440,1440),Vector2i(3840,2160),Vector2i(5120,1440),Vector2i(5120,2880)]
+    if "--compact" in OS.get_cmdline_user_args(): sizes=[Vector2i(870,612)]
+    for pixels in sizes:
         root.size = pixels
         if ui.active_page != "Display report": ui.open_page("Display report")
         for frame in range(24): await process_frame
@@ -26,6 +28,10 @@ func run() -> void:
             failures += 1
             push_error("Recording/save actions require scrolling")
         var display: Dictionary = app.performance_report.snapshot.display
+        var topology_events:Array=app.performance_report.snapshot.recording.topology_events
+        if topology_events.is_empty() or not topology_events[0].topology.available or topology_events[0].topology.monitors.size()!=DisplayServer.get_screen_count() or topology_events[0].topology.active_screen!=root.current_screen:
+            failures += 1
+            push_error("Recorded topology baseline lacks the actual native monitor inventory")
         var contexts:Array=app.performance_report.snapshot.recording.contexts
         if contexts.is_empty() or contexts[-1].context.viewport_pixels != [pixels.x,pixels.y]:
             failures += 1
@@ -40,7 +46,7 @@ func run() -> void:
                 push_error("Monitor geometry/scale differs from display server")
         root.get_texture().get_image().save_png("res://dist/performance-%dx%d.png" % [pixels.x,pixels.y])
     app.performance_report.stop_recording()
-    if app.performance_report.record_contexts.size()<6:
+    if app.performance_report.record_contexts.size()<sizes.size():
         failures += 1
         push_error("Native recording did not separate changed viewport sizes")
     DirAccess.remove_absolute(ProjectSettings.globalize_path(app.preferences_path))

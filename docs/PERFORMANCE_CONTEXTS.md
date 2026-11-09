@@ -7,3 +7,10 @@ This makes a recording interpretable when moving/resizing a window or switching 
 Memory stays bounded: after 31 configuration segments, all remaining frames use one explicitly mixed bucket, without a false configuration claim. Every frame/active second remains accounted for; a new recording resets the history. Returned/exported dictionaries are independent copies. Minimized, native/in-app screensaver and sleep-sized gaps remain excluded. Native savers do not collect these desktop samples.
 
 The schema-1 report keeps its prior fields and adds optional context fields. It includes no usernames, file paths, bookmarks, camera images or account/device location, and uploads nothing. Engine-tracked memory is unavailable in release builds and remains null; it is not process/GPU memory.
+
+
+## Monitor topology history
+
+The opt-in five-minute recording now keeps a baseline and any monitor-topology changes it observes. Each event records the active screen and the attached monitors' pixel dimensions, desktop positions, DPI, scale and refresh rate, with an active-time offset. Sampling occurs about once per active second, not every frame, so a brief detach/reconnect between samples may be missed. The history is capped at 32 events; `recording.topology_limit_reached` makes overflow explicit. The existing `display.monitors` remains the current snapshot. Headless runs report `available: false` rather than inventing a monitor. This is local diagnostic evidence, not a physical hardware pass/fail score.
+
+The additive `recording.topology_events`, `topology_poll_seconds` and `topology_limit_reached` fields retain schema 1 compatibility. The history is cleared for each new recording and is included only in the optional local JSON export. No network request, preference mutation or telemetry is added.
