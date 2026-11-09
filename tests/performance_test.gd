@@ -31,10 +31,25 @@ func run() -> void:
     verify(stats.p95_ms == 40.0 and stats.max_ms == 40.0, "Tail frame intervals retained")
     verify(Report.frame_stats([]).is_empty(), "No frames is not fake zero FPS")
     report.start_recording()
+    verify(report.recorded_topology.size()==1 and not report.recorded_topology[0].topology.available and report.recorded_topology[0].topology.monitors.is_empty(),"Headless baseline explicitly reports unavailable monitor topology")
     for index in range(800): report.sample_frame(0.01,1000000000+index)
+    var topology_a:Dictionary={"available":true,"active_screen":0,"monitors":[{"index":0,"pixels":[3840,1080],"position_pixels":[0,0],"dpi":96,"scale":1.0,"refresh_hz":60.0}]}
+    report._record_topology(topology_a)
+    var topology_start:float=report.recorded_topology[-1].active_seconds
+    verify(report.recorded_topology.size()==2 and is_equal_approx(topology_start,8.0),"First monitor inventory change is recorded at its active offset")
     verify(report.recent.size() == 600, "Rolling frame buffer bounded")
     verify(report.recorded_frames == 800 and report.record_peak_memory == 1000000799, "Recording retains memory peak and total frames")
     report.sample_frame(0.06,1000100)
+    var topology_b:Dictionary=topology_a.duplicate(true)
+    topology_b.active_screen=1
+    topology_b.monitors.append({"index":1,"pixels":[2560,1440],"position_pixels":[3840,0],"dpi":120,"scale":1.25,"refresh_hz":144.0})
+    report._record_topology(topology_b)
+    verify(report.recorded_topology.size()==3 and is_equal_approx(report.recorded_topology[-1].active_seconds-topology_start,0.06),"Monitor move and added display retain a distinct active-time event")
+    report._record_topology(topology_b)
+    verify(report.recorded_topology.size()==3,"Unchanged monitor inventory does not duplicate events")
+    var topology_copy:Array[Dictionary]=report.topology_events_snapshot()
+    topology_copy[1].topology.monitors[0].scale=1.5
+    verify(report.recorded_topology[1].topology.monitors[0].scale==1.0,"Exported topology history is a deep copy")
     verify(report.record_slow_frames == 1, "Slow frame threshold is explicit")
     var contexts:Array[Dictionary]=report.context_snapshot()
     verify(contexts.size()==1 and contexts[0].frames==801 and contexts[0].frames_over_50ms==1,"Unchanged configuration groups all active frames without losing slow frames")
@@ -49,6 +64,9 @@ func run() -> void:
     report.sample_frame(0.01,1000000)
     verify(report.recorded_frames == total, "Stopped recording remains stable")
     report.start_recording()
+    for index in range(Report.MAX_TOPOLOGY_EVENTS+8):
+        report._record_topology({"available":true,"active_screen":index,"monitors":[]})
+    verify(report.recorded_topology.size()==Report.MAX_TOPOLOGY_EVENTS and report.topology_limit_reached,"Monitor topology history is bounded and reports overflow")
     var initial_cap:=Engine.max_fps
     report.sample_frame(0.02,1)
     Engine.max_fps=30
@@ -68,6 +86,7 @@ func run() -> void:
     Engine.max_fps=initial_cap
     report.start_recording()
     verify(report.record_contexts.is_empty() and not report.context_limit_reached,"New recording clears old contexts and overflow state")
+    verify(report.recorded_topology.size()==1 and not report.topology_limit_reached,"New recording resets topology history and its overflow state")
     for index in range(301): report.sample_frame(1.0,2000000)
     verify(not report.recording and report.recorded_frames == 300, "Five active minute recording stops automatically")
     report.start_recording()
@@ -89,6 +108,8 @@ func run() -> void:
     verify(not data.has("paths") and not data.has("bookmarks") and not data.has("username") and not data.has("camera_images"), "Report excludes personal content")
     verify(data.limits.contains("excludes driver/GPU"), "Memory measurement limits included")
     verify(data.recording.screen_index_poll_seconds==1 and data.limits.contains("one active second"),"Screen-index polling resolution is explicit in the saved report")
+    verify(data.recording.topology_events.size()==1 and not data.recording.topology_events[0].topology.available and data.recording.topology_poll_seconds==1,"Exported headless topology remains explicitly unavailable")
+    verify(not data.recording.topology_limit_reached and data.limits.contains("shorter transitions may be missed"),"Topology event cap and sampling limit are documented")
     app.interface.open_page("Settings")
     app.interface.performance_record.pressed.emit()
     verify(report.recording, "Settings starts recording")

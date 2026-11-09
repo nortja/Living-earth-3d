@@ -1,0 +1,95 @@
+name: Validate monitor topology history
+on:
+  push:
+    branches: [validation/monitor-topology-history]
+concurrency:
+  group: monitor-topology-history-${{ github.ref }}
+  cancel-in-progress: false
+permissions:
+  contents: read
+jobs:
+  linux:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install pinned Godot and virtual desktop
+        run: |
+          set -euo pipefail
+          sudo apt-get update -qq
+          sudo apt-get install -y xvfb libgl1-mesa-dri
+          base=https://github.com/godotengine/godot-builds/releases/download/4.6.3-stable
+          curl -fsSL "$base/Godot_v4.6.3-stable_linux.x86_64.zip" -o godot.zip
+          curl -fsSL "$base/SHA512-SUMS.txt" -o sums.txt
+          awk '$2=="Godot_v4.6.3-stable_linux.x86_64.zip" {print $1 "  godot.zip"}' sums.txt > selected.sha512
+          test -s selected.sha512
+          sha512sum -c selected.sha512
+          unzip -q godot.zip
+          chmod +x Godot_v4.6.3-stable_linux.x86_64
+      - name: Source regression and full native display matrix
+        run: |
+          set -euo pipefail
+          godot=./Godot_v4.6.3-stable_linux.x86_64
+          "$godot" --headless --path . --editor --import --quit
+          "$godot" --headless --path . --script res://tests/performance_test.gd 2>&1 | tee performance.log
+          if grep -Eq '^(SCRIPT ERROR|ERROR):' performance.log; then exit 1; fi
+          grep -F 'Local performance:' performance.log
+          grep -F '0 failures' performance.log
+          xvfb-run -a -s '-screen 0 5120x2880x24' "$godot" --path . --audio-driver Dummy --script res://tests/performance_render_test.gd 2>&1 | tee native.log
+          if grep -Eq '^(SCRIPT ERROR|ERROR):' native.log; then exit 1; fi
+          grep -F 'Native performance report: 0 failures' native.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: Linux-monitor-topology
+          path: |
+            dist/performance-*.png
+            performance.log
+            native.log
+  windows:
+    runs-on: windows-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install pinned Godot
+        shell: powershell
+        run: |
+          $ErrorActionPreference='Stop'
+          $ProgressPreference='SilentlyContinue'
+          $base='https://github.com/godotengine/godot-builds/releases/download/4.6.3-stable'
+          $name='Godot_v4.6.3-stable_win64.exe.zip'
+          curl.exe -fLsS --retry 3 "$base/$name" -o godot.zip
+          if($LASTEXITCODE -ne 0){throw 'Godot download failed'}
+          $expected='d44ea7ef5bab754cacd49d581b6062836b2eea12a82e1d183aebfad9cd8c7db2bd82513337bd657d6d2d5c04d46239c0570b029faf1343e81e8a2fa7b85dd83b'
+          if((Get-FileHash godot.zip -Algorithm SHA512).Hash.ToLowerInvariant() -cne $expected){throw 'Godot checksum mismatch'}
+          Expand-Archive godot.zip tools
+      - name: Install pinned test-only software OpenGL
+        shell: powershell
+        run: |
+          $archive=Join-Path $env:RUNNER_TEMP 'mesa.7z'
+          curl.exe -fL --retry 3 --output $archive 'https://github.com/pal1000/mesa-dist-win/releases/download/26.2.4/mesa3d-26.2.4-release-msvc.7z'
+          if($LASTEXITCODE -ne 0){throw 'Test OpenGL download failed'}
+          if((Get-FileHash $archive -Algorithm SHA256).Hash.ToLowerInvariant() -ne '351fc8c8b695878ffb3eaa044b3ead08672a48b1a045e3c3e3975811df0f6695'){throw 'Test OpenGL checksum mismatch'}
+          7z x $archive ('-o'+(Join-Path $env:RUNNER_TEMP 'mesa')) -y
+          if($LASTEXITCODE -ne 0){throw 'Test OpenGL extraction failed'}
+          & (Join-Path $env:RUNNER_TEMP 'mesa/systemwidedeploy.cmd') 1
+          if($LASTEXITCODE -ne 0){throw 'Test OpenGL ICD deployment failed'}
+      - name: Run Windows source and native render checks
+        shell: powershell
+        run: |
+          $ErrorActionPreference='Stop'
+          $godot=Join-Path $pwd 'tools/Godot_v4.6.3-stable_win64_console.exe'
+          & $godot --headless --path . --editor --import --quit
+          if($LASTEXITCODE -ne 0){throw 'Godot import failed'}
+          & $godot --headless --path . --script res://tests/performance_test.gd 2>&1 | Tee-Object performance.log
+          if($LASTEXITCODE -ne 0 -or (Select-String -Path performance.log -Pattern '^(SCRIPT ERROR|ERROR):') -or !(Select-String -Path performance.log -SimpleMatch '0 failures')){throw 'Performance source suite failed'}
+          & $godot --path . --audio-driver Dummy --script res://tests/performance_render_test.gd -- --compact 2>&1 | Tee-Object native.log
+          if($LASTEXITCODE -ne 0 -or (Select-String -Path native.log -Pattern '^(SCRIPT ERROR|ERROR):') -or !(Select-String -Path native.log -SimpleMatch 'Native performance report: 0 failures')){throw 'Native Windows render suite failed'}
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: Windows-monitor-topology
+          path: |
+            dist/performance-*.png
+            performance.log
+            native.log
