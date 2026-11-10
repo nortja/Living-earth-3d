@@ -21,6 +21,7 @@ var retrieved := ""
 var digest := ""
 var etag := ""
 var last_modified := ""
+var last_failure_reason := ""
 var unchanged_since_ticks := 0 # Monotonic milliseconds; UTC remains display metadata.
 const IMAGE_ORIGIN := "https://www.nps.gov/webcams-yell/"
 
@@ -37,6 +38,7 @@ func open(venue: Dictionary, start_request := true) -> void:
     digest = ""
     etag = ""
     last_modified = ""
+    last_failure_reason = ""
     consecutive_failures = 0
     base_interval = clampf(float(venue.get("image_interval_seconds",60.0)),60.0,1800.0)
     refresh_interval = base_interval
@@ -143,8 +145,20 @@ func _received(result: int, code: int, headers: PackedStringArray, body: PackedB
         _source_metadata(headers,false)
         _describe_success(true)
         return
-    if result != HTTPRequest.RESULT_SUCCESS or code != 200 or body.is_empty() or body.size() > 8388608:
-        _unavailable()
+    if result != HTTPRequest.RESULT_SUCCESS:
+        _unavailable("Network request failed.")
+        return
+    if code == 304:
+        _unavailable("Provider returned HTTP 304 without a validated cached image.")
+        return
+    if code != 200:
+        _unavailable("Provider returned HTTP %d." % code)
+        return
+    if body.is_empty():
+        _unavailable("Provider returned an empty image.")
+        return
+    if body.size() > 8388608:
+        _unavailable("Provider image exceeded the 8 MiB response limit.")
         return
     var hashing := HashingContext.new()
     hashing.start(HashingContext.HASH_SHA256)
@@ -155,11 +169,11 @@ func _received(result: int, code: int, headers: PackedStringArray, body: PackedB
     if image == null or next_digest != digest:
         var expected := jpeg_dimensions(body)
         if expected == Vector2i.ZERO:
-            _unavailable()
+            _unavailable("Provider response was not a supported JPEG image.")
             return
         var decoded := Image.new()
         if decoded.load_jpg_from_buffer(body) != OK or decoded.get_size() != expected or decoded.is_empty():
-            _unavailable()
+            _unavailable("Provider JPEG could not be decoded.")
             return
         if maxi(decoded.get_width(),decoded.get_height()) > max_texture_edge:
             var factor := float(max_texture_edge) / maxi(decoded.get_width(),decoded.get_height())
@@ -176,6 +190,7 @@ func _describe_success(revalidated: bool) -> void:
     consecutive_failures = 0
     refresh_interval = base_interval
     last_failed = false
+    last_failure_reason = ""
     if revalidated:
         status = "Checked %s UTC · provider reports unchanged.\nImage retrieved %s UTC · periodic image, not continuous video.\nCamera capture time is not verified." % [Time.get_datetime_string_from_system(true).replace("T"," "),retrieved]
     else:
@@ -191,7 +206,8 @@ func _append_unchanged_warning() -> void:
     if unchanged_ms >= stale_after * 1000.0:
         status += "\nImage unchanged for %d+ minutes; the provider may be delayed." % int(stale_after / 60.0)
 
-func _unavailable() -> void:
+func _unavailable(reason := "The provider did not return a usable image.") -> void:
+    last_failure_reason = reason
     consecutive_failures = mini(consecutive_failures + 1, 4)
     refresh_interval = minf(base_interval * pow(2.0, consecutive_failures - 1), 7200.0)
     elapsed = 0.0
@@ -203,7 +219,7 @@ func set_automatic(enabled: bool) -> void:
     if last_failed: _describe_unavailable()
 
 func _describe_unavailable() -> void:
-    status = "Camera unavailable. Try Refresh or open the official source."
+    status = "Camera unavailable: %s Try Refresh or open the official source." % last_failure_reason
     if automatic:
         status += "\nAutomatic retry in %d minutes while this viewer is open." % int(refresh_interval / 60.0)
     if image != null:

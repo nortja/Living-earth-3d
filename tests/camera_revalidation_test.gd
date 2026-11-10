@@ -39,9 +39,9 @@ func run() -> void:
     camera.open(venues[0],false)
     verify(camera.request_headers().size()==2, "No conditional request before a validated image")
     camera._received(0,304,PackedStringArray(),PackedByteArray(),camera.generation)
-    verify(camera.last_failed and camera.image==null, "First-response 304 cannot invent an image")
+    verify(camera.last_failed and camera.image==null and camera.last_failure_reason.contains("HTTP 304"), "First-response 304 cannot invent an image and reports why it was rejected")
     camera._received(0,200,PackedStringArray(['ETag: W/"frame-1"','Last-Modified: fixture time']),bytes,camera.generation)
-    verify(camera.request_headers().has('If-None-Match: W/"frame-1"'), "Validated frame enables provider revalidation")
+    verify(camera.request_headers().has('If-None-Match: W/"frame-1"') and camera.last_failure_reason.is_empty(), "Validated frame enables provider revalidation and clears prior failure reason")
     var texture:Texture2D=camera.image
     camera.retrieved="2026-10-30 12:00:00"
     camera.unchanged_since_ticks=Time.get_ticks_msec()-301000
@@ -54,6 +54,7 @@ func run() -> void:
     camera.retrieved="2026-10-30 12:00:00"
     camera._unavailable()
     verify(camera.unchanged_since_ticks==frame_ticks, "Failed refresh does not reset image age")
+    verify(camera.last_failure_reason=="The provider did not return a usable image.", "Fallback failure reason remains explicit for non-HTTP internal failures")
     verify(camera.status.contains("Last successful image retained") and camera.status.contains("5+ minutes"), "Failed refresh preserves the unchanged-image warning beside the retained image")
     camera._received(0,304,PackedStringArray(),PackedByteArray(),camera.generation)
     verify(camera.image==texture and camera.retrieved=="2026-10-30 12:00:00", "304 retains the original texture and image retrieval time")
