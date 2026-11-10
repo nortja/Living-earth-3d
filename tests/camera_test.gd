@@ -76,10 +76,14 @@ func run() -> void:
     retained_texture = service.image
     service._received(HTTPRequest.RESULT_SUCCESS,200,PackedStringArray(),PackedByteArray([1,2,3]),service.generation)
     verify(service.last_failed and service.image == retained_texture and service.status.contains("not a supported JPEG"), "Malformed provider image is distinguished without discarding the last good image")
+    var too_large := PackedByteArray()
+    too_large.resize(8388609)
+    service._received(HTTPRequest.RESULT_SUCCESS,200,PackedStringArray(),too_large,service.generation)
+    verify(service.last_failed and service.image == retained_texture and service.status.contains("8 MiB response limit"), "Response above 8 MiB retains the validated image with an explicit size-limit reason")
     var oversized := Image.create(4097,1,false,Image.FORMAT_RGB8)
     oversized.fill(Color("884422"))
     service._received(HTTPRequest.RESULT_SUCCESS, 200, PackedStringArray(), oversized.save_jpg_to_buffer(), service.generation)
-    verify(service.last_failed and service.image == retained_texture and service.status.contains("8 MiB response limit"), "Oversized changed image retains the validated image with explicit size-limit reason")
+    verify(service.last_failed and service.image == retained_texture and service.status.contains("not a supported JPEG"), "Image dimensions above 4096 are rejected with a format/dimension reason")
     var token: int = service.generation
     ui.close_camera()
     service._received(HTTPRequest.RESULT_SUCCESS, 200, PackedStringArray(), bytes, token)
