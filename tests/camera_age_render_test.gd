@@ -23,7 +23,7 @@ func run() -> void:
     service._received(0,304,PackedStringArray(),PackedByteArray(),service.generation)
     verify(ui.camera_detail.text.contains("Checked") and ui.camera_detail.text.contains("5+ minutes"),"Successful 304 revalidation keeps the elapsed-age warning")
     service._unavailable()
-    verify(ui.camera_detail.text.contains("Camera unavailable.") and ui.camera_detail.text.contains("Last successful image retained") and ui.camera_detail.text.contains("5+ minutes"),"Failed refresh keeps the retained-image age warning visible in the actual viewer")
+    verify(ui.camera_detail.text.contains("Camera unavailable:") and ui.camera_detail.text.contains("Last successful image retained") and ui.camera_detail.text.contains("5+ minutes"),"Failed refresh keeps the retained-image age warning visible in the actual viewer")
     DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path("res://dist"))
     var sizes: Array[Vector2i]=[Vector2i(870,612),Vector2i(2496,1664),Vector2i(3840,1080)]
     if "--compact" in OS.get_cmdline_user_args(): sizes=[Vector2i(870,612)]
