@@ -1,7 +1,10 @@
-name: Validate monotonic camera age
+name: Validate camera minimize lifecycle
 on:
   push:
-    branches: [validation/camera-monotonic-age, validation/camera-failure-states]
+    branches: [validation/camera-monotonic-age, validation/camera-failure-states, validation/camera-minimize-lifecycle]
+concurrency:
+  group: camera-minimize-lifecycle
+  cancel-in-progress: false
 permissions:
   contents: read
 jobs:
