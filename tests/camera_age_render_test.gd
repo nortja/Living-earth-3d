@@ -24,6 +24,15 @@ func run() -> void:
     verify(ui.camera_detail.text.contains("Checked") and ui.camera_detail.text.contains("5+ minutes"),"Successful 304 revalidation keeps the elapsed-age warning")
     service._unavailable()
     verify(ui.camera_detail.text.contains("Camera unavailable:") and ui.camera_detail.text.contains("Last successful image retained") and ui.camera_detail.text.contains("5+ minutes"),"Failed refresh keeps the retained-image age warning visible in the actual viewer")
+    var retained_before_suspend: Texture2D = service.image
+    var late_token: int = service.generation
+    service.loading = true
+    service._set_minimized(true)
+    verify(service.view_suspended and not service.loading and ui.camera_detail.text.contains("Last successful image retained"),"Suspending the native viewer cancels pending refresh and keeps retained-image context")
+    service._received(0,200,PackedStringArray(),bytes,late_token)
+    verify(service.image == retained_before_suspend and ui.camera_detail.text.contains("5+ minutes"),"Late native-viewer response cannot replace the retained image or erase its age warning")
+    service._set_minimized(false)
+    verify(not service.view_suspended and ui.camera_detail.text.contains("Camera unavailable:"),"Restoring the native viewer restores its prior failure state")
     DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path("res://dist"))
     var sizes: Array[Vector2i]=[Vector2i(870,612),Vector2i(2496,1664),Vector2i(3840,1080)]
     if "--compact" in OS.get_cmdline_user_args(): sizes=[Vector2i(870,612)]

@@ -5,6 +5,7 @@ var selected: Dictionary = {}
 var image: Texture2D
 var status := "Choose a camera."
 var view_suspended := false
+var minimized := false
 var active := false
 var automatic := true
 var last_failed := false
@@ -26,9 +27,16 @@ var unchanged_since_ticks := 0 # Monotonic milliseconds; UTC remains display met
 const IMAGE_ORIGIN := "https://www.nps.gov/webcams-yell/"
 
 func _process(delta: float) -> void:
-    if view_suspended or not active or not automatic or loading or get_window().mode == Window.MODE_MINIMIZED: return
+    var now_minimized := DisplayServer.get_name() != "headless" and get_window().mode == Window.MODE_MINIMIZED
+    _set_minimized(now_minimized)
+    if view_suspended or not active or not automatic or loading: return
     elapsed += delta
     if elapsed >= refresh_interval: refresh()
+
+func _set_minimized(value: bool) -> void:
+    if minimized == value: return
+    minimized = value
+    set_view_suspended(value)
 
 func open(venue: Dictionary, start_request := true) -> void:
     stop()
@@ -221,21 +229,45 @@ func set_automatic(enabled: bool) -> void:
 func _describe_unavailable() -> void:
     status = "Camera unavailable: %s Try Refresh or open the official source." % last_failure_reason
     if automatic:
-        status += "\nAutomatic retry in %d minutes while this viewer is open." % int(refresh_interval / 60.0)
+        if view_suspended:
+            status += "\nAutomatic retry resumes when the viewer is visible."
+        else:
+            status += "\nAutomatic retry in %d minutes while this viewer is open." % int(refresh_interval / 60.0)
     if image != null:
         status += "\nLast successful image retained (retrieved %s UTC)." % retrieved
         _append_unchanged_warning()
     changed.emit()
 
 func set_view_suspended(value: bool) -> void:
+    if view_suspended == value: return
     view_suspended = value
-    if not value: return
-    var was_loading := loading
-    generation += 1
-    if is_instance_valid(request): request.cancel_request();request.queue_free()
-    request = null
-    loading = false
-    elapsed = 0.0
-    if was_loading:
-        status = "Request canceled while menus were hidden. Refresh, or wait for automatic refresh."
+    if value:
+        var was_loading := loading
+        generation += 1
+        if is_instance_valid(request): request.cancel_request();request.queue_free()
+        request = null
+        loading = false
+        elapsed = 0.0
+        if last_failed:
+            _describe_unavailable()
+        elif image != null:
+            status = "Viewer paused while suspended. Last successful image retained (retrieved %s UTC)." % retrieved
+            _append_unchanged_warning()
+            changed.emit()
+        elif was_loading:
+            status = "Request canceled while the viewer was suspended. Refresh, or wait for automatic retrieval."
+            changed.emit()
+        else:
+            status = "Viewer suspended. No validated image is available yet."
+            changed.emit()
+        return
+    if not active: return
+    if last_failed:
+        _describe_unavailable()
+    elif image != null:
+        status = "Viewer restored. Last successful image retrieved %s UTC." % retrieved
+        _append_unchanged_warning()
+        changed.emit()
+    else:
+        status = "Viewer restored. Refresh or wait for automatic retrieval."
         changed.emit()
