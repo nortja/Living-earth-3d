@@ -91,7 +91,7 @@ func run() -> void:
     service._set_minimized(true)
     verify(service.minimized and service.view_suspended and not service.loading and service.active, "Minimizing suspends refresh work without closing the viewer")
     verify(service.image == before_minimize and service.status.contains("Last successful image retained") and service.status.contains("5+ minutes"), "Minimize retains the last-good image, retrieval time and unchanged-age warning")
-    verify(service.status.contains("Automatic retry resumes when the viewer is visible"), "Suspended failure state does not promise a background retry")
+    verify(service.status.contains("Automatic retry resumes when Living Earth is active again"), "Suspended failure state does not promise a background retry")
     service._received(HTTPRequest.RESULT_SUCCESS, 200, PackedStringArray(), changed_bytes, stale_minimize_token)
     verify(service.image == before_minimize, "Late response from a suspended request is ignored")
     var suspended_generation: int = service.generation
