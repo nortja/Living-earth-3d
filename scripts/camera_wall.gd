@@ -102,6 +102,7 @@ func open() -> void:
     show()
     manager.suspended = false
     manager.configure(_venues())
+    _focus_changed(not manager.active or manager.suspended or manager.minimized or manager.focus_suspended)
     relayout()
 
 func close() -> void:
