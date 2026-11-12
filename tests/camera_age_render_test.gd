@@ -33,6 +33,10 @@ func run() -> void:
     verify(service.image == retained_before_suspend and ui.camera_detail.text.contains("5+ minutes"),"Late native-viewer response cannot replace the retained image or erase its age warning")
     service._set_minimized(false)
     verify(not service.view_suspended and ui.camera_detail.text.contains("Camera unavailable:"),"Restoring the native viewer restores its prior failure state")
+    service._set_focus_suspended(true)
+    verify(service.view_suspended and ui.camera_detail.text.contains("Last successful image retained") and ui.camera_detail.text.contains("5+ minutes"),"Native viewer focus loss keeps retained image and elapsed-age context")
+    service._set_focus_suspended(false)
+    verify(not service.view_suspended and ui.camera_detail.text.contains("Camera unavailable:"),"Native viewer focus return restores the prior failure state")
     DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path("res://dist"))
     var sizes: Array[Vector2i]=[Vector2i(870,612),Vector2i(2496,1664),Vector2i(3840,1080)]
     if "--compact" in OS.get_cmdline_user_args(): sizes=[Vector2i(870,612)]

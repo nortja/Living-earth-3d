@@ -61,6 +61,22 @@ func run() -> void:
     verify(not first.active and not first.loading, "Focus suspension cancels and rejects late downloads")
     manager.set_suspended(false)
     verify(first.active, "Closing focus resumes the wall")
+    var focus_retained: Texture2D = first.image
+    var wall_focus_token: int = first.generation
+    first.loading = true
+    manager._set_focus_suspended(true)
+    verify(manager.focus_suspended and not first.active and not first.loading, "Window focus loss stops all Camera Wall requests")
+    verify(wall.note.text.contains("paused") and first.image == focus_retained, "Background Camera Wall status is explicit and keeps validated tiles")
+    first._received(HTTPRequest.RESULT_SUCCESS, 200, PackedStringArray(), bytes, wall_focus_token)
+    verify(first.image == focus_retained, "Late Camera Wall response after focus loss is ignored")
+    manager._set_focus_suspended(false)
+    verify(first.active and wall.note.text.contains("resumed"), "Window focus return resumes the bounded Camera Wall scheduler")
+    manager._set_minimized(true)
+    manager._set_focus_suspended(true)
+    manager._set_focus_suspended(false)
+    verify(manager.minimized and not first.active and wall.note.text.contains("paused"), "Focus return while minimized keeps Camera Wall requests paused and status honest")
+    manager._set_minimized(false)
+    verify(first.active and wall.note.text.contains("resumed"), "Unminimizing after focus return resumes Camera Wall downloads")
     manager.set_visible_urls([])
     verify(not first.active, "Offscreen tiles suspend downloads")
     manager.set_visible_urls([wall.sources[0].image_url])
