@@ -1,9 +1,9 @@
-name: Validate camera minimize lifecycle
+name: Validate camera window lifecycle
 on:
   push:
-    branches: [validation/camera-monotonic-age, validation/camera-failure-states, validation/camera-minimize-lifecycle]
+    branches: [validation/camera-monotonic-age, validation/camera-failure-states, validation/camera-minimize-lifecycle, validation/camera-focus-lifecycle]
 concurrency:
-  group: camera-minimize-lifecycle
+  group: camera-window-lifecycle
   cancel-in-progress: false
 permissions:
   contents: read
