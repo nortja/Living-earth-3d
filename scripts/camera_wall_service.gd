@@ -1,6 +1,7 @@
 extends Node
 ## Deduplicates tiles and limits the entire wall to two simultaneous downloads.
 signal changed
+signal focus_changed(suspended: bool)
 const CameraService = preload("res://scripts/camera_service.gd")
 const MAX_REQUESTS := 2
 var service_script: Script = CameraService
@@ -8,9 +9,32 @@ var services: Dictionary = {}
 var active := false
 var suspended := false
 var minimized := false
+var focus_suspended := false
 var automatic := true
 var visible_urls: Array = []
 var limit_visibility := false
+
+func _ready() -> void:
+    if DisplayServer.get_name() == "headless": return
+    var window := get_window()
+    if window == null: return
+    if not window.focus_exited.is_connected(_on_window_focus_exited):
+        window.focus_exited.connect(_on_window_focus_exited)
+    if not window.focus_entered.is_connected(_on_window_focus_entered):
+        window.focus_entered.connect(_on_window_focus_entered)
+    focus_suspended = not DisplayServer.window_is_focused()
+
+func _on_window_focus_exited() -> void:
+    _set_focus_suspended(true)
+
+func _on_window_focus_entered() -> void:
+    _set_focus_suspended(false)
+
+func _set_focus_suspended(value: bool) -> void:
+    if focus_suspended == value: return
+    focus_suspended = value
+    _apply_visibility()
+    focus_changed.emit(value)
 
 func configure(venues: Array) -> void:
     var wanted: Dictionary = {}
@@ -25,6 +49,7 @@ func configure(venues: Array) -> void:
     for url in wanted:
         if url in services: continue
         var service = service_script.new()
+        service.manage_window_focus = false
         add_child(service)
         service.set_process(false)
         service.max_texture_edge = 1920
@@ -42,7 +67,7 @@ func _process(delta: float) -> void:
     if now_minimized != minimized:
         minimized = now_minimized
         _apply_visibility()
-    if not active or suspended or minimized: return
+    if not active or suspended or minimized or focus_suspended: return
     var in_flight := 0
     for service in services.values():
         if service.loading: in_flight += 1
@@ -63,7 +88,7 @@ func set_suspended(value: bool) -> void:
 func _apply_visibility() -> void:
     for url in services:
         var service = services[url]
-        if not active or suspended or minimized or (limit_visibility and url not in visible_urls):
+        if not active or suspended or minimized or focus_suspended or (limit_visibility and url not in visible_urls):
             service.stop()
         else:
             # Retain successful images while hidden; stagger overdue refreshes on return.
