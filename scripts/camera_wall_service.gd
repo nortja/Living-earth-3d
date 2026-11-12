@@ -30,11 +30,17 @@ func _on_window_focus_exited() -> void:
 func _on_window_focus_entered() -> void:
     _set_focus_suspended(false)
 
+func _set_minimized(value: bool) -> void:
+    if minimized == value: return
+    minimized = value
+    _apply_visibility()
+    focus_changed.emit(not active or suspended or minimized or focus_suspended)
+
 func _set_focus_suspended(value: bool) -> void:
     if focus_suspended == value: return
     focus_suspended = value
     _apply_visibility()
-    focus_changed.emit(value)
+    focus_changed.emit(not active or suspended or minimized or focus_suspended)
 
 func configure(venues: Array) -> void:
     var wanted: Dictionary = {}
