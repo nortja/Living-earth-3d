@@ -97,6 +97,9 @@ func run() -> void:
     var suspended_generation: int = service.generation
     service._set_minimized(true)
     verify(service.generation == suspended_generation, "Repeated minimized polls do not repeatedly cancel requests")
+    service._set_focus_suspended(true)
+    service._set_focus_suspended(false)
+    verify(service.view_suspended and service.minimized, "Focus return while still minimized keeps selected-camera requests paused")
     service._set_minimized(false)
     verify(not service.minimized and not service.view_suspended and service.active, "Restoring the window resumes the camera viewer")
     verify(service.status.contains("Last successful image retained") and service.status.contains("Automatic retry in"), "Restored failure state resumes accurate retry messaging")
