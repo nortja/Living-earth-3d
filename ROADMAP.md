@@ -1,6 +1,6 @@
 # Living Earth 3D — current roadmap
 
-Updated 2026-11-11. Latest released baseline: 0.25.1 (synchronized Moon zoom and personal cinematic Scene Library, with pointer-out clean view, optional Moon, offline 4K Milky Way, lunar calendar, tours, regional infrared and explicit Windows idle setup). One Windows installer, then authenticated automatic updates; the base Earth remains useful offline.
+Updated 2026-11-12. Latest released baseline: 0.25.1 (synchronized Moon zoom and personal cinematic Scene Library, with pointer-out clean view, optional Moon, offline 4K Milky Way, lunar calendar, tours, regional infrared and explicit Windows idle setup). One Windows installer, then authenticated automatic updates; the base Earth remains useful offline.
 
 ## Validated source awaiting release
 
@@ -9,6 +9,8 @@ Unreleased validated follow-up: camera unchanged-image age uses monotonic elapse
 Additional validated follow-up: camera refresh failures now identify network errors, HTTP status codes, invalid first-response 304s, empty/oversized bodies and unsupported or undecodable JPEGs. A previously validated image, its retrieval timestamp and unchanged-age warning remain visible; a successful 200 or valid 304 clears the failure reason. Linux and Windows each passed 362 targeted camera assertions and the native viewer render passed in [run 42879035400](https://github.com/nortja/Living-earth-3d/actions/runs/42879035400). This is source/native validation only; a new installer and all documented delivery gates remain required. [Validation](docs/VALIDATION-CAMERA-FAILURE-STATES.md).
 
 Additional validated follow-up: the selected camera viewer now detects the native window's minimized state, cancels any in-flight refresh, invalidates late callbacks, and resumes on restore. The last-good image, retrieval time, failure reason and monotonic unchanged-age warning remain visible; suspended error messaging no longer promises background retries. Linux and Windows each passed 369 targeted camera source assertions plus native viewer transition renders in [run 43077965673](https://github.com/nortja/Living-earth-3d/actions/runs/43077965673). This is targeted source/native validation only; a new installer and all documented delivery gates remain required. [Validation](docs/VALIDATION-CAMERA-MINIMIZE.md).
+
+Additional validated follow-up: selected-camera viewing and Camera Wall now cancel in-flight requests when the application window loses focus, reject late callbacks, preserve last-good images and retrieval/age/failure context, and resume the existing bounded refresh schedule on focus return. Focus and minimize states combine so neither can accidentally resume background work; Camera Wall remains capped at two simultaneous requests. Linux and Windows each passed 380 camera assertions and native viewer rendering in [run 43279715216](https://github.com/nortja/Living-earth-3d/actions/runs/43279715216). Linux rendered 870×612, 2496×1664 and 3840×1080; Windows rendered 870×612 using checksum-pinned test-only software OpenGL. This is source/native validation only; a new installer and full delivery gates remain required. [Validation](docs/VALIDATION-CAMERA-FOCUS.md).
 
 ## Release 0.25.1 — interruption reliability
 
