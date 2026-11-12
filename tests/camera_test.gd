@@ -100,6 +100,16 @@ func run() -> void:
     service._set_minimized(false)
     verify(not service.minimized and not service.view_suspended and service.active, "Restoring the window resumes the camera viewer")
     verify(service.status.contains("Last successful image retained") and service.status.contains("Automatic retry in"), "Restored failure state resumes accurate retry messaging")
+    var retained_before_focus: Texture2D = service.image
+    var focus_token: int = service.generation
+    service.loading = true
+    service._set_focus_suspended(true)
+    verify(service.focus_suspended and service.view_suspended and service.active and not service.loading, "Window focus loss cancels refresh work without closing the selected camera")
+    verify(service.status.contains("Automatic retry resumes when Living Earth is active again") and service.status.contains("Last successful image retained") and service.status.contains("5+ minutes"), "Background status preserves failure, retrieval and unchanged-image context")
+    service._received(HTTPRequest.RESULT_SUCCESS, 200, PackedStringArray(), changed_bytes, focus_token)
+    verify(service.image == retained_before_focus, "Late response after window focus loss cannot replace the last-good image")
+    service._set_focus_suspended(false)
+    verify(not service.focus_suspended and not service.view_suspended and service.status.contains("Automatic retry in"), "Window focus return resumes accurate retry status")
     var token: int = service.generation
     ui.close_camera()
     service._received(HTTPRequest.RESULT_SUCCESS, 200, PackedStringArray(), bytes, token)
