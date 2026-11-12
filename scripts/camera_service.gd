@@ -6,6 +6,8 @@ var image: Texture2D
 var status := "Choose a camera."
 var view_suspended := false
 var minimized := false
+var focus_suspended := false
+var manage_window_focus := true
 var active := false
 var automatic := true
 var last_failed := false
@@ -26,6 +28,22 @@ var last_failure_reason := ""
 var unchanged_since_ticks := 0 # Monotonic milliseconds; UTC remains display metadata.
 const IMAGE_ORIGIN := "https://www.nps.gov/webcams-yell/"
 
+func _ready() -> void:
+    if not manage_window_focus or DisplayServer.get_name() == "headless": return
+    var window := get_window()
+    if window == null: return
+    if not window.focus_exited.is_connected(_on_window_focus_exited):
+        window.focus_exited.connect(_on_window_focus_exited)
+    if not window.focus_entered.is_connected(_on_window_focus_entered):
+        window.focus_entered.connect(_on_window_focus_entered)
+    _set_focus_suspended(not DisplayServer.window_is_focused())
+
+func _on_window_focus_exited() -> void:
+    _set_focus_suspended(true)
+
+func _on_window_focus_entered() -> void:
+    _set_focus_suspended(false)
+
 func _process(delta: float) -> void:
     var now_minimized := DisplayServer.get_name() != "headless" and get_window().mode == Window.MODE_MINIMIZED
     _set_minimized(now_minimized)
@@ -36,7 +54,12 @@ func _process(delta: float) -> void:
 func _set_minimized(value: bool) -> void:
     if minimized == value: return
     minimized = value
-    set_view_suspended(value)
+    set_view_suspended(minimized or focus_suspended)
+
+func _set_focus_suspended(value: bool) -> void:
+    if focus_suspended == value: return
+    focus_suspended = value
+    set_view_suspended(minimized or focus_suspended)
 
 func open(venue: Dictionary, start_request := true) -> void:
     stop()
@@ -54,7 +77,12 @@ func open(venue: Dictionary, start_request := true) -> void:
     active = true
     last_attempt = -10000
     status = "Waiting to retrieve camera image…"
-    if start_request: refresh()
+    if start_request:
+        if view_suspended:
+            status = "Camera viewer paused while Living Earth is inactive. No validated image is available yet."
+            changed.emit()
+        else:
+            refresh()
 
 func stop() -> void:
     active = false
@@ -230,7 +258,7 @@ func _describe_unavailable() -> void:
     status = "Camera unavailable: %s Try Refresh or open the official source." % last_failure_reason
     if automatic:
         if view_suspended:
-            status += "\nAutomatic retry resumes when the viewer is visible."
+            status += "\nAutomatic retry resumes when Living Earth is active again."
         else:
             status += "\nAutomatic retry in %d minutes while this viewer is open." % int(refresh_interval / 60.0)
     if image != null:
@@ -251,23 +279,23 @@ func set_view_suspended(value: bool) -> void:
         if last_failed:
             _describe_unavailable()
         elif image != null:
-            status = "Viewer paused while suspended. Last successful image retained (retrieved %s UTC)." % retrieved
+            status = "Camera viewer paused while Living Earth is inactive. Last successful image retained (retrieved %s UTC)." % retrieved
             _append_unchanged_warning()
             changed.emit()
         elif was_loading:
-            status = "Request canceled while the viewer was suspended. Refresh, or wait for automatic retrieval."
+            status = "Camera request canceled while Living Earth was inactive. Return to resume automatic retrieval."
             changed.emit()
         else:
-            status = "Viewer suspended. No validated image is available yet."
+            status = "Camera viewer paused while Living Earth is inactive. No validated image is available yet."
             changed.emit()
         return
     if not active: return
     if last_failed:
         _describe_unavailable()
     elif image != null:
-        status = "Viewer restored. Last successful image retrieved %s UTC." % retrieved
+        status = "Living Earth active again. Last successful image retrieved %s UTC." % retrieved
         _append_unchanged_warning()
         changed.emit()
     else:
-        status = "Viewer restored. Refresh or wait for automatic retrieval."
+        status = "Living Earth active again. Refresh or wait for automatic retrieval."
         changed.emit()
