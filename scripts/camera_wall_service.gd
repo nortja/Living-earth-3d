@@ -87,8 +87,10 @@ func _process(delta: float) -> void:
                     in_flight += 1
 
 func set_suspended(value: bool) -> void:
+    if suspended == value: return
     suspended = value
     _apply_visibility()
+    focus_changed.emit(not active or suspended or minimized or focus_suspended)
 
 func _apply_visibility() -> void:
     for url in services:
