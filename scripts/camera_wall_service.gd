@@ -71,8 +71,7 @@ func configure(venues: Array) -> void:
 func _process(delta: float) -> void:
     var now_minimized := DisplayServer.get_name() != "headless" and get_window().mode == Window.MODE_MINIMIZED
     if now_minimized != minimized:
-        minimized = now_minimized
-        _apply_visibility()
+        _set_minimized(now_minimized)
     if not active or suspended or minimized or focus_suspended: return
     var in_flight := 0
     for service in services.values():
