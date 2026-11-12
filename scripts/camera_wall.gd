@@ -34,6 +34,7 @@ func setup(owner_app: Node3D, cameras: Array) -> void:
     manager = WallService.new()
     add_child(manager)
     manager.changed.connect(_changed)
+    manager.focus_changed.connect(_focus_changed)
     frame = PanelContainer.new()
     frame.add_theme_stylebox_override("panel", app.interface.surface(Color("0e2030"), 18, 16))
     add_child(frame)
@@ -168,6 +169,13 @@ func _changed() -> void:
         tile.detail.text = service.status.get_slice("\n", 0) if service else "Choose a camera above."
         tile.detail.tooltip_text = (service.status + "\n" + service.selected.get("provider", "")) if service else ""
         tile.focus.disabled = _source(url).is_empty()
+
+func _focus_changed(paused: bool) -> void:
+    if not note: return
+    if paused:
+        note.text = "Camera Wall paused while Living Earth is inactive. Last validated images remain visible; refreshes are stopped."
+    else:
+        note.text = "Camera Wall resumed. Retained images remain visible while scheduled refreshes restart."
 
 func relayout() -> void:
     if not frame or not grid: return
