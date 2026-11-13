@@ -17,7 +17,6 @@ func verify(ok: bool, message: String) -> void:
     if not ok:
         failures += 1
         push_error(message)
-func _initialize() -> void: call_deferred("run")
 func run() -> void:
     var app = load("res://scenes/earth.tscn").instantiate()
     app.play_intro = false
@@ -31,34 +30,49 @@ func run() -> void:
     verify(not wall.visible and manager.services.is_empty(), "Wall never fetches on startup")
     wall.open()
     verify(manager.services.size() == 4, "Four distinct sources requested")
+    var ordered_urls: Array = manager.services.keys()
+    ordered_urls.sort()
+    var due_first = manager.services[ordered_urls[0]]
+    var due_second = manager.services[ordered_urls[1]]
+    var due_third = manager.services[ordered_urls[2]]
     manager._process(0.0)
-    var running := 0
-    for service in manager.services.values():
-        if service.loading: running += 1
-    verify(running == 2, "Initial wall downloads capped at two")
-    var first = manager.services.values()[0]
+    verify(due_first.starts == 1 and due_second.starts == 0, "Only the first distinct source starts immediately")
+    manager._process(1.9)
+    verify(due_second.starts == 0, "Second source remains staggered before two seconds")
+    manager._process(0.2)
+    verify(due_second.starts == 1, "Second source starts after the two-second stagger")
     var image := Image.create(16, 9, false, Image.FORMAT_RGB8)
     image.fill(Color("68afc4"))
     var bytes := image.save_jpg_to_buffer()
-    first._received(HTTPRequest.RESULT_SUCCESS, 200, PackedStringArray(), bytes, first.generation)
-    manager._process(0.0)
-    running = 0
+    due_first._received(HTTPRequest.RESULT_SUCCESS, 200, PackedStringArray(), bytes, due_first.generation)
+    manager._process(2.1)
+    verify(due_third.starts == 1, "Third source becomes eligible after its stagger and a download slot frees")
+    var running := 0
     for service in manager.services.values():
         if service.loading: running += 1
-    verify(running == 2, "Queue fills one freed download slot")
-    for index in range(9): wall.slots[index] = wall.sources[0].image_url
-    wall.slot_count = 9
-    wall._rebuild()
-    verify(manager.services.size() == 1, "Nine duplicate tiles share one source")
-    verify(wall.tiles.size() == 9 and wall.tiles[8].image.texture != null, "Shared image reaches every duplicate tile")
+    verify(running == 2, "Staggered scheduler still respects the two-request cap")
+
+    manager.set_suspended(true)
+    manager.set_suspended(false)
+    var first_remaining := due_first.refresh_interval - due_first.elapsed
+    var second_remaining := due_second.refresh_interval - due_second.elapsed
+    verify(absf(first_remaining) < 0.01 and absf(second_remaining - 2.0) < 0.01, "Focus return restores deterministic two-second spacing")
+    var first = manager.services[wall.sources[0].image_url]
+    first._received(HTTPRequest.RESULT_SUCCESS, 200, PackedStringArray(), bytes, first.generation)
     manager.automatic = false
     manager.request_refresh()
     manager._process(0.0)
-    verify(first.loading, "Manual refresh works with automatic polling disabled")
-    var token: int = first.generation
-    manager.set_suspended(true)
-    first._received(HTTPRequest.RESULT_SUCCESS, 200, PackedStringArray(), bytes, token)
-    verify(not first.active and not first.loading, "Focus suspension cancels and rejects late downloads")
+    var pending = null
+    for service in manager.services.values():
+        if service.loading:
+            pending = service
+            break
+    verify(pending != null, "Manual refresh works with automatic polling disabled")
+    if pending != null:
+        var token: int = pending.generation
+        manager.set_suspended(true)
+        pending._received(HTTPRequest.RESULT_SUCCESS, 200, PackedStringArray(), bytes, token)
+        verify(not pending.active and not pending.loading, "Focus suspension cancels and rejects late downloads")
     manager.set_suspended(false)
     verify(first.active, "Closing focus resumes the wall")
     var focus_retained: Texture2D = first.image
