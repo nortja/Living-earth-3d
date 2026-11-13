@@ -17,6 +17,7 @@ func verify(ok: bool, message: String) -> void:
     if not ok:
         failures += 1
         push_error(message)
+func _initialize() -> void: call_deferred("run")
 func run() -> void:
     var app = load("res://scenes/earth.tscn").instantiate()
     app.play_intro = false
@@ -54,11 +55,17 @@ func run() -> void:
 
     manager.set_suspended(true)
     manager.set_suspended(false)
-    var first_remaining := due_first.refresh_interval - due_first.elapsed
-    var second_remaining := due_second.refresh_interval - due_second.elapsed
+    var first_remaining: float = float(due_first.refresh_interval) - float(due_first.elapsed)
+    var second_remaining: float = float(due_second.refresh_interval) - float(due_second.elapsed)
     verify(absf(first_remaining) < 0.01 and absf(second_remaining - 2.0) < 0.01, "Focus return restores deterministic two-second spacing")
     var first = manager.services[wall.sources[0].image_url]
     first._received(HTTPRequest.RESULT_SUCCESS, 200, PackedStringArray(), bytes, first.generation)
+    for index in range(9): wall.slots[index] = wall.sources[0].image_url
+    wall.slot_count = 9
+    wall._rebuild()
+    verify(manager.services.size() == 1, "Nine duplicate tiles share one source")
+    verify(wall.tiles.size() == 9 and wall.tiles[8].image.texture != null, "Shared image reaches every duplicate tile")
+
     manager.automatic = false
     manager.request_refresh()
     manager._process(0.0)
