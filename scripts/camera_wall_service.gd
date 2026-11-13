@@ -4,6 +4,7 @@ signal changed
 signal focus_changed(suspended: bool)
 const CameraService = preload("res://scripts/camera_service.gd")
 const MAX_REQUESTS := 2
+const REFRESH_STAGGER_SECONDS := 2.0
 var service_script: Script = CameraService
 var services: Dictionary = {}
 var active := false
@@ -52,6 +53,7 @@ func configure(venues: Array) -> void:
             services[url].stop()
             services[url].queue_free()
             services.erase(url)
+    var added_urls: Array = []
     for url in wanted:
         if url in services: continue
         var service = service_script.new()
@@ -62,10 +64,16 @@ func configure(venues: Array) -> void:
         service.changed.connect(func(): changed.emit())
         service.automatic = automatic
         service.open(wanted[url], false)
-        service.elapsed = service.refresh_interval
         services[url] = service
+        added_urls.append(url)
     active = true
     _apply_visibility()
+    # A new wall should not make every provider due in the same frame.
+    # Apply the same deterministic spacing used when suspended services resume.
+    for url in added_urls:
+        var service = services[url]
+        if service.active:
+            service.elapsed = maxf(0.0, service.refresh_interval - _stagger_delay(url))
     changed.emit()
 
 func _process(delta: float) -> void:
@@ -92,14 +100,23 @@ func set_suspended(value: bool) -> void:
     _apply_visibility()
     focus_changed.emit(not active or suspended or minimized or focus_suspended)
 
+func _stagger_delay(url: String) -> float:
+    var eligible: Array = []
+    for candidate in services.keys():
+        if not limit_visibility or candidate in visible_urls:
+            eligible.append(candidate)
+    eligible.sort()
+    return float(maxi(0, eligible.find(url))) * REFRESH_STAGGER_SECONDS
+
 func _apply_visibility() -> void:
     for url in services:
         var service = services[url]
         if not active or suspended or minimized or focus_suspended or (limit_visibility and url not in visible_urls):
             service.stop()
         else:
-            # Retain successful images while hidden; stagger overdue refreshes on return.
-            if not service.active: service.elapsed = service.refresh_interval
+            # Preserve validated images and stagger overdue downloads on return.
+            if not service.active:
+                service.elapsed = maxf(0.0, service.refresh_interval - _stagger_delay(url))
             service.active = true
 
 func request_refresh() -> void:
