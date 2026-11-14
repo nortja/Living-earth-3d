@@ -5,6 +5,7 @@ signal focus_changed(suspended: bool)
 const CameraService = preload("res://scripts/camera_service.gd")
 const MAX_REQUESTS := 2
 const REFRESH_STAGGER_SECONDS := 2.0
+const RESUME_GAP_SECONDS := 30.0
 var service_script: Script = CameraService
 var services: Dictionary = {}
 var active := false
@@ -81,6 +82,9 @@ func _process(delta: float) -> void:
     if now_minimized != minimized:
         _set_minimized(now_minimized)
     if not active or suspended or minimized or focus_suspended: return
+    if delta >= RESUME_GAP_SECONDS:
+        _recover_after_resume_gap(delta)
+        return
     var in_flight := 0
     for service in services.values():
         if service.loading: in_flight += 1
@@ -93,6 +97,29 @@ func _process(delta: float) -> void:
                 if service.loading:
                     service.remove_meta("refresh_requested")
                     in_flight += 1
+
+func _recover_after_resume_gap(delta: float) -> void:
+    # A long frame gap commonly means Windows slept or the renderer was paused.
+    # Do not catch up every missed interval in one burst when the app returns.
+    var urls: Array = services.keys()
+    urls.sort()
+    for url in urls:
+        var service = services[url]
+        if not service.active: continue
+        if service.loading and not service.view_suspended:
+            # Cancel the pre-suspend request and invalidate its late callback,
+            # while retaining the last validated image and its freshness context.
+            service.set_view_suspended(true)
+            service.set_view_suspended(false)
+            service.elapsed = maxf(0.0, service.refresh_interval - _stagger_delay(url))
+            continue
+        var caught_up := minf(service.refresh_interval, service.elapsed + delta)
+        if caught_up >= service.refresh_interval:
+            # Preserve the existing retry interval, but stagger overdue sources.
+            service.elapsed = maxf(0.0, service.refresh_interval - _stagger_delay(url))
+        else:
+            service.elapsed = caught_up
+
 
 func set_suspended(value: bool) -> void:
     if suspended == value: return
