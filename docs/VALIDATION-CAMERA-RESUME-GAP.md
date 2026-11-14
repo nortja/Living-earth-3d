@@ -16,7 +16,7 @@ The 30-second threshold is a frame-gap heuristic. It is not a Windows power/sess
 
 ## Validation
 
-[GitHub Actions run 43626643833](https://github.com/nortja/Living-earth-3d/actions/runs/43626643833) passed on November 14, 2026.
+[GitHub Actions run 43626827474](https://github.com/nortja/Living-earth-3d/actions/runs/43626827474) passed on November 14, 2026.
 
 - Godot 4.6.3 project import passed on Linux and Windows.
 - Linux and Windows each passed 393 targeted camera assertions: 57 camera viewer, 232 revalidation, 26 expansion and 78 Camera Wall.
