@@ -53,6 +53,29 @@ func run() -> void:
         if service.loading: running += 1
     verify(running == 2, "Staggered scheduler still respects the two-request cap")
 
+    # Simulate a sleep-sized frame gap while two downloads are in flight.
+    due_second.refresh_interval = 120.0 # Preserve an existing exponential retry interval.
+    var old_second_token: int = due_second.generation
+    var old_second_image: Texture2D = due_second.image
+    manager._process(3600.0)
+    verify(not due_second.loading and due_second.generation > old_second_token, "Resume gap cancels in-flight requests and invalidates callbacks")
+    verify(due_second.refresh_interval == 120.0, "Resume gap preserves the existing retry/backoff interval")
+    verify(absf(due_second.elapsed - 118.0) < 0.01, "Overdue second source is re-armed at its two-second stagger")
+    due_second._received(HTTPRequest.RESULT_SUCCESS, 200, PackedStringArray(), bytes, old_second_token)
+    verify(due_second.image == old_second_image and not due_second.status.contains("Refreshing"), "Late pre-sleep response cannot replace retained data or leave a false loading state")
+    manager._process(0.0)
+    verify(due_first.starts == 2 and due_second.starts == 1, "Only the first overdue source restarts immediately")
+    manager._process(1.9)
+    verify(due_second.starts == 1, "Second overdue source stays staggered after resume")
+    manager._process(0.2)
+    verify(due_second.starts == 2, "Second overdue source resumes after the two-second gap")
+    var not_due = manager.services[ordered_urls[3]]
+    not_due.refresh_interval = 120.0
+    not_due.elapsed = 10.0
+    manager._recover_after_resume_gap(30.0)
+    verify(absf(not_due.elapsed - 40.0) < 0.01, "Source not yet due keeps the elapsed portion of its interval across a shorter gap")
+    verify(not_due.refresh_interval == 120.0, "Non-overdue source keeps its retry interval")
+
     manager.set_suspended(true)
     manager.set_suspended(false)
     var first_remaining: float = float(due_first.refresh_interval) - float(due_first.elapsed)
