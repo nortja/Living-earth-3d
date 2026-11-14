@@ -69,6 +69,12 @@ func run() -> void:
     verify(due_second.starts == 1, "Second overdue source stays staggered after resume")
     manager._process(0.2)
     verify(due_second.starts == 2, "Second overdue source resumes after the two-second gap")
+    var not_due = manager.services[ordered_urls[3]]
+    not_due.refresh_interval = 120.0
+    not_due.elapsed = 10.0
+    manager._recover_after_resume_gap(30.0)
+    verify(absf(not_due.elapsed - 40.0) < 0.01, "Source not yet due keeps the elapsed portion of its interval across a shorter gap")
+    verify(not_due.refresh_interval == 120.0, "Non-overdue source keeps its retry interval")
 
     manager.set_suspended(true)
     manager.set_suspended(false)
