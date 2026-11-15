@@ -26,6 +26,13 @@ static const wchar_t* host_class = L"LivingEarth3D.SaverHost";
 static void stop() { stopping = true; PostQuitMessage(0); }
 static LRESULT CALLBACK host_proc(HWND window, UINT message, WPARAM w, LPARAM l) {
     switch (message) {
+        case WM_QUERYENDSESSION:
+            // A query can be canceled. Allow shutdown, but do not tear down yet.
+            return TRUE;
+        case WM_ENDSESSION:
+            // Only a committed logoff/shutdown should stop the saver.
+            if (earth_saver::session_end_committed(w != FALSE)) stop();
+            return 0;
         case WM_CLOSE: stop(); return 0;
         case WM_DISPLAYCHANGE: stop(); return 0;
         case WM_POWERBROADCAST:

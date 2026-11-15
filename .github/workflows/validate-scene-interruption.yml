@@ -1,12 +1,12 @@
-name: Validate scene transition interruption (no publication)
+name: Validate native screensaver lifecycle (no publication)
 on:
   push:
-    branches: [fix/scene-transition-interruption]
+    branches: [fix/scene-transition-interruption, fix/screensaver-end-session-cleanup]
 permissions:
   contents: read
 concurrency:
-  group: living-earth-scene-interruption-validation
-  cancel-in-progress: true
+  group: living-earth-native-screensaver-validation
+  cancel-in-progress: false
 jobs:
   build:
     runs-on: ubuntu-24.04
@@ -66,10 +66,10 @@ jobs:
           python3 tests/screensaver_command_test.py /tmp/screensaver-args-test "$godot"
           python3 packaging/windows/build_screensaver.py --output build/windows/LivingEarth3D.scr
           python3 tests/windows_icon_test.py build/windows/LivingEarth3D.scr --launcher
-          makensis -V2 -DVERSION=0.25.0 -DBUILD_DIR="$PWD/build/windows" -DOUTPUT="$PWD/dist/LivingEarth3D-Setup-0.25.0.exe" packaging/windows/installer.nsi
-          python3 tests/windows_icon_test.py dist/LivingEarth3D-Setup-0.25.0.exe --installer
+          makensis -V2 -DVERSION=0.25.1 -DBUILD_DIR="$PWD/build/windows" -DOUTPUT="$PWD/dist/LivingEarth3D-Setup-0.25.1.exe" packaging/windows/installer.nsi
+          python3 tests/windows_icon_test.py dist/LivingEarth3D-Setup-0.25.1.exe --installer
           cd dist
-          sha256sum LivingEarth3D-Setup-0.25.0.exe > LivingEarth3D-Setup-0.25.0.exe.sha256
+          sha256sum LivingEarth3D-Setup-0.25.1.exe > LivingEarth3D-Setup-0.25.1.exe.sha256
           printf 'Source: %s\nFresh application and native screensaver build. Windows release gates follow; physical mixed-DPI and audio listening remain field checks.\n' "$GITHUB_SHA" > BUILD.txt
       - name: Native Linux exploration, cameras and screensavers
         run: |
@@ -92,7 +92,7 @@ jobs:
         run: python3 packaging/windows/write_payload_metadata.py --application build/windows/LivingEarth3D.exe --output dist/payload-hashes.json
       - uses: actions/upload-artifact@v4
         with:
-          name: LivingEarth3D-0.25.0-candidate
+          name: LivingEarth3D-0.25.1-candidate
           path: dist/*
   windows:
     needs: build
@@ -102,7 +102,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
         with:
-          name: LivingEarth3D-0.25.0-candidate
+          name: LivingEarth3D-0.25.1-candidate
           path: dist
       - name: Verify signatures and real installer update on Windows PowerShell 5.1
         shell: powershell
@@ -113,8 +113,8 @@ jobs:
           ./tests/update_security_test.ps1
           pwsh -NoProfile -File tests/update_status_test.ps1
           pwsh -NoProfile -File tests/update_security_test.ps1
-          ./tests/windows_update_install_test.ps1 -Installer dist/LivingEarth3D-Setup-0.25.0.exe -PayloadMetadata dist/payload-hashes.json
-          ./tests/windows_update_install_test.ps1 -Installer dist/LivingEarth3D-Setup-0.25.0.exe -PayloadMetadata dist/payload-hashes.json -BaselineVersion '0.24.0'
+          ./tests/windows_update_install_test.ps1 -Installer dist/LivingEarth3D-Setup-0.25.1.exe -PayloadMetadata dist/payload-hashes.json
+          ./tests/windows_update_install_test.ps1 -Installer dist/LivingEarth3D-Setup-0.25.1.exe -PayloadMetadata dist/payload-hashes.json -BaselineVersion '0.24.0'
       - name: Install pinned test-only software OpenGL
         shell: powershell
         run: |
@@ -128,19 +128,19 @@ jobs:
           if($LASTEXITCODE -ne 0){throw 'Test OpenGL ICD deployment failed'}
       - name: Actual Screen Saver Settings and selected Earth dropdown
         shell: powershell
-        run: ./tests/windows_saver_settings_test.ps1 -Installer dist/LivingEarth3D-Setup-0.25.0.exe
+        run: ./tests/windows_saver_settings_test.ps1 -Installer dist/LivingEarth3D-Setup-0.25.1.exe
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: Windows-saver-settings-0.25.0-attempt-${{ github.run_attempt }}
+          name: Windows-saver-settings-0.25.1-attempt-${{ github.run_attempt }}
           path: dist/windows-saver-settings.png
       - name: Actual Windows embedded preview and saver lifecycle
         shell: powershell
-        run: ./tests/windows_screensaver_test.ps1 -Installer dist/LivingEarth3D-Setup-0.25.0.exe -SoftwareRendering -SoakMinutes 10
+        run: ./tests/windows_screensaver_test.ps1 -Installer dist/LivingEarth3D-Setup-0.25.1.exe -SoftwareRendering -SoakMinutes 10
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: Windows-screensaver-0.25.0-attempt-${{ github.run_attempt }}-evidence
+          name: Windows-screensaver-0.25.1-attempt-${{ github.run_attempt }}-evidence
           path: |
             dist/windows-screensaver-*
             dist/windows-saver-preflight.log
@@ -152,7 +152,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
         with:
-          name: LivingEarth3D-0.25.0-candidate
+          name: LivingEarth3D-0.25.1-candidate
           path: dist
       - name: Install pinned test-only software OpenGL
         shell: powershell
@@ -168,10 +168,10 @@ jobs:
       - name: Actual installed desktop photographs, model layer and performance report
         shell: powershell
         run: |
-          ./tests/windows_packaged_ui_test.ps1 -Installer dist/LivingEarth3D-Setup-0.25.0.exe -FullDisplayMatrix
+          ./tests/windows_packaged_ui_test.ps1 -Installer dist/LivingEarth3D-Setup-0.25.1.exe -FullDisplayMatrix
           ./tests/windows_monitor_query_cost.ps1
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: Windows-packaged-desktop-0.25.0-attempt-${{ github.run_attempt }}
+          name: Windows-packaged-desktop-0.25.1-attempt-${{ github.run_attempt }}
           path: dist/packaged-desktop/*

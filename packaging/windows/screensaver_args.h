@@ -42,5 +42,6 @@ inline std::vector<std::wstring> renderer_arguments(uintptr_t parent, int width,
     if (preview) result.push_back(L"--saver-preview");
     return result;
 }
+inline constexpr bool session_end_committed(bool ending) noexcept { return ending; }
 inline bool animate_monitor(size_t index) { return index < 4; }
 }

@@ -17,6 +17,7 @@ public static class SaverWindows {
  [DllImport("user32.dll")] public static extern bool IsWindowEnabled(IntPtr w);
  [DllImport("user32.dll")] public static extern bool GetWindowRect(IntPtr w,out Rect r);
  [DllImport("user32.dll")] public static extern bool PostMessage(IntPtr w,uint m,IntPtr a,IntPtr b);
+ [DllImport("user32.dll", EntryPoint="SendMessageW")] public static extern IntPtr SendMessage(IntPtr w,uint m,IntPtr a,IntPtr b);
  [DllImport("user32.dll")] public static extern void keybd_event(byte k,byte s,uint f,UIntPtr e);
  public static IntPtr[] Windows(uint pid,IntPtr parent) {
   var result=new List<IntPtr>(); EnumProc cb=(w,p)=>{uint id;GetWindowThreadProcessId(w,out id);if(id==pid)result.Add(w);return true;};
@@ -227,6 +228,19 @@ try {
   Assert-Exit $full $renderer
   Write-Output ('PASS: simulated '+$event[2]+' notification cleans up native host and renderer')
  }
+ $full=Start-Saver '/s';Pump 3000
+ $renderer=Child-Process $full
+ $hosts=@([SaverWindows]::Windows([uint32]$full.Id,[IntPtr]::Zero)|Where-Object{[SaverWindows]::IsWindowVisible($_)})
+ if(!$renderer -or !$hosts.Count){throw 'Session-end lifecycle fixture did not start'}
+ $query=[SaverWindows]::SendMessage($hosts[0],0x0011,[IntPtr]::Zero,[IntPtr]::Zero)
+ if($query.ToInt64() -eq 0){throw 'Saver vetoed WM_QUERYENDSESSION'}
+ if($full.HasExited -or $renderer.HasExited){throw 'Saver stopped during a query that Windows may still cancel'}
+ [void][SaverWindows]::SendMessage($hosts[0],0x0016,[IntPtr]::Zero,[IntPtr]::Zero)
+ Pump 100
+ if($full.HasExited -or $renderer.HasExited){throw 'Canceled WM_ENDSESSION stopped the saver'}
+ [void][SaverWindows]::SendMessage($hosts[0],0x0016,[IntPtr]([long]1),[IntPtr]::Zero)
+ Assert-Exit $full $renderer
+ Write-Output 'PASS: WM_QUERYENDSESSION is allowed, canceled WM_ENDSESSION preserves the saver, and committed WM_ENDSESSION cleans up the renderer'
  Write-Output 'Native Windows screensaver checks passed (software OpenGL; physical multi-monitor/DPI/sleep remain separate)'
 } finally {
  foreach($p in $launchers){if(!$p.HasExited){$p.Kill();$p.WaitForExit()}}
