@@ -27,6 +27,9 @@ int main(int argc, char** argv) {
     check(parse({L"/p",L"00012"}).parent==12);
     for(auto args:std::vector<std::vector<std::wstring>>{{L"/p"},{L"/p:"},{L"/p",L"0"},{L"/p:-1"},{L"/p:+12"},{L"/p:0x12"},{L"/p:12x"},{L"/p:18446744073709551616"},{L"/s",L"extra"},{L"/p:123",L"extra"},{L"/preview"},{L"--saver-hosted"},{L"/p",L" 12"}})check(parse(args).mode==Mode::Invalid);
     check(!session_end_committed(false));check(session_end_committed(true));
+    check(!display_change_settled(1349,1000));
+    check(display_change_settled(1350,1000));
+    check(!display_change_settled(999,1000));
     check(animate_monitor(0));check(animate_monitor(3));check(!animate_monitor(4));check(!animate_monitor(100));
     std::cout<<"Screensaver arguments: "<<checks<<" checks, 0 failures\n";
 }
