@@ -1,7 +1,12 @@
 name: Validate native screensaver lifecycle (no publication)
 on:
   push:
-    branches: [fix/scene-transition-interruption, fix/screensaver-end-session-cleanup, fix/screensaver-display-change-recovery]
+    branches: [fix/scene-transition-interruption, fix/screensaver-end-session-cleanup]
+    paths-ignore:
+      - ROADMAP.md
+      - docs/VALIDATION-SCREENSAVER-DISPLAY-RECOVERY.md
+  pull_request:
+    branches: [main]
     paths-ignore:
       - ROADMAP.md
       - docs/VALIDATION-SCREENSAVER-DISPLAY-RECOVERY.md
