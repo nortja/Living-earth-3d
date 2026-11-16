@@ -1,7 +1,7 @@
-name: Validate native screensaver lifecycle (no publication)
+name: Validate native screensaver lifecycle and DPI handling (no publication)
 on:
   push:
-    branches: [fix/scene-transition-interruption, fix/screensaver-end-session-cleanup]
+    branches: [fix/scene-transition-interruption, fix/screensaver-end-session-cleanup, fix/screensaver-dpi-monitor-dpi]
 permissions:
   contents: read
 concurrency:

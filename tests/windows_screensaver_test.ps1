@@ -206,6 +206,29 @@ try {
  }
  $renderer=Child-Process $full
  if(!$renderer){throw 'Fullscreen renderer did not start'}
+ # A DPI-only notification must preserve the physical monitor rectangle rather than
+ # accepting a logical-size suggestion that could leave part of an ultrawide uncovered.
+ foreach($hostWindow in $hosts){
+  $beforeDpi=New-Object SaverWindows+Rect
+  if(![SaverWindows]::GetWindowRect($hostWindow,[ref]$beforeDpi)){throw 'Could not read native host bounds before DPI notification'}
+  $suggested=New-Object SaverWindows+Rect
+  $suggested.Left=$beforeDpi.Left;$suggested.Top=$beforeDpi.Top
+  $suggested.Right=$beforeDpi.Left+640;$suggested.Bottom=$beforeDpi.Top+480
+  $rectPointer=[Runtime.InteropServices.Marshal]::AllocHGlobal([Runtime.InteropServices.Marshal]::SizeOf([type][SaverWindows+Rect]))
+  try {
+   [Runtime.InteropServices.Marshal]::StructureToPtr($suggested,$rectPointer,$false)
+   [void][SaverWindows]::SendMessage($hostWindow,0x02E0,[IntPtr]([long]0x00900090),$rectPointer)
+  } finally {[Runtime.InteropServices.Marshal]::FreeHGlobal($rectPointer)}
+  $afterDpi=New-Object SaverWindows+Rect
+  if(![SaverWindows]::GetWindowRect($hostWindow,[ref]$afterDpi) -or
+     $afterDpi.Left -ne $beforeDpi.Left -or $afterDpi.Top -ne $beforeDpi.Top -or
+     $afterDpi.Right -ne $beforeDpi.Right -or $afterDpi.Bottom -ne $beforeDpi.Bottom){
+   throw 'DPI notification did not preserve full physical monitor bounds'
+  }
+ }
+ Pump 100
+ if($full.HasExited -or $renderer.HasExited){throw 'DPI notification stopped the saver or renderer'}
+ Write-Output 'PASS: simulated WM_DPICHANGED preserves full physical monitor bounds and keeps the renderer running'
  $duplicate=Start-Saver '/S'
  if(!$duplicate.WaitForExit(5000)){throw 'Duplicate fullscreen saver was allowed'}
  Pump 1800

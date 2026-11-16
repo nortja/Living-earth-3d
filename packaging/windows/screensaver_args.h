@@ -43,5 +43,10 @@ inline std::vector<std::wstring> renderer_arguments(uintptr_t parent, int width,
     return result;
 }
 inline constexpr bool session_end_committed(bool ending) noexcept { return ending; }
+inline bool valid_monitor_bounds(long left, long top, long right, long bottom) noexcept {
+    const long long width = static_cast<long long>(right) - static_cast<long long>(left);
+    const long long height = static_cast<long long>(bottom) - static_cast<long long>(top);
+    return width > 0 && height > 0 && width <= 2147483647LL && height <= 2147483647LL;
+}
 inline bool animate_monitor(size_t index) { return index < 4; }
 }

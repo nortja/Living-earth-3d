@@ -35,6 +35,31 @@ static LRESULT CALLBACK host_proc(HWND window, UINT message, WPARAM w, LPARAM l)
             return 0;
         case WM_CLOSE: stop(); return 0;
         case WM_DISPLAYCHANGE: stop(); return 0;
+        case WM_DPICHANGED: {
+            // A scale-only change may not emit WM_DISPLAYCHANGE. Resolve the suggested
+            // rectangle to its monitor and keep the saver host on physical monitor pixels.
+            // tick() then resizes the embedded renderer to the updated client area.
+            if (!preview && IsWindowVisible(window)) {
+                const RECT* suggested = reinterpret_cast<const RECT*>(l);
+                HMONITOR monitor = suggested
+                    ? MonitorFromRect(suggested, MONITOR_DEFAULTTONEAREST)
+                    : MonitorFromWindow(window, MONITOR_DEFAULTTONEAREST);
+                MONITORINFO info{}; info.cbSize = sizeof(info);
+                if (!monitor || !GetMonitorInfoW(monitor, &info) ||
+                    !earth_saver::valid_monitor_bounds(info.rcMonitor.left, info.rcMonitor.top,
+                                                       info.rcMonitor.right, info.rcMonitor.bottom)) {
+                    stop();
+                    return 0;
+                }
+                const int width = static_cast<int>(
+                    static_cast<long long>(info.rcMonitor.right) - info.rcMonitor.left);
+                const int height = static_cast<int>(
+                    static_cast<long long>(info.rcMonitor.bottom) - info.rcMonitor.top);
+                if (!SetWindowPos(window, nullptr, info.rcMonitor.left, info.rcMonitor.top,
+                                  width, height, SWP_NOZORDER | SWP_NOACTIVATE)) stop();
+            }
+            return 0;
+        }
         case WM_POWERBROADCAST:
             if (w == PBT_APMSUSPEND) stop();
             return TRUE;
