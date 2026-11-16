@@ -54,6 +54,8 @@ Selection writes the installed full path to HKCU `Control Panel\Desktop\SCRNSAVE
 
 `/settings` opens the documented `control.exe desk.cpl,screensaver,@screensaver` entry point; `/select` selects Earth and opens settings; `/unregister` performs ownership-aware cleanup. `/c` opens the app's Screensavers page. `/p` embeds a resizing native Earth preview inside the supplied Windows parent. `/s` manages fullscreen per-monitor hosts and exits on input after a startup grace period. The actual Windows dialog/dropdown, native preview rendering, ten-minute resize/private-memory soak and lifecycle checks passed for this package; physical mixed-DPI/monitor/sleep behavior remains a field check.
 
+The native host explicitly returns success for `WM_QUERYENDSESSION` without stopping during a query that Windows may cancel. It tears down the saver and its owned renderer only after `WM_ENDSESSION` confirms that logoff or shutdown is committed; a canceled end-session leaves the saver running.
+
 See ROADMAP.md for prioritized release work and CHANGELOG.md for milestone changes.
 
 ## Native Windows display validation

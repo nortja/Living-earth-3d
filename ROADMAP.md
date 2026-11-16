@@ -4,6 +4,9 @@ Updated 2026-11-14. Latest released baseline: 0.25.1 (synchronized Moon zoom and
 
 ## Validated source awaiting release
 
+Additional validated follow-up, November 15, 2026: the native Windows screensaver host now explicitly allows `WM_QUERYENDSESSION` and waits for `WM_ENDSESSION` with a committed end-session flag before stopping. A canceled query/end-session leaves the saver and renderer running; a committed logoff/shutdown enters the existing graceful renderer-close and job-object cleanup path. Cross-platform C++ policy assertions and the installed Windows software-rendered lifecycle harness cover query, cancellation and committed shutdown. This does not simulate an actual user logoff or prove physical sleep/wake behavior. No installer or authenticated update feed changed. [Validation](docs/VALIDATION-SCREENSAVER-ENDSESSION.md).
+
+
 Additional validated follow-up, November 14, 2026: Camera Wall now treats a 30-second-or-longer frame gap as a possible sleep/renderer interruption. It cancels in-flight requests and rejects late callbacks, retains validated images and freshness/failure context, then re-arms overdue sources with deterministic two-second spacing while preserving each current retry interval and the two-request cap. Sources that were not yet due retain their remaining interval. Linux and Windows each passed 391 targeted camera assertions (57 viewer, 232 revalidation, 26 expansion, 76 wall) plus native camera viewer rendering in [run 43626827474](https://github.com/nortja/Living-earth-3d/actions/runs/43626827474). Linux rendered 870×612, 2496×1664 and 3840×1080; Windows rendered 870×612 with checksum-pinned test-only software OpenGL. This is a frame-gap heuristic, not proof of a physical Windows sleep/wake event. No installer or authenticated update feed changed; physical Dell, monitor, sleep/wake and overnight checks remain field work. [Validation](docs/VALIDATION-CAMERA-RESUME-GAP.md).
 
 
