@@ -43,5 +43,9 @@ inline std::vector<std::wstring> renderer_arguments(uintptr_t parent, int width,
     return result;
 }
 inline constexpr bool session_end_committed(bool ending) noexcept { return ending; }
+inline constexpr uint64_t display_change_quiet_ms = 350;
+inline constexpr bool display_change_settled(uint64_t now, uint64_t changed_at) noexcept {
+    return now >= changed_at && now - changed_at >= display_change_quiet_ms;
+}
 inline bool animate_monitor(size_t index) { return index < 4; }
 }
