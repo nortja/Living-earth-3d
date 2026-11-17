@@ -216,9 +216,33 @@ try {
  $renderer=Child-Process $full
  $hosts=@([SaverWindows]::Windows([uint32]$full.Id,[IntPtr]::Zero)|Where-Object{[SaverWindows]::IsWindowVisible($_)})
  if(!$renderer -or !$hosts.Count){throw 'Second fullscreen session did not start'}
- [void][SaverWindows]::PostMessage($hosts[0],0x007e,[IntPtr]::Zero,[IntPtr]::Zero)
- Assert-Exit $full $renderer
- Write-Output 'PASS: simulated display-change notification closes the full saver session and renderer'
+ $oldRendererId=$renderer.Id
+ # A burst of topology broadcasts should coalesce into one bounded host rebuild.
+ for($i=0;$i -lt 3;$i++){[void][SaverWindows]::SendMessage($hosts[0],0x007e,[IntPtr]::Zero,[IntPtr]::Zero)}
+ $deadline=[DateTime]::UtcNow.AddSeconds(25)
+ $newRenderer=$null
+ while([DateTime]::UtcNow -lt $deadline){
+  Pump 100
+  if($full.HasExited){throw 'Display change unexpectedly terminated the screensaver'}
+  $candidate=Child-Process $full
+  if($candidate -and !$candidate.HasExited -and $candidate.Id -ne $oldRendererId){$newRenderer=$candidate;break}
+ }
+ if(!$newRenderer){throw 'Display change did not restart the renderer'}
+ $renderer.Refresh()
+ if(!$renderer.HasExited){throw 'Old renderer survived display topology rebuild'}
+ $hosts=@([SaverWindows]::Windows([uint32]$full.Id,[IntPtr]::Zero)|Where-Object{[SaverWindows]::IsWindowVisible($_)})
+ if($hosts.Count -ne [Windows.Forms.Screen]::AllScreens.Count){throw 'Rebuilt host count differs from current monitor topology'}
+ foreach($screen in [Windows.Forms.Screen]::AllScreens){
+  $found=$false
+  foreach($hostWindow in $hosts){$bounds=New-Object SaverWindows+Rect;[void][SaverWindows]::GetWindowRect($hostWindow,[ref]$bounds);if($bounds.Left -eq $screen.Bounds.Left -and $bounds.Top -eq $screen.Bounds.Top -and $bounds.Right -eq $screen.Bounds.Right -and $bounds.Bottom -eq $screen.Bounds.Bottom){$found=$true}}
+  if(!$found){throw 'A monitor was not covered after display topology rebuild'}
+ }
+ Pump 800
+ $steadyRenderer=Child-Process $full
+ if(!$steadyRenderer -or $steadyRenderer.Id -ne $newRenderer.Id){throw 'A single display-change burst caused repeated renderer rebuilds'}
+ Write-Output 'PASS: display-change burst is debounced; the saver rebuilds its hosts and renderer for the current monitor topology'
+ [SaverWindows]::keybd_event(0x87,0,0,[UIntPtr]::Zero);[SaverWindows]::keybd_event(0x87,0,2,[UIntPtr]::Zero)
+ Assert-Exit $full $newRenderer
  foreach($event in @(@(0x0218,4,'suspend'),@(0x02B1,7,'session lock'))){
   $full=Start-Saver '/s';Pump 3000
   $renderer=Child-Process $full

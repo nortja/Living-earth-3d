@@ -16,6 +16,9 @@
 struct View { HWND host = nullptr; HANDLE process = nullptr; DWORD pid = 0; HWND child = nullptr; RECT bounds{}; };
 static std::vector<View> views;
 static bool stopping = false;
+static bool display_change_pending = false;
+static ULONGLONG display_change_at = 0;
+static int exit_code = 0;
 static bool preview = false;
 static HWND preview_parent = nullptr;
 static HANDLE job = nullptr;
@@ -34,7 +37,10 @@ static LRESULT CALLBACK host_proc(HWND window, UINT message, WPARAM w, LPARAM l)
             if (earth_saver::session_end_committed(w != FALSE)) stop();
             return 0;
         case WM_CLOSE: stop(); return 0;
-        case WM_DISPLAYCHANGE: stop(); return 0;
+        case WM_DISPLAYCHANGE:
+            // Display topology can settle over several broadcasts. Rebuild once after a quiet interval.
+            if (!preview) { display_change_pending = true; display_change_at = GetTickCount64(); }
+            return 0;
         case WM_POWERBROADCAST:
             if (w == PBT_APMSUSPEND) stop();
             return TRUE;
@@ -168,9 +174,55 @@ static BOOL CALLBACK add_monitor(HMONITOR, HDC, LPRECT rect, LPARAM) {
     view.host=CreateWindowExW(WS_EX_TOPMOST|WS_EX_TOOLWINDOW,host_class,L"Living Earth Screensaver",
         WS_POPUP|WS_VISIBLE|WS_CLIPCHILDREN,rect->left,rect->top,rect->right-rect->left,rect->bottom-rect->top,
         nullptr,nullptr,GetModuleHandleW(nullptr),nullptr);
-    if (!view.host) { stopping=true; return FALSE; }
+    if (!view.host) { exit_code=3; stopping=true; return FALSE; }
     views.push_back(view);
     return TRUE;
+}
+static bool create_job() {
+    job=CreateJobObjectW(nullptr,nullptr);
+    JOBOBJECT_EXTENDED_LIMIT_INFORMATION limit{};
+    limit.BasicLimitInformation.LimitFlags=JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE;
+    if (!job || !SetInformationJobObject(job,JobObjectExtendedLimitInformation,&limit,sizeof(limit))) {
+        if (job) CloseHandle(job);
+        job=nullptr;
+        return false;
+    }
+    return true;
+}
+static bool rebuild_display_hosts() {
+    if (preview || stopping) return true;
+    // Give each existing renderer a bounded graceful close before the old job
+    // is closed. The job remains the final guard against stranded child processes.
+    for (auto& view : views) if (view.child) PostMessageW(view.child,WM_CLOSE,0,0);
+    ULONGLONG deadline=GetTickCount64()+2500;
+    for (auto& view : views) if (view.process) {
+        DWORD remaining=GetTickCount64()<deadline ? (DWORD)(deadline-GetTickCount64()) : 0;
+        WaitForSingleObject(view.process,remaining);
+    }
+    if (job) { CloseHandle(job); job=nullptr; }
+    for (auto& view : views) {
+        if (view.process) CloseHandle(view.process);
+        if (view.host) {
+            WTSUnRegisterSessionNotification(view.host);
+            DestroyWindow(view.host);
+        }
+    }
+    views.clear();
+    if (!create_job()) { exit_code=3; stop(); return false; }
+    EnumDisplayMonitors(nullptr,nullptr,add_monitor,0);
+    if (stopping || views.empty()) { exit_code=3; stop(); return false; }
+    for (auto& view : views) WTSRegisterSessionNotification(view.host,NOTIFY_FOR_THIS_SESSION);
+    for (size_t i=0;i<views.size() && !stopping;i++) {
+        if (earth_saver::animate_monitor(i) && !start_view(views[i],app_path())) {
+            exit_code=3;
+            stop();
+        }
+    }
+    if (stopping) return false;
+    SetForegroundWindow(views.front().host);
+    started=GetTickCount64();
+    GetCursorPos(&initial_mouse);
+    return true;
 }
 static void tick() {
     ULONGLONG age=GetTickCount64()-started;
@@ -253,9 +305,7 @@ int WINAPI wWinMain(HINSTANCE instance,HINSTANCE,LPWSTR,int) {
     WNDCLASSW wc{};wc.lpfnWndProc=host_proc;wc.hInstance=instance;wc.lpszClassName=host_class;
     wc.hbrBackground=(HBRUSH)GetStockObject(BLACK_BRUSH);
     if (!RegisterClassW(&wc)) { if(mutex)CloseHandle(mutex);return 3; }
-    job=CreateJobObjectW(nullptr,nullptr);
-    JOBOBJECT_EXTENDED_LIMIT_INFORMATION limit{};limit.BasicLimitInformation.LimitFlags=JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE;
-    if (!job || !SetInformationJobObject(job,JobObjectExtendedLimitInformation,&limit,sizeof(limit))) { if(job)CloseHandle(job);if(mutex)CloseHandle(mutex);return 3; }
+    if (!create_job()) { if(mutex)CloseHandle(mutex);return 3; }
     HWND controller=CreateWindowExW(WS_EX_TOOLWINDOW,host_class,L"LivingEarth3D.SaverController",WS_POPUP,0,0,0,0,nullptr,nullptr,instance,nullptr);
     if (!controller) { CloseHandle(job);if(mutex)CloseHandle(mutex);return 3; }
     if (preview) { View view;view.host=preview_parent;views.push_back(view); }
@@ -263,10 +313,10 @@ int WINAPI wWinMain(HINSTANCE instance,HINSTANCE,LPWSTR,int) {
         EnumDisplayMonitors(nullptr,nullptr,add_monitor,0);
         for (auto& view : views) WTSRegisterSessionNotification(view.host,NOTIFY_FOR_THIS_SESSION);
         if (!views.empty()) SetForegroundWindow(views.front().host);
+        else { exit_code=3; stop(); }
     }
-    int result=0;
     for (size_t i=0;i<views.size() && !stopping;i++) {
-        if (earth_saver::animate_monitor(i) && !start_view(views[i],app)) { stopping=true;result=3; }
+        if (earth_saver::animate_monitor(i) && !start_view(views[i],app)) { stopping=true;exit_code=3; }
     }
     started=GetTickCount64();GetCursorPos(&initial_mouse);
     MSG message{};
@@ -274,6 +324,11 @@ int WINAPI wWinMain(HINSTANCE instance,HINSTANCE,LPWSTR,int) {
         while (PeekMessageW(&message,nullptr,0,0,PM_REMOVE)) {
             if (message.message==WM_QUIT) { stopping=true;break; }
             TranslateMessage(&message);DispatchMessageW(&message);
+        }
+        if (!stopping && display_change_pending &&
+            earth_saver::display_change_settled(GetTickCount64(),display_change_at)) {
+            display_change_pending=false;
+            rebuild_display_hosts();
         }
         if (!stopping) tick();
         MsgWaitForMultipleObjects(0,nullptr,FALSE,50,QS_ALLINPUT);
@@ -292,5 +347,5 @@ int WINAPI wWinMain(HINSTANCE instance,HINSTANCE,LPWSTR,int) {
     }
     DestroyWindow(controller);
     if(mutex)CloseHandle(mutex);
-    return result;
+    return exit_code;
 }
