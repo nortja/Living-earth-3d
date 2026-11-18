@@ -52,6 +52,18 @@ int main(int argc, char** argv) {
                               std::numeric_limits<long>::max(),1080,monitor_width,monitor_height));
     check(!monitor_dimensions(0,std::numeric_limits<long>::min(),
                               1920,std::numeric_limits<long>::max(),monitor_width,monitor_height));
+    const long max_int_extent_origin = -static_cast<long>(std::numeric_limits<int>::max());
+    check(monitor_dimensions(max_int_extent_origin,0,0,1080,monitor_width,monitor_height) &&
+          monitor_width==std::numeric_limits<int>::max() && monitor_height==1080);
+    check(monitor_dimensions(0,max_int_extent_origin,1920,0,monitor_width,monitor_height) &&
+          monitor_width==1920 && monitor_height==std::numeric_limits<int>::max());
+    const long one_over_int_extent_origin = max_int_extent_origin - 1L;
+    monitor_width=123; monitor_height=456;
+    check(!monitor_dimensions(one_over_int_extent_origin,0,0,1080,monitor_width,monitor_height) &&
+          monitor_width==0 && monitor_height==0);
+    monitor_width=123; monitor_height=456;
+    check(!monitor_dimensions(0,one_over_int_extent_origin,1920,0,monitor_width,monitor_height) &&
+          monitor_width==0 && monitor_height==0);
     check(animate_monitor(0));check(animate_monitor(3));check(!animate_monitor(4));check(!animate_monitor(100));
     std::cout<<"Screensaver arguments: "<<checks<<" checks, 0 failures\n";
 }
