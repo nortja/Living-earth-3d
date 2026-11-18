@@ -47,10 +47,20 @@ inline constexpr uint64_t display_change_quiet_ms = 350;
 inline constexpr bool display_change_settled(uint64_t now, uint64_t changed_at) noexcept {
     return now >= changed_at && now - changed_at >= display_change_quiet_ms;
 }
+inline bool monitor_dimensions(long left, long top, long right, long bottom,
+                               int& width, int& height) noexcept {
+    const long long candidate_width = static_cast<long long>(right) - static_cast<long long>(left);
+    const long long candidate_height = static_cast<long long>(bottom) - static_cast<long long>(top);
+    if (candidate_width <= 0 || candidate_height <= 0 ||
+        candidate_width > std::numeric_limits<int>::max() ||
+        candidate_height > std::numeric_limits<int>::max()) return false;
+    width = static_cast<int>(candidate_width);
+    height = static_cast<int>(candidate_height);
+    return true;
+}
 inline bool valid_monitor_bounds(long left, long top, long right, long bottom) noexcept {
-    const long long width = static_cast<long long>(right) - static_cast<long long>(left);
-    const long long height = static_cast<long long>(bottom) - static_cast<long long>(top);
-    return width > 0 && height > 0 && width <= 2147483647LL && height <= 2147483647LL;
+    int width = 0, height = 0;
+    return monitor_dimensions(left, top, right, bottom, width, height);
 }
 inline bool animate_monitor(size_t index) { return index < 4; }
 }
