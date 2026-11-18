@@ -4,6 +4,8 @@ Updated 2026-11-14. Latest released baseline: 0.25.1 (synchronized Moon zoom and
 
 ## Validated source awaiting release
 
+Candidate follow-up, November 18, 2026: unify overflow-safe monitor extent calculation across initial native host creation, WM_DISPLAYCHANGE rebuilds and DPI-only WM_DPICHANGED handling. Reject null, zero, reversed and greater-than-Win32-int monitor dimensions before subtraction/conversion, including extreme signed desktop origins on both LLP64 Windows and LP64 test hosts. Cross-platform C++ boundary assertions and the installed Windows saver startup/rebuild coverage are included; validation pending. No installer, authenticated feed, trust key, preferences or saved scenes are changed.
+
 Additional validated follow-up, November 15, 2026: the native Windows screensaver host now explicitly allows `WM_QUERYENDSESSION` and waits for `WM_ENDSESSION` with a committed end-session flag before stopping. A canceled query/end-session leaves the saver and renderer running; a committed logoff/shutdown enters the existing graceful renderer-close and job-object cleanup path. Cross-platform C++ policy assertions and the installed Windows software-rendered lifecycle harness cover query, cancellation and committed shutdown. This does not simulate an actual user logoff or prove physical sleep/wake behavior. No installer or authenticated update feed changed. [Validation](docs/VALIDATION-SCREENSAVER-ENDSESSION.md).
 
 
