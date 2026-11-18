@@ -32,7 +32,7 @@ Result: 63 assertions, zero failures, no sanitizer report.
 
 The immediately preceding monitor-hardening change passed the dedicated no-publication pipeline in [run 44373688324](https://github.com/nortja/Living-earth-3d/actions/runs/44373688324). It built the fresh Godot application and native screensaver, ran the full source/native suite (including 59 screensaver argument assertions), installed and exercised the Windows package, verified update/rollback and user-data preservation, ran the native preview and a ten-minute software-rendered saver soak, and exercised synthetic DPI, display-change, suspend, session-lock, and session-end messages.
 
-That run validates the shared monitor-extent implementation and its Windows host integration; it predates the four additional exact-boundary assertions in this follow-up.
+That run validates the shared monitor-extent implementation and its Windows host integration; it predates the four additional exact-boundary assertions in this follow-up. The four assertions were subsequently merged in [PR #17](https://github.com/nortja/Living-earth-3d/pull/17), commit [200eff4](https://github.com/nortja/Living-earth-3d/commit/200eff4a6be4ae809f370f62fec3203ee3338b22). They passed locally on LP64 with the strict C++17 build and UBSan. A second Windows workflow was not run specifically for these test-only additions; the runtime helper remains covered by run 44373688324.
 
 ## Scope and limitations
 
