@@ -37,6 +37,21 @@ int main(int argc, char** argv) {
     check(!valid_monitor_bounds(10,0,0,1080));
     check(!valid_monitor_bounds(0,10,1920,0));
     check(!valid_monitor_bounds(-2147483647L,0,2147483647L,1080));
+    int monitor_width=0, monitor_height=0;
+    check(monitor_dimensions(0,0,3840,1080,monitor_width,monitor_height) &&
+          monitor_width==3840 && monitor_height==1080);
+    check(monitor_dimensions(-3840,-200,0,1960,monitor_width,monitor_height) &&
+          monitor_width==3840 && monitor_height==2160);
+    check(!monitor_dimensions(0,0,0,1080,monitor_width,monitor_height) &&
+          monitor_width==0 && monitor_height==0);
+    check(!monitor_dimensions(0,0,1920,0,monitor_width,monitor_height) &&
+          monitor_width==0 && monitor_height==0);
+    check(!monitor_dimensions(10,0,0,1080,monitor_width,monitor_height));
+    check(!monitor_dimensions(0,10,1920,0,monitor_width,monitor_height));
+    check(!monitor_dimensions(std::numeric_limits<long>::min(),0,
+                              std::numeric_limits<long>::max(),1080,monitor_width,monitor_height));
+    check(!monitor_dimensions(0,std::numeric_limits<long>::min(),
+                              1920,std::numeric_limits<long>::max(),monitor_width,monitor_height));
     check(animate_monitor(0));check(animate_monitor(3));check(!animate_monitor(4));check(!animate_monitor(100));
     std::cout<<"Screensaver arguments: "<<checks<<" checks, 0 failures\n";
 }

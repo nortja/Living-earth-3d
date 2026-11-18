@@ -51,16 +51,14 @@ static LRESULT CALLBACK host_proc(HWND window, UINT message, WPARAM w, LPARAM l)
                     ? MonitorFromRect(suggested, MONITOR_DEFAULTTONEAREST)
                     : MonitorFromWindow(window, MONITOR_DEFAULTTONEAREST);
                 MONITORINFO info{}; info.cbSize = sizeof(info);
+                int width = 0, height = 0;
                 if (!monitor || !GetMonitorInfoW(monitor, &info) ||
-                    !earth_saver::valid_monitor_bounds(info.rcMonitor.left, info.rcMonitor.top,
-                                                       info.rcMonitor.right, info.rcMonitor.bottom)) {
+                    !earth_saver::monitor_dimensions(info.rcMonitor.left, info.rcMonitor.top,
+                                                     info.rcMonitor.right, info.rcMonitor.bottom,
+                                                     width, height)) {
                     stop();
                     return 0;
                 }
-                const int width = static_cast<int>(
-                    static_cast<long long>(info.rcMonitor.right) - info.rcMonitor.left);
-                const int height = static_cast<int>(
-                    static_cast<long long>(info.rcMonitor.bottom) - info.rcMonitor.top);
                 if (!SetWindowPos(window, nullptr, info.rcMonitor.left, info.rcMonitor.top,
                                   width, height, SWP_NOZORDER | SWP_NOACTIVATE)) stop();
             }
@@ -195,9 +193,18 @@ static BOOL CALLBACK find_child(HWND window, LPARAM data) {
     return TRUE;
 }
 static BOOL CALLBACK add_monitor(HMONITOR, HDC, LPRECT rect, LPARAM) {
+    int width = 0, height = 0;
+    if (!rect || !earth_saver::monitor_dimensions(rect->left, rect->top, rect->right, rect->bottom,
+                                                  width, height)) {
+        // Reject invalid/overflowing extents before any signed LONG subtraction
+        // or Win32 size conversion, both at startup and after topology rebuilds.
+        exit_code = 3;
+        stopping = true;
+        return FALSE;
+    }
     View view; view.bounds=*rect;
     view.host=CreateWindowExW(WS_EX_TOPMOST|WS_EX_TOOLWINDOW,host_class,L"Living Earth Screensaver",
-        WS_POPUP|WS_VISIBLE|WS_CLIPCHILDREN,rect->left,rect->top,rect->right-rect->left,rect->bottom-rect->top,
+        WS_POPUP|WS_VISIBLE|WS_CLIPCHILDREN,rect->left,rect->top,width,height,
         nullptr,nullptr,GetModuleHandleW(nullptr),nullptr);
     if (!view.host) { exit_code=3; stopping=true; return FALSE; }
     views.push_back(view);
