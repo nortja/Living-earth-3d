@@ -49,6 +49,7 @@ inline constexpr bool display_change_settled(uint64_t now, uint64_t changed_at) 
 }
 inline bool monitor_dimensions(long left, long top, long right, long bottom,
                                int& width, int& height) noexcept {
+    // Failure is atomic: callers never observe one partially converted extent.
     width = 0;
     height = 0;
     if (right <= left || bottom <= top) return false;
