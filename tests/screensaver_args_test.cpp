@@ -30,6 +30,13 @@ int main(int argc, char** argv) {
     check(!display_change_settled(1349,1000));
     check(display_change_settled(1350,1000));
     check(!display_change_settled(999,1000));
+    check(valid_monitor_bounds(0,0,3840,1080));
+    check(valid_monitor_bounds(-3840,-200,0,1960));
+    check(!valid_monitor_bounds(0,0,0,1080));
+    check(!valid_monitor_bounds(0,0,1920,0));
+    check(!valid_monitor_bounds(10,0,0,1080));
+    check(!valid_monitor_bounds(0,10,1920,0));
+    check(!valid_monitor_bounds(-2147483647L,0,2147483647L,1080));
     check(animate_monitor(0));check(animate_monitor(3));check(!animate_monitor(4));check(!animate_monitor(100));
     std::cout<<"Screensaver arguments: "<<checks<<" checks, 0 failures\n";
 }
