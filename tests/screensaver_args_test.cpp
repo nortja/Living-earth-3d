@@ -30,6 +30,18 @@ int main(int argc, char** argv) {
     check(!display_change_settled(1349,1000));
     check(display_change_settled(1350,1000));
     check(!display_change_settled(999,1000));
+    int monitor_width=0, monitor_height=0;
+    check(monitor_dimensions(0,0,3840,1080,monitor_width,monitor_height));
+    check(monitor_width==3840 && monitor_height==1080);
+    check(monitor_dimensions(-3840,-200,0,1960,monitor_width,monitor_height));
+    check(monitor_width==3840 && monitor_height==2160);
+    monitor_width=17; monitor_height=19;
+    check(!monitor_dimensions(0,0,0,1080,monitor_width,monitor_height));
+    check(monitor_width==17 && monitor_height==19);
+    check(!monitor_dimensions(0,0,1920,0,monitor_width,monitor_height));
+    check(!monitor_dimensions(10,0,0,1080,monitor_width,monitor_height));
+    check(!monitor_dimensions(0,10,1920,0,monitor_width,monitor_height));
+    check(!monitor_dimensions(-2147483647L,0,2147483647L,1080,monitor_width,monitor_height));
     check(valid_monitor_bounds(0,0,3840,1080));
     check(valid_monitor_bounds(-3840,-200,0,1960));
     check(!valid_monitor_bounds(0,0,0,1080));
