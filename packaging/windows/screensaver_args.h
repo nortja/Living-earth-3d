@@ -47,10 +47,27 @@ inline constexpr uint64_t display_change_quiet_ms = 350;
 inline constexpr bool display_change_settled(uint64_t now, uint64_t changed_at) noexcept {
     return now >= changed_at && now - changed_at >= display_change_quiet_ms;
 }
+inline bool monitor_dimensions(long left, long top, long right, long bottom,
+                               int& width, int& height) noexcept {
+    width = 0;
+    height = 0;
+    if (right <= left || bottom <= top) return false;
+
+    // Unsigned subtraction preserves the mathematical extent across negative
+    // desktop origins without overflowing signed long on either LLP64 or LP64.
+    const uint64_t width64 = static_cast<uint64_t>(right) - static_cast<uint64_t>(left);
+    const uint64_t height64 = static_cast<uint64_t>(bottom) - static_cast<uint64_t>(top);
+    const uint64_t max_extent = static_cast<uint64_t>(std::numeric_limits<int>::max());
+    if (width64 == 0 || height64 == 0 || width64 > max_extent || height64 > max_extent)
+        return false;
+
+    width = static_cast<int>(width64);
+    height = static_cast<int>(height64);
+    return true;
+}
 inline bool valid_monitor_bounds(long left, long top, long right, long bottom) noexcept {
-    const long long width = static_cast<long long>(right) - static_cast<long long>(left);
-    const long long height = static_cast<long long>(bottom) - static_cast<long long>(top);
-    return width > 0 && height > 0 && width <= 2147483647LL && height <= 2147483647LL;
+    int width = 0, height = 0;
+    return monitor_dimensions(left, top, right, bottom, width, height);
 }
 inline bool animate_monitor(size_t index) { return index < 4; }
 }
