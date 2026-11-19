@@ -241,8 +241,13 @@ static bool rebuild_display_hosts() {
     }
     views.clear();
     if (!create_job()) { exit_code=3; stop(); return false; }
-    EnumDisplayMonitors(nullptr,nullptr,add_monitor,0);
-    if (stopping || views.empty()) { exit_code=3; stop(); return false; }
+    const BOOL enumeration_succeeded = EnumDisplayMonitors(nullptr,nullptr,add_monitor,0);
+    if (!earth_saver::monitor_enumeration_complete(enumeration_succeeded != FALSE, stopping, views.size())) {
+        // Do not restart a partial monitor set when enumeration fails after creating some hosts.
+        exit_code=3;
+        stop();
+        return false;
+    }
     for (auto& view : views) WTSRegisterSessionNotification(view.host,NOTIFY_FOR_THIS_SESSION);
     for (size_t i=0;i<views.size() && !stopping;i++) {
         if (earth_saver::animate_monitor(i) && !start_view(views[i],app_path())) {
@@ -342,10 +347,15 @@ int WINAPI wWinMain(HINSTANCE instance,HINSTANCE,LPWSTR,int) {
     if (!controller) { CloseHandle(job);if(mutex)CloseHandle(mutex);return 3; }
     if (preview) { View view;view.host=preview_parent;views.push_back(view); }
     else {
-        EnumDisplayMonitors(nullptr,nullptr,add_monitor,0);
-        for (auto& view : views) WTSRegisterSessionNotification(view.host,NOTIFY_FOR_THIS_SESSION);
-        if (!views.empty()) SetForegroundWindow(views.front().host);
-        else { exit_code=3; stop(); }
+        const BOOL enumeration_succeeded = EnumDisplayMonitors(nullptr,nullptr,add_monitor,0);
+        if (earth_saver::monitor_enumeration_complete(enumeration_succeeded != FALSE, stopping, views.size())) {
+            for (auto& view : views) WTSRegisterSessionNotification(view.host,NOTIFY_FOR_THIS_SESSION);
+            SetForegroundWindow(views.front().host);
+        } else {
+            // Enumeration must be complete before any renderer starts; partial coverage is unsafe.
+            exit_code=3;
+            stop();
+        }
     }
     for (size_t i=0;i<views.size() && !stopping;i++) {
         if (earth_saver::animate_monitor(i) && !start_view(views[i],app)) { stopping=true;exit_code=3; }
