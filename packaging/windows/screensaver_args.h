@@ -70,5 +70,11 @@ inline bool valid_monitor_bounds(long left, long top, long right, long bottom) n
     int width = 0, height = 0;
     return monitor_dimensions(left, top, right, bottom, width, height);
 }
+inline bool monitor_enumeration_complete(bool api_succeeded, bool callback_stopped,
+                                         size_t monitor_count) noexcept {
+    // EnumDisplayMonitors can stop after a callback failure or return FALSE after a partial walk.
+    // Never treat a non-empty partial result as complete monitor coverage.
+    return api_succeeded && !callback_stopped && monitor_count > 0;
+}
 inline bool animate_monitor(size_t index) { return index < 4; }
 }

@@ -64,6 +64,12 @@ int main(int argc, char** argv) {
     monitor_width=123; monitor_height=456;
     check(!monitor_dimensions(0,one_over_int_extent_origin,1920,0,monitor_width,monitor_height) &&
           monitor_width==0 && monitor_height==0);
+    check(monitor_enumeration_complete(true,false,1));
+    check(monitor_enumeration_complete(true,false,3));
+    check(!monitor_enumeration_complete(true,false,0));
+    check(!monitor_enumeration_complete(false,false,1)); // API failure after a partial monitor walk.
+    check(!monitor_enumeration_complete(false,true,1)); // Callback stopped after invalid monitor bounds.
+    check(!monitor_enumeration_complete(true,true,1));
     check(animate_monitor(0));check(animate_monitor(3));check(!animate_monitor(4));check(!animate_monitor(100));
     std::cout<<"Screensaver arguments: "<<checks<<" checks, 0 failures\n";
 }
