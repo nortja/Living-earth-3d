@@ -1,6 +1,6 @@
 # Native screensaver monitor-enumeration completeness
 
-Status: candidate implementation; dedicated no-publication validation pending.
+Status: validated and merged to main on November 20, 2026.
 
 ## Behavior
 
@@ -10,14 +10,26 @@ The policy is isolated in `earth_saver::monitor_enumeration_complete` so it can 
 
 This is fail-closed behavior: it avoids presenting a partially covered desktop as a successful monitor rebuild. It does not add retries or alter the 350 ms display-change debounce.
 
-## Validation plan
+## Validation completed
 
-- Strict C++17 argument/policy suite on Linux and native Windows MSVC.
-- Fresh Godot 4.6.3 import, all source suites, application/native screensaver/installer build and Linux native rendering.
-- Windows PowerShell 5.1 update-security, install/rollback, Screen Saver Settings, installed embedded preview and ten-minute software-rendered lifecycle soak.
-- Windows installed desktop framebuffer matrix through 5120×2880, including 3840×1080.
-- No installer publication, signature generation or authenticated feed promotion.
+The dedicated no-publication workflow passed in full on November 19, 2026: [run 44587850218](https://github.com/nortja/Living-earth-3d/actions/runs/44587850218).
+
+- Fresh Godot 4.6.3 import and source suites passed.
+- Windows application export, native `.scr` build and 0.25.1 test installer build passed.
+- Linux native exploration, camera, screensaver and preview/fullscreen saver render suites passed.
+- Native Windows MSVC screensaver policy tests passed.
+- Windows PowerShell 5.1 updater-security and installer install/rollback tests passed, including user-data preservation.
+- Actual Windows Screen Saver Settings selection and embedded preview passed.
+- Ten-minute software-rendered screensaver lifecycle soak passed.
+- Installed Windows desktop framebuffer matrix and monitor-query-cost checks passed.
+- Camera regressions passed separately on Linux and Windows: [run 44588063036](https://github.com/nortja/Living-earth-3d/actions/runs/44588063036).
+
+A duplicate no-publication run [44588062992](https://github.com/nortja/Living-earth-3d/actions/runs/44588062992) was canceled before its source-test stage to avoid overlapping the completed full validation; it is not evidence for this change.
 
 A synthetic policy test cannot force Windows' real `EnumDisplayMonitors` API to fail. The Windows integration suite validates successful installed enumeration, display-change recovery and cleanup; actual API failure remains covered by the deterministic helper contract rather than a physical display failure.
 
-Physical Dell U4919DW GPU/DPI, real mixed-DPI movement/hot-plug, machine sleep/wake and overnight behavior remain separate field checks. No preferences, saved scenes, updater trust key, update manifest or production installer are changed.
+## Field checks and release status
+
+Physical Dell U4919DW GPU/DPI, real mixed-DPI movement/hot-plug, machine sleep/wake and overnight behavior remain separate field checks.
+
+The workflow built a test installer only; it did not publish a production installer, generate a release signature or promote the authenticated update feed. Preferences, saved scenes, updater trust key and production manifest were not changed.
