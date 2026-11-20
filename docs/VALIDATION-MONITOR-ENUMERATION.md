@@ -14,13 +14,13 @@ This is fail-closed behavior: it avoids presenting a partially covered desktop a
 
 The dedicated no-publication workflow passed in full on November 19, 2026: [run 44587850218](https://github.com/nortja/Living-earth-3d/actions/runs/44587850218).
 
-- Fresh Godot 4.6.3 import and source suites passed.
-- Windows application export, native `.scr` build and 0.25.1 test installer build passed.
-- Linux native exploration, camera, screensaver and preview/fullscreen saver render suites passed.
-- Native Windows MSVC screensaver policy tests passed.
-- Windows PowerShell 5.1 updater-security and installer install/rollback tests passed, including user-data preservation.
-- Actual Windows Screen Saver Settings selection and embedded preview passed.
-- Ten-minute software-rendered screensaver lifecycle soak passed.
+- All 26 Godot headless source suites passed; fresh Godot 4.6.3 import and Windows application export passed.
+- The native screensaver policy suite passed 69 assertions with strict C++17 warnings on Linux and native Windows MSVC.
+- Linux native exploration, camera, screensaver and preview/fullscreen saver render suites passed; saver renders covered four test sizes.
+- The native `.scr` launcher and 0.25.1 test installer built successfully.
+- Windows PowerShell 5.1 update-status tests passed 211 checks; updater-security tests passed 16 checks.
+- Windows installer install/rollback passed for a fresh install and an upgrade from 0.25.0, including user-data preservation.
+- Actual Windows Screen Saver Settings selection and embedded preview passed; the ten-minute software-rendered screensaver lifecycle soak passed.
 - Installed Windows desktop framebuffer matrix and monitor-query-cost checks passed.
 - Camera regressions passed separately on Linux and Windows: [run 44588063036](https://github.com/nortja/Living-earth-3d/actions/runs/44588063036).
 
