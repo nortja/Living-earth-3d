@@ -1,6 +1,6 @@
 # Monitor topology sampling diagnostics
 
-Status: candidate validation pending.
+Status: validated and merged to main on November 21, 2026.
 
 ## Change
 
@@ -17,7 +17,16 @@ The report remains local and opt-in. The addition is backward-compatible within 
 
 ## Validation
 
-The first candidate run, [44935376018](https://github.com/nortja/Living-earth-3d/actions/runs/44935376018), exposed one stale test assertion that still expected the previous sampling-limit sentence. The implementation and new boundary/export assertions ran, but both OS jobs correctly failed the full suite on that outdated wording check. The assertion now checks the replacement disclosure; the complete workflow is being rerun before this candidate can be accepted. The workflow runs the full performance source suite on Linux and Windows, Linux native rendering at six sizes through 5120x2880, and a Windows native render using checksum-pinned test-only software OpenGL. This is not an installer/release gate or physical Dell/mixed-monitor test.
+The first candidate run, [44935376018](https://github.com/nortja/Living-earth-3d/actions/runs/44935376018), exposed one stale test assertion that still expected the previous sampling-limit sentence. That failed attempt is not counted as a pass. The assertion was corrected, and the final dedicated no-publication workflow [44935590020](https://github.com/nortja/Living-earth-3d/actions/runs/44935590020) passed:
+
+- Godot 4.6.3 import on Linux and Windows.
+- 66 performance source assertions with zero failures on each OS.
+- Linux native display-report renders at 800×600, 1920×1080, 3440×1440, 3840×2160, 5120×1440 and 5120×2880, zero failures.
+- Windows native display-report render at 870×612, zero failures, using checksum-pinned test-only software OpenGL.
+
+Camera lifecycle regression [44935594818](https://github.com/nortja/Living-earth-3d/actions/runs/44935594818) also passed on Linux and Windows: 57 viewer, 232 revalidation, 26 expansion and 78 Camera Wall assertions per OS, plus native camera-age rendering with zero failures.
+
+This is source/native validation, not an installer/release gate or physical Dell/mixed-monitor test.
 
 ## Field limitations
 
