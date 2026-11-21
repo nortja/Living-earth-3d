@@ -119,7 +119,7 @@ func run() -> void:
     verify(data.recording.screen_index_poll_seconds==1 and data.limits.contains("one active second"),"Screen-index polling resolution is explicit in the saved report")
     verify(data.recording.topology_events.size()==1 and not data.recording.topology_events[0].topology.available and data.recording.topology_poll_seconds==Report.TOPOLOGY_POLL_SECONDS,"Exported headless topology remains explicitly unavailable")
     verify(data.recording.topology_sampling.samples==1 and data.recording.topology_sampling.max_active_gap_seconds==0.0 and data.recording.topology_sampling.gaps_over_1_5_seconds==0 and data.recording.topology_sampling.gap_warning_threshold_seconds==1.5,"Exported sampling diagnostics distinguish nominal cadence from measured gaps")
-    verify(not data.recording.topology_limit_reached and data.limits.contains("shorter transitions may be missed"),"Topology event cap and sampling limit are documented")
+    verify(not data.recording.topology_limit_reached and data.limits.contains("cannot be reconstructed"),"Topology event cap and sampling limit are documented")
     app.interface.open_page("Settings")
     app.interface.performance_record.pressed.emit()
     verify(report.recording, "Settings starts recording")

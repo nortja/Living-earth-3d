@@ -17,7 +17,7 @@ The report remains local and opt-in. The addition is backward-compatible within 
 
 ## Validation
 
-Pending the dedicated workflow on the candidate branch. The workflow runs the full performance source suite on Linux and Windows, Linux native rendering at six sizes through 5120x2880, and a Windows native render using checksum-pinned test-only software OpenGL. This is not an installer/release gate or physical Dell/mixed-monitor test.
+The first candidate run, [44935376018](https://github.com/nortja/Living-earth-3d/actions/runs/44935376018), exposed one stale test assertion that still expected the previous sampling-limit sentence. The implementation and new boundary/export assertions ran, but both OS jobs correctly failed the full suite on that outdated wording check. The assertion now checks the replacement disclosure; the complete workflow is being rerun before this candidate can be accepted. The workflow runs the full performance source suite on Linux and Windows, Linux native rendering at six sizes through 5120x2880, and a Windows native render using checksum-pinned test-only software OpenGL. This is not an installer/release gate or physical Dell/mixed-monitor test.
 
 ## Field limitations
 
