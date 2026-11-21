@@ -1,9 +1,9 @@
-name: Validate monitor topology history
+name: Validate monitor topology sampling diagnostics
 on:
   push:
-    branches: [validation/monitor-topology-history]
+    branches: [fix/performance-topology-sampling-diagnostics]
 concurrency:
-  group: monitor-topology-history-${{ github.ref }}
+  group: monitor-topology-sampling-${{ github.ref }}
   cancel-in-progress: false
 permissions:
   contents: read
