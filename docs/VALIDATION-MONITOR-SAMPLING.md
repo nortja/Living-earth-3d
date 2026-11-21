@@ -22,3 +22,5 @@ The first candidate run, [44935376018](https://github.com/nortja/Living-earth-3d
 ## Field limitations
 
 Physical Dell U4919DW GPU/DPI, real mixed-DPI moves/hot-plug, Windows sleep/wake and overnight operation remain separate field checks.
+
+The stale wording assertion was corrected on the candidate branch before accepting validation; the failed first attempt remains recorded above and is not counted as a pass.
