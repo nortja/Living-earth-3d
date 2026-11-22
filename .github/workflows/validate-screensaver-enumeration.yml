@@ -1,11 +1,11 @@
-name: Validate screensaver monitor enumeration completeness
+name: Validate screensaver DPI recovery fallback
 on:
   push:
-    branches: [validation/monitor-enumeration-completeness]
+    branches: [validation/monitor-enumeration-completeness, fix/screensaver-dpi-recovery-fallback]
 permissions:
   contents: read
 concurrency:
-  group: validate-screensaver-monitor-enumeration
+  group: validate-screensaver-dpi-recovery-${{ github.ref }}
   cancel-in-progress: false
 jobs:
   build:
