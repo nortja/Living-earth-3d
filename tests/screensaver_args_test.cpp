@@ -30,6 +30,11 @@ int main(int argc, char** argv) {
     check(!display_change_settled(1349,1000));
     check(display_change_settled(1350,1000));
     check(!display_change_settled(999,1000));
+    check(!dpi_update_requires_topology_rebuild(true,true,true,true));
+    check(dpi_update_requires_topology_rebuild(false,false,false,false));
+    check(dpi_update_requires_topology_rebuild(true,false,false,false));
+    check(dpi_update_requires_topology_rebuild(true,true,false,false));
+    check(dpi_update_requires_topology_rebuild(true,true,true,false));
     check(valid_monitor_bounds(0,0,3840,1080));
     check(valid_monitor_bounds(-3840,-200,0,1960));
     check(!valid_monitor_bounds(0,0,0,1080));
