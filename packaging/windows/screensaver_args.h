@@ -76,5 +76,14 @@ inline bool monitor_enumeration_complete(bool api_succeeded, bool callback_stopp
     // Never treat a non-empty partial result as complete monitor coverage.
     return api_succeeded && !callback_stopped && monitor_count > 0;
 }
+inline constexpr bool dpi_update_requires_topology_rebuild(bool monitor_found,
+                                                             bool monitor_info_read,
+                                                             bool bounds_valid,
+                                                             bool host_position_updated) noexcept {
+    // A DPI-only host update is complete only when every Win32 lookup and the
+    // physical-pixel reposition succeeds. Callers may then retry through the
+    // existing debounced, complete-enumeration topology rebuild.
+    return !(monitor_found && monitor_info_read && bounds_valid && host_position_updated);
+}
 inline bool animate_monitor(size_t index) { return index < 4; }
 }
