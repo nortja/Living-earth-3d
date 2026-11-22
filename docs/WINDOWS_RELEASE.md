@@ -56,7 +56,7 @@ Selection writes the installed full path to HKCU `Control Panel\Desktop\SCRNSAVE
 
 The native host explicitly returns success for `WM_QUERYENDSESSION` without stopping during a query that Windows may cancel. It tears down the saver and its owned renderer only after `WM_ENDSESSION` confirms that logoff or shutdown is committed; a canceled end-session leaves the saver running.
 
-Fullscreen hosts also debounce topology/resolution `WM_DISPLAYCHANGE` bursts for 350 ms, then gracefully replace their owned renderers and recreate hosts from the current monitor inventory. A DPI-only `WM_DPICHANGED` instead resolves the suggested rectangle to its target monitor and restores the full physical-pixel monitor bounds; the next host tick resizes the embedded renderer. Synthetic CI message tests do not replace physical mixed-DPI, Dell GPU/DPI, hot-plug or sleep/wake checks.
+Fullscreen hosts also debounce topology/resolution `WM_DISPLAYCHANGE` bursts for 350 ms, then gracefully replace their owned renderers and recreate hosts from the current monitor inventory. A DPI-only `WM_DPICHANGED` resolves the suggested rectangle to its target monitor and restores the full physical-pixel monitor bounds; the next host tick resizes the embedded renderer. If a DPI-only monitor lookup, geometry check or host reposition fails, the host now schedules the same debounced full-topology rebuild instead of immediately exiting. The fallback still requires complete, non-empty monitor enumeration before any renderer restarts; a failed or partial rebuild remains fail-closed. Synthetic CI message tests do not replace physical mixed-DPI, Dell GPU/DPI, hot-plug or sleep/wake checks.
 
 See ROADMAP.md for prioritized release work and CHANGELOG.md for milestone changes.
 
