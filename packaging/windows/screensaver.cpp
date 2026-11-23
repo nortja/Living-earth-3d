@@ -27,6 +27,10 @@ static POINT initial_mouse{};
 static const wchar_t* host_class = L"LivingEarth3D.SaverHost";
 
 static void stop() { stopping = true; PostQuitMessage(0); }
+static void schedule_display_rebuild() {
+    display_change_pending = true;
+    display_change_at = GetTickCount64();
+}
 static LRESULT CALLBACK host_proc(HWND window, UINT message, WPARAM w, LPARAM l) {
     switch (message) {
         case WM_QUERYENDSESSION:
@@ -39,7 +43,7 @@ static LRESULT CALLBACK host_proc(HWND window, UINT message, WPARAM w, LPARAM l)
         case WM_CLOSE: stop(); return 0;
         case WM_DISPLAYCHANGE:
             // Display topology can settle over several broadcasts. Rebuild once after a quiet interval.
-            if (!preview) { display_change_pending = true; display_change_at = GetTickCount64(); }
+            if (!preview) schedule_display_rebuild();
             return 0;
         case WM_DPICHANGED: {
             // A scale-only change may not emit WM_DISPLAYCHANGE. Use the suggested
@@ -51,16 +55,23 @@ static LRESULT CALLBACK host_proc(HWND window, UINT message, WPARAM w, LPARAM l)
                     ? MonitorFromRect(suggested, MONITOR_DEFAULTTONEAREST)
                     : MonitorFromWindow(window, MONITOR_DEFAULTTONEAREST);
                 MONITORINFO info{}; info.cbSize = sizeof(info);
+                const bool monitor_found = monitor != nullptr;
+                const bool monitor_info_read = monitor_found && GetMonitorInfoW(monitor, &info) != FALSE;
                 int width = 0, height = 0;
-                if (!monitor || !GetMonitorInfoW(monitor, &info) ||
-                    !earth_saver::monitor_dimensions(info.rcMonitor.left, info.rcMonitor.top,
-                                                     info.rcMonitor.right, info.rcMonitor.bottom,
-                                                     width, height)) {
-                    stop();
-                    return 0;
+                const bool bounds_valid = monitor_info_read &&
+                    earth_saver::monitor_dimensions(info.rcMonitor.left, info.rcMonitor.top,
+                                                    info.rcMonitor.right, info.rcMonitor.bottom,
+                                                    width, height);
+                const bool host_position_updated = bounds_valid &&
+                    SetWindowPos(window, nullptr, info.rcMonitor.left, info.rcMonitor.top,
+                                 width, height, SWP_NOZORDER | SWP_NOACTIVATE) != FALSE;
+                if (earth_saver::dpi_update_requires_topology_rebuild(
+                        monitor_found, monitor_info_read, bounds_valid, host_position_updated)) {
+                    // A transient DPI-only API failure gets one debounced full-topology
+                    // recovery attempt. The existing host stays alive until that rebuild.
+                    // The rebuild still rejects empty/partial enumeration before rendering.
+                    schedule_display_rebuild();
                 }
-                if (!SetWindowPos(window, nullptr, info.rcMonitor.left, info.rcMonitor.top,
-                                  width, height, SWP_NOZORDER | SWP_NOACTIVATE)) stop();
             }
             return 0;
         }
