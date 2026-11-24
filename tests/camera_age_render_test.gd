@@ -20,6 +20,7 @@ func run() -> void:
     service._received(0,200,PackedStringArray(['ETag: "fixture"']),bytes,service.generation)
     service.unchanged_since_ticks=Time.get_ticks_msec()-301000
     service.retrieved="2099-01-01 00:00:00"
+    service.request_headers()
     service._received(0,304,PackedStringArray(),PackedByteArray(),service.generation)
     verify(ui.camera_detail.text.contains("Checked") and ui.camera_detail.text.contains("5+ minutes"),"Successful 304 revalidation keeps the elapsed-age warning")
     service._unavailable()
