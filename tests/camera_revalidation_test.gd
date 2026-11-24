@@ -73,15 +73,15 @@ func run() -> void:
     verify(camera.image!=texture and camera.etag=='"frame-2"' and camera.last_modified.is_empty(), "New image replaces both texture and source validators")
     verify(camera.unchanged_since_ticks>=frame_ticks+300000 and not camera.status.contains("5+ minutes"), "Changed image resets the monotonic delay timer")
     var etag_frame: Texture2D = camera.image
-    var etag_retrieved := camera.retrieved
-    var etag_age := camera.unchanged_since_ticks
+    var etag_retrieved: String = camera.retrieved
+    var etag_age: int = camera.unchanged_since_ticks
     var dated_bytes := fixture.save_jpg_to_buffer()
     camera._received(0,200,PackedStringArray(["Last-Modified: Thu, 29 Feb 2024 12:00:00 GMT"]),dated_bytes,camera.generation)
     verify(camera.etag.is_empty() and camera.last_modified == "Thu, 29 Feb 2024 12:00:00 GMT", "A source without ETag retains its syntactically valid Last-Modified date")
     var modified_headers := camera.request_headers()
     verify(modified_headers.has("If-Modified-Since: Thu, 29 Feb 2024 12:00:00 GMT") and not modified_headers.has("If-None-Match:") and camera.request_validator == "last-modified", "Last-Modified is used as a conditional fallback only when ETag is absent")
-    var modified_retrieved := camera.retrieved
-    var modified_age := camera.unchanged_since_ticks
+    var modified_retrieved: String = camera.retrieved
+    var modified_age: int = camera.unchanged_since_ticks
     var modified_texture: Texture2D = camera.image
     camera._received(0,304,PackedStringArray(["Last-Modified: Thu, 29 Feb 2024 12:00:00 GMT"]),PackedByteArray(),camera.generation)
     verify(camera.image == modified_texture and camera.retrieved == modified_retrieved and camera.unchanged_since_ticks == modified_age, "Last-Modified 304 retains the validated image, retrieval time and monotonic unchanged age")
