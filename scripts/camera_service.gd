@@ -24,6 +24,7 @@ var retrieved := ""
 var digest := ""
 var etag := ""
 var last_modified := ""
+var request_validator := "" # Validator used by the in-flight request; gates 304 acceptance.
 var last_failure_reason := ""
 var unchanged_since_ticks := 0 # Monotonic milliseconds; UTC remains display metadata.
 const IMAGE_ORIGIN := "https://www.nps.gov/webcams-yell/"
@@ -93,6 +94,7 @@ func stop() -> void:
         request.cancel_request()
         request.queue_free()
     request = null
+    request_validator = ""
 
 func refresh() -> void:
     if view_suspended or not active or loading or Time.get_ticks_msec() - last_attempt < 2000: return
@@ -123,9 +125,34 @@ func refresh() -> void:
 
 func request_headers() -> PackedStringArray:
     var headers := PackedStringArray(["User-Agent: LivingEarth3D/0.13.1 (+https://github.com/nortja/Living-earth-3d)","Cache-Control: no-cache"])
-    if image != null and not digest.is_empty() and valid_etag(etag):
-        headers.append("If-None-Match: " + etag)
+    request_validator = ""
+    if image != null and not digest.is_empty():
+        if valid_etag(etag):
+            headers.append("If-None-Match: " + etag)
+            request_validator = "etag"
+        elif valid_last_modified(last_modified):
+            headers.append("If-Modified-Since: " + last_modified)
+            request_validator = "last-modified"
     return headers
+
+static func valid_last_modified(value: String) -> bool:
+    # Only emit the fixed-width IMF-fixdate form. This rejects CR/LF and other
+    # header injection, obsolete date formats, impossible calendar days and
+    # values that a provider might have supplied only as display metadata.
+    if value.length() != 29: return false
+    var pattern := RegEx.new()
+    if pattern.compile("^(Mon|Tue|Wed|Thu|Fri|Sat|Sun), (0[1-9]|[12][0-9]|3[01]) (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) ([0-9]{4}) ([01][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9]) GMT$") != OK:
+        return false
+    var matched := pattern.search(value)
+    if matched == null: return false
+    var day := int(matched.get_string(2))
+    var month := ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"].find(matched.get_string(3)) + 1
+    var year := int(matched.get_string(4))
+    if year < 1601: return false
+    var days_per_month := [31,28,31,30,31,30,31,31,30,31,30,31]
+    if month == 2 and (year % 400 == 0 or (year % 4 == 0 and year % 100 != 0)):
+        days_per_month[1] = 29
+    return day <= days_per_month[month - 1]
 
 static func valid_etag(value: String) -> bool:
     if value.length() > 256: return false
@@ -167,17 +194,19 @@ func _source_metadata(headers: PackedStringArray, reset: bool) -> void:
             var value := header.substr(5).strip_edges()
             if valid_etag(value): etag = value
         elif header.to_lower().begins_with("last-modified:"):
-            last_modified = header.substr(14).strip_edges().left(80)
+            last_modified = header.substr(14).strip_edges().left(80).replace("\r", " ").replace("\n", " ").replace("\t", " ")
 
 static func valid_image_url(url: String) -> bool:
     return url in [IMAGE_ORIGIN + "mammoth_parade.jpg", IMAGE_ORIGIN + "mammoth_electric.jpg", IMAGE_ORIGIN + "washburn_ne.jpg", "https://www.nps.gov/featurecontent/ard/webcams/images/sekilarge.jpg", "https://www.nps.gov/featurecontent/ard/webcams/images/grcalarge.jpg", "https://www.nps.gov/featurecontent/ard/webcams/images/grsmlarge.jpg", "https://www.nps.gov/webcams-romo/alpine_visitor_center.jpg", "https://volcanoes.usgs.gov/observatories/hvo/cams/V1cam/images/M.jpg"]
 
 func _received(result: int, code: int, headers: PackedStringArray, body: PackedByteArray, token: int) -> void:
     if not active or token != generation: return
+    var validator_used := request_validator
+    request_validator = ""
     loading = false
     if is_instance_valid(request): request.queue_free()
     request = null
-    if result == HTTPRequest.RESULT_SUCCESS and code == 304 and image != null and not digest.is_empty() and valid_etag(etag):
+    if result == HTTPRequest.RESULT_SUCCESS and code == 304 and image != null and not digest.is_empty() and validator_used in ["etag", "last-modified"]:
         _source_metadata(headers,false)
         _describe_success(true)
         return
