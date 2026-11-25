@@ -10,7 +10,9 @@ func run() -> void:
     verify(Camera.valid_etag('"abc"') and Camera.valid_etag('W/"abc"') and Camera.valid_etag('""'), "Strong, weak and empty opaque entity tags are accepted")
     verify(Camera.valid_last_modified("Sun, 06 Nov 1994 08:49:37 GMT"), "Valid IMF-fixdate is accepted")
     verify(Camera.valid_last_modified("Thu, 29 Feb 2024 12:00:00 GMT"), "Leap-day IMF-fixdate is accepted")
-    for value in ["fixture time", "Wed, 29 Feb 2023 12:00:00 GMT", "Sun, 31 Apr 1994 08:49:37 GMT", "Sun, 06 Nov 1994 24:00:00 GMT", "Sun, 06 Nov 1994 08:49:37 GMT\r\nInjected: value", "Sun, 06 Nov 1994 08:49:37 PST"]:
+    verify(Camera.valid_last_modified("Tue, 29 Feb 2000 12:00:00 GMT"), "Gregorian century leap-day weekday is accepted")
+    verify(Camera.valid_last_modified("Mon, 01 Jan 1601 00:00:00 GMT"), "First supported HTTP-date year has the correct weekday")
+    for value in ["fixture time", "Mon, 06 Nov 1994 08:49:37 GMT", "Wed, 29 Feb 2024 12:00:00 GMT", "Wed, 29 Feb 2023 12:00:00 GMT", "Sun, 31 Apr 1994 08:49:37 GMT", "Sun, 06 Nov 1994 24:00:00 GMT", "Sun, 06 Nov 1994 08:49:37 GMT\r\nInjected: value", "Sun, 06 Nov 1994 08:49:37 PST"]:
         verify(not Camera.valid_last_modified(value), "Malformed, impossible or unsafe Last-Modified value rejected")
     for value in ['abc','*','"a b"','"a"b"','"abc"\r\nInjected: value','"'+'a'.repeat(256)+'"']:
         verify(not Camera.valid_etag(value), "Malformed, control or oversized entity tag rejected")
