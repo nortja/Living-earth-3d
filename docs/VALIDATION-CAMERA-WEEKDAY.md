@@ -1,6 +1,6 @@
 # Camera Last-Modified weekday validation
 
-Status: candidate on `fix/camera-imf-weekday-validation`; Linux/Windows source and native validation pending.
+Status: merged into `main` in [PR #22](https://github.com/nortja/Living-earth-3d/pull/22), squash commit [f96152c](https://github.com/nortja/Living-earth-3d/commit/f96152c736f63a80c7f31433be2f583a0e9097b0). Pinned Godot 4.6.3 Linux/Windows workflow [45676870010](https://github.com/nortja/Living-earth-3d/actions/runs/45676870010) passed.
 
 ## Change
 
@@ -20,7 +20,7 @@ ETag remains preferred. At most one conditional validator is sent. Display-only 
 
 ## Validation
 
-Pending the dedicated pinned Godot 4.6.3 Linux and Windows camera workflow. It must pass camera viewer, revalidation, expansion and Camera Wall suites plus native camera-age rendering on both operating systems. Windows uses checksum-pinned test-only software OpenGL; Linux uses a virtual desktop. These do not establish physical Dell GPU/DPI, mixed-monitor movement, actual provider cache behavior or sleep/wake hardware behavior.
+Workflow 45676870010 completed successfully on both Linux and Windows. Each OS passed 414 assertions: camera viewer 57, camera revalidation 253, camera expansion 26 and Camera Wall 78. Native camera-age rendering passed on both platforms. Linux used a virtual desktop at 870×612, 2496×1664 and 3840×1080; Windows used 870×612 with checksum-pinned test-only software OpenGL. No live provider request was made. These results do not establish physical Dell GPU/DPI, mixed-monitor movement, actual provider cache behavior or sleep/wake hardware behavior.
 
 ## Release
 
