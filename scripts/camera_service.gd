@@ -136,9 +136,9 @@ func request_headers() -> PackedStringArray:
     return headers
 
 static func valid_last_modified(value: String) -> bool:
-    # Only emit the fixed-width IMF-fixdate form. This rejects CR/LF and other
-    # header injection, obsolete date formats, impossible calendar days and
-    # values that a provider might have supplied only as display metadata.
+    # Only emit a complete, self-consistent IMF-fixdate. Besides rejecting
+    # unsafe/header-injection input and impossible calendar days, verify that
+    # the weekday agrees with the Gregorian date before using it as a validator.
     if value.length() != 29: return false
     var pattern := RegEx.new()
     if pattern.compile("^(Mon|Tue|Wed|Thu|Fri|Sat|Sun), (0[1-9]|[12][0-9]|3[01]) (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) ([0-9]{4}) ([01][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9]) GMT$") != OK:
@@ -152,7 +152,15 @@ static func valid_last_modified(value: String) -> bool:
     var days_per_month := [31,28,31,30,31,30,31,31,30,31,30,31]
     if month == 2 and (year % 400 == 0 or (year % 4 == 0 and year % 100 != 0)):
         days_per_month[1] = 29
-    return day <= days_per_month[month - 1]
+    if day > days_per_month[month - 1]: return false
+    # 0001-01-01 was Monday. Count whole Gregorian days before this date;
+    # the supported four-digit year range stays comfortably inside int64.
+    var prior_year := year - 1
+    var days_before_date := prior_year * 365 + int(prior_year / 4) - int(prior_year / 100) + int(prior_year / 400) + day - 1
+    for index in range(month - 1):
+        days_before_date += days_per_month[index]
+    var weekdays := ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"]
+    return matched.get_string(1) == weekdays[days_before_date % 7]
 
 static func valid_etag(value: String) -> bool:
     if value.length() > 256: return false
