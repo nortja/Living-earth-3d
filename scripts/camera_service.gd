@@ -150,7 +150,7 @@ static func valid_last_modified(value: String) -> bool:
     var year := int(matched.get_string(4))
     if year < 1601: return false
     var days_per_month := [31,28,31,30,31,30,31,31,30,31,30,31]
-    if month == 2 and (year % 400 == 0 or (year % 4 == 0 and year % 100 != 0)):
+    if year % 400 == 0 or (year % 4 == 0 and year % 100 != 0):
         days_per_month[1] = 29
     if day > days_per_month[month - 1]: return false
     # 0001-01-01 was Monday. Count whole Gregorian days before this date;
