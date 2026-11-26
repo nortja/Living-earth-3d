@@ -1,6 +1,6 @@
 # Camera Last-Modified weekday validation
 
-Status: follow-up correction candidate on `fix/camera-weekday-leap-offset`; Linux/Windows validation pending. The initial weekday-validation implementation passed its targeted tests but a broader calendar check found that leap-day offsets also need to be included for dates after February. This branch corrects that case.
+Status: merged into `main` in [PR #23](https://github.com/nortja/Living-earth-3d/pull/23), squash commit [8b4b3c3](https://github.com/nortja/Living-earth-3d/commit/8b4b3c30ed1e73aa0b69b7b9503f54b6f03f7c25). The post-February leap-year correction passed the targeted pinned Godot 4.6.3 Linux/Windows workflow [45879310762](https://github.com/nortja/Living-earth-3d/actions/runs/45879310762).
 
 ## Change
 
@@ -22,7 +22,7 @@ ETag remains preferred. At most one conditional validator is sent. Display-only 
 
 ## Validation
 
-Pending a new pinned Godot 4.6.3 Linux/Windows workflow after the post-February leap-year correction. The initial PR #22 workflow passed 414 assertions per OS but did not include a date after February in a leap year; it is not evidence for this correction. No live provider request is required. Software-rendered CI does not establish physical Dell GPU/DPI, mixed-monitor movement, actual provider cache behavior or sleep/wake hardware behavior.
+The targeted pinned Godot 4.6.3 Linux/Windows workflow [45879310762](https://github.com/nortja/Living-earth-3d/actions/runs/45879310762) passed both jobs. Each OS passed 417 assertions: camera viewer 57, camera revalidation 256, camera expansion 26 and Camera Wall 78. Native camera-age rendering passed with zero failures on both platforms. Linux used virtual-desktop renders at 870×612, 2496×1664 and 3840×1080; Windows used checksum-pinned test-only software OpenGL at 870×612. An independent Gregorian arithmetic cross-check covered every date from 1601-01-01 through 9999-12-31 (3,067,671 dates) and matched Python's calendar weekday for all dates. A broader no-publication screensaver/installer workflow [45879310922](https://github.com/nortja/Living-earth-3d/actions/runs/45879310922) was still in progress when this record was updated and is not counted. No live provider request is required. Software-rendered CI does not establish physical Dell GPU/DPI, mixed-monitor movement, actual provider cache behavior or sleep/wake hardware behavior.
 
 ## Release
 
