@@ -70,11 +70,20 @@ inline bool valid_monitor_bounds(long left, long top, long right, long bottom) n
     int width = 0, height = 0;
     return monitor_dimensions(left, top, right, bottom, width, height);
 }
-inline bool monitor_enumeration_complete(bool api_succeeded, bool callback_stopped,
-                                         size_t monitor_count) noexcept {
-    // EnumDisplayMonitors can stop after a callback failure or return FALSE after a partial walk.
-    // Never treat a non-empty partial result as complete monitor coverage.
-    return api_succeeded && !callback_stopped && monitor_count > 0;
+enum class MonitorEnumerationDecision { Complete, Retry, Abort };
+inline constexpr unsigned monitor_enumeration_max_attempts = 3;
+inline constexpr unsigned monitor_enumeration_retry_delay_ms(unsigned completed_attempt) noexcept {
+    return completed_attempt * 50u;
+}
+inline constexpr MonitorEnumerationDecision monitor_enumeration_decision(
+        bool api_succeeded, bool callback_failed, size_t monitor_count, unsigned attempt) noexcept {
+    // Callback failures indicate invalid geometry or a host-creation failure and
+    // must not be retried. API failures and empty inventories may be transient.
+    if (callback_failed) return MonitorEnumerationDecision::Abort;
+    if (api_succeeded && monitor_count > 0) return MonitorEnumerationDecision::Complete;
+    return attempt < monitor_enumeration_max_attempts
+        ? MonitorEnumerationDecision::Retry
+        : MonitorEnumerationDecision::Abort;
 }
 inline constexpr bool dpi_update_requires_topology_rebuild(bool monitor_found,
                                                              bool monitor_info_read,

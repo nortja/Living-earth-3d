@@ -69,12 +69,20 @@ int main(int argc, char** argv) {
     monitor_width=123; monitor_height=456;
     check(!monitor_dimensions(0,one_over_int_extent_origin,1920,0,monitor_width,monitor_height) &&
           monitor_width==0 && monitor_height==0);
-    check(monitor_enumeration_complete(true,false,1));
-    check(monitor_enumeration_complete(true,false,3));
-    check(!monitor_enumeration_complete(true,false,0));
-    check(!monitor_enumeration_complete(false,false,1)); // API failure after a partial monitor walk.
-    check(!monitor_enumeration_complete(false,true,1)); // Callback stopped after invalid monitor bounds.
-    check(!monitor_enumeration_complete(true,true,1));
+    check(monitor_enumeration_decision(true,false,1,1)==MonitorEnumerationDecision::Complete);
+    check(monitor_enumeration_decision(true,false,3,2)==MonitorEnumerationDecision::Complete);
+    check(monitor_enumeration_decision(true,false,0,1)==MonitorEnumerationDecision::Retry);
+    check(monitor_enumeration_decision(false,false,1,1)==MonitorEnumerationDecision::Retry); // Partial API walk.
+    check(monitor_enumeration_decision(false,false,0,1)==MonitorEnumerationDecision::Retry);
+    check(monitor_enumeration_decision(false,false,1,2)==MonitorEnumerationDecision::Retry);
+    check(monitor_enumeration_decision(true,false,0,2)==MonitorEnumerationDecision::Retry);
+    check(monitor_enumeration_decision(false,false,1,3)==MonitorEnumerationDecision::Abort);
+    check(monitor_enumeration_decision(true,false,0,3)==MonitorEnumerationDecision::Abort);
+    check(monitor_enumeration_decision(false,true,1,1)==MonitorEnumerationDecision::Abort); // Callback stopped.
+    check(monitor_enumeration_decision(true,true,1,1)==MonitorEnumerationDecision::Abort);
+    check(monitor_enumeration_max_attempts==3);
+    check(monitor_enumeration_retry_delay_ms(1)==50);
+    check(monitor_enumeration_retry_delay_ms(2)==100);
     check(animate_monitor(0));check(animate_monitor(3));check(!animate_monitor(4));check(!animate_monitor(100));
     std::cout<<"Screensaver arguments: "<<checks<<" checks, 0 failures\n";
 }
