@@ -221,6 +221,32 @@ static BOOL CALLBACK add_monitor(HMONITOR, HDC, LPRECT rect, LPARAM) {
     views.push_back(view);
     return TRUE;
 }
+static void discard_unstarted_monitor_hosts() {
+    // Enumeration attempts create only empty native hosts. No renderer or session
+    // notification is attached until the complete inventory has been accepted.
+    for (auto& view : views) if (view.host) DestroyWindow(view.host);
+    views.clear();
+}
+static bool enumerate_complete_monitors() {
+    for (unsigned attempt=1; attempt<=earth_saver::monitor_enumeration_max_attempts; ++attempt) {
+        const BOOL api_succeeded = EnumDisplayMonitors(nullptr,nullptr,add_monitor,0);
+        const bool callback_failed = stopping || exit_code != 0;
+        const auto decision = earth_saver::monitor_enumeration_decision(
+            api_succeeded != FALSE, callback_failed, views.size(), attempt);
+        if (decision == earth_saver::MonitorEnumerationDecision::Complete) return true;
+
+        // A failed API walk may have created a partial set of empty hosts. Discard
+        // every one before retrying; no partial inventory is ever rendered.
+        discard_unstarted_monitor_hosts();
+        if (decision == earth_saver::MonitorEnumerationDecision::Abort) {
+            exit_code = 3;
+            return false;
+        }
+        Sleep(earth_saver::monitor_enumeration_retry_delay_ms(attempt));
+    }
+    exit_code = 3;
+    return false;
+}
 static bool create_job() {
     job=CreateJobObjectW(nullptr,nullptr);
     JOBOBJECT_EXTENDED_LIMIT_INFORMATION limit{};
@@ -252,10 +278,7 @@ static bool rebuild_display_hosts() {
     }
     views.clear();
     if (!create_job()) { exit_code=3; stop(); return false; }
-    const BOOL enumeration_succeeded = EnumDisplayMonitors(nullptr,nullptr,add_monitor,0);
-    if (!earth_saver::monitor_enumeration_complete(enumeration_succeeded != FALSE, stopping, views.size())) {
-        // Do not restart a partial monitor set when enumeration fails after creating some hosts.
-        exit_code=3;
+    if (!enumerate_complete_monitors()) {
         stop();
         return false;
     }
@@ -358,13 +381,11 @@ int WINAPI wWinMain(HINSTANCE instance,HINSTANCE,LPWSTR,int) {
     if (!controller) { CloseHandle(job);if(mutex)CloseHandle(mutex);return 3; }
     if (preview) { View view;view.host=preview_parent;views.push_back(view); }
     else {
-        const BOOL enumeration_succeeded = EnumDisplayMonitors(nullptr,nullptr,add_monitor,0);
-        if (earth_saver::monitor_enumeration_complete(enumeration_succeeded != FALSE, stopping, views.size())) {
+        if (enumerate_complete_monitors()) {
             for (auto& view : views) WTSRegisterSessionNotification(view.host,NOTIFY_FOR_THIS_SESSION);
             SetForegroundWindow(views.front().host);
         } else {
-            // Enumeration must be complete before any renderer starts; partial coverage is unsafe.
-            exit_code=3;
+            // Exhausted transient retries or a callback failure: remain fail-closed.
             stop();
         }
     }

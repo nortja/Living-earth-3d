@@ -58,6 +58,8 @@ The native host explicitly returns success for `WM_QUERYENDSESSION` without stop
 
 Fullscreen hosts also debounce topology/resolution `WM_DISPLAYCHANGE` bursts for 350 ms, then gracefully replace their owned renderers and recreate hosts from the current monitor inventory. A DPI-only `WM_DPICHANGED` resolves the suggested rectangle to its target monitor and restores the full physical-pixel monitor bounds; the next host tick resizes the embedded renderer. If a DPI-only monitor lookup, geometry check or host reposition fails, the host now schedules the same debounced full-topology rebuild instead of immediately exiting. The fallback still requires complete, non-empty monitor enumeration before any renderer restarts; a failed or partial rebuild remains fail-closed. Synthetic CI message tests do not replace physical mixed-DPI, Dell GPU/DPI, hot-plug or sleep/wake checks.
 
+Startup and topology rebuilds now make up to three complete monitor-enumeration attempts. A failed Win32 enumeration call or an empty inventory is retried after bounded 50 ms and 100 ms delays. If the callback itself rejects invalid monitor geometry or cannot create a host, recovery aborts immediately. Any empty host windows created by a partial API walk are destroyed before another attempt; no renderer or session notification starts until one complete, non-empty inventory is accepted. Exhausted retries remain fail-closed. This is transient-API recovery, not evidence of physical monitor hot-plug or mixed-DPI behavior.
+
 See ROADMAP.md for prioritized release work and CHANGELOG.md for milestone changes.
 
 ## Native Windows display validation

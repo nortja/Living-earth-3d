@@ -112,6 +112,16 @@ jobs:
         with:
           name: LivingEarth3D-0.25.1-candidate
           path: dist
+      - uses: ilammy/msvc-dev-cmd@v1
+      - name: Compile and run native screensaver policy tests with MSVC
+        shell: powershell
+        run: |
+          $ErrorActionPreference='Stop'
+          $test=Join-Path $env:RUNNER_TEMP 'screensaver-args-test.exe'
+          & cl /nologo /std:c++17 /EHsc /W4 /WX tests/screensaver_args_test.cpp "/Fe:$test"
+          if($LASTEXITCODE -ne 0){throw 'Native Windows screensaver policy compilation failed'}
+          & $test
+          if($LASTEXITCODE -ne 0){throw 'Native Windows screensaver policy tests failed'}
       - name: Verify signatures and real installer update on Windows PowerShell 5.1
         shell: powershell
         run: |
