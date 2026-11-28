@@ -10,6 +10,8 @@ The installer remains Windows publisher-unsigned. Authenticated update metadata 
 
 [0.25.1 validation](VALIDATION-0.25.1.md) records the exact frozen source and fresh source/native/Windows, scene capture/playback/Moon zoom, update/rollback, settings and saver lifecycle gates. Physical hardware checks remain separate.
 
+The November 28, 2026 bounded monitor-enumeration retry change is recorded in [validation](VALIDATION-MONITOR-ENUMERATION-RETRY.md); its no-publication Linux/Windows build, installer, settings, preview, lifecycle and desktop matrix passed.
+
 Software-rendered disposable Windows/Linux CI does not establish physical Dell GPU/DPI, multiple-monitor, sleep/wake, fan/power or audible playback results. See [field observations](FIELD_CHECKS.md). The old general Windows installer workflow stays disabled, with no automatic push/tag triggers. Release-specific branch workflows validate one candidate without receiving the private release key or promoting the production feed themselves. Promotion follows verified published bytes and a detached signature over exact metadata.
 
 ## Rebuild on Windows (maintainers only)
